@@ -18,6 +18,6 @@ const router = new VueRouter({
 
 var app = new Vue({
 	router,
-	el: '#clinic'
+	el: '#klinika'
 });
 

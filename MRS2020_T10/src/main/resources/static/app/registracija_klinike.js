@@ -1,11 +1,11 @@
 Vue.component('regklinike', {
 	data: function(){
 		return{
-			clinicName: '',
-			clinicAddress: '',
-			clinicEmail: '',
-			clinicNumber: '',
-			idNumber: ''
+			nazivKlinike: '',
+			adresaKlinike: '',
+			emailKlinike: '',
+			kontaktKlinike: '',
+			idKlinike: ''
 		}
 	}, 
 	
@@ -17,31 +17,31 @@ Vue.component('regklinike', {
 		   <tr>
 		   
 		   		<td>Naziv klinike: </td>
-		   		<td><input id="name" type="text" v-model="clinicName"></td>
+		   		<td><input id="name" type="text" v-model="nazivKlinike"></td>
 
 		   </tr>
 		   <tr>
 		   		
 		   		<td>Adresa klinike: </td>
-		   		<td><input id="name" type="text" v-model="clinicAddress"></td>
+		   		<td><input id="name" type="text" v-model="adresaKlinike"></td>
 		   		
 		   </tr>
 		   <tr>
 		   
 		   		<td>Email klinike: </td>
-		   		<td><input id="name" type="text" v-model="clinicEmail"></td>
+		   		<td><input id="name" type="text" v-model="emailKlinike"></td>
 		   		
 		   </tr>
 		   <tr>
 		   	
 		   		<td>Kontakt telefon klinike: </td>
-		   		<td><input id="name" type="text" v-model="clinicNumber"></td>
+		   		<td><input id="name" type="text" v-model="kontaktKlinike"></td>
 		  
 		   </tr>
 		   <tr>
 		   
 		   		<td>Id klinike: </td>
-		   		<td><input id="name" type="text" v-model="idNumber"></td>
+		   		<td><input id="name" type="text" v-model="idKlinike"></td>
 		   
 		   </tr>
 		    <tr>

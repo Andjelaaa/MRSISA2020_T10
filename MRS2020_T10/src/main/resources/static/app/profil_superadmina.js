@@ -1,11 +1,7 @@
 Vue.component('superprofil', {
 
 	data: function(){
-		return{
-			clinicName: '',
-			clinicAddress: '',
-			clinicEmail: ''
-		}
+		return{	}
 	}, 
 	
 	template: `
