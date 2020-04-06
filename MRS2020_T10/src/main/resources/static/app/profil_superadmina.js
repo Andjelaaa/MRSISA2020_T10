@@ -14,7 +14,7 @@ Vue.component('superprofil', {
 		
 		<h1> Zdravo, superadmine! Ovo je tvoja home stranica na sajtu!</h1>
 		<br>
-		<button onclick="window.location.href='/regklinika'"> Kreiraj kliniku </button>
+		<button onclick="window.location.href='#/regklinika'"> Kreiraj kliniku </button>
 		
 		</div>
 	

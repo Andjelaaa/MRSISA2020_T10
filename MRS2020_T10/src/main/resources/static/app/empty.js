@@ -1,6 +1,7 @@
 Vue.component('empty', {
 
 	data: function(){
+		return{empty:''}
 	}, 
 	
 	template: `
