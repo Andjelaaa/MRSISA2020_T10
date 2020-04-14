@@ -1,30 +1,30 @@
-package model;
+package dto;
 import java.util.*;
 
-public class SifarnikLekova {
-   public Set<Lek> lek;
+public class SifarnikLekovaDTO {
+   public Set<LekDTO> lek;
    
    
-   public Set<Lek> getLek() {
+   public Set<LekDTO> getLek() {
       if (lek == null)
-         lek = new java.util.HashSet<Lek>();
+         lek = new java.util.HashSet<LekDTO>();
       return lek;
    }
    
-   public void setLek(Set<Lek> newLek) {
+   public void setLek(Set<LekDTO> newLek) {
      this.lek = newLek;
    }
    
-   public void addLek(Lek newLek) {
+   public void addLek(LekDTO newLek) {
       if (newLek == null)
          return;
       if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
+         this.lek = new java.util.HashSet<LekDTO>();
       if (!this.lek.contains(newLek))
          this.lek.add(newLek);
    }
    
-   public void removeLek(Lek oldLek) {
+   public void removeLek(LekDTO oldLek) {
       if (oldLek == null)
          return;
       if (this.lek != null)

@@ -1,31 +1,31 @@
-package model;
+package dto;
 import java.util.*;
 
-public class AdminKlinike extends Korisnik {
-   public Set<Odsustvo> odsustvo;
-   public Klinika klinika;
+public class AdminKlinikeDTO extends KorisnikDTO {
+   public Set<OdsustvoDTO> odsustvo;
+   public KlinikaDTO klinika;
    
    
-   public Set<Odsustvo> getOdsustvo() {
+   public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
-         odsustvo = new HashSet<Odsustvo>();
+         odsustvo = new HashSet<OdsustvoDTO>();
       return odsustvo;
    }
    
-   public void setOdsustvo(Set<Odsustvo> newOdsustvo) {
+   public void setOdsustvo(Set<OdsustvoDTO> newOdsustvo) {
       this.odsustvo = newOdsustvo;
    }
    
-   public void addOdsustvo(Odsustvo newOdsustvo) {
+   public void addOdsustvo(OdsustvoDTO newOdsustvo) {
       if (newOdsustvo == null)
          return;
       if (this.odsustvo == null)
-         this.odsustvo = new HashSet<Odsustvo>();
+         this.odsustvo = new HashSet<OdsustvoDTO>();
       if (!this.odsustvo.contains(newOdsustvo))
          this.odsustvo.add(newOdsustvo);
    }
    
-   public void removeOdsustvo(Odsustvo oldOdsustvo) {
+   public void removeOdsustvo(OdsustvoDTO oldOdsustvo) {
       if (oldOdsustvo == null)
          return;
       if (this.odsustvo != null)
@@ -37,16 +37,16 @@ public class AdminKlinike extends Korisnik {
       if (odsustvo != null)
          odsustvo.clear();
    }
-   public Klinika getKlinika() {
+   public KlinikaDTO getKlinika() {
       return klinika;
    }
    
-   public void setKlinika(Klinika newKlinika) {
+   public void setKlinika(KlinikaDTO newKlinika) {
       if (this.klinika == null || !this.klinika.equals(newKlinika))
       {
          if (this.klinika != null)
          {
-            Klinika oldKlinika = this.klinika;
+            KlinikaDTO oldKlinika = this.klinika;
             this.klinika = null;
             oldKlinika.removeAdminKlinike(this);
          }

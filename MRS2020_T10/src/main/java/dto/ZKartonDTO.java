@@ -1,7 +1,7 @@
-package model;
+package dto;
 import java.util.*;
 
-public class ZKarton {
+public class ZKartonDTO {
    private String krvnaGrupa;
    private Double visina;
    private Double tezina;
@@ -9,31 +9,31 @@ public class ZKarton {
    private String pol;
    private Date datumRodjenja;
    
-   public Set<Pregled> pregled;
-   public Set<Lek> lek;
-   public Set<Operacija> operacija;
+   public Set<PregledDTO> pregled;
+   public Set<LekDTO> lek;
+   public Set<OperacijaDTO> operacija;
    
    
-   public Set<Pregled> getPregled() {
+   public Set<PregledDTO> getPregled() {
       if (pregled == null)
-         pregled = new java.util.HashSet<Pregled>();
+         pregled = new java.util.HashSet<PregledDTO>();
       return pregled;
    }
    
-   public void setPregled(Set<Pregled> newPregled) {
+   public void setPregled(Set<PregledDTO> newPregled) {
       this.pregled = newPregled;
    }
    
-   public void addPregled(Pregled newPregled) {
+   public void addPregled(PregledDTO newPregled) {
       if (newPregled == null)
          return;
       if (this.pregled == null)
-         this.pregled = new java.util.HashSet<Pregled>();
+         this.pregled = new java.util.HashSet<PregledDTO>();
       if (!this.pregled.contains(newPregled))
          this.pregled.add(newPregled);
    }
    
-   public void removePregled(Pregled oldPregled) {
+   public void removePregled(PregledDTO oldPregled) {
       if (oldPregled == null)
          return;
       if (this.pregled != null)
@@ -45,25 +45,25 @@ public class ZKarton {
       if (pregled != null)
          pregled.clear();
    }
-   public Set<Lek> getLek() {
+   public Set<LekDTO> getLek() {
       if (lek == null)
-         lek = new java.util.HashSet<Lek>();
+         lek = new java.util.HashSet<LekDTO>();
       return lek;
    }
-   public void setLek(Set<Lek> newLek) {
+   public void setLek(Set<LekDTO> newLek) {
       this.lek = newLek;
    }
    
-   public void addLek(Lek newLek) {
+   public void addLek(LekDTO newLek) {
       if (newLek == null)
          return;
       if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
+         this.lek = new java.util.HashSet<LekDTO>();
       if (!this.lek.contains(newLek))
          this.lek.add(newLek);
    }
    
-   public void removeLek(Lek oldLek) {
+   public void removeLek(LekDTO oldLek) {
       if (oldLek == null)
          return;
       if (this.lek != null)
@@ -75,27 +75,27 @@ public class ZKarton {
       if (lek != null)
          lek.clear();
    }
-   public Set<Operacija> getOperacija() {
+   public Set<OperacijaDTO> getOperacija() {
       if (operacija == null)
-         operacija = new java.util.HashSet<Operacija>();
+         operacija = new java.util.HashSet<OperacijaDTO>();
       return operacija;
    }
 
    
-   public void setOperacija(Set<Operacija> newOperacija) {
+   public void setOperacija(Set<OperacijaDTO> newOperacija) {
       this.operacija = newOperacija;
    }
    
-   public void addOperacija(Operacija newOperacija) {
+   public void addOperacija(OperacijaDTO newOperacija) {
       if (newOperacija == null)
          return;
       if (this.operacija == null)
-         this.operacija = new java.util.HashSet<Operacija>();
+         this.operacija = new java.util.HashSet<OperacijaDTO>();
       if (!this.operacija.contains(newOperacija))
          this.operacija.add(newOperacija);
    }
    
-   public void removeOperacija(Operacija oldOperacija) {
+   public void removeOperacija(OperacijaDTO oldOperacija) {
       if (oldOperacija == null)
          return;
       if (this.operacija != null)

@@ -1,6 +1,6 @@
-package model;
+package dto;
 
-public class TipPregleda {
+public class TipPregledaDTO {
    private int brojAktvnih;
 
 	public int getBrojAktvnih() {

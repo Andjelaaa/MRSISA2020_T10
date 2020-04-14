@@ -1,6 +1,6 @@
-package model;
+package dto;
 
-public class ZahtevReg {
+public class ZahtevRegDTO {
 	public String getTekst() {
 		return tekst;
 	}

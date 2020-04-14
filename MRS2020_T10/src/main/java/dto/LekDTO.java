@@ -1,6 +1,6 @@
-package model;
+package dto;
 
-public class Lek {
+public class LekDTO {
 	private String sifra;
 	private String naziv;
 

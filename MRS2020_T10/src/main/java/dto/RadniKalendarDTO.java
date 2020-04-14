@@ -1,30 +1,30 @@
-package model;
+package dto;
 import java.util.*;
 
-public class RadniKalendar {
-   public Set<Odsustvo> odsustvo;
+public class RadniKalendarDTO {
+   public Set<OdsustvoDTO> odsustvo;
    
    
-   public Set<Odsustvo> getOdsustvo() {
+   public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
-         odsustvo = new java.util.HashSet<Odsustvo>();
+         odsustvo = new java.util.HashSet<OdsustvoDTO>();
       return odsustvo;
    }
 
-   public void setOdsustvo(Set<Odsustvo> newOdsustvo) {
+   public void setOdsustvo(Set<OdsustvoDTO> newOdsustvo) {
       this.odsustvo = newOdsustvo;
    }
    
-   public void addOdsustvo(Odsustvo newOdsustvo) {
+   public void addOdsustvo(OdsustvoDTO newOdsustvo) {
       if (newOdsustvo == null)
          return;
       if (this.odsustvo == null)
-         this.odsustvo = new java.util.HashSet<Odsustvo>();
+         this.odsustvo = new java.util.HashSet<OdsustvoDTO>();
       if (!this.odsustvo.contains(newOdsustvo))
          this.odsustvo.add(newOdsustvo);
    }
    
-   public void removeOdsustvo(Odsustvo oldOdsustvo) {
+   public void removeOdsustvo(OdsustvoDTO oldOdsustvo) {
       if (oldOdsustvo == null)
          return;
       if (this.odsustvo != null)

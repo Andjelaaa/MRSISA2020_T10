@@ -1,35 +1,35 @@
-package model;
+package dto;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AdminKC extends Korisnik {
-   public Set<ZahtevReg> zahtevReg;
-   public Set<KlinickiCentar> klinickiCentar;
+public class AdminKCDTO extends KorisnikDTO {
+   public Set<ZahtevRegDTO> zahtevReg;
+   public Set<KlinickiCentarDTO> klinickiCentar;
    
    
-   public Set<ZahtevReg> getZahtevReg() {
+   public Set<ZahtevRegDTO> getZahtevReg() {
       if (zahtevReg == null)
-         zahtevReg = new HashSet<ZahtevReg>();
+         zahtevReg = new HashSet<ZahtevRegDTO>();
       return zahtevReg;
    }
 
    
-   public void setZahtevReg(Set<ZahtevReg> newZahtevReg) {
+   public void setZahtevReg(Set<ZahtevRegDTO> newZahtevReg) {
       this.zahtevReg = newZahtevReg;
    }
    
 
-   public void addZahtevReg(ZahtevReg newZahtevReg) {
+   public void addZahtevReg(ZahtevRegDTO newZahtevReg) {
       if (newZahtevReg == null)
          return;
       if (this.zahtevReg == null)
-         this.zahtevReg = new HashSet<ZahtevReg>();
+         this.zahtevReg = new HashSet<ZahtevRegDTO>();
       if (!this.zahtevReg.contains(newZahtevReg))
          this.zahtevReg.add(newZahtevReg);
    }
    
   
-   public void removeZahtevReg(ZahtevReg oldZahtevReg) {
+   public void removeZahtevReg(ZahtevRegDTO oldZahtevReg) {
       if (oldZahtevReg == null)
          return;
       if (this.zahtevReg != null)
@@ -41,26 +41,26 @@ public class AdminKC extends Korisnik {
       if (zahtevReg != null)
          zahtevReg.clear();
    }
-   public Set<KlinickiCentar> getKlinickiCentar() {
+   public Set<KlinickiCentarDTO> getKlinickiCentar() {
       if (klinickiCentar == null)
-         klinickiCentar = new HashSet<KlinickiCentar>();
+         klinickiCentar = new HashSet<KlinickiCentarDTO>();
       return klinickiCentar;
    }
 
-   public void setKlinickiCentar(Set<KlinickiCentar> newKlinickiCentar) {
+   public void setKlinickiCentar(Set<KlinickiCentarDTO> newKlinickiCentar) {
       this.klinickiCentar = newKlinickiCentar;
    }
    
-   public void addKlinickiCentar(KlinickiCentar newKlinickiCentar) {
+   public void addKlinickiCentar(KlinickiCentarDTO newKlinickiCentar) {
       if (newKlinickiCentar == null)
          return;
       if (this.klinickiCentar == null)
-         this.klinickiCentar = new HashSet<KlinickiCentar>();
+         this.klinickiCentar = new HashSet<KlinickiCentarDTO>();
       if (!this.klinickiCentar.contains(newKlinickiCentar))
          this.klinickiCentar.add(newKlinickiCentar);
    }
    
-   public void removeKlinickiCentar(KlinickiCentar oldKlinickiCentar) {
+   public void removeKlinickiCentar(KlinickiCentarDTO oldKlinickiCentar) {
       if (oldKlinickiCentar == null)
          return;
       if (this.klinickiCentar != null)

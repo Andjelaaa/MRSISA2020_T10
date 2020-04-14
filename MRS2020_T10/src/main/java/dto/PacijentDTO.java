@@ -1,11 +1,11 @@
-package model;
+package dto;
 
 import java.util.*;
 
-public class Pacijent extends Korisnik {
+public class PacijentDTO extends KorisnikDTO {
 	private String lbo;
-	public ZKarton zKarton;
-	public Set<Pregled> pregled;
+	public ZKartonDTO zKarton;
+	public Set<PregledDTO> pregled;
 
 	public String getLbo() {
 		return lbo;
@@ -15,26 +15,26 @@ public class Pacijent extends Korisnik {
 		this.lbo = lbo;
 	}
 
-	public Set<Pregled> getPregled() {
+	public Set<PregledDTO> getPregled() {
 		if (pregled == null)
-			pregled = new java.util.HashSet<Pregled>();
+			pregled = new java.util.HashSet<PregledDTO>();
 		return pregled;
 	}
 
-	public void setPregled(Set<Pregled> newPregled) {
+	public void setPregled(Set<PregledDTO> newPregled) {
 		this.pregled = newPregled;
 	}
 
-	public void addPregled(Pregled newPregled) {
+	public void addPregled(PregledDTO newPregled) {
 		if (newPregled == null)
 			return;
 		if (this.pregled == null)
-			this.pregled = new java.util.HashSet<Pregled>();
+			this.pregled = new java.util.HashSet<PregledDTO>();
 		if (!this.pregled.contains(newPregled))
 			this.pregled.add(newPregled);
 	}
 
-	public void removePregled(Pregled oldPregled) {
+	public void removePregled(PregledDTO oldPregled) {
 		if (oldPregled == null)
 			return;
 		if (this.pregled != null)

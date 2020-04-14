@@ -3,25 +3,17 @@ import java.util.*;
 
 public class Recept {
    public MedSestra medSestra;
-   public java.util.Collection<Lek> lek;
+   public Set<Lek> lek;
    
    
-   public java.util.Collection<Lek> getLek() {
+   public Set<Lek> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<Lek>();
       return lek;
    }
    
-   public java.util.Iterator getIteratorLek() {
-      if (lek == null)
-         lek = new java.util.HashSet<Lek>();
-      return lek.iterator();
-   }
-   
-   public void setLek(java.util.Collection<Lek> newLek) {
-      removeAllLek();
-      for (java.util.Iterator iter = newLek.iterator(); iter.hasNext();)
-         addLek((Lek)iter.next());
+   public void setLek(Set<Lek> newLek) {
+      this.lek = newLek;
    }
    
    public void addLek(Lek newLek) {

@@ -1,16 +1,16 @@
-package model;
+package dto;
 
 import java.util.*;
 
-public class Odsustvo {
-	private Status status;
+public class OdsustvoDTO {
+	private StatusDTO status;
 	private String opis;
 
-	public Status getStatus() {
+	public StatusDTO getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(StatusDTO status) {
 		this.status = status;
 	}
 

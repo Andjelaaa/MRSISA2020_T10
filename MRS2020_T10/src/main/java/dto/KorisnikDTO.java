@@ -1,6 +1,6 @@
-package model;
+package dto;
 
-public class Korisnik {
+public class KorisnikDTO {
 	private String email;
 	private String lozinka;
 	private String ime;

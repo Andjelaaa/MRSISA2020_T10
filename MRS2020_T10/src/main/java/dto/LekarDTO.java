@@ -1,41 +1,41 @@
-package model;
+package dto;
 import java.util.*;
 
 /** Lekar ima recnik pregleda, kljuc je datum, vrednost pregled
  * 
  *  */
-public class Lekar extends Korisnik {
+public class LekarDTO extends KorisnikDTO {
    private Double prosecnaOcena;
    private int brojOcena;
    private Date rvPocetak;
    private Date rvKraj;
    
-   public TipPregleda tipPregleda;
-   public Set<Operacija> operacija;
-   public Set<Odsustvo> odsustvo;
-   public Set<Pregled> pregled;
+   public TipPregledaDTO tipPregleda;
+   public Set<OperacijaDTO> operacija;
+   public Set<OdsustvoDTO> odsustvo;
+   public Set<PregledDTO> pregled;
    
    
-   public Set<Operacija> getOperacija() {
+   public Set<OperacijaDTO> getOperacija() {
       if (operacija == null)
-         operacija = new java.util.HashSet<Operacija>();
+         operacija = new java.util.HashSet<OperacijaDTO>();
       return operacija;
    }
    
-   public void setOperacija(Set<Operacija> newOperacija) {
+   public void setOperacija(Set<OperacijaDTO> newOperacija) {
       this.operacija = newOperacija;
    }
    
-   public void addOperacija(Operacija newOperacija) {
+   public void addOperacija(OperacijaDTO newOperacija) {
       if (newOperacija == null)
          return;
       if (this.operacija == null)
-         this.operacija = new java.util.HashSet<Operacija>();
+         this.operacija = new java.util.HashSet<OperacijaDTO>();
       if (!this.operacija.contains(newOperacija))
          this.operacija.add(newOperacija);
    }
    
-   public void removeOperacija(Operacija oldOperacija) {
+   public void removeOperacija(OperacijaDTO oldOperacija) {
       if (oldOperacija == null)
          return;
       if (this.operacija != null)
@@ -47,26 +47,26 @@ public class Lekar extends Korisnik {
       if (operacija != null)
          operacija.clear();
    }
-   public Set<Odsustvo> getOdsustvo() {
+   public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
-         odsustvo = new java.util.HashSet<Odsustvo>();
+         odsustvo = new java.util.HashSet<OdsustvoDTO>();
       return odsustvo;
    }
    
-   public void setOdsustvo(Set<Odsustvo> newOdsustvo) {
+   public void setOdsustvo(Set<OdsustvoDTO> newOdsustvo) {
       this.odsustvo = newOdsustvo;
    }
    
-   public void addOdsustvo(Odsustvo newOdsustvo) {
+   public void addOdsustvo(OdsustvoDTO newOdsustvo) {
       if (newOdsustvo == null)
          return;
       if (this.odsustvo == null)
-         this.odsustvo = new java.util.HashSet<Odsustvo>();
+         this.odsustvo = new java.util.HashSet<OdsustvoDTO>();
       if (!this.odsustvo.contains(newOdsustvo))
          this.odsustvo.add(newOdsustvo);
    }
    
-   public void removeOdsustvo(Odsustvo oldOdsustvo) {
+   public void removeOdsustvo(OdsustvoDTO oldOdsustvo) {
       if (oldOdsustvo == null)
          return;
       if (this.odsustvo != null)
@@ -111,19 +111,19 @@ public void setRvKraj(Date rvKraj) {
 	this.rvKraj = rvKraj;
 }
 
-public TipPregleda getTipPregleda() {
+public TipPregledaDTO getTipPregleda() {
 	return tipPregleda;
 }
 
-public void setTipPregleda(TipPregleda tipPregleda) {
+public void setTipPregleda(TipPregledaDTO tipPregleda) {
 	this.tipPregleda = tipPregleda;
 }
 
-public Set<Pregled> getPregled() {
+public Set<PregledDTO> getPregled() {
 	return pregled;
 }
 
-public void setPregled(Set<Pregled> pregled) {
+public void setPregled(Set<PregledDTO> pregled) {
 	this.pregled = pregled;
 }
 

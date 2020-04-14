@@ -1,36 +1,36 @@
-package model;
+package dto;
 import java.util.*;
 
-public class Operacija {
+public class OperacijaDTO {
    private Date datumVreme;
    private int trajanje;
-   private Status status;
+   private StatusDTO status;
    
-   public Set<StavkaCenovnika> stavkaCenovnika;
-   public Set<Sala> sala;
-   public Set<Lekar> lekar;
+   public Set<StavkaCenovnikaDTO> stavkaCenovnika;
+   public Set<SalaDTO> sala;
+   public Set<LekarDTO> lekar;
    
    
-   public Set<StavkaCenovnika> getStavkaCenovnika() {
+   public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
       if (stavkaCenovnika == null)
-         stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
+         stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
       return stavkaCenovnika;
    }
    
-   public void setStavkaCenovnika(Set<StavkaCenovnika> newStavkaCenovnika) {
+   public void setStavkaCenovnika(Set<StavkaCenovnikaDTO> newStavkaCenovnika) {
       this.stavkaCenovnika = newStavkaCenovnika;
    }
    
-   public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
+   public void addStavkaCenovnika(StavkaCenovnikaDTO newStavkaCenovnika) {
       if (newStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
+         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
       if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
          this.stavkaCenovnika.add(newStavkaCenovnika);
    }
    
-   public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
+   public void removeStavkaCenovnika(StavkaCenovnikaDTO oldStavkaCenovnika) {
       if (oldStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika != null)
@@ -42,26 +42,26 @@ public class Operacija {
       if (stavkaCenovnika != null)
          stavkaCenovnika.clear();
    }
-   public Set<Sala> getSala() {
+   public Set<SalaDTO> getSala() {
       if (sala == null)
-         sala = new java.util.HashSet<Sala>();
+         sala = new java.util.HashSet<SalaDTO>();
       return sala;
    }
    
-   public void setSala(Set<Sala> newSala) {
+   public void setSala(Set<SalaDTO> newSala) {
       this.sala = newSala;
    }
    
-   public void addSala(Sala newSala) {
+   public void addSala(SalaDTO newSala) {
       if (newSala == null)
          return;
       if (this.sala == null)
-         this.sala = new java.util.HashSet<Sala>();
+         this.sala = new java.util.HashSet<SalaDTO>();
       if (!this.sala.contains(newSala))
          this.sala.add(newSala);
    }
    
-   public void removeSala(Sala oldSala) {
+   public void removeSala(SalaDTO oldSala) {
       if (oldSala == null)
          return;
       if (this.sala != null)
@@ -90,19 +90,19 @@ public void setTrajanje(int trajanje) {
 	this.trajanje = trajanje;
 }
 
-public Status getStatus() {
+public StatusDTO getStatus() {
 	return status;
 }
 
-public void setStatus(Status status) {
+public void setStatus(StatusDTO status) {
 	this.status = status;
 }
 
-public Set<Lekar> getLekar() {
+public Set<LekarDTO> getLekar() {
 	return lekar;
 }
 
-public void setLekar(Set<Lekar> lekar) {
+public void setLekar(Set<LekarDTO> lekar) {
 	this.lekar = lekar;
 }
 

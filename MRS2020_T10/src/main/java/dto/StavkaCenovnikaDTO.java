@@ -1,19 +1,19 @@
-package model;
+package dto;
 
 import java.util.*;
 
-public class StavkaCenovnika {
+public class StavkaCenovnikaDTO {
 	private double cena;
 
-	public Set<TipPregleda> tipPregleda;
+	public Set<TipPregledaDTO> tipPregleda;
 
-	public Set<TipPregleda> getTipPregleda() {
+	public Set<TipPregledaDTO> getTipPregleda() {
 		if (tipPregleda == null)
-			tipPregleda = new java.util.HashSet<TipPregleda>();
+			tipPregleda = new java.util.HashSet<TipPregledaDTO>();
 		return tipPregleda;
 	}
 
-	public void setTipPregleda(Set<TipPregleda> newTipPregleda) {
+	public void setTipPregleda(Set<TipPregledaDTO> newTipPregleda) {
 		this.tipPregleda = newTipPregleda;
 	}
 
@@ -25,16 +25,16 @@ public class StavkaCenovnika {
 		this.cena = cena;
 	}
 
-	public void addTipPregleda(TipPregleda newTipPregleda) {
+	public void addTipPregleda(TipPregledaDTO newTipPregleda) {
 		if (newTipPregleda == null)
 			return;
 		if (this.tipPregleda == null)
-			this.tipPregleda = new java.util.HashSet<TipPregleda>();
+			this.tipPregleda = new java.util.HashSet<TipPregledaDTO>();
 		if (!this.tipPregleda.contains(newTipPregleda))
 			this.tipPregleda.add(newTipPregleda);
 	}
 
-	public void removeTipPregleda(TipPregleda oldTipPregleda) {
+	public void removeTipPregleda(TipPregledaDTO oldTipPregleda) {
 		if (oldTipPregleda == null)
 			return;
 		if (this.tipPregleda != null)

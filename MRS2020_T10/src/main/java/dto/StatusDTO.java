@@ -1,6 +1,6 @@
-package model;
+package dto;
 
-public enum Status {
+public enum StatusDTO {
    zahtev,
    odobreno,
    odbijeno;

@@ -1,33 +1,33 @@
-package model;
+package dto;
 import java.util.*;
 
-public class Izvestaj {
+public class IzvestajDTO {
 	private String opis;   
-	public Set<Dijagnoza> dijagnoza;
-	public Set<Lek> lek;
+	public Set<DijagnozaDTO> dijagnoza;
+	public Set<LekDTO> lek;
    
    
-   public Set<Dijagnoza> getDijagnoza() {
+   public Set<DijagnozaDTO> getDijagnoza() {
       if (dijagnoza == null)
-         dijagnoza = new HashSet<Dijagnoza>();
+         dijagnoza = new HashSet<DijagnozaDTO>();
       return dijagnoza;
    }
 
    
-   public void setDijagnoza(Set<Dijagnoza> newDijagnoza) {
+   public void setDijagnoza(Set<DijagnozaDTO> newDijagnoza) {
       this.dijagnoza = newDijagnoza;
    }
    
-   public void addDijagnoza(Dijagnoza newDijagnoza) {
+   public void addDijagnoza(DijagnozaDTO newDijagnoza) {
       if (newDijagnoza == null)
          return;
       if (this.dijagnoza == null)
-         this.dijagnoza = new HashSet<Dijagnoza>();
+         this.dijagnoza = new HashSet<DijagnozaDTO>();
       if (!this.dijagnoza.contains(newDijagnoza))
          this.dijagnoza.add(newDijagnoza);
    }
    
-   public void removeDijagnoza(Dijagnoza oldDijagnoza) {
+   public void removeDijagnoza(DijagnozaDTO oldDijagnoza) {
       if (oldDijagnoza == null)
          return;
       if (this.dijagnoza != null)
@@ -39,26 +39,26 @@ public class Izvestaj {
       if (dijagnoza != null)
          dijagnoza.clear();
    }
-   public Set<Lek> getLek() {
+   public Set<LekDTO> getLek() {
       if (lek == null)
-         lek = new HashSet<Lek>();
+         lek = new HashSet<LekDTO>();
       return lek;
    }
    
-   public void setLek(Set<Lek> newLek) {
+   public void setLek(Set<LekDTO> newLek) {
       this.lek = newLek;
    }
    
-   public void addLek(Lek newLek) {
+   public void addLek(LekDTO newLek) {
       if (newLek == null)
          return;
       if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
+         this.lek = new java.util.HashSet<LekDTO>();
       if (!this.lek.contains(newLek))
          this.lek.add(newLek);
    }
    
-   public void removeLek(Lek oldLek) {
+   public void removeLek(LekDTO oldLek) {
       if (oldLek == null)
          return;
       if (this.lek != null)

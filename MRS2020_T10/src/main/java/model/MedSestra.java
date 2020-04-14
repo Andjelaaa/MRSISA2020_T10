@@ -1,26 +1,20 @@
 package model;
-import java.util.*;
+
+import java.util.Set;
 
 public class MedSestra extends Korisnik {
-   public java.util.Collection<Odsustvo> odsustvo;
+   public Set<Odsustvo> odsustvo;
    
    
-   public java.util.Collection<Odsustvo> getOdsustvo() {
+   public Set<Odsustvo> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new java.util.HashSet<Odsustvo>();
       return odsustvo;
    }
+
    
-   public java.util.Iterator getIteratorOdsustvo() {
-      if (odsustvo == null)
-         odsustvo = new java.util.HashSet<Odsustvo>();
-      return odsustvo.iterator();
-   }
-   
-   public void setOdsustvo(java.util.Collection<Odsustvo> newOdsustvo) {
-      removeAllOdsustvo();
-      for (java.util.Iterator iter = newOdsustvo.iterator(); iter.hasNext();)
-         addOdsustvo((Odsustvo)iter.next());
+   public void setOdsustvo(Set<Odsustvo> newOdsustvo) {
+      this.odsustvo = newOdsustvo;
    }
    
    public void addOdsustvo(Odsustvo newOdsustvo) {

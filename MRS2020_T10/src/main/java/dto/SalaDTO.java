@@ -1,12 +1,12 @@
-package model;
+package dto;
 
 import java.util.*;
 
-public class Sala {
+public class SalaDTO {
 	private int broj;
 	private String naziv;
 
-	public Set<Pregled> pregled;
+	public Set<PregledDTO> pregled;
 
 	public int getBroj() {
 		return broj;
@@ -24,11 +24,11 @@ public class Sala {
 		this.naziv = naziv;
 	}
 
-	public Set<Pregled> getPregled() {
+	public Set<PregledDTO> getPregled() {
 		return pregled;
 	}
 
-	public void setPregled(Set<Pregled> pregled) {
+	public void setPregled(Set<PregledDTO> pregled) {
 		this.pregled = pregled;
 	}
 

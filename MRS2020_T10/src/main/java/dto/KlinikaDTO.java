@@ -1,42 +1,42 @@
-package model;
+package dto;
 import java.util.*;
 
-public class Klinika {
+public class KlinikaDTO {
    private String naziv;
    private String adresa;
    private String opis;
    private Double prosecnaOcena;
    private int brojOcena;
    
-   public Set<Pacijent> pacijent;
-   public Set<Pregled> pregled;
-   public Set<Cenovnik> cenovnik;
-   public Set<AdminKlinike> adminKlinike;
-   public Set<Operacija> operacija;
-   public Set<Lekar> lekar;
-   public Set<MedSestra> medSestra;
+   public Set<PacijentDTO> pacijent;
+   public Set<PregledDTO> pregled;
+   public Set<CenovnikDTO> cenovnik;
+   public Set<AdminKlinikeDTO> adminKlinike;
+   public Set<OperacijaDTO> operacija;
+   public Set<LekarDTO> lekar;
+   public Set<MedSestraDTO> medSestra;
    
    
-   public Set<Pacijent> getpacijent() {
+   public Set<PacijentDTO> getpacijent() {
       if (pacijent == null)
-         pacijent = new java.util.HashSet<Pacijent>();
+         pacijent = new java.util.HashSet<PacijentDTO>();
       return pacijent;
    }
    
-   public void setPacijent(Set<Pacijent> newpacijent) {
+   public void setPacijent(Set<PacijentDTO> newpacijent) {
       this.pacijent = newpacijent;
    }
    
-   public void addpacijent(Pacijent newpacijent) {
+   public void addpacijent(PacijentDTO newpacijent) {
       if (newpacijent == null)
          return;
       if (this.pacijent == null)
-         this.pacijent = new java.util.HashSet<Pacijent>();
+         this.pacijent = new java.util.HashSet<PacijentDTO>();
       if (!this.pacijent.contains(newpacijent))
          this.pacijent.add(newpacijent);
    }
    
-   public void removepacijent(Pacijent oldpacijent) {
+   public void removepacijent(PacijentDTO oldpacijent) {
       if (oldpacijent == null)
          return;
       if (this.pacijent != null)
@@ -48,26 +48,26 @@ public class Klinika {
       if (pacijent != null)
          pacijent.clear();
    }
-   public Set<Pregled> getPregled() {
+   public Set<PregledDTO> getPregled() {
       if (pregled == null)
-         pregled = new java.util.HashSet<Pregled>();
+         pregled = new java.util.HashSet<PregledDTO>();
       return pregled;
    }
    
-   public void setPregled(Set<Pregled> newPregled) {
+   public void setPregled(Set<PregledDTO> newPregled) {
       this.pregled = newPregled;
    }
    
-   public void addPregled(Pregled newPregled) {
+   public void addPregled(PregledDTO newPregled) {
       if (newPregled == null)
          return;
       if (this.pregled == null)
-         this.pregled = new java.util.HashSet<Pregled>();
+         this.pregled = new java.util.HashSet<PregledDTO>();
       if (!this.pregled.contains(newPregled))
          this.pregled.add(newPregled);
    }
    
-   public void removePregled(Pregled oldPregled) {
+   public void removePregled(PregledDTO oldPregled) {
       if (oldPregled == null)
          return;
       if (this.pregled != null)
@@ -79,26 +79,26 @@ public class Klinika {
       if (pregled != null)
          pregled.clear();
    }
-   public Set<Cenovnik> getCenovnik() {
+   public Set<CenovnikDTO> getCenovnik() {
       if (cenovnik == null)
-         cenovnik = new java.util.HashSet<Cenovnik>();
+         cenovnik = new java.util.HashSet<CenovnikDTO>();
       return cenovnik;
    }
    
-   public void setCenovnik(Set<Cenovnik> newCenovnik) {
+   public void setCenovnik(Set<CenovnikDTO> newCenovnik) {
       this.cenovnik = newCenovnik;
    }
    
-   public void addCenovnik(Cenovnik newCenovnik) {
+   public void addCenovnik(CenovnikDTO newCenovnik) {
       if (newCenovnik == null)
          return;
       if (this.cenovnik == null)
-         this.cenovnik = new java.util.HashSet<Cenovnik>();
+         this.cenovnik = new java.util.HashSet<CenovnikDTO>();
       if (!this.cenovnik.contains(newCenovnik))
          this.cenovnik.add(newCenovnik);
    }
    
-   public void removeCenovnik(Cenovnik oldCenovnik) {
+   public void removeCenovnik(CenovnikDTO oldCenovnik) {
       if (oldCenovnik == null)
          return;
       if (this.cenovnik != null)
@@ -110,21 +110,21 @@ public class Klinika {
       if (cenovnik != null)
          cenovnik.clear();
    }
-   public Set<AdminKlinike> getAdminKlinike() {
+   public Set<AdminKlinikeDTO> getAdminKlinike() {
       if (adminKlinike == null)
-         adminKlinike = new java.util.HashSet<AdminKlinike>();
+         adminKlinike = new java.util.HashSet<AdminKlinikeDTO>();
       return adminKlinike;
    }
    
-   public void setAdminKlinike(Set<AdminKlinike> newAdminKlinike) {
+   public void setAdminKlinike(Set<AdminKlinikeDTO> newAdminKlinike) {
       this.adminKlinike = newAdminKlinike;
    }
    
-   public void addAdminKlinike(AdminKlinike newAdminKlinike) {
+   public void addAdminKlinike(AdminKlinikeDTO newAdminKlinike) {
       if (newAdminKlinike == null)
          return;
       if (this.adminKlinike == null)
-         this.adminKlinike = new java.util.HashSet<AdminKlinike>();
+         this.adminKlinike = new java.util.HashSet<AdminKlinikeDTO>();
       if (!this.adminKlinike.contains(newAdminKlinike))
       {
          this.adminKlinike.add(newAdminKlinike);
@@ -132,37 +132,37 @@ public class Klinika {
       }
    }
    
-   public void removeAdminKlinike(AdminKlinike oldAdminKlinike) {
+   public void removeAdminKlinike(AdminKlinikeDTO oldAdminKlinike) {
       if (oldAdminKlinike == null)
          return;
       if (this.adminKlinike != null)
          if (this.adminKlinike.contains(oldAdminKlinike))
          {
             this.adminKlinike.remove(oldAdminKlinike);
-            oldAdminKlinike.setKlinika((Klinika)null);
+            oldAdminKlinike.setKlinika((KlinikaDTO)null);
          }
    }
 
-   public Set<Operacija> getOperacija() {
+   public Set<OperacijaDTO> getOperacija() {
       if (operacija == null)
-         operacija = new java.util.HashSet<Operacija>();
+         operacija = new java.util.HashSet<OperacijaDTO>();
       return operacija;
    }
   
-   public void setOperacija(Set<Operacija> newOperacija) {
+   public void setOperacija(Set<OperacijaDTO> newOperacija) {
       this.operacija = newOperacija;
    }
    
-   public void addOperacija(Operacija newOperacija) {
+   public void addOperacija(OperacijaDTO newOperacija) {
       if (newOperacija == null)
          return;
       if (this.operacija == null)
-         this.operacija = new java.util.HashSet<Operacija>();
+         this.operacija = new java.util.HashSet<OperacijaDTO>();
       if (!this.operacija.contains(newOperacija))
          this.operacija.add(newOperacija);
    }
    
-   public void removeOperacija(Operacija oldOperacija) {
+   public void removeOperacija(OperacijaDTO oldOperacija) {
       if (oldOperacija == null)
          return;
       if (this.operacija != null)
@@ -174,26 +174,26 @@ public class Klinika {
       if (operacija != null)
          operacija.clear();
    }
-   public Set<Lekar> getLekar() {
+   public Set<LekarDTO> getLekar() {
       if (lekar == null)
-         lekar = new java.util.HashSet<Lekar>();
+         lekar = new java.util.HashSet<LekarDTO>();
       return lekar;
    }
    
-   public void setLekar(Set<Lekar> newLekar) {
+   public void setLekar(Set<LekarDTO> newLekar) {
       this.lekar = newLekar;
    }
    
-   public void addLekar(Lekar newLekar) {
+   public void addLekar(LekarDTO newLekar) {
       if (newLekar == null)
          return;
       if (this.lekar == null)
-         this.lekar = new java.util.HashSet<Lekar>();
+         this.lekar = new java.util.HashSet<LekarDTO>();
       if (!this.lekar.contains(newLekar))
          this.lekar.add(newLekar);
    }
    
-   public void removeLekar(Lekar oldLekar) {
+   public void removeLekar(LekarDTO oldLekar) {
       if (oldLekar == null)
          return;
       if (this.lekar != null)
@@ -205,26 +205,26 @@ public class Klinika {
       if (lekar != null)
          lekar.clear();
    }
-   public Set<MedSestra> getMedSestra() {
+   public Set<MedSestraDTO> getMedSestra() {
       if (medSestra == null)
-         medSestra = new java.util.HashSet<MedSestra>();
+         medSestra = new java.util.HashSet<MedSestraDTO>();
       return medSestra;
    }
 
-   public void setMedSestra(Set<MedSestra> newMedSestra) {
+   public void setMedSestra(Set<MedSestraDTO> newMedSestra) {
       this.medSestra = newMedSestra;
    }
    
-   public void addMedSestra(MedSestra newMedSestra) {
+   public void addMedSestra(MedSestraDTO newMedSestra) {
       if (newMedSestra == null)
          return;
       if (this.medSestra == null)
-         this.medSestra = new java.util.HashSet<MedSestra>();
+         this.medSestra = new java.util.HashSet<MedSestraDTO>();
       if (!this.medSestra.contains(newMedSestra))
          this.medSestra.add(newMedSestra);
    }
    
-   public void removeMedSestra(MedSestra oldMedSestra) {
+   public void removeMedSestra(MedSestraDTO oldMedSestra) {
       if (oldMedSestra == null)
          return;
       if (this.medSestra != null)
@@ -277,7 +277,7 @@ public void setBrojOcena(int brojOcena) {
 	this.brojOcena = brojOcena;
 }
 
-public Set<Pacijent> getPacijent() {
+public Set<PacijentDTO> getPacijent() {
 	return pacijent;
 }
 

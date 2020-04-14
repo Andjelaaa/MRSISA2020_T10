@@ -1,30 +1,30 @@
-package model;
+package dto;
 import java.util.*;
 
-public class Cenovnik {
-   public Set<StavkaCenovnika> stavkaCenovnika;
+public class CenovnikDTO {
+   public Set<StavkaCenovnikaDTO> stavkaCenovnika;
    
    
-   public Set<StavkaCenovnika> getStavkaCenovnika() {
+   public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
       if (stavkaCenovnika == null)
-         stavkaCenovnika = new HashSet<StavkaCenovnika>();
+         stavkaCenovnika = new HashSet<StavkaCenovnikaDTO>();
       return stavkaCenovnika;
    }
    
-   public void setStavkaCenovnika(Set<StavkaCenovnika> newStavkaCenovnika) {
+   public void setStavkaCenovnika(Set<StavkaCenovnikaDTO> newStavkaCenovnika) {
       this.stavkaCenovnika = newStavkaCenovnika;
    }
    
-   public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
+   public void addStavkaCenovnika(StavkaCenovnikaDTO newStavkaCenovnika) {
       if (newStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new HashSet<StavkaCenovnika>();
+         this.stavkaCenovnika = new HashSet<StavkaCenovnikaDTO>();
       if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
          this.stavkaCenovnika.add(newStavkaCenovnika);
    }
    
-   public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
+   public void removeStavkaCenovnika(StavkaCenovnikaDTO oldStavkaCenovnika) {
       if (oldStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika != null)

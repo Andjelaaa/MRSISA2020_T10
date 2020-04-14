@@ -1,41 +1,41 @@
-package model;
+package dto;
 import java.util.*;
 
-public class Pregled {
+public class PregledDTO {
    private Date datumVreme;
    private int trajanje;
    private Double popust;
-   private Status status;
+   private StatusDTO status;
    
-   public Set<StavkaCenovnika> stavkaCenovnika;
-   public Lekar lekar;
-   public Sala sala;
-   public TipPregleda tipPregleda;
-   public Izvestaj izvestaj;
-   public Set<Lek> lek;
-   public Set<Dijagnoza> dijagnoza;
+   public Set<StavkaCenovnikaDTO> stavkaCenovnika;
+   public LekarDTO lekar;
+   public SalaDTO sala;
+   public TipPregledaDTO tipPregleda;
+   public IzvestajDTO izvestaj;
+   public Set<LekDTO> lek;
+   public Set<DijagnozaDTO> dijagnoza;
    
    
-   public Set<StavkaCenovnika> getStavkaCenovnika() {
+   public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
       if (stavkaCenovnika == null)
-         stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
+         stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
       return stavkaCenovnika;
    }
    
-   public void setStavkaCenovnika(Set<StavkaCenovnika> newStavkaCenovnika) {
+   public void setStavkaCenovnika(Set<StavkaCenovnikaDTO> newStavkaCenovnika) {
       this.stavkaCenovnika = newStavkaCenovnika;
    }
    
-   public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
+   public void addStavkaCenovnika(StavkaCenovnikaDTO newStavkaCenovnika) {
       if (newStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
+         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
       if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
          this.stavkaCenovnika.add(newStavkaCenovnika);
    }
    
-   public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
+   public void removeStavkaCenovnika(StavkaCenovnikaDTO oldStavkaCenovnika) {
       if (oldStavkaCenovnika == null)
          return;
       if (this.stavkaCenovnika != null)
@@ -47,26 +47,26 @@ public class Pregled {
       if (stavkaCenovnika != null)
          stavkaCenovnika.clear();
    }
-   public Set<Lek> getLek() {
+   public Set<LekDTO> getLek() {
       if (lek == null)
-         lek = new java.util.HashSet<Lek>();
+         lek = new java.util.HashSet<LekDTO>();
       return lek;
    }
    
-   public void setLek(Set<Lek> newLek) {
+   public void setLek(Set<LekDTO> newLek) {
       this.lek = newLek;
    }
    
-   public void addLek(Lek newLek) {
+   public void addLek(LekDTO newLek) {
       if (newLek == null)
          return;
       if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
+         this.lek = new java.util.HashSet<LekDTO>();
       if (!this.lek.contains(newLek))
          this.lek.add(newLek);
    }
    
-   public void removeLek(Lek oldLek) {
+   public void removeLek(LekDTO oldLek) {
       if (oldLek == null)
          return;
       if (this.lek != null)
@@ -78,26 +78,26 @@ public class Pregled {
       if (lek != null)
          lek.clear();
    }
-   public Set<Dijagnoza> getDijagnoza() {
+   public Set<DijagnozaDTO> getDijagnoza() {
       if (dijagnoza == null)
-         dijagnoza = new java.util.HashSet<Dijagnoza>();
+         dijagnoza = new java.util.HashSet<DijagnozaDTO>();
       return dijagnoza;
    }
    
-   public void setDijagnoza(Set<Dijagnoza> newDijagnoza) {
+   public void setDijagnoza(Set<DijagnozaDTO> newDijagnoza) {
       this.dijagnoza = newDijagnoza;
    }
    
-   public void addDijagnoza(Dijagnoza newDijagnoza) {
+   public void addDijagnoza(DijagnozaDTO newDijagnoza) {
       if (newDijagnoza == null)
          return;
       if (this.dijagnoza == null)
-         this.dijagnoza = new java.util.HashSet<Dijagnoza>();
+         this.dijagnoza = new java.util.HashSet<DijagnozaDTO>();
       if (!this.dijagnoza.contains(newDijagnoza))
          this.dijagnoza.add(newDijagnoza);
    }
    
-   public void removeDijagnoza(Dijagnoza oldDijagnoza) {
+   public void removeDijagnoza(DijagnozaDTO oldDijagnoza) {
       if (oldDijagnoza == null)
          return;
       if (this.dijagnoza != null)
@@ -134,43 +134,43 @@ public void setPopust(Double popust) {
 	this.popust = popust;
 }
 
-public Status getStatus() {
+public StatusDTO getStatus() {
 	return status;
 }
 
-public void setStatus(Status status) {
+public void setStatus(StatusDTO status) {
 	this.status = status;
 }
 
-public Lekar getLekar() {
+public LekarDTO getLekar() {
 	return lekar;
 }
 
-public void setLekar(Lekar lekar) {
+public void setLekar(LekarDTO lekar) {
 	this.lekar = lekar;
 }
 
-public Sala getSala() {
+public SalaDTO getSala() {
 	return sala;
 }
 
-public void setSala(Sala sala) {
+public void setSala(SalaDTO sala) {
 	this.sala = sala;
 }
 
-public TipPregleda getTipPregleda() {
+public TipPregledaDTO getTipPregleda() {
 	return tipPregleda;
 }
 
-public void setTipPregleda(TipPregleda tipPregleda) {
+public void setTipPregleda(TipPregledaDTO tipPregleda) {
 	this.tipPregleda = tipPregleda;
 }
 
-public Izvestaj getIzvestaj() {
+public IzvestajDTO getIzvestaj() {
 	return izvestaj;
 }
 
-public void setIzvestaj(Izvestaj izvestaj) {
+public void setIzvestaj(IzvestajDTO izvestaj) {
 	this.izvestaj = izvestaj;
 }
 

@@ -1,30 +1,30 @@
-package model;
+package dto;
 import java.util.*;
 
-public class KlinickiCentar {
-   public Set<Klinika> klinika;
+public class KlinickiCentarDTO {
+   public Set<KlinikaDTO> klinika;
    
    
-   public Set<Klinika> getKlinika() {
+   public Set<KlinikaDTO> getKlinika() {
       if (klinika == null)
-         klinika = new HashSet<Klinika>();
+         klinika = new HashSet<KlinikaDTO>();
       return klinika;
    }
 
-   public void setKlinika(Set<Klinika> newKlinika) {
+   public void setKlinika(Set<KlinikaDTO> newKlinika) {
       this.klinika = newKlinika;
    }
    
-   public void addKlinika(Klinika newKlinika) {
+   public void addKlinika(KlinikaDTO newKlinika) {
       if (newKlinika == null)
          return;
       if (this.klinika == null)
-         this.klinika = new HashSet<Klinika>();
+         this.klinika = new HashSet<KlinikaDTO>();
       if (!this.klinika.contains(newKlinika))
          this.klinika.add(newKlinika);
    }
    
-   public void removeKlinika(Klinika oldKlinika) {
+   public void removeKlinika(KlinikaDTO oldKlinika) {
       if (oldKlinika == null)
          return;
       if (this.klinika != null)
