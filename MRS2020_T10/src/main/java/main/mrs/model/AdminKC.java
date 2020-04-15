@@ -2,9 +2,23 @@ package main.mrs.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class AdminKC extends Korisnik {
-   public Set<ZahtevReg> zahtevReg;
-   public Set<KlinickiCentar> klinickiCentar;
+	
+	
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="adminKC_id", nullable=false)
+	public Set<ZahtevReg> zahtevReg;
+   
+	@OneToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    public KlinickiCentar klinickiCentar;
    
    
    public Set<ZahtevReg> getZahtevReg() {
@@ -41,36 +55,15 @@ public class AdminKC extends Korisnik {
       if (zahtevReg != null)
          zahtevReg.clear();
    }
-   public Set<KlinickiCentar> getKlinickiCentar() {
-      if (klinickiCentar == null)
-         klinickiCentar = new HashSet<KlinickiCentar>();
-      return klinickiCentar;
-   }
 
-   public void setKlinickiCentar(Set<KlinickiCentar> newKlinickiCentar) {
-      this.klinickiCentar = newKlinickiCentar;
-   }
-   
-   public void addKlinickiCentar(KlinickiCentar newKlinickiCentar) {
-      if (newKlinickiCentar == null)
-         return;
-      if (this.klinickiCentar == null)
-         this.klinickiCentar = new HashSet<KlinickiCentar>();
-      if (!this.klinickiCentar.contains(newKlinickiCentar))
-         this.klinickiCentar.add(newKlinickiCentar);
-   }
-   
-   public void removeKlinickiCentar(KlinickiCentar oldKlinickiCentar) {
-      if (oldKlinickiCentar == null)
-         return;
-      if (this.klinickiCentar != null)
-         if (this.klinickiCentar.contains(oldKlinickiCentar))
-            this.klinickiCentar.remove(oldKlinickiCentar);
-   }
-   
-   public void removeAllKlinickiCentar() {
-      if (klinickiCentar != null)
-         klinickiCentar.clear();
-   }
 
+public KlinickiCentar getKlinickiCentar() {
+	return klinickiCentar;
+}
+
+
+public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+	this.klinickiCentar = klinickiCentar;
+}
+   
 }

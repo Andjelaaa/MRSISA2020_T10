@@ -1,6 +1,6 @@
 package main.mrs.dto;
 
-public class KorisnikDTO {
+public abstract class KorisnikDTO {
 	private String email;
 	private String lozinka;
 	private String ime;

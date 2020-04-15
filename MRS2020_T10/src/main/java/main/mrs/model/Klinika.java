@@ -1,20 +1,54 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Klinika {
-   private String naziv;
-   private String adresa;
-   private String opis;
-   private Double prosecnaOcena;
-   private int brojOcena;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="naziv", unique=true, nullable=false)
+	private String naziv;
+	@Column(name="adresa", unique=true, nullable=false)
+    private String adresa;
+	@Column(name="opis", unique=false, nullable=true)
+    private String opis;
+	@Column(name="prosecnaOcena", unique=false, nullable=true)
+    private Double prosecnaOcena;
+	@Column(name="brojOcena", unique=false, nullable=true)
+    private int brojOcena;
    
-   public Set<Pacijent> pacijent;
-   public Set<Pregled> pregled;
-   public Set<Cenovnik> cenovnik;
-   public Set<AdminKlinike> adminKlinike;
-   public Set<Operacija> operacija;
-   public Set<Lekar> lekar;
-   public Set<MedSestra> medSestra;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=false)
+	public Set<Pacijent> pacijent;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=false)
+	public Set<Pregled> pregled;
+	@OneToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	//@JoinColumn(name="cenovnik_id", nullable=false)
+	public Cenovnik cenovnik;
+	@OneToMany(mappedBy="klinika",fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    public Set<AdminKlinike> adminKlinike;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=false)
+    public Set<Operacija> operacija;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=false)
+    public Set<Lekar> lekar;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=false)
+    public Set<MedSestra> medSestra;
    
    
    public Set<Pacijent> getpacijent() {
@@ -79,69 +113,69 @@ public class Klinika {
       if (pregled != null)
          pregled.clear();
    }
-   public Set<Cenovnik> getCenovnik() {
-      if (cenovnik == null)
-         cenovnik = new java.util.HashSet<Cenovnik>();
-      return cenovnik;
-   }
-   
-   public void setCenovnik(Set<Cenovnik> newCenovnik) {
-      this.cenovnik = newCenovnik;
-   }
-   
-   public void addCenovnik(Cenovnik newCenovnik) {
-      if (newCenovnik == null)
-         return;
-      if (this.cenovnik == null)
-         this.cenovnik = new java.util.HashSet<Cenovnik>();
-      if (!this.cenovnik.contains(newCenovnik))
-         this.cenovnik.add(newCenovnik);
-   }
-   
-   public void removeCenovnik(Cenovnik oldCenovnik) {
-      if (oldCenovnik == null)
-         return;
-      if (this.cenovnik != null)
-         if (this.cenovnik.contains(oldCenovnik))
-            this.cenovnik.remove(oldCenovnik);
-   }
-   
-   public void removeAllCenovnik() {
-      if (cenovnik != null)
-         cenovnik.clear();
-   }
-   public Set<AdminKlinike> getAdminKlinike() {
-      if (adminKlinike == null)
-         adminKlinike = new java.util.HashSet<AdminKlinike>();
-      return adminKlinike;
-   }
-   
-   public void setAdminKlinike(Set<AdminKlinike> newAdminKlinike) {
-      this.adminKlinike = newAdminKlinike;
-   }
-   
-   public void addAdminKlinike(AdminKlinike newAdminKlinike) {
-      if (newAdminKlinike == null)
-         return;
-      if (this.adminKlinike == null)
-         this.adminKlinike = new java.util.HashSet<AdminKlinike>();
-      if (!this.adminKlinike.contains(newAdminKlinike))
-      {
-         this.adminKlinike.add(newAdminKlinike);
-         newAdminKlinike.setKlinika(this);      
-      }
-   }
-   
-   public void removeAdminKlinike(AdminKlinike oldAdminKlinike) {
-      if (oldAdminKlinike == null)
-         return;
-      if (this.adminKlinike != null)
-         if (this.adminKlinike.contains(oldAdminKlinike))
-         {
-            this.adminKlinike.remove(oldAdminKlinike);
-            oldAdminKlinike.setKlinika((Klinika)null);
-         }
-   }
+//   public Set<Cenovnik> getCenovnik() {
+//      if (cenovnik == null)
+//         cenovnik = new java.util.HashSet<Cenovnik>();
+//      return cenovnik;
+//   }
+//   
+//   public void setCenovnik(Set<Cenovnik> newCenovnik) {
+//      this.cenovnik = newCenovnik;
+//   }
+//   
+//   public void addCenovnik(Cenovnik newCenovnik) {
+//      if (newCenovnik == null)
+//         return;
+//      if (this.cenovnik == null)
+//         this.cenovnik = new java.util.HashSet<Cenovnik>();
+//      if (!this.cenovnik.contains(newCenovnik))
+//         this.cenovnik.add(newCenovnik);
+//   }
+//   
+//   public void removeCenovnik(Cenovnik oldCenovnik) {
+//      if (oldCenovnik == null)
+//         return;
+//      if (this.cenovnik != null)
+//         if (this.cenovnik.contains(oldCenovnik))
+//            this.cenovnik.remove(oldCenovnik);
+//   }
+//   
+//   public void removeAllCenovnik() {
+//      if (cenovnik != null)
+//         cenovnik.clear();
+//   }
+//   public Set<AdminKlinike> getAdminKlinike() {
+//      if (adminKlinike == null)
+//         adminKlinike = new java.util.HashSet<AdminKlinike>();
+//      return adminKlinike;
+//   }
+//   
+//   public void setAdminKlinike(Set<AdminKlinike> newAdminKlinike) {
+//      this.adminKlinike = newAdminKlinike;
+//   }
+//   
+//   public void addAdminKlinike(AdminKlinike newAdminKlinike) {
+//      if (newAdminKlinike == null)
+//         return;
+//      if (this.adminKlinike == null)
+//         this.adminKlinike = new java.util.HashSet<AdminKlinike>();
+//      if (!this.adminKlinike.contains(newAdminKlinike))
+//      {
+//         this.adminKlinike.add(newAdminKlinike);
+//         newAdminKlinike.setKlinika(this);      
+//      }
+//   }
+//   
+//   public void removeAdminKlinike(AdminKlinike oldAdminKlinike) {
+//      if (oldAdminKlinike == null)
+//         return;
+//      if (this.adminKlinike != null)
+//         if (this.adminKlinike.contains(oldAdminKlinike))
+//         {
+//            this.adminKlinike.remove(oldAdminKlinike);
+//            oldAdminKlinike.setKlinika((Klinika)null);
+//         }
+//   }
 
    public Set<Operacija> getOperacija() {
       if (operacija == null)

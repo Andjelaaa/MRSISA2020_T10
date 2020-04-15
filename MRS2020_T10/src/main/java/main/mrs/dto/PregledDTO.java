@@ -1,53 +1,31 @@
 package main.mrs.dto;
 import java.util.*;
 
+import main.mrs.model.Pacijent;
+
 public class PregledDTO {
    private Date datumVreme;
    private int trajanje;
    private Double popust;
    private StatusDTO status;
    
-   public Set<StavkaCenovnikaDTO> stavkaCenovnika;
    public LekarDTO lekar;
    public SalaDTO sala;
    public TipPregledaDTO tipPregleda;
    public IzvestajDTO izvestaj;
    public Set<LekDTO> lek;
    public Set<DijagnozaDTO> dijagnoza;
+   public PacijentDTO pacijent;
    
-   
-   public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
-      if (stavkaCenovnika == null)
-         stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
-      return stavkaCenovnika;
-   }
-   
-   public void setStavkaCenovnika(Set<StavkaCenovnikaDTO> newStavkaCenovnika) {
-      this.stavkaCenovnika = newStavkaCenovnika;
-   }
-   
-   public void addStavkaCenovnika(StavkaCenovnikaDTO newStavkaCenovnika) {
-      if (newStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnikaDTO>();
-      if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
-         this.stavkaCenovnika.add(newStavkaCenovnika);
-   }
-   
-   public void removeStavkaCenovnika(StavkaCenovnikaDTO oldStavkaCenovnika) {
-      if (oldStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika != null)
-         if (this.stavkaCenovnika.contains(oldStavkaCenovnika))
-            this.stavkaCenovnika.remove(oldStavkaCenovnika);
-   }
-   
-   public void removeAllStavkaCenovnika() {
-      if (stavkaCenovnika != null)
-         stavkaCenovnika.clear();
-   }
-   public Set<LekDTO> getLek() {
+   public PacijentDTO getPacijent() {
+	return pacijent;
+}
+
+public void setPacijent(PacijentDTO pacijent) {
+	this.pacijent = pacijent;
+}
+
+public Set<LekDTO> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<LekDTO>();
       return lek;

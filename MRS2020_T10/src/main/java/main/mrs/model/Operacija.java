@@ -1,78 +1,57 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+@Entity
 public class Operacija {
-   private Date datumVreme;
-   private int trajanje;
-   private Status status;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="datumVreme", unique=false, nullable=false)
+    private Date datumVreme;
+	@Column(name="trajanje", unique=false, nullable=false)
+    private int trajanje;
+	@Column(name="status", unique=false, nullable=false)
+    private Status status;
    
-   public Set<StavkaCenovnika> stavkaCenovnika;
-   public Set<Sala> sala;
-   public Set<Lekar> lekar;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public StavkaCenovnika stavkaCenovnika;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Sala sala;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name="operacija_id", nullable=false)
+    public Set<Lekar> lekar;
    
-   
-   public Set<StavkaCenovnika> getStavkaCenovnika() {
-      if (stavkaCenovnika == null)
-         stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
-      return stavkaCenovnika;
-   }
-   
-   public void setStavkaCenovnika(Set<StavkaCenovnika> newStavkaCenovnika) {
-      this.stavkaCenovnika = newStavkaCenovnika;
-   }
-   
-   public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
-      if (newStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
-      if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
-         this.stavkaCenovnika.add(newStavkaCenovnika);
-   }
-   
-   public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
-      if (oldStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika != null)
-         if (this.stavkaCenovnika.contains(oldStavkaCenovnika))
-            this.stavkaCenovnika.remove(oldStavkaCenovnika);
-   }
-   
-   public void removeAllStavkaCenovnika() {
-      if (stavkaCenovnika != null)
-         stavkaCenovnika.clear();
-   }
-   public Set<Sala> getSala() {
-      if (sala == null)
-         sala = new java.util.HashSet<Sala>();
-      return sala;
-   }
-   
-   public void setSala(Set<Sala> newSala) {
-      this.sala = newSala;
-   }
-   
-   public void addSala(Sala newSala) {
-      if (newSala == null)
-         return;
-      if (this.sala == null)
-         this.sala = new java.util.HashSet<Sala>();
-      if (!this.sala.contains(newSala))
-         this.sala.add(newSala);
-   }
-   
-   public void removeSala(Sala oldSala) {
-      if (oldSala == null)
-         return;
-      if (this.sala != null)
-         if (this.sala.contains(oldSala))
-            this.sala.remove(oldSala);
-   }
-   
-   public void removeAllSala() {
-      if (sala != null)
-         sala.clear();
-   }
+
+
+public StavkaCenovnika getStavkaCenovnika() {
+		return stavkaCenovnika;
+	}
+
+	public void setStavkaCenovnika(StavkaCenovnika stavkaCenovnika) {
+		this.stavkaCenovnika = stavkaCenovnika;
+	}
+
+	public Sala getSala() {
+		return sala;
+	}
+
+	public void setSala(Sala sala) {
+		this.sala = sala;
+	}
 
 public Date getDatumVreme() {
 	return datumVreme;

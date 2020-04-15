@@ -1,28 +1,25 @@
 package main.mrs.model;
 
-import java.util.*;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
-//@Entity
-//@Table(name="PACIJENT")
+@Entity
 
 public class Pacijent extends Korisnik {
 	
-	//@Column(name="lbo", unique=true, nullable=false)
+	@Column(name="lbo", unique=true, nullable=false)
 	private String lbo;
 	
-	//@OneToOne(fetch= FetchType.LAZY)
-	//@JoinColumn(name= "")
+	@OneToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	public ZKarton zKarton;
 	
-	
-	//@Column(name="pregled", unique=false, nullable=false)
+	@OneToMany(mappedBy="pacijent",fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	public Set<Pregled> pregled;
 
 	public String getLbo() {

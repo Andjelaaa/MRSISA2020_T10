@@ -1,18 +1,45 @@
 package main.mrs.model;
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /** Lekar ima recnik pregleda, kljuc je datum, vrednost pregled
  * 
  *  */
+@Entity
+@Table(name="Lekar")
 public class Lekar extends Korisnik {
+	
+   @Column(name="prosecnaOcena", unique=false, nullable=true)
    private Double prosecnaOcena;
+   
+   @Column(name="brojOcena", unique=false, nullable=true)
    private int brojOcena;
+   
+   @Column(name="rvPocetak", unique=false, nullable=false)
    private Date rvPocetak;
+   
+   @Column(name="rvKraj", unique=false, nullable=false)
    private Date rvKraj;
    
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public TipPregleda tipPregleda;
+
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Set<Operacija> operacija;
+   
+   @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Set<Odsustvo> odsustvo;
+   
+   @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Set<Pregled> pregled;
    
    
@@ -119,12 +146,12 @@ public void setTipPregleda(TipPregleda tipPregleda) {
 	this.tipPregleda = tipPregleda;
 }
 
-public Set<Pregled> getPregled() {
-	return pregled;
-}
-
-public void setPregled(Set<Pregled> pregled) {
-	this.pregled = pregled;
-}
+//public Set<Pregled> getPregled() {
+//	return pregled;
+//}
+//
+//public void setPregled(Set<Pregled> pregled) {
+//	this.pregled = pregled;
+//}
 
 }

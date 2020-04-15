@@ -1,17 +1,47 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+@Entity
 public class ZKarton {
-   private String krvnaGrupa;
-   private Double visina;
-   private Double tezina;
-   private Double dioptrija;
-   private String pol;
-   private Date datumRodjenja;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="krvnaGrupa", unique=false, nullable=false)
+    private String krvnaGrupa;
+	@Column(name="visina", unique=false, nullable=false)
+    private Double visina;
+	@Column(name="tezina", unique=false, nullable=false)
+    private Double tezina;
+	@Column(name="dioptrija", unique=false, nullable=false)
+    private Double dioptrija;
+	@Column(name="pol", unique=false, nullable=false)
+    private String pol;
+	@Column(name="datumRodjenja", unique=false, nullable=false)
+    private Date datumRodjenja;
    
-   public Set<Pregled> pregled;
-   public Set<Lek> lek;
-   public Set<Operacija> operacija;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="zkarton_id", nullable=false)
+    public Set<Pregled> pregled;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<Lek> lek;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="zkarton_id", nullable=false)
+    public Set<Operacija> operacija;
    
    
    public Set<Pregled> getPregled() {

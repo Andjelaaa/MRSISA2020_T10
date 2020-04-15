@@ -1,20 +1,35 @@
 package main.mrs.model;
 
-import java.util.*;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+@Entity
 public class StavkaCenovnika {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="cena", unique=false, nullable=false)
 	private double cena;
 
-	public Set<TipPregleda> tipPregleda;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public TipPregleda tipPregleda;
 
-	public Set<TipPregleda> getTipPregleda() {
-		if (tipPregleda == null)
-			tipPregleda = new java.util.HashSet<TipPregleda>();
+
+	public TipPregleda getTipPregleda() {
 		return tipPregleda;
 	}
 
-	public void setTipPregleda(Set<TipPregleda> newTipPregleda) {
-		this.tipPregleda = newTipPregleda;
+	public void setTipPregleda(TipPregleda tipPregleda) {
+		this.tipPregleda = tipPregleda;
 	}
 
 	public double getCena() {
@@ -25,26 +40,6 @@ public class StavkaCenovnika {
 		this.cena = cena;
 	}
 
-	public void addTipPregleda(TipPregleda newTipPregleda) {
-		if (newTipPregleda == null)
-			return;
-		if (this.tipPregleda == null)
-			this.tipPregleda = new java.util.HashSet<TipPregleda>();
-		if (!this.tipPregleda.contains(newTipPregleda))
-			this.tipPregleda.add(newTipPregleda);
-	}
-
-	public void removeTipPregleda(TipPregleda oldTipPregleda) {
-		if (oldTipPregleda == null)
-			return;
-		if (this.tipPregleda != null)
-			if (this.tipPregleda.contains(oldTipPregleda))
-				this.tipPregleda.remove(oldTipPregleda);
-	}
-
-	public void removeAllTipPregleda() {
-		if (tipPregleda != null)
-			tipPregleda.clear();
-	}
+	
 
 }

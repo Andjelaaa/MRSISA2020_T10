@@ -1,9 +1,24 @@
 package main.mrs.model;
 
-public class Lek {
-	private String sifra;
-	private String naziv;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class Lek {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="sifra", unique=true, nullable=false)
+	private String sifra;
+	
+	@Column(name="naziv", unique=false, nullable=false)
+	private String naziv;
+	
 	public String getSifra() {
 		return sifra;
 	}

@@ -9,37 +9,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 
-//@Entity
-//@Inheritance(strategy=TABLE_PER_CLASS)
+@Entity
+@Inheritance(strategy=TABLE_PER_CLASS)
 
 public abstract class Korisnik {
 	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	//@Column(name="email", unique=true, nullable=false)
+	
+	@Column(name="email", unique=true, nullable=false)
 	private String email;
 	
-	//@Column(name="lozinka", unique=false, nullable=false)
+	@Column(name="lozinka", unique=false, nullable=false)
 	private String lozinka;
 	
-	//@Column(name="ime", unique=false, nullable=false)
+	@Column(name="ime", unique=false, nullable=false)
 	private String ime;
 	
-	//@Column(name="prezime", unique=false, nullable=false)
+	@Column(name="prezime", unique=false, nullable=false)
 	private String prezime;
 	
-	//@Column(name="adresa", unique=false, nullable=false)
+	@Column(name="adresa", unique=false, nullable=false)
 	private String adresa;
 	
-	//@Column(name="grad", unique=false, nullable=false)
+	@Column(name="grad", unique=false, nullable=false)
 	private String grad;
 	
-	//@Column(name="drzava", unique=false, nullable=false)
+	@Column(name="drzava", unique=false, nullable=false)
 	private String drzava;
 	
-	//@Column(name="kontakt", unique=false, nullable=false)
+	@Column(name="kontakt", unique=false, nullable=false)
 	private String kontakt;
 
 	public String getEmail() {
@@ -68,6 +69,11 @@ public abstract class Korisnik {
 
 	public String getPrezime() {
 		return prezime;
+	}
+
+	public Korisnik() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public void setPrezime(String prezime) {

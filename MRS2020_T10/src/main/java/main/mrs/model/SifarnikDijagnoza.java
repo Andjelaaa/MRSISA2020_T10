@@ -1,43 +1,27 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+@Entity
 public class SifarnikDijagnoza {
-   public Set<Lek> lek;
-   public Set<Dijagnoza> dijagnoza;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
    
-   
-   public Set<Lek> getLek() {
-      if (lek == null)
-         lek = new java.util.HashSet<Lek>();
-      return lek;
-   }
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="sifarnik", nullable=false)
+	public Set<Dijagnoza> dijagnoza;
 
    
-   public void setLek(Set<Lek> newLek) {
-      this.lek = newLek;
-   }
    
-   public void addLek(Lek newLek) {
-      if (newLek == null)
-         return;
-      if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
-      if (!this.lek.contains(newLek))
-         this.lek.add(newLek);
-   }
-   
-   public void removeLek(Lek oldLek) {
-      if (oldLek == null)
-         return;
-      if (this.lek != null)
-         if (this.lek.contains(oldLek))
-            this.lek.remove(oldLek);
-   }
-   
-   public void removeAllLek() {
-      if (lek != null)
-         lek.clear();
-   }
    public Set<Dijagnoza> getDijagnoza() {
       if (dijagnoza == null)
          dijagnoza = new java.util.HashSet<Dijagnoza>();

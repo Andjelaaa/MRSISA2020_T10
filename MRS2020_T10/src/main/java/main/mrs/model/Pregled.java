@@ -1,59 +1,77 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+@Entity
 public class Pregled {
-   private Date datumVreme;
-   private int trajanje;
-   private Double popust;
-   private Status status;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name="datumVreme", unique=false, nullable=false)
+    private Date datumVreme;
+	@Column(name="trajanje", unique=false, nullable=true)
+    private int trajanje;
+	@Column(name="popust", unique=false, nullable=true)
+    private Double popust;
+	@Column(name="status", unique=false, nullable=false)
+    private Status status;
    
-   public Set<StavkaCenovnika> stavkaCenovnika;
-   public Lekar lekar;
-   public Sala sala;
-   public TipPregleda tipPregleda;
-   public Izvestaj izvestaj;
-   public Set<Lek> lek;
-   public Set<Dijagnoza> dijagnoza;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="lekar_id", nullable=false)
+    public Lekar lekar;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Sala sala;
+    
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="pregled_id", nullable=false)
+    public TipPregleda tipPregleda;
+    
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Izvestaj izvestaj;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="pregled_id", nullable=false)
+    public Set<Lek> lek;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="pregled_id", nullable=false)
+    public Set<Dijagnoza> dijagnoza;
    
-   
-   public Set<StavkaCenovnika> getStavkaCenovnika() {
-      if (stavkaCenovnika == null)
-         stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
-      return stavkaCenovnika;
-   }
-   
-   public void setStavkaCenovnika(Set<StavkaCenovnika> newStavkaCenovnika) {
-      this.stavkaCenovnika = newStavkaCenovnika;
-   }
-   
-   public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
-      if (newStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika == null)
-         this.stavkaCenovnika = new java.util.HashSet<StavkaCenovnika>();
-      if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
-         this.stavkaCenovnika.add(newStavkaCenovnika);
-   }
-   
-   public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
-      if (oldStavkaCenovnika == null)
-         return;
-      if (this.stavkaCenovnika != null)
-         if (this.stavkaCenovnika.contains(oldStavkaCenovnika))
-            this.stavkaCenovnika.remove(oldStavkaCenovnika);
-   }
-   
-   public void removeAllStavkaCenovnika() {
-      if (stavkaCenovnika != null)
-         stavkaCenovnika.clear();
-   }
+    
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="pacijent_id", nullable=false)
+    public Pacijent pacijent;
+    
    public Set<Lek> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<Lek>();
       return lek;
    }
    
-   public void setLek(Set<Lek> newLek) {
+   public Pacijent getPacijent() {
+	return pacijent;
+}
+
+public void setPacijent(Pacijent pacijent) {
+	this.pacijent = pacijent;
+}
+
+public void setLek(Set<Lek> newLek) {
       this.lek = newLek;
    }
    

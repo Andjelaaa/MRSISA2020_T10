@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class AdminKCDTO extends KorisnikDTO {
    public Set<ZahtevRegDTO> zahtevReg;
-   public Set<KlinickiCentarDTO> klinickiCentar;
+   public KlinickiCentarDTO klinickiCentar;
    
    
    public Set<ZahtevRegDTO> getZahtevReg() {
@@ -41,36 +41,16 @@ public class AdminKCDTO extends KorisnikDTO {
       if (zahtevReg != null)
          zahtevReg.clear();
    }
-   public Set<KlinickiCentarDTO> getKlinickiCentar() {
-      if (klinickiCentar == null)
-         klinickiCentar = new HashSet<KlinickiCentarDTO>();
-      return klinickiCentar;
-   }
+ 
+   
+   public KlinickiCentarDTO getKlinickiCentar() {
+	return klinickiCentar;
+}
 
-   public void setKlinickiCentar(Set<KlinickiCentarDTO> newKlinickiCentar) {
-      this.klinickiCentar = newKlinickiCentar;
-   }
-   
-   public void addKlinickiCentar(KlinickiCentarDTO newKlinickiCentar) {
-      if (newKlinickiCentar == null)
-         return;
-      if (this.klinickiCentar == null)
-         this.klinickiCentar = new HashSet<KlinickiCentarDTO>();
-      if (!this.klinickiCentar.contains(newKlinickiCentar))
-         this.klinickiCentar.add(newKlinickiCentar);
-   }
-   
-   public void removeKlinickiCentar(KlinickiCentarDTO oldKlinickiCentar) {
-      if (oldKlinickiCentar == null)
-         return;
-      if (this.klinickiCentar != null)
-         if (this.klinickiCentar.contains(oldKlinickiCentar))
-            this.klinickiCentar.remove(oldKlinickiCentar);
-   }
-   
-   public void removeAllKlinickiCentar() {
-      if (klinickiCentar != null)
-         klinickiCentar.clear();
-   }
+
+public void setKlinickiCentar(KlinickiCentarDTO klinickiCentar) {
+	this.klinickiCentar = klinickiCentar;
+}
+
 
 }

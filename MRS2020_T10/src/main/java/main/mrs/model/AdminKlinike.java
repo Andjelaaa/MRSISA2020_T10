@@ -1,9 +1,24 @@
 package main.mrs.model;
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+@Entity
 public class AdminKlinike extends Korisnik {
-   public Set<Odsustvo> odsustvo;
-   public Klinika klinika;
+   
+	
+	
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="odsustvo_id", nullable=false)
+    public Set<Odsustvo> odsustvo;
+	
+	@ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    public Klinika klinika;
    
    
    public Set<Odsustvo> getOdsustvo() {
@@ -41,21 +56,5 @@ public class AdminKlinike extends Korisnik {
       return klinika;
    }
    
-   public void setKlinika(Klinika newKlinika) {
-      if (this.klinika == null || !this.klinika.equals(newKlinika))
-      {
-         if (this.klinika != null)
-         {
-            Klinika oldKlinika = this.klinika;
-            this.klinika = null;
-            oldKlinika.removeAdminKlinike(this);
-         }
-         if (newKlinika != null)
-         {
-            this.klinika = newKlinika;
-            this.klinika.addAdminKlinike(this);
-         }
-      }
-   }
-
+   
 }

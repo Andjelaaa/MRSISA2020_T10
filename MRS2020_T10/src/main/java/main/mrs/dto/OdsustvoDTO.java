@@ -2,10 +2,22 @@ package main.mrs.dto;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import main.mrs.model.Korisnik;
+import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
+
 public class OdsustvoDTO {
 	private StatusDTO status;
 	private String opis;
-
+	private MedSestraDTO sestra;
+	private LekarDTO lekar;
+	
+	
 	public StatusDTO getStatus() {
 		return status;
 	}
@@ -36,6 +48,21 @@ public class OdsustvoDTO {
 
 	public void setKraj(Date kraj) {
 		this.kraj = kraj;
+	}
+	public MedSestraDTO getSestra() {
+		return sestra;
+	}
+
+	public void setSestra(MedSestraDTO sestra) {
+		this.sestra = sestra;
+	}
+
+	public LekarDTO getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(LekarDTO lekar) {
+		this.lekar = lekar;
 	}
 
 	private Date pocetak;
