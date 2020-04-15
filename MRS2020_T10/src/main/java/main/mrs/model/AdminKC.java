@@ -57,13 +57,13 @@ public class AdminKC extends Korisnik {
    }
 
 
-public KlinickiCentar getKlinickiCentar() {
-	return klinickiCentar;
-}
-
-
-public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
-	this.klinickiCentar = klinickiCentar;
-}
-   
-}
+	public KlinickiCentar getKlinickiCentar() {
+		return klinickiCentar;
+	}
+	
+	
+	public void setKlinickiCentar(KlinickiCentar klinickiCentar) {
+		this.klinickiCentar = klinickiCentar;
+	}
+	   
+	}
