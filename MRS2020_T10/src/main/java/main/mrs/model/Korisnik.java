@@ -1,32 +1,30 @@
 package main.mrs.model;
 
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
+import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-@Entity
-@Inheritance(strategy=TABLE_PER_CLASS)
+//@Entity
+@MappedSuperclass
 public abstract class Korisnik {
 	
 	
-	@GeneratedValue(generator = "Korisnik_SequenceStyleGenerator")
-	@GenericGenerator(name = "Korisnik_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-			 @Parameter(name = "sequence_name", value = "Korisnik_SEQ"),
-			 //@Parameter(name = "optimizer", value = "hilo"),
-			 @Parameter(name = "initial_value", value = "1"),
-			 @Parameter(name = "increment_size", value = "1") }
-			 )
+//	@GeneratedValue(generator = "Korisnik_SequenceStyleGenerator")
+//	@GenericGenerator(name = "Korisnik_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+//			 @Parameter(name = "sequence_name", value = "Korisnik_SEQ"),
+//			 //@Parameter(name = "optimizer", value = "hilo"),
+//			 @Parameter(name = "initial_value", value = "1"),
+//			 @Parameter(name = "increment_size", value = "1") }
+//			 )
 	@Id
 	@Column(name="id", unique=true, nullable=false)
-	//@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	
