@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class SifarnikLekova {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

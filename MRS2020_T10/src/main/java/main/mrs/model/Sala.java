@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 public class Sala {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name="broj", unique=false, nullable=false)

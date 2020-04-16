@@ -2,6 +2,7 @@ package main.mrs.dto;
 import java.util.*;
 
 public class KlinickiCentarDTO {
+	private String naziv;
    public Set<KlinikaDTO> klinika;
    
    
@@ -36,5 +37,13 @@ public class KlinickiCentarDTO {
       if (klinika != null)
          klinika.clear();
    }
+
+public String getNaziv() {
+	return naziv;
+}
+
+public void setNaziv(String naziv) {
+	this.naziv = naziv;
+}
 
 }

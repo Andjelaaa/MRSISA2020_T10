@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Dijagnoza {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name="sifra", unique=true, nullable=false)

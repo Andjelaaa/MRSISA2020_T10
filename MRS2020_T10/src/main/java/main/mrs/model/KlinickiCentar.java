@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,8 +15,11 @@ import javax.persistence.OneToMany;
 @Entity
 public class KlinickiCentar {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(name="naziv", nullable=false)
+	private String naziv;
 	
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	@JoinColumn(name="kc_id", nullable=false)

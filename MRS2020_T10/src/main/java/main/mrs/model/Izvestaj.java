@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Izvestaj {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name="opis", unique=false, nullable=false)
