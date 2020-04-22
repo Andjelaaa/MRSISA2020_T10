@@ -10,7 +10,8 @@ Vue.component('regklinike', {
 			greska2: '',
 			greska3: '',
 			greska4: '',
-			greska5: ''
+			greska5: '',
+			dbError: ''
 		   
 		}
 	}, 
@@ -19,6 +20,7 @@ Vue.component('regklinike', {
 	
 		<div>
 		<h1> Registracija klinike: </h1>
+		{{dbError}}
 		<table>
 		   <tr>
 		   
@@ -57,16 +59,16 @@ Vue.component('regklinike', {
 		   </tr>
 		    <tr>
 		   
-		   		<td></td>
-		   		<td><button v-on:click = "napraviKliniku()">Napavi kliniku</td>	   
+		   		<td><button v-on:click = "nazad()">Nazad</button></td>
+		   		<td><button v-on:click = "napraviKliniku()">Napavi kliniku</button></td>	   
 		   </tr>
 		   
 		</table>
 		
 		<br>
 		<br>
-		<a href="#/dadmina">Dodaj admina klinike</a>
-	
+		<a href="#">Dodaj admina klinike</a>
+	    
 		</div>
 	
 	`, 
@@ -95,9 +97,27 @@ Vue.component('regklinike', {
 			return 1;
 		},
 		napraviKliniku : function(){
+			this.dbError = '';
 			if(this.validacija()==1)
 				return;
+			
+			var newKlinika ={ "naziv": this.nazivKlinike, "adresa": this.adresaKlinike,
+					"opis":this.opis , "emailKlinike":this.emailKlinike,
+					"kontaktKlinike": this.kontaktKlinike};
+			axios
+			.post('api/klinika', newKlinika)
+			.then((response)=>{
+				this.$router.push('/');
+			}).catch((response)=>{
+				this.dbError = 'Klinika vec postoji';
 			}
+				
+			);
+		},
+		nazad: function(){
+				return;
+			
 		}
+	}
 
 });

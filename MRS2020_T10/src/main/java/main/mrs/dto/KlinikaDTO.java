@@ -1,6 +1,23 @@
 package main.mrs.dto;
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import main.mrs.model.AdminKlinike;
+import main.mrs.model.Cenovnik;
+import main.mrs.model.Klinika;
+import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
+import main.mrs.model.Operacija;
+import main.mrs.model.Pacijent;
+import main.mrs.model.Pregled;
+import main.mrs.model.TipPregleda;
+
 public class KlinikaDTO {
 	private Integer id;
    private String naziv;
@@ -8,7 +25,8 @@ public class KlinikaDTO {
    private String opis;
    private Double prosecnaOcena;
    private int brojOcena;
-   
+   private String emailKlinike;
+   private String kontaktKlinike;
    public Set<PacijentDTO> pacijent;
    public Set<PregledDTO> pregled;
    public CenovnikDTO cenovnik;
@@ -17,7 +35,49 @@ public class KlinikaDTO {
    public Set<LekarDTO> lekar;
    public Set<MedSestraDTO> medSestra;
    
-   public Integer getId() {
+   public KlinikaDTO() {}
+   
+   public KlinikaDTO(Klinika s) {
+		this(s.getNaziv(), s.getAdresa(), s.getOpis(), s.getEmailKlinike(), s.getKontaktKlinike());
+	}
+
+	public KlinikaDTO(String naziv2, String adresa, String opis2, String em, String ko) {
+		//this.id = id2;
+		this.naziv = naziv2;
+		this.adresa = adresa;
+		this.opis = opis2;
+		this.emailKlinike = em;
+		this.kontaktKlinike = ko;
+		this.prosecnaOcena = 0.0;
+		this.brojOcena = 0;
+		this.cenovnik = new CenovnikDTO();
+		this.pacijent = new HashSet<PacijentDTO>();
+		this.pregled = new HashSet<PregledDTO>();
+		this.adminKlinike = new HashSet<AdminKlinikeDTO>();
+		this.operacija = new HashSet<OperacijaDTO>();
+		this.lekar = new HashSet<LekarDTO>();
+		this.medSestra = new HashSet<MedSestraDTO>();
+		
+		
+	}
+    
+	public String getEmailKlinike() {
+		return emailKlinike;
+	}
+
+	public void setEmailKlinike(String emailKlinike) {
+		this.emailKlinike = emailKlinike;
+	}
+
+	public String getKontaktKlinike() {
+		return kontaktKlinike;
+	}
+
+	public void setKontaktKlinike(String kontaktKlinike) {
+		this.kontaktKlinike = kontaktKlinike;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
@@ -33,11 +93,7 @@ public void setCenovnik(CenovnikDTO cenovnik) {
 	this.cenovnik = cenovnik;
 }
 
-public Set<PacijentDTO> getpacijent() {
-      if (pacijent == null)
-         pacijent = new java.util.HashSet<PacijentDTO>();
-      return pacijent;
-   }
+
    
    public void setPacijent(Set<PacijentDTO> newpacijent) {
       this.pacijent = newpacijent;
@@ -262,10 +318,6 @@ public int getBrojOcena() {
 
 public void setBrojOcena(int brojOcena) {
 	this.brojOcena = brojOcena;
-}
-
-public Set<PacijentDTO> getPacijent() {
-	return pacijent;
 }
 
 }

@@ -28,7 +28,11 @@ public class Klinika {
     private Double prosecnaOcena;
 	@Column(name="brojOcena", unique=false, nullable=true)
     private int brojOcena;
-   
+	@Column(name="emailKlinike", unique=true, nullable=false)
+	private String emailKlinike;
+	@Column(name="kontaktKlinike", unique=true, nullable=false)
+	private String kontaktKlinike;
+	
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	@JoinColumn(name="klinika_id", nullable=false)
 	public Set<Pacijent> pacijent;
@@ -50,6 +54,29 @@ public class Klinika {
 	@JoinColumn(name="klinika_id", nullable=false)
     public Set<MedSestra> medSestra;
    
+	public Klinika() {}
+	
+	
+	public String getEmailKlinike() {
+		return emailKlinike;
+	}
+
+
+	public void setEmailKlinike(String emailKlinike) {
+		this.emailKlinike = emailKlinike;
+	}
+
+
+	public String getKontaktKlinike() {
+		return kontaktKlinike;
+	}
+
+
+	public void setKontaktKlinike(String kontaktKlinike) {
+		this.kontaktKlinike = kontaktKlinike;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -57,12 +84,6 @@ public class Klinika {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-   
-   public Set<Pacijent> getpacijent() {
-      if (pacijent == null)
-         pacijent = new java.util.HashSet<Pacijent>();
-      return pacijent;
-   }
    
    public void setPacijent(Set<Pacijent> newpacijent) {
       this.pacijent = newpacijent;
@@ -120,47 +141,26 @@ public class Klinika {
       if (pregled != null)
          pregled.clear();
    }
-//   public Set<Cenovnik> getCenovnik() {
-//      if (cenovnik == null)
-//         cenovnik = new java.util.HashSet<Cenovnik>();
-//      return cenovnik;
-//   }
-//   
-//   public void setCenovnik(Set<Cenovnik> newCenovnik) {
-//      this.cenovnik = newCenovnik;
-//   }
-//   
-//   public void addCenovnik(Cenovnik newCenovnik) {
-//      if (newCenovnik == null)
-//         return;
-//      if (this.cenovnik == null)
-//         this.cenovnik = new java.util.HashSet<Cenovnik>();
-//      if (!this.cenovnik.contains(newCenovnik))
-//         this.cenovnik.add(newCenovnik);
-//   }
-//   
-//   public void removeCenovnik(Cenovnik oldCenovnik) {
-//      if (oldCenovnik == null)
-//         return;
-//      if (this.cenovnik != null)
-//         if (this.cenovnik.contains(oldCenovnik))
-//            this.cenovnik.remove(oldCenovnik);
-//   }
-//   
-//   public void removeAllCenovnik() {
-//      if (cenovnik != null)
-//         cenovnik.clear();
-//   }
-//   public Set<AdminKlinike> getAdminKlinike() {
-//      if (adminKlinike == null)
-//         adminKlinike = new java.util.HashSet<AdminKlinike>();
-//      return adminKlinike;
-//   }
-//   
-//   public void setAdminKlinike(Set<AdminKlinike> newAdminKlinike) {
-//      this.adminKlinike = newAdminKlinike;
-//   }
-//   
+   public Cenovnik getCenovnik() {
+      if (cenovnik == null)
+         cenovnik = new Cenovnik();
+      return cenovnik;
+   }
+   
+   public void setCenovnik(Cenovnik newCenovnik) {
+      this.cenovnik = newCenovnik;
+   }
+   
+   public Set<AdminKlinike> getAdminKlinike() {
+      if (adminKlinike == null)
+         adminKlinike = new java.util.HashSet<AdminKlinike>();
+      return adminKlinike;
+   }
+   
+   public void setAdminKlinike(Set<AdminKlinike> newAdminKlinike) {
+      this.adminKlinike = newAdminKlinike;
+   }
+   
 //   public void addAdminKlinike(AdminKlinike newAdminKlinike) {
 //      if (newAdminKlinike == null)
 //         return;

@@ -22,7 +22,7 @@ public class KlinickiCentar {
 	private String naziv;
 	
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="kc_id", nullable=false)
+	@JoinColumn(name="kc_id", nullable=true)
     public Set<Klinika> klinika;
    
 	public Integer getId() {
