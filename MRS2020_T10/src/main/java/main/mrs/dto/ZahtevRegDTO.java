@@ -1,5 +1,7 @@
 package main.mrs.dto;
 
+import main.mrs.model.ZahtevReg;
+
 public class ZahtevRegDTO {
 	private Integer id;
 	private String email;
@@ -10,7 +12,28 @@ public class ZahtevRegDTO {
 	private String grad;
 	private String drzava;
 	private String kontakt;
+	private String lbo;
 	
+	
+	public ZahtevRegDTO() {
+		
+	}
+	public ZahtevRegDTO(ZahtevReg z) {
+		this(z.getEmail(), z.getLozinka(), z.getIme(), z.getPrezime(), z.getAdresa(), z.getGrad(), z.getDrzava(), z.getKontakt(), z.getLbo());
+	}
+
+	public ZahtevRegDTO(String email, String lozinka, String ime, String prezime, String adresa,
+			String grad, String drzava, String kontakt, String lbo) {
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.kontakt = kontakt;
+		this.lbo = lbo;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -65,5 +88,11 @@ public class ZahtevRegDTO {
 	}
 	public void setKontakt(String kontakt) {
 		this.kontakt = kontakt;
+	}
+	public String getLbo() {
+		return lbo;
+	}
+	public void setLbo(String lbo) {
+		this.lbo = lbo;
 	}
 }

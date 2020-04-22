@@ -30,7 +30,27 @@ public class ZahtevReg {
 	private String drzava;
 	@Column(name="kontakt", unique=true, nullable=false)
 	private String kontakt;
+	@Column(name="lbo", unique=true, nullable=false)
+	private String lbo;
 	
+	public ZahtevReg() {}
+
+	public ZahtevReg(String email, String lozinka, String ime, String prezime, String adresa, String grad,
+			String drzava, String kontakt, String lbo) {
+		
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.kontakt = kontakt;
+		this.lbo = lbo;
+	}
+
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -85,5 +105,13 @@ public class ZahtevReg {
 	}
 	public void setKontakt(String kontakt) {
 		this.kontakt = kontakt;
+	}
+
+	public String getLbo() {
+		return lbo;
+	}
+
+	public void setLbo(String lbo) {
+		this.lbo = lbo;
 	}
 }

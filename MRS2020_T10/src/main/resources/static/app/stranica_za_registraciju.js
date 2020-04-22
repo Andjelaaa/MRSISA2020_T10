@@ -10,9 +10,9 @@ Vue.component('strzareg', {
 			lozinka:'',
 			lozinkaPonovo:'',
 			telefonPacijenta:'',
-			lbo:''
-			
-			
+			lbo:'',
+			greska:'',
+			lozinkaGreska:''
 		}
 	},
 	template: `
@@ -59,12 +59,87 @@ Vue.component('strzareg', {
 			<tr>
 				<td>Ponovi lozinku: </td>
 				<td><input id="lozinka2" type="password" v-model="lozinkaPonovo"></td>
+				<td style="color: red">{{lozinkaGreska}}</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td><input type="submit" value="Registracija"></td>
+				<td><button v-on:click="nazad()">Nazad</button></td>
+			   	<td><button v-on:click="registracija()">Registruj se</button></td>
+			   	<td style="color: red">{{greska}}</td>
 			</tr>
 		</table>
 	</div>
-	`
+	`,
+		
+		methods : {
+			nazad : function(){
+//				this.$router.push('/prethodnastranica')
+				return;
+			},
+			validacija: function(){
+				this.greska = '';
+				this.lozinkaGreska = '';
+				
+				if(!this.imePacijenta){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.prezimePacijenta){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.email){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.adresaPacijenta){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.grad){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.drzava){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!(this.lozinka==this.lozinkaPonovo)){
+					this.lozinkaGreska = 'Lozinke se ne poklapaju';
+					return 1;
+				}
+				if(!this.telefonPacijenta){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				if(!this.lbo){
+					this.greska = 'Sva polja su obavezna!';
+					return 1;
+				}
+				
+				return 0;
+				
+			},
+			registracija : function(){	
+				this.greska = '';
+				if(this.validacija()==1)
+					return;
+				var novZahtev = {"email": this.email, "lozinka": this.lozinka,
+								"ime": this.imePacijenta, "prezime": this.prezimePacijenta,
+								"adresa": this.adresaPacijenta, "grad": this.grad,
+								"drzava": this.drzava, "kontakt": this.telefonPacijenta, "lbo": this.lbo};
+				
+				axios
+				.post('api/zahtevreg', novZahtev)
+				.then((res)=>{
+					console.log('USPESNO');
+					this.$router.push('/');
+				}).catch((res)=>{
+					console.log('NEUSPESNO');
+					this.greska = 'Email vec postoji';
+				}
+					
+				)
+			}
+			
+		}
 })

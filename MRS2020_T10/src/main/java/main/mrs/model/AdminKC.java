@@ -14,7 +14,7 @@ public class AdminKC extends Korisnik {
 	
 	
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="adminKC_id", nullable=false)
+	@JoinColumn(name="adminKC_id", nullable=true)
 	public Set<ZahtevReg> zahtevReg;
    
 	@OneToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
