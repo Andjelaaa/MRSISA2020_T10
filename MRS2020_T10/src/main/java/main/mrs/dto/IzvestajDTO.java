@@ -2,10 +2,18 @@ package main.mrs.dto;
 import java.util.*;
 
 public class IzvestajDTO {
+	private Integer id;
 	private String opis;   
 	public Set<DijagnozaDTO> dijagnoza;
 	public Set<LekDTO> lek;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<DijagnozaDTO> getDijagnoza() {
       if (dijagnoza == null)

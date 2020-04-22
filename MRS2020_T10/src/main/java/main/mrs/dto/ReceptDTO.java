@@ -2,10 +2,17 @@ package main.mrs.dto;
 import java.util.*;
 
 public class ReceptDTO {
+	private Integer id;
    public MedSestraDTO medSestra;
    public Set<LekDTO> lek;
    
-   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<LekDTO> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<LekDTO>();

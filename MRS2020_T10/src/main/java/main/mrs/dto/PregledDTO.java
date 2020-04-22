@@ -4,6 +4,7 @@ import java.util.*;
 import main.mrs.model.Pacijent;
 
 public class PregledDTO {
+	private Integer id;
    private Date datumVreme;
    private int trajanje;
    private Double popust;
@@ -17,6 +18,13 @@ public class PregledDTO {
    public Set<DijagnozaDTO> dijagnoza;
    public PacijentDTO pacijent;
    
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public PacijentDTO getPacijent() {
 	return pacijent;
 }

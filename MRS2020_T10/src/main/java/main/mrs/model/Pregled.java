@@ -57,6 +57,13 @@ public class Pregled {
     @JoinColumn(name="pacijent_id", nullable=false)
     public Pacijent pacijent;
     
+    public Integer getId() {
+    	return id;
+    }
+
+    public void setId(Integer id) {
+    	this.id = id;
+    }
    public Set<Lek> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<Lek>();

@@ -1,8 +1,17 @@
 package main.mrs.dto;
 
 public class DijagnozaDTO {
+	private Integer id;
    private String sifra;
    private String naziv;
+   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getSifra() {
 		return sifra;
 	}

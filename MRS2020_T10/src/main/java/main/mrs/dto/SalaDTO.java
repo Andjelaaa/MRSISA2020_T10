@@ -3,11 +3,19 @@ package main.mrs.dto;
 import java.util.*;
 
 public class SalaDTO {
+	private Integer id;
 	private int broj;
 	private String naziv;
 
 	public Set<PregledDTO> pregled;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public int getBroj() {
 		return broj;
 	}

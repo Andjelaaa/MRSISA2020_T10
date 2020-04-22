@@ -23,7 +23,13 @@ public class StavkaCenovnika {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public TipPregleda tipPregleda;
 
+	public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public TipPregleda getTipPregleda() {
 		return tipPregleda;
 	}

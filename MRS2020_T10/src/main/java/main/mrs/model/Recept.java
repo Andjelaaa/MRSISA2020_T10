@@ -26,6 +26,13 @@ public class Recept {
 	@JoinColumn(name="recept", nullable=false)
     public Set<Lek> lek;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<Lek> getLek() {
       if (lek == null)

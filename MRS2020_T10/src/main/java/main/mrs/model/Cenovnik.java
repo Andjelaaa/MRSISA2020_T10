@@ -22,7 +22,13 @@ public class Cenovnik {
 	@JoinColumn(name="cenovnik", nullable=false)
     public Set<StavkaCenovnika> stavkaCenovnika;
    
-   
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<StavkaCenovnika> getStavkaCenovnika() {
       if (stavkaCenovnika == null)
          stavkaCenovnika = new HashSet<StavkaCenovnika>();

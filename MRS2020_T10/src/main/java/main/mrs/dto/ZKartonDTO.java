@@ -2,6 +2,7 @@ package main.mrs.dto;
 import java.util.*;
 
 public class ZKartonDTO {
+	private Integer id;
    private String krvnaGrupa;
    private Double visina;
    private Double tezina;
@@ -13,7 +14,13 @@ public class ZKartonDTO {
    public Set<LekDTO> lek;
    public Set<OperacijaDTO> operacija;
    
-   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<PregledDTO> getPregled() {
       if (pregled == null)
          pregled = new java.util.HashSet<PregledDTO>();

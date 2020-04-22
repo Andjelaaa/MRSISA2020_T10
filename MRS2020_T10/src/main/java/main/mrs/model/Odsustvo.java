@@ -39,7 +39,13 @@ public class Odsustvo {
 	@JoinColumn(name="lekar_id", nullable=true)
 	private Lekar lekar;
 	
+	public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public MedSestra getSestra() {
 		return medSestra;
 	}

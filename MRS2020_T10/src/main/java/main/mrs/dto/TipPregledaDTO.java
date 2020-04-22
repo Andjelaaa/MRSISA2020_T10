@@ -1,16 +1,39 @@
 package main.mrs.dto;
 
-import main.mrs.model.StavkaCenovnika;
+import main.mrs.model.TipPregleda;
 
 public class TipPregledaDTO {
 	
-	
+	private Integer id;
 	private String naziv;
 	private String opis;
 	
     private int brojAktvnih;
     private StavkaCenovnikaDTO stavka;
 
+    public TipPregledaDTO() {
+    	
+    }
+    
+    public TipPregledaDTO(TipPregleda s) {
+		this(s.getNaziv(), s.getOpis(), s.getBrojAktvnih());
+	}
+
+	public TipPregledaDTO(String naziv2, String opis2, int brojAktivnih) {
+		//this.id = id2;
+		this.naziv = naziv2;
+		this.opis = opis2;
+		this.brojAktvnih = brojAktivnih;
+		this.stavka = new StavkaCenovnikaDTO();
+	}
+
+	public Integer getId() {
+    	return id;
+    }
+
+    public void setId(Integer id) {
+    	this.id = id;
+    }
 	
 	public String getNaziv() {
 		return naziv;

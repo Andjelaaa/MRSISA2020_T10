@@ -1,10 +1,10 @@
 Vue.component('dodtipapregleda', {
 	data: function(){
 		return{
-			tipPregleda: {},
+			tipPregleda: {naziv:'', opis:'', brojAktvnih:0},
 			nazivGreska: '',
 			opisGreska: '',
-			sifraGreska: ''
+			error: ''
 		}
 	}, 
 	
@@ -12,6 +12,7 @@ Vue.component('dodtipapregleda', {
 	
 		<div>
 		<h1> Forma za dodavanje tipa pregleda </h1>
+		<p>{{error}}</p>
 		<table>
 			<tbody>
 			   <tr>
@@ -21,13 +22,7 @@ Vue.component('dodtipapregleda', {
 			   		<td style="color: red">{{nazivGreska}}</td>
 	
 			   </tr>
-			   <tr>
-			   
-			   		<td>Sifra tipa pregleda: </td>
-			   		<td><input id="sifra" type="text" v-model="tipPregleda.sifra"></td>
-			   		<td style="color: red">{{sifraGreska}}</td>
-			   		
-			   </tr>
+
 			   <tr>
 			   		
 			   		<td>Opis tipa pregleda: </td>
@@ -53,30 +48,34 @@ Vue.component('dodtipapregleda', {
 		},
 		validacija: function(){
 			this.nazivGreska = '';
-			this.sifraGreska = '';
 			this.opisGreska = '';
 			
 			if(!this.tipPregleda.naziv)
 				this.nazivGreska = 'Naziv je obavezno polje!';
-			if(!this.tipPregleda.sifra)
-				this.sifraGreska = 'Sifra je obavezno polje!';
+
 			if(!this.tipPregleda.opis)
 				this.opisGreska = 'Opis je obavezno polje!';
-			if(this.tipPregleda.naziv && this.tipPregleda.sifra && this.tipPregleda.opis){
+			if(this.tipPregleda.naziv && this.tipPregleda.opis){
 				return 0;
 			}
 			return 1;
 			
 		},
 		dodaj : function(){	
+			this.error = '';
 			if(this.validacija()==1)
 				return;
 			
-//			axios
-//			.post('rest/dodaj/tippregleda', tipPregleda)
-//			.then((res)=>{
-//				this.$router.push('/');
-//			})
+			axios
+			.post('api/tippregleda', this.tipPregleda)
+			.then((res)=>{
+				console.log('uspesno');
+				this.$router.push('/');
+			}).catch((res)=>{
+				this.error = 'Vec postoji pregled sa istim imenom';
+			}
+				
+			)
 		}
 		
 	}

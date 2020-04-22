@@ -2,10 +2,17 @@ package main.mrs.dto;
 import java.util.*;
 
 public class SifarnikDijagnozaDTO {
-  
+	
+   private Integer id;
    public Set<DijagnozaDTO> dijagnoza;
    
-   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<DijagnozaDTO> getDijagnoza() {
       if (dijagnoza == null)
          dijagnoza = new java.util.HashSet<DijagnozaDTO>();

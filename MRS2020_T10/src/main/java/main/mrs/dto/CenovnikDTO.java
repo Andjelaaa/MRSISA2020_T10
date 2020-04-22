@@ -2,10 +2,19 @@ package main.mrs.dto;
 import java.util.*;
 
 public class CenovnikDTO {
+   private Integer id;
    public Set<StavkaCenovnikaDTO> stavkaCenovnika;
    
    
-   public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
+   public Integer getId() {
+	return id;
+}
+
+public void setId(Integer id) {
+	this.id = id;
+}
+
+public Set<StavkaCenovnikaDTO> getStavkaCenovnika() {
       if (stavkaCenovnika == null)
          stavkaCenovnika = new HashSet<StavkaCenovnikaDTO>();
       return stavkaCenovnika;

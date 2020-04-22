@@ -35,9 +35,16 @@ public class Operacija {
 	//@JoinColumn(name="operacija_id", nullable=false)
     public Set<Lekar> lekar;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 
-public StavkaCenovnika getStavkaCenovnika() {
+	public StavkaCenovnika getStavkaCenovnika() {
 		return stavkaCenovnika;
 	}
 

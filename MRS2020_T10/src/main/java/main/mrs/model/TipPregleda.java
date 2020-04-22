@@ -16,7 +16,7 @@ public class TipPregleda {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="naziv", unique=false, nullable=false)
+	@Column(name="naziv", unique=true, nullable=false)
 	private String naziv;
 	
 	@Column(name="opis", unique=false, nullable=false)
@@ -28,6 +28,15 @@ public class TipPregleda {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private StavkaCenovnika stavka;
 	
+	public TipPregleda() {}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public StavkaCenovnika getStavka() {
 		return stavka;
 	}

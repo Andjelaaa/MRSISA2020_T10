@@ -1,6 +1,7 @@
 package main.mrs.dto;
 
 public class ZahtevRegDTO {
+	private Integer id;
 	private String email;
 	private String lozinka;
 	private String ime;
@@ -9,6 +10,14 @@ public class ZahtevRegDTO {
 	private String grad;
 	private String drzava;
 	private String kontakt;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getEmail() {
 		return email;
 	}

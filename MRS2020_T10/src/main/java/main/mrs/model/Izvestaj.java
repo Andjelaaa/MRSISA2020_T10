@@ -29,7 +29,13 @@ public class Izvestaj {
 	@JoinColumn(name="izvestaj", nullable=false)
 	public Set<Lek> lek;
    
-   
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<Dijagnoza> getDijagnoza() {
       if (dijagnoza == null)
          dijagnoza = new HashSet<Dijagnoza>();

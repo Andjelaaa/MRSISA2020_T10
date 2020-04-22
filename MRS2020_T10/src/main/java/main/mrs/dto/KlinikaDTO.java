@@ -2,6 +2,7 @@ package main.mrs.dto;
 import java.util.*;
 
 public class KlinikaDTO {
+	private Integer id;
    private String naziv;
    private String adresa;
    private String opis;
@@ -16,6 +17,13 @@ public class KlinikaDTO {
    public Set<LekarDTO> lekar;
    public Set<MedSestraDTO> medSestra;
    
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public CenovnikDTO getCenovnik() {
 	return cenovnik;

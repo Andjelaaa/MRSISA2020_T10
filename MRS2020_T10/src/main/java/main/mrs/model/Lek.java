@@ -19,6 +19,13 @@ public class Lek {
 	@Column(name="naziv", unique=false, nullable=false)
 	private String naziv;
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getSifra() {
 		return sifra;
 	}

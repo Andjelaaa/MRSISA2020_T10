@@ -2,9 +2,16 @@ package main.mrs.dto;
 import java.util.*;
 
 public class RadniKalendarDTO {
+	private Integer id;
    public Set<OdsustvoDTO> odsustvo;
    
-   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new java.util.HashSet<OdsustvoDTO>();

@@ -20,6 +20,13 @@ public class RadniKalendar {
 	@JoinColumn(name="radniKalendar", nullable=false)
     public Set<Odsustvo> odsustvo;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<Odsustvo> getOdsustvo() {
       if (odsustvo == null)

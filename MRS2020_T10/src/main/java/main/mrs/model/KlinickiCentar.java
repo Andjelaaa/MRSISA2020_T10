@@ -25,7 +25,13 @@ public class KlinickiCentar {
 	@JoinColumn(name="kc_id", nullable=false)
     public Set<Klinika> klinika;
    
-   
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<Klinika> getKlinika() {
       if (klinika == null)
          klinika = new HashSet<Klinika>();

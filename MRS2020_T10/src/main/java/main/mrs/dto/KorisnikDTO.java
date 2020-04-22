@@ -1,14 +1,25 @@
 package main.mrs.dto;
 
+
+
 public abstract class KorisnikDTO {
-	private String email;
-	private String lozinka;
-	private String ime;
-	private String prezime;
-	private String adresa;
-	private String grad;
-	private String drzava;
-	private String kontakt;
+	protected Integer id;
+	protected String email;
+	protected String lozinka;
+	protected String ime;
+	protected String prezime;
+	protected String adresa;
+	protected String grad;
+	protected String drzava;
+	protected String kontakt;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getEmail() {
 		return email;

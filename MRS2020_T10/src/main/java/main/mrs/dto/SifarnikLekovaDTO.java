@@ -2,8 +2,16 @@ package main.mrs.dto;
 import java.util.*;
 
 public class SifarnikLekovaDTO {
+	private Integer id;
    public Set<LekDTO> lek;
    
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<LekDTO> getLek() {
       if (lek == null)

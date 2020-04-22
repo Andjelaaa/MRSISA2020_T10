@@ -2,6 +2,7 @@ package main.mrs.dto;
 import java.util.*;
 
 public class OperacijaDTO {
+	private Integer id;
    private Date datumVreme;
    private int trajanje;
    private StatusDTO status;
@@ -10,6 +11,13 @@ public class OperacijaDTO {
    public SalaDTO sala;
    public Set<LekarDTO> lekar;
   
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 public StavkaCenovnikaDTO getStavkaCenovnika() {
 	return stavkaCenovnika;
 }

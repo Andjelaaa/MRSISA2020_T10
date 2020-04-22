@@ -50,6 +50,13 @@ public class Klinika {
 	@JoinColumn(name="klinika_id", nullable=false)
     public Set<MedSestra> medSestra;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<Pacijent> getpacijent() {
       if (pacijent == null)

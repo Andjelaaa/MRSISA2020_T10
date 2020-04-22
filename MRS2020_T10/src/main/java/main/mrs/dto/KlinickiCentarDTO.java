@@ -2,9 +2,17 @@ package main.mrs.dto;
 import java.util.*;
 
 public class KlinickiCentarDTO {
+	private Integer id;
 	private String naziv;
    public Set<KlinikaDTO> klinika;
    
+   public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<KlinikaDTO> getKlinika() {
       if (klinika == null)

@@ -19,7 +19,13 @@ public class SifarnikLekova {
 	@JoinColumn(name="sifarnik_id", nullable=false)
     public Set<Lek> lek;
    
-   
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    public Set<Lek> getLek() {
       if (lek == null)
          lek = new java.util.HashSet<Lek>();

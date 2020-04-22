@@ -20,7 +20,13 @@ public class SifarnikDijagnoza {
 	@JoinColumn(name="sifarnik", nullable=false)
 	public Set<Dijagnoza> dijagnoza;
 
-   
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<Dijagnoza> getDijagnoza() {
       if (dijagnoza == null)

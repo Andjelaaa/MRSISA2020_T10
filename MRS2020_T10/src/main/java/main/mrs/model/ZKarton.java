@@ -43,6 +43,13 @@ public class ZKarton {
 	@JoinColumn(name="zkarton_id", nullable=false)
     public Set<Operacija> operacija;
    
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
    
    public Set<Pregled> getPregled() {
       if (pregled == null)

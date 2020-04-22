@@ -30,6 +30,14 @@ public class ZahtevReg {
 	private String drzava;
 	@Column(name="kontakt", unique=true, nullable=false)
 	private String kontakt;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getEmail() {
 		return email;
 	}

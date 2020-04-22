@@ -12,12 +12,20 @@ import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
 
 public class OdsustvoDTO {
+	private Integer id;
 	private StatusDTO status;
 	private String opis;
 	private MedSestraDTO sestra;
 	private LekarDTO lekar;
 	
 	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public StatusDTO getStatus() {
 		return status;
 	}

@@ -3,6 +3,7 @@ package main.mrs.dto;
 import java.util.*;
 
 public class StavkaCenovnikaDTO {
+	private Integer id;
 	private double cena;
 
 	public Set<TipPregledaDTO> tipPregleda;

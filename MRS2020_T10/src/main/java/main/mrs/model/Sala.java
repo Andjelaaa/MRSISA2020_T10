@@ -26,6 +26,13 @@ public class Sala {
 	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Set<Pregled> pregled;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public int getBroj() {
 		return broj;
 	}
