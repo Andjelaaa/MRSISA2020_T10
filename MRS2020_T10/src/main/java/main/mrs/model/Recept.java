@@ -18,10 +18,9 @@ public class Recept {
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="recept", nullable=false)
+	@JoinColumn(name="recept", nullable=true)
     public MedSestra medSestra;
 	
-
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="recept", nullable=false)
     public Set<Lek> lek;

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -33,26 +34,28 @@ public class Klinika {
 	@Column(name="kontaktKlinike", unique=true, nullable=false)
 	private String kontaktKlinike;
 	
-	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="klinika_id", nullable=false)
+	@ManyToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=true)
 	public Set<Pacijent> pacijent;
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="klinika_id", nullable=false)
+	@JoinColumn(name="klinika_id", nullable=true)
 	public Set<Pregled> pregled;
 	@OneToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	//@JoinColumn(name="cenovnik_id", nullable=false)
 	public Cenovnik cenovnik;
 	@OneToMany(mappedBy="klinika",fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     public Set<AdminKlinike> adminKlinike;
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="klinika_id", nullable=false)
+	@JoinColumn(name="klinika_id", nullable=true)
     public Set<Operacija> operacija;
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="klinika_id", nullable=false)
+	@JoinColumn(name="klinika_id", nullable=true)
     public Set<Lekar> lekar;
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="klinika_id", nullable=false)
+	@JoinColumn(name="klinika_id", nullable=true)
     public Set<MedSestra> medSestra;
+	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+	@JoinColumn(name="klinika_id", nullable=true)
+    public Set<Sala> sale;
    
 	public Klinika() {}
 	

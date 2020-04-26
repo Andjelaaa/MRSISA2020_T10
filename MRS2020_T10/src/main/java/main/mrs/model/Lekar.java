@@ -41,9 +41,26 @@ public class Lekar extends Korisnik {
    
    @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Set<Pregled> pregled;
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   public Klinika klinika;
    
-   
-   public Set<Operacija> getOperacija() {
+   public Set<Pregled> getPregled() {
+	return pregled;
+}
+
+public void setPregled(Set<Pregled> pregled) {
+	this.pregled = pregled;
+}
+
+public Klinika getKlinika() {
+	return klinika;
+}
+
+public void setKlinika(Klinika klinika) {
+	this.klinika = klinika;
+}
+
+public Set<Operacija> getOperacija() {
       if (operacija == null)
          operacija = new java.util.HashSet<Operacija>();
       return operacija;

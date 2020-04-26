@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 @Entity
 public class Operacija {
@@ -28,7 +29,7 @@ public class Operacija {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public StavkaCenovnika stavkaCenovnika;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Sala sala;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -1,5 +1,8 @@
 package main.mrs.dto;
 
+import java.util.Set;
+
+
 import main.mrs.model.TipPregleda;
 
 public class TipPregledaDTO {
@@ -10,6 +13,7 @@ public class TipPregledaDTO {
 	
     private int brojAktvnih;
     private StavkaCenovnikaDTO stavka;
+    private Set<LekarDTO> lekar;
 
     public TipPregledaDTO() {
     	
@@ -65,6 +69,14 @@ public class TipPregledaDTO {
 
 	public void setStavka(StavkaCenovnikaDTO stavka) {
 		this.stavka = stavka;
+	}
+
+	public Set<LekarDTO> getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Set<LekarDTO> lekar) {
+		this.lekar = lekar;
 	}
 
 }

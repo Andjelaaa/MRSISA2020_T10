@@ -1,6 +1,8 @@
 package main.mrs.dto;
 import java.util.*;
 
+
+
 /** Lekar ima recnik pregleda, kljuc je datum, vrednost pregled
  * 
  *  */
@@ -13,8 +15,17 @@ public class LekarDTO extends KorisnikDTO {
    public TipPregledaDTO tipPregleda;
    public Set<OperacijaDTO> operacija;
    public Set<OdsustvoDTO> odsustvo;
-   public Set<PregledDTO> pregled;
-   
+   public KlinikaDTO klinika;
+   public KlinikaDTO getKlinika() {
+	return klinika;
+	}
+	
+	public void setKlinika(KlinikaDTO klinika) {
+		this.klinika = klinika;
+	}
+	
+	public Set<PregledDTO> pregled;
+	  
    
    public Set<OperacijaDTO> getOperacija() {
       if (operacija == null)

@@ -2,10 +2,21 @@ package main.mrs.dto;
 
 import java.util.*;
 
+
+
 public class SalaDTO {
 	private Integer id;
 	private int broj;
 	private String naziv;
+	public KlinikaDTO klinika;
+
+	public KlinikaDTO getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(KlinikaDTO klinika) {
+		this.klinika = klinika;
+	}
 
 	public Set<PregledDTO> pregled;
 

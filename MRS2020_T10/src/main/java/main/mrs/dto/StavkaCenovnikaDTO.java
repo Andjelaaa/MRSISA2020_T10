@@ -2,9 +2,20 @@ package main.mrs.dto;
 
 import java.util.*;
 
+import main.mrs.model.Cenovnik;
+
 public class StavkaCenovnikaDTO {
 	private Integer id;
 	private double cena;
+	public CenovnikDTO cenovnik;
+
+	public CenovnikDTO getCenovnik() {
+		return cenovnik;
+	}
+
+	public void setCenovnik(CenovnikDTO cenovnik) {
+		this.cenovnik = cenovnik;
+	}
 
 	public Set<TipPregledaDTO> tipPregleda;
 

@@ -11,8 +11,6 @@ import javax.persistence.OneToMany;
 @Entity
 public class AdminKlinike extends Korisnik {
    
-	
-	
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	@JoinColumn(name="odsustvo_id", nullable=false)
     public Set<Odsustvo> odsustvo;

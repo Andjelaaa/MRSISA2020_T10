@@ -1,5 +1,7 @@
 package main.mrs.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -28,6 +32,18 @@ public class TipPregleda {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private StavkaCenovnika stavka;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="tip_pregleda_id", nullable=true)
+	private Set<Lekar> lekar;
+	
+	public Set<Lekar> getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Set<Lekar> lekar) {
+		this.lekar = lekar;
+	}
+
 	public TipPregleda() {}
 	
 	public Integer getId() {

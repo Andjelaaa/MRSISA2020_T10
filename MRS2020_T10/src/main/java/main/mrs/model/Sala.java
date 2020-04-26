@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 @Entity
 public class Sala {
@@ -25,6 +27,17 @@ public class Sala {
 
 	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Set<Pregled> pregled;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Klinika klinika;
+
+	public Klinika getKlinika() {
+		return klinika;
+	}
+
+	public void setKlinika(Klinika klinika) {
+		this.klinika = klinika;
+	}
 
 	public Integer getId() {
 		return id;
