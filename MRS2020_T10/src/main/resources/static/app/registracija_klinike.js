@@ -17,11 +17,11 @@ Vue.component('regklinike', {
 	}, 
 	
 	template: `
-	
 		<div>
 		<h1> Registracija klinike: </h1>
 		{{dbError}}
-		<table>
+		<v-data-table>
+		
 		   <tr>
 		   
 		   		<td>Naziv klinike: </td>
@@ -63,7 +63,7 @@ Vue.component('regklinike', {
 		   		<td><button v-on:click = "napraviKliniku()">Napavi kliniku</button></td>	   
 		   </tr>
 		   
-		</table>
+		</v-data-table>
 		
 		<br>
 		<br>
