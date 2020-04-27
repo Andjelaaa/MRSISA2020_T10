@@ -116,7 +116,6 @@ Vue.component('regklinike', {
 		},
 		nazad: function(){
 				return;
-			
 		}
 	}
 

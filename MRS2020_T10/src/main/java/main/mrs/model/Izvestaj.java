@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -21,12 +22,10 @@ public class Izvestaj {
 	@Column(name="opis", unique=false, nullable=false)
 	private String opis; 
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="izvestaj", nullable=false)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Set<Dijagnoza> dijagnoza;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="izvestaj", nullable=false)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Set<Lek> lek;
    
 	public Integer getId() {

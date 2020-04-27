@@ -5,6 +5,10 @@ const StranicaZaRegistraciju = { template: '<strzareg></strzareg>' }
 const ProfilSuperAdmina = { template: '<superprofil></superprofil>' }
 const DodavanjeSale = {template: '<dodsale></dodsale>'}
 const DodavanjeLekara = {template: '<dodlekara></dodlekara>'}
+const SifrarnikLekova = {template: '<sifrarnik1></sifrarnik1>'}
+const SifrarnikDijagnoza = {template: '<sifrarnik2></sifrarnik2>'}
+const KreirajZK = {template: '<kreirajzk></kreirajzk>'}
+const OdobravanjeReg = {template: '<odobri_zahtev></odobri_zahtev>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -15,7 +19,11 @@ const router = new VueRouter({
 	    { path: '/registracija', component: StranicaZaRegistraciju},
 	    { path: '/sprofil', component: ProfilSuperAdmina},
 	    { path: '/dsala', component: DodavanjeSale},
-	    {path: '/dlekar', component: DodavanjeLekara}
+	    {path: '/dlekar', component: DodavanjeLekara},
+	    {path: '/sifrarnik1', component: SifrarnikLekova},
+	    {path: '/sifrarnik2', component: SifrarnikDijagnoza},
+	    {path: '/kreirajzk', component: KreirajZK},
+	    {path: '/odobri_zahtev', component: OdobravanjeReg}
 	    
 	  ]
 });

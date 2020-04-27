@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -44,12 +46,11 @@ public class Pregled {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Izvestaj izvestaj;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="pregled_id", nullable=false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   
     public Set<Lek> lek;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="pregled_id", nullable=false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Dijagnoza> dijagnoza;
    
     

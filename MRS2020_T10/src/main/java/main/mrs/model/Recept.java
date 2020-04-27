@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 @Entity
@@ -18,11 +20,10 @@ public class Recept {
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="recept", nullable=true)
+	@JoinColumn(name="med_sestra", nullable=true)
     public MedSestra medSestra;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="recept", nullable=false)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Lek> lek;
    
 	public Integer getId() {

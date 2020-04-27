@@ -1,5 +1,8 @@
 package main.mrs.model;
 
+
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +19,9 @@ public class Lek {
 	@Column(name="sifra", unique=true, nullable=false)
 	private String sifra;
 	
-	@Column(name="naziv", unique=false, nullable=false)
+	@Column(name="naziv", unique=true, nullable=false)
 	private String naziv;
+	
 	
 	public Integer getId() {
 		return id;

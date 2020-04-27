@@ -1,10 +1,20 @@
 package main.mrs.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import main.mrs.dto.IzvestajDTO;
+import main.mrs.dto.PregledDTO;
+import main.mrs.dto.ReceptDTO;
 
 @Entity
 public class Dijagnoza {
@@ -18,6 +28,7 @@ public class Dijagnoza {
 	
 	@Column(name="naziv", unique=false, nullable=false)
 	private String naziv;
+	
 	
 	public Integer getId() {
 		return id;
