@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.TipPregleda;
 
@@ -83,5 +84,7 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long>{
 	 
 	  <S extends TipPregleda> S saveAndFlush(S arg0);
 	  
-	  List<TipPregleda> findByNaziv(String naziv);
+	  
+	  @Query(value = "SELECT * FROM TIP_PREGLEDA WHERE NAZIV = ?1", nativeQuery = true)
+	  TipPregleda findByNaziv(String naziv);
 }

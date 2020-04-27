@@ -24,6 +24,9 @@ public class LekarContoller {
 	
 	@Autowired
 	private LekarService LekarService;
+	
+	@Autowired
+	TipPregledaService tps = new TipPregledaService();	
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<LekarDTO>> getAllLekars() {
@@ -54,9 +57,11 @@ public class LekarContoller {
 		Lekar.setRvKraj(LekarDTO.getRvKraj());
 		
 		// proveriti da li moze ovako
-//		System.out.println(LekarDTO.getTipPregleda().getNaziv());
-//		TipPregledaService tps = new TipPregledaService();		
-//		Lekar.setTipPregleda(tps.findByNaziv(LekarDTO.getTipPregleda().getNaziv()));
+		System.out.println(LekarDTO.getTipPregleda().getNaziv());
+		
+			
+		TipPregleda tp= tps.findByNaziv(LekarDTO.getTipPregleda().getNaziv()); 
+		Lekar.setTipPregleda(tp);
 		
 		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
 		//Lekar.setKlinika();

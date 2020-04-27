@@ -37,6 +37,6 @@ public class TipPregledaService {
 
 	public TipPregleda findByNaziv(String naziv) {
 		// TODO: promeniti
-		return TipPregledaRepository.findAll().get(0);
+		return TipPregledaRepository.findByNaziv(naziv);
 	}
 }

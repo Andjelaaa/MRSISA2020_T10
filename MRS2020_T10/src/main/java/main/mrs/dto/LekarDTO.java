@@ -28,12 +28,12 @@ public class LekarDTO extends KorisnikDTO {
    
    public LekarDTO(Lekar s) {
 		this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
-				s.getDrzava(), new TipPregledaDTO(s.getTipPregleda()), s.getRvPocetak(), s.getRvKraj());
+				s.getDrzava(), s.getRvPocetak(), s.getRvKraj());
 	}
 
 
 	public LekarDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
-			String drzava, TipPregledaDTO tp, String rvPoc, String rvKraj) {
+			String drzava, String rvPoc, String rvKraj) {
 		this.id = id;
 		this.email = email;
 		this.lozinka = lozinka;
@@ -44,7 +44,7 @@ public class LekarDTO extends KorisnikDTO {
 		this.drzava = drzava;
 		this.prosecnaOcena = 0.0;
 		this.brojOcena = 0;
-		this.tipPregleda = tp; 
+		this.tipPregleda = new TipPregledaDTO(); 
 		this.rvPocetak = rvPoc;
 		this.rvKraj = rvKraj;
 		this.operacija = new HashSet<OperacijaDTO>();
