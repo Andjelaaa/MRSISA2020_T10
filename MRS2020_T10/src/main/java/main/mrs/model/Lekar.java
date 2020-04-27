@@ -25,10 +25,10 @@ public class Lekar extends Korisnik {
    private int brojOcena;
    
    @Column(name="rvPocetak", unique=false, nullable=false)
-   private Date rvPocetak;
+   private String rvPocetak;
    
    @Column(name="rvKraj", unique=false, nullable=false)
-   private Date rvKraj;
+   private String rvKraj;
    
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public TipPregleda tipPregleda;
@@ -139,19 +139,19 @@ public void setBrojOcena(int brojOcena) {
 	this.brojOcena = brojOcena;
 }
 
-public Date getRvPocetak() {
+public String getRvPocetak() {
 	return rvPocetak;
 }
 
-public void setRvPocetak(Date rvPocetak) {
+public void setRvPocetak(String rvPocetak) {
 	this.rvPocetak = rvPocetak;
 }
 
-public Date getRvKraj() {
+public String getRvKraj() {
 	return rvKraj;
 }
 
-public void setRvKraj(Date rvKraj) {
+public void setRvKraj(String rvKraj) {
 	this.rvKraj = rvKraj;
 }
 

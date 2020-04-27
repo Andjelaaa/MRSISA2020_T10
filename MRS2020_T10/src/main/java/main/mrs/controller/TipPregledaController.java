@@ -42,6 +42,7 @@ public class TipPregledaController {
 
 		TipPregleda tipPregleda = new TipPregleda();
 		tipPregleda.setNaziv(TipPregledaDTO.getNaziv());
+		
 		tipPregleda.setOpis(TipPregledaDTO.getOpis());
 		tipPregleda.setBrojAktvnih(TipPregledaDTO.getBrojAktvnih());
 		

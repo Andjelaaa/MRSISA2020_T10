@@ -49,7 +49,7 @@ public abstract class Korisnik {
 	@Column(name="drzava", unique=false, nullable=false)
 	private String drzava;
 	
-	@Column(name="kontakt", unique=false, nullable=false)
+	@Column(name="kontakt", unique=false, nullable=true)
 	private String kontakt;
 	
 	public Integer getId() {

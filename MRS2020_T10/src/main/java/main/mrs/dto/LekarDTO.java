@@ -1,5 +1,8 @@
 package main.mrs.dto;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import main.mrs.model.Lekar;
 
 
 
@@ -9,13 +12,49 @@ import java.util.*;
 public class LekarDTO extends KorisnikDTO {
    private Double prosecnaOcena;
    private int brojOcena;
-   private Date rvPocetak;
-   private Date rvKraj;
    
+   // mozda promeniti
+   private String rvPocetak;
+   private String rvKraj;
+   
+   // specijalizacija
    public TipPregledaDTO tipPregleda;
    public Set<OperacijaDTO> operacija;
    public Set<OdsustvoDTO> odsustvo;
    public KlinikaDTO klinika;
+   public Set<PregledDTO> pregled;
+   
+   public LekarDTO() {}
+   
+   public LekarDTO(Lekar s) {
+		this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
+				s.getDrzava(), new TipPregledaDTO(s.getTipPregleda()), s.getRvPocetak(), s.getRvKraj());
+	}
+
+
+	public LekarDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
+			String drzava, TipPregledaDTO tp, String rvPoc, String rvKraj) {
+		this.id = id;
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.prosecnaOcena = 0.0;
+		this.brojOcena = 0;
+		this.tipPregleda = tp; 
+		this.rvPocetak = rvPoc;
+		this.rvKraj = rvKraj;
+		this.operacija = new HashSet<OperacijaDTO>();
+		this.odsustvo = new HashSet<OdsustvoDTO>();
+		this.pregled = new HashSet<PregledDTO>();
+		this.klinika = new KlinikaDTO();
+
+	}
+   
+   
    public KlinikaDTO getKlinika() {
 	return klinika;
 	}
@@ -23,10 +62,7 @@ public class LekarDTO extends KorisnikDTO {
 	public void setKlinika(KlinikaDTO klinika) {
 		this.klinika = klinika;
 	}
-	
-	public Set<PregledDTO> pregled;
-	  
-   
+  
    public Set<OperacijaDTO> getOperacija() {
       if (operacija == null)
          operacija = new java.util.HashSet<OperacijaDTO>();
@@ -106,19 +142,19 @@ public void setBrojOcena(int brojOcena) {
 	this.brojOcena = brojOcena;
 }
 
-public Date getRvPocetak() {
+public String getRvPocetak() {
 	return rvPocetak;
 }
 
-public void setRvPocetak(Date rvPocetak) {
+public void setRvPocetak(String rvPocetak) {
 	this.rvPocetak = rvPocetak;
 }
 
-public Date getRvKraj() {
+public String getRvKraj() {
 	return rvKraj;
 }
 
-public void setRvKraj(Date rvKraj) {
+public void setRvKraj(String rvKraj) {
 	this.rvKraj = rvKraj;
 }
 

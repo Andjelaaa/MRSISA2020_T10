@@ -34,4 +34,9 @@ public class TipPregledaService {
 	public void remove(Long id) {
 		TipPregledaRepository.deleteById(id);
 	}
+
+	public TipPregleda findByNaziv(String naziv) {
+		// TODO: promeniti
+		return TipPregledaRepository.findAll().get(0);
+	}
 }

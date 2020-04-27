@@ -2,6 +2,8 @@ package main.mrs.dto;
 
 import java.util.*;
 
+import main.mrs.model.Sala;
+
 
 
 public class SalaDTO {
@@ -9,6 +11,21 @@ public class SalaDTO {
 	private int broj;
 	private String naziv;
 	public KlinikaDTO klinika;
+
+	public SalaDTO(Sala s) {
+		this.id = s.getId();
+		this.broj = s.getBroj();
+		this.naziv = s.getNaziv();
+		this.klinika = new KlinikaDTO();
+	}
+	
+	public SalaDTO(String naziv, int broj) {
+		this.naziv = naziv;
+		this.broj = broj;
+		
+	}
+	
+	public SalaDTO() {}
 
 	public KlinikaDTO getKlinika() {
 		return klinika;

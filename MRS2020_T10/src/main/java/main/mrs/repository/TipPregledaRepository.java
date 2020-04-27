@@ -82,4 +82,6 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long>{
 
 	 
 	  <S extends TipPregleda> S saveAndFlush(S arg0);
+	  
+	  List<TipPregleda> findByNaziv(String naziv);
 }
