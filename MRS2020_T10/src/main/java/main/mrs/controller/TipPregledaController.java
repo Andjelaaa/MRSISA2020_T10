@@ -42,8 +42,8 @@ public class TipPregledaController {
 		return new ResponseEntity<>(TipPregledasDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/search", consumes = "text/plain")
-	public ResponseEntity<List<TipPregledaDTO>> getSearchTipPregleda(@RequestBody String searchParam) {
+	@GetMapping(value = "/search/{searchParam}")
+	public ResponseEntity<List<TipPregledaDTO>> getSearchTipPregleda(@PathVariable String searchParam) {
 		System.out.println(searchParam);
 		List<TipPregleda> TipPregledas = TipPregledaService.findSearchNaziv(searchParam);
 

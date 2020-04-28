@@ -43,7 +43,7 @@ Vue.component('tipovipregleda', {
 			console.log(this.pretraga);
 			if(this.pretraga){
 				axios
-		       	.get('api/tippregleda/search', this.pretraga)
+		       	.get('api/tippregleda/search/'+ this.pretraga)
 		       	.then(response => (this.tipoviPregleda = response.data));
 				
 			}
