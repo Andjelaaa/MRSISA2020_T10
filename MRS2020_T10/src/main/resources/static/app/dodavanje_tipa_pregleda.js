@@ -43,7 +43,7 @@ Vue.component('dodtipapregleda', {
 	`, 
 	methods : {
 		nazad : function(){
-//			this.$router.push('/prethodnastranica')
+			this.$router.push('/admin')
 			return;
 		},
 		validacija: function(){

@@ -1,21 +1,21 @@
-Vue.component('dodlekara', {
+Vue.component('dpregled', {
 	data: function(){
 		return{
-			lekar: {tipPregleda: null},
-			tipPregleda: {},
-			tipoviPregleda: null,
-			imeGreska: '',
-			prezimeGreska: '',
-			emailGreska: '',
-			lozinkaGreska: '',
-			adresaGreska: '',
-			gradGreska: '',
-			drzavaGreska: '',
-			kontaktGreska: '',
-			pocGreska: '',
-			krajGreska: '',
-			specijalizacijaGreska: '',
-			error: ''
+//			lekar: {tipPregleda: null},
+//			tipPregleda: {},
+//			tipoviPregleda: null,
+//			imeGreska: '',
+//			prezimeGreska: '',
+//			emailGreska: '',
+//			lozinkaGreska: '',
+//			adresaGreska: '',
+//			gradGreska: '',
+//			drzavaGreska: '',
+//			kontaktGreska: '',
+//			pocGreska: '',
+//			krajGreska: '',
+//			specijalizacijaGreska: '',
+//			error: ''
 				
 		}
 	}, 
@@ -168,12 +168,12 @@ Vue.component('dodlekara', {
 		
 	},
 	mounted () {
-           axios
-          .get('api/tippregleda/all')
-          .then(res => {
-        	  this.tipoviPregleda = res.data;
-
-          })
+//           axios
+//          .get('api/tippregleda/all')
+//          .then(res => {
+//        	  this.tipoviPregleda = res.data;
+//
+//          })
     },
 
 });

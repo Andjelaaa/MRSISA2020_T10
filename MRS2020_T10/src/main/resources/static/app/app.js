@@ -9,6 +9,9 @@ const SifrarnikLekova = {template: '<sifrarnik1></sifrarnik1>'}
 const SifrarnikDijagnoza = {template: '<sifrarnik2></sifrarnik2>'}
 const KreirajZK = {template: '<kreirajzk></kreirajzk>'}
 const OdobravanjeReg = {template: '<odobri_zahtev></odobri_zahtev>'}
+const LekarPocetna = {template: '<lekar></lekar>'}
+const AdminPocetna = {template: '<admin></admin>'}
+const DodavanjePregleda = {template: '<dpregled></dpregled>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -23,7 +26,10 @@ const router = new VueRouter({
 	    {path: '/sifrarnik1', component: SifrarnikLekova},
 	    {path: '/sifrarnik2', component: SifrarnikDijagnoza},
 	    {path: '/kreirajzk', component: KreirajZK},
-	    {path: '/odobri_zahtev', component: OdobravanjeReg}
+	    {path: '/odobri_zahtev', component: OdobravanjeReg},
+	    {path: '/lekar', component: LekarPocetna},
+	    {path: '/admin', component: AdminPocetna},
+	    {path: '/dpregled', component: DodavanjePregleda}
 	    
 	  ]
 });

@@ -45,7 +45,7 @@ Vue.component('dodsale', {
 	`, 
 	methods : {
 		nazad : function(){
-//			this.$router.push('/prethodnastranica')
+			this.$router.push('/admin')
 			return;
 		},
 		validacija: function(){

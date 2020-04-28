@@ -54,12 +54,7 @@ public class LekarContoller {
 		Lekar.setAdresa(LekarDTO.getAdresa());
 		Lekar.setDrzava(LekarDTO.getDrzava());
 		Lekar.setRvPocetak(LekarDTO.getRvPocetak());
-		Lekar.setRvKraj(LekarDTO.getRvKraj());
-		
-		// proveriti da li moze ovako
-		System.out.println(LekarDTO.getTipPregleda().getNaziv());
-		
-			
+		Lekar.setRvKraj(LekarDTO.getRvKraj());		
 		TipPregleda tp= tps.findByNaziv(LekarDTO.getTipPregleda().getNaziv()); 
 		Lekar.setTipPregleda(tp);
 		
