@@ -29,9 +29,7 @@ Vue.component('empty', {
       </form>
 
     </div>
-
-
-    </span>
+  </div>
   </div>
 	`, 
 

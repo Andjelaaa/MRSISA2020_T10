@@ -34,4 +34,8 @@ public class LekarService {
 	public void remove(Long id) {
 		LekarRepository.deleteById(id);
 	}
+
+	public Lekar findByEmail(String email) {
+		return LekarRepository.findByEmail(email);
+	}
 }

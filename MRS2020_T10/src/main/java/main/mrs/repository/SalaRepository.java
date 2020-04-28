@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Sala;
 
@@ -82,4 +83,10 @@ public interface SalaRepository extends JpaRepository<Sala, Long>{
 
 	 
 	  <S extends Sala> S saveAndFlush(S arg0);
+
+	@Query(value = "SELECT * FROM SALA WHERE BROJ = ?1", nativeQuery = true)
+	Sala findByBroj(int broj);
+
+	@Query(value = "SELECT * FROM SALA WHERE NAZIV = ?1", nativeQuery = true)
+	Sala findByNaziv(String naziv);
 }

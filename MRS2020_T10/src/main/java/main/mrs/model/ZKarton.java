@@ -33,14 +33,14 @@ public class ZKarton {
     private Date datumRodjenja;
    
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="zkarton_id", nullable=false)
+	@JoinColumn(name="zkarton_id", nullable=true)
     public Set<Pregled> pregled;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Lek> lek;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="zkarton_id", nullable=false)
+	@JoinColumn(name="zkarton_id", nullable=true)
     public Set<Operacija> operacija;
    
 	public Integer getId() {

@@ -34,4 +34,11 @@ public class SalaService {
 	public void remove(Long id) {
 		SalaRepository.deleteById(id);
 	}
+	public Sala findByBroj(int broj) {
+		return SalaRepository.findByBroj(broj);
+	}
+
+	public Sala findByNaziv(String naziv) {
+		return SalaRepository.findByNaziv(naziv);
+	}
 }

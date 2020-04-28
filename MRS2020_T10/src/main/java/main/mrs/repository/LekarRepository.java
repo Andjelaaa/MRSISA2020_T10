@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Lekar;
 
@@ -82,4 +83,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	 
 	  <S extends Lekar> S saveAndFlush(S arg0);
+
+	@Query(value = "SELECT * FROM LEKAR WHERE EMAIL = ?1", nativeQuery = true)
+	Lekar findByEmail(String email);
 }

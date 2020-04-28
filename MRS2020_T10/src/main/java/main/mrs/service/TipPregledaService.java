@@ -36,7 +36,11 @@ public class TipPregledaService {
 	}
 
 	public TipPregleda findByNaziv(String naziv) {
-		// TODO: promeniti
 		return TipPregledaRepository.findByNaziv(naziv);
+	}
+
+	public List<TipPregleda> findSearchNaziv(String searchParam) {
+		return TipPregledaRepository.findSearchNaziv(searchParam);
+
 	}
 }

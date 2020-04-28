@@ -2,6 +2,7 @@ package main.mrs.dto;
 import java.util.*;
 
 import main.mrs.model.Pacijent;
+import main.mrs.model.Pregled;
 
 public class PregledDTO {
 	private Integer id;
@@ -18,6 +19,13 @@ public class PregledDTO {
    public Set<DijagnozaDTO> dijagnoza;
    public PacijentDTO pacijent;
    
+   public PregledDTO() {}
+   
+   // dopuniti konverziju
+   public PregledDTO(Pregled s) {
+		this.id = s.getId();
+}
+
    public Integer getId() {
 		return id;
 	}

@@ -20,11 +20,11 @@ public class TipPregledaDTO {
     }
     
     public TipPregledaDTO(TipPregleda s) {
-		this(s.getNaziv(), s.getOpis(), s.getBrojAktvnih());
+		this(s.getId(), s.getNaziv(), s.getOpis(), s.getBrojAktvnih());
 	}
 
-	public TipPregledaDTO(String naziv2, String opis2, int brojAktivnih) {
-		//this.id = id2;
+	public TipPregledaDTO(int id2, String naziv2, String opis2, int brojAktivnih) {
+		this.id = id2;
 		this.naziv = naziv2;
 		this.opis = opis2;
 		this.brojAktvnih = brojAktivnih;

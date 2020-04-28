@@ -13,6 +13,7 @@ Vue.component('dodtipapregleda', {
 		<div>
 		<h1> Forma za dodavanje tipa pregleda </h1>
 		<p>{{error}}</p>
+		
 		<table>
 			<tbody>
 			   <tr>
@@ -43,7 +44,7 @@ Vue.component('dodtipapregleda', {
 	`, 
 	methods : {
 		nazad : function(){
-			this.$router.push('/admin')
+			this.$router.push('/tipovipregleda')
 			return;
 		},
 		validacija: function(){

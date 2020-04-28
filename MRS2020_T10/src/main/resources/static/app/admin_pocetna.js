@@ -16,7 +16,7 @@ Vue.component('admin', {
 		<button onclick="window.location.href='#/dsala'"> Dodaj salu </button>
 		<br>
 		<br>
-		<button onclick="window.location.href='#/dtpregled'"> Dodaj tip pregleda </button>
+		<button onclick="window.location.href='#/tipovipregleda'"> Tipovi pregleda </button>
 		<br>
 		<br>
 		<button onclick="window.location.href='#/dpregled'"> Novi termin za pregled </button>

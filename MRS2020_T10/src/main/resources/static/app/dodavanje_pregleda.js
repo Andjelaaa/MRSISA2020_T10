@@ -1,21 +1,20 @@
 Vue.component('dpregled', {
 	data: function(){
 		return{
-//			lekar: {tipPregleda: null},
-//			tipPregleda: {},
-//			tipoviPregleda: null,
-//			imeGreska: '',
-//			prezimeGreska: '',
-//			emailGreska: '',
-//			lozinkaGreska: '',
-//			adresaGreska: '',
-//			gradGreska: '',
-//			drzavaGreska: '',
-//			kontaktGreska: '',
-//			pocGreska: '',
-//			krajGreska: '',
-//			specijalizacijaGreska: '',
-//			error: ''
+			pregled: {tipPregleda: null, lekar: null, sala: null},
+			lekari: null,
+			sale: null, 
+			tipoviPregleda: null,
+			tipPregleda: {},
+			lekar: {},
+			sala: {},			
+			
+			datumVremeGreska: '',
+			tipPregledaGreska: '',
+			trajanjeGreska: '',
+			salaGreska: '',
+			lekarGreska: '',
+			error: ''
 				
 		}
 	}, 
@@ -23,70 +22,49 @@ Vue.component('dpregled', {
 	template: `
 	
 		<div>
-		<h1> Forma za registraciju lekara </h1>
+		<h1> Novi termin za pregled </h1>
 		<p>{{error}}</p>
 		<table>
 			<tbody>
 				<tr>			   
-			   		<td>Email: </td>
-			   		<td><input id="email" type="text" v-model="lekar.email"></td>
-			   		<td style="color: red">{{emailGreska}}</td>
-			   </tr>
-			   <tr>
-			   		<td>Lozinka: </td>
-			   		<td><input id="lozinka" type="text" v-model="lekar.lozinka"></td>
-			   		<td style="color: red">{{lozinkaGreska}}</td>
-			   </tr>
-			   <tr>
-			   
-			   		<td>Ime: </td>
-			   		<td><input id="ime" type="text" v-model="lekar.ime"></td>
-			   		<td style="color: red">{{imeGreska}}</td>	
-			   </tr>
-			   <tr>
-			   		<td>Prezime: </td>
-			   		<td><input id="prezime" type="text" v-model="lekar.prezime"></td>
-			   		<td style="color: red">{{prezimeGreska}}</td>
-			   </tr>	
+			   		<td>Datum i vreme: </td>
+			   		<td><input id="datumvreme" type="datetime-local" v-model="pregled.datumVreme"></td>
+			   		<td style="color: red">{{datumVremeGreska}}</td>
+			   </tr>			   
 			   <tr>			   
-			   		<td>Adresa: </td>
-			   		<td><input id="adresa" type="text" v-model="lekar.adresa"></td>
-			   		<td style="color: red">{{adresaGreska}}</td>
-			   </tr>
-			   <tr>
-			   		<td>Grad: </td>
-			   		<td><input id="grad" type="text" v-model="lekar.grad"></td>
-			   		<td style="color: red">{{gradGreska}}</td>
-			   </tr>
-			   <tr>			   
-			   		<td>Drzava: </td>
-			   		<td><input id="drzava" type="text" v-model="lekar.drzava"></td>
-			   		<td style="color: red">{{drzavaGreska}}</td>
-			   </tr>
-			   <tr>			   
-			   		<td>Kontakt telefon: </td>
-			   		<td><input id="kontakt" type="text" v-model="lekar.kontakt"></td>
-			   		<td style="color: red">{{kontaktGreska}}</td>
-			   </tr>
-			   <tr>			   
-			   		<td>Pocetak radnog vremena (format HH:MM): </td>
-			   		<td><input id="rvPocetak" type="text" v-model="lekar.rvPocetak"></td>
-			   		<td style="color: red">{{pocGreska}}</td>
-			   </tr>
-			   <tr>			   
-			   		<td>Kraj radnog vremena (format HH:MM): </td>
-			   		<td><input id="rvKraj" type="text" v-model="lekar.rvKraj"></td>
-			   		<td style="color: red">{{krajGreska}}</td>
-			   </tr>
-			   <tr>
-			   		<td>Specijalizacija: </td>
-			   		<td>
+			   		<td>Tip pregleda: </td>
+					<td>
 						<select id="selectTP" v-model="tipPregleda.naziv">
 							<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
 						</select>
-					</td>
-			   		<td style="color: red">{{specijalizacijaGreska}}</td>
+					</td>			   		
+					<td style="color: red">{{tipPregledaGreska}}</td>
 			   </tr>
+			   <tr>			   
+			   		<td>Trajanje: </td>
+			   		<td><input id="trajanje" type="number" v-model="pregled.trajanje"></td>
+			   		<td style="color: red">{{trajanjeGreska}}</td>
+			   </tr>
+			   <tr>			   
+			   		<td>Sala: </td>
+					<td>
+						<select id="selectSala" v-model="sala.naziv">
+							<option v-for="s in sale" :value="s.naziv">{{s.naziv}}</option>
+						</select>
+					</td>			   		
+					<td style="color: red">{{salaGreska}}</td>
+			   </tr>
+			   
+			   <tr>			   
+			   		<td>Lekar: </td>
+					<td>
+						<select id="selectLekar" v-model="lekar.email">
+							<option v-for="l in lekari" :value="l.email">{{l.ime}} {{l.prezime}}</option>
+						</select>
+					</td>			   		
+					<td style="color: red">{{lekarGreska}}</td>
+			   </tr>
+			   
 			   
 			    <tr>
 			   
@@ -106,74 +84,90 @@ Vue.component('dpregled', {
 			return;
 		},
 		validacija: function(){
-			this.imeGreska = '';
-			this.prezimeGreska = '';
-			this.emailGreska = '';
-			this.lozinkaGreska = '';
-			this.adresaGreska = '';
-			this.gradGreska = '';
-			this.drzavaGreska = '';
-			this.specijalizacijaGreska = '';
-			this.pocGreska = '';
-			this.krajGreska = '';
-			this.kontaktGreska = '';
-			
-			if(!this.lekar.email)
-				this.emailGreska = 'Email je obavezno polje!';
-			if(!this.lekar.kontakt)
-				this.kontaktGreska = 'Kontakt je obavezno polje!';
-			if(!this.lekar.ime)
-				this.imeGreska = 'Ime je obavezno polje!';
-			if(!this.lekar.prezime)
-				this.prezimeGreska = 'Prezime je obavezno polje!';
-			if(!this.lekar.lozinka)
-				this.lozinkaGreska = 'Lozinka je obavezno polje!';
-			if(!this.lekar.adresa)
-				this.adresaGreska = 'Adresa je obavezno polje!';
-			if(!this.lekar.grad)
-				this.gradGreska = 'Grad je obavezno polje!';
-			if(!this.lekar.drzava)
-				this.drzavaGreska = 'Drzava je obavezno polje!';
-			if(!this.lekar.rvPocetak)
-				this.pocGreska = 'Ovo je obavezno polje!';
-			if(!this.lekar.rvKraj)
-				this.krajGreska = 'Ovo je obavezno polje!';
-			if(!this.lekar.tipPregleda)
-				this.specijalizacijaGreska = 'Specijalizacija je obavezno polje!';
+			this.datumVremeGreska = '';
+			this.trajanjeGreska = '';
+			this.tipPregledaGreska = '';
+			this.salaGreska ='';
+			this.lekarGreska = '';
 
-			if(this.lekar.email && this.lekar.ime && this.lekar.prezime && this.lekar.lozinka && this.lekar.adresa && this.lekar.grad && this.lekar.drzava && this.lekar.tipPregleda
-					&& this.lekar.rvPocetak && this.lekar.rvKraj && this.lekar.kontakt){
+			
+			if(!this.tipPregleda.naziv)
+				this.tipPregledaGreska = 'Tip pregleda je obavezno polje!';
+			if(!this.pregled.trajanje)
+				this.trajanjeGreska = 'Trajanje je obavezno polje!';
+			if(!this.pregled.datumVreme)
+				this.datumVremeGreska = 'Datum i vreme je obavezno polje!';
+			if(!this.lekar.email)
+				this.lekarGreska = 'Lekar je obavezno polje!';
+			if(!this.sala.naziv)
+				this.salaGreska = 'Sala je obavezno polje!';
+
+
+			if(this.tipPregleda.naziv && this.pregled.trajanje && this.pregled.datumVreme && this.lekar.email && this.sala.naziv){
 				return 0;
 			}
 			return 1;
 			
 		},
 		dodaj : function(){	
-			this.error = '';
-			this.lekar.tipPregleda = this.tipPregleda;
+			
 			if(this.validacija()==1)
 				return;
 			
+			this.error = '';
+			this.pregled.tipPregleda = this.tipPregleda;
+			this.pregled.sala = this.sala;
+			this.pregled.lekar = this.lekar;
+			
 			axios
-			.post('api/lekar', this.lekar)
+			.post('api/pregled', this.pregled)
 			.then((res)=>{
 				console.log('uspesno');
 				this.$router.push('/');
 			}).catch((res)=>{
-				this.error = 'Vec postoji lekar sa istim email-om';
+				this.error = 'Greska pri dodavanju';
 			}
 				
 			)
 		}
 		
 	},
+	watch: {
+		// dobavlja lekare za odabrani tip pregleda, kada se on promeni
+	    tipPregleda: function() {
+	    	console.log(this.tipPregleda.naziv);
+	    	 axios
+	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari')
+	          .then(res => {
+	        	  this.lekari = res.data;
+
+	          })
+	    }
+	
+		// dodati fju koja uzima slobodne sale za odabrani datum i vreme
+		// (proci kroz sve preglede i videti 
+	},
 	mounted () {
-//           axios
-//          .get('api/tippregleda/all')
-//          .then(res => {
-//        	  this.tipoviPregleda = res.data;
-//
-//          })
+           axios
+          .get('api/tippregleda/all')
+          .then(res => {
+        	  this.tipoviPregleda = res.data;
+
+          })
+          
+           axios
+          .get('api/lekar/all')
+          .then(res => {
+        	  this.lekari = res.data;
+
+          })
+          
+           axios
+          .get('api/sala/all')
+          .then(res => {
+        	  this.sale = res.data;
+
+          })
     },
 
 });

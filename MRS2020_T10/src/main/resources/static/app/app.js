@@ -12,6 +12,7 @@ const OdobravanjeReg = {template: '<odobri_zahtev></odobri_zahtev>'}
 const LekarPocetna = {template: '<lekar></lekar>'}
 const AdminPocetna = {template: '<admin></admin>'}
 const DodavanjePregleda = {template: '<dpregled></dpregled>'}
+const TipoviPregleda = {template: '<tipovipregleda></tipovipregleda>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -29,7 +30,8 @@ const router = new VueRouter({
 	    {path: '/odobri_zahtev', component: OdobravanjeReg},
 	    {path: '/lekar', component: LekarPocetna},
 	    {path: '/admin', component: AdminPocetna},
-	    {path: '/dpregled', component: DodavanjePregleda}
+	    {path: '/dpregled', component: DodavanjePregleda},
+	    {path: '/tipovipregleda', component: TipoviPregleda},
 	    
 	  ]
 });

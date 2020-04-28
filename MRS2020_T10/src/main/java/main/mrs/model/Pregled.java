@@ -55,7 +55,7 @@ public class Pregled {
    
     
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="pacijent_id", nullable=false)
+    @JoinColumn(name="pacijent_id", nullable=true)
     public Pacijent pacijent;
     
     public Integer getId() {
