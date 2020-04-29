@@ -1,5 +1,6 @@
 package main.mrs.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,5 +88,11 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	  
 	  @Query(value = "SELECT * FROM PREGLED WHERE ID = ?1", nativeQuery = true)
 	  Pregled findById(long id);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE PREGLED_ID = ?1", nativeQuery = true)
+	  List<Pregled> findByTipPregleda(int tipPregledaId);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE DATUM_VREME >= ?1 ORDER BY DATUM_VREME ASC", nativeQuery = true)
+	  List<Pregled> findAfterDate(Date datum);
 }
 

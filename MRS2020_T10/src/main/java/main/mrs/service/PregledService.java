@@ -1,5 +1,6 @@
 package main.mrs.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,14 @@ public class PregledService {
 	public Pregled findById(long pregledId) {
 		// TODO Auto-generated method stub
 		return PregledRepository.findById(pregledId);
+	}
+	public List<Pregled> findByTipPregleda(int tipPregledaId) {
+		// TODO Auto-generated method stub
+		return PregledRepository.findByTipPregleda(tipPregledaId);
+	}
+
+	public List<Pregled> findAfterDate(Date datum) {
+		// TODO Auto-generated method stub
+		return PregledRepository.findAfterDate(datum);
 	}
 }

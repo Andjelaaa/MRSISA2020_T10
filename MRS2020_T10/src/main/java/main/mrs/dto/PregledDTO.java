@@ -28,6 +28,7 @@ public class PregledDTO {
 		this.datumVreme = s.getDatumVreme();
 		this.lekar = new LekarDTO(s.getLekar());
 		this.sala = new SalaDTO(s.getSala());
+		this.tipPregleda = new TipPregledaDTO(s.getTipPregleda());
 }
 
    public Integer getId() {

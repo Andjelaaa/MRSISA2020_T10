@@ -1,7 +1,11 @@
 package main.mrs.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,7 +77,39 @@ public class PregledController {
 		
 		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
 	}
-
+	@GetMapping(value = "/tip/{tipPregleda}")
+	public ResponseEntity<List<PregledDTO>> zaTipPregleda(@PathVariable String tipPregleda) {
+		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
+		List<Pregled> result = PregledService.findByTipPregleda(tp.getId());
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : result) {
+			preglediDTO.add(new PregledDTO(s));
+		}
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/datum/{datum}")
+	public ResponseEntity<List<PregledDTO>> posleDatuma(@PathVariable String datum) {
+		Date date1 = null;
+		try {
+			System.out.println(datum);
+			date1=new SimpleDateFormat("yyyy-MM-dd").parse(datum);
+		} catch (ParseException e) {
+			System.out.println("PUCA PUCA PUCA");
+			// TODO Auto-generated catch block
+			return null;
+		}
+		System.out.println(date1);
+		List<Pregled> result = PregledService.findAfterDate(date1);
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : result) {
+			preglediDTO.add(new PregledDTO(s));
+		}
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
+	
+	
+	
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<PregledDTO> savePregled(@RequestBody PregledDTO PregledDTO) {
 
@@ -94,7 +130,6 @@ public class PregledController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.BAD_REQUEST);
 		}
-
 
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
