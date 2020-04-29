@@ -24,6 +24,10 @@ public class PregledDTO {
    // dopuniti konverziju
    public PregledDTO(Pregled s) {
 		this.id = s.getId();
+		this.trajanje = s.getTrajanje();
+		this.datumVreme = s.getDatumVreme();
+		this.lekar = new LekarDTO(s.getLekar());
+		this.sala = new SalaDTO(s.getSala());
 }
 
    public Integer getId() {

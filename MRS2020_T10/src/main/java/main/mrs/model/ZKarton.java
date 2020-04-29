@@ -43,6 +43,7 @@ public class ZKarton {
 	@JoinColumn(name="zkarton_id", nullable=true)
     public Set<Operacija> operacija;
    
+
 	public Integer getId() {
 		return id;
 	}

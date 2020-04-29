@@ -34,4 +34,9 @@ public class PregledService {
 	public void remove(Long id) {
 		PregledRepository.deleteById(id);
 	}
+
+	public Pregled findById(long pregledId) {
+		// TODO Auto-generated method stub
+		return PregledRepository.findById(pregledId);
+	}
 }

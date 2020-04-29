@@ -2,10 +2,32 @@ package main.mrs.dto;
 
 import java.util.*;
 
+import main.mrs.model.Pacijent;
+
 public class PacijentDTO extends KorisnikDTO {
 	private String lbo;
 	public ZKartonDTO zKarton;
 	public Set<PregledDTO> pregled;
+	
+	
+	public PacijentDTO(Pacijent p)
+	{
+		// podesiti atribute nadklase
+		this.ime = p.getIme();
+		this.prezime = p.getPrezime();
+		this.adresa = p.getAdresa();
+		this.drzava = p.getDrzava();
+		this.email = p.getEmail();
+		this.grad = p.getGrad();
+		this.id = p.getId();
+		this.kontakt = p.getKontakt();
+		this.lozinka = p.getLozinka();
+		this.zKarton = new ZKartonDTO(p.zKarton);
+		this.pregled = new java.util.HashSet<PregledDTO>();
+		this.lbo = p.getLbo();
+		//this.zKarton = new ZKartonDTO(p.zKarton);
+		
+	}
 
 	public String getLbo() {
 		return lbo;

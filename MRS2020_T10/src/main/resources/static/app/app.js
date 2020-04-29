@@ -13,6 +13,7 @@ const LekarPocetna = {template: '<lekar></lekar>'}
 const AdminPocetna = {template: '<admin></admin>'}
 const DodavanjePregleda = {template: '<dpregled></dpregled>'}
 const TipoviPregleda = {template: '<tipovipregleda></tipovipregleda>'}
+const PredefPregledi = {template: '<predefpregledi></predefpregledi>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -23,16 +24,16 @@ const router = new VueRouter({
 	    { path: '/registracija', component: StranicaZaRegistraciju},
 	    { path: '/sprofil', component: ProfilSuperAdmina},
 	    { path: '/dsala', component: DodavanjeSale},
-	    {path: '/dlekar', component: DodavanjeLekara},
-	    {path: '/sifrarnik1', component: SifrarnikLekova},
-	    {path: '/sifrarnik2', component: SifrarnikDijagnoza},
-	    {path: '/kreirajzk', component: KreirajZK},
-	    {path: '/odobri_zahtev', component: OdobravanjeReg},
-	    {path: '/lekar', component: LekarPocetna},
-	    {path: '/admin', component: AdminPocetna},
-	    {path: '/dpregled', component: DodavanjePregleda},
-	    {path: '/tipovipregleda', component: TipoviPregleda},
-	    
+	    { path: '/dlekar', component: DodavanjeLekara},
+	    { path: '/sifrarnik1', component: SifrarnikLekova},
+	    { path: '/sifrarnik2', component: SifrarnikDijagnoza},
+	    { path: '/kreirajzk', component: KreirajZK},
+	    { path: '/odobri_zahtev', component: OdobravanjeReg},
+	    { path: '/lekar', component: LekarPocetna},
+	    { path: '/admin', component: AdminPocetna},
+	    { path: '/dpregled', component: DodavanjePregleda},
+	    { path: '/tipovipregleda', component: TipoviPregleda},
+	    { path: '/predefinisanipregledi', component: PredefPregledi},
 	  ]
 });
 

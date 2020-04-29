@@ -1,6 +1,8 @@
 package main.mrs.dto;
 import java.util.*;
 
+import main.mrs.model.ZKarton;
+
 public class ZKartonDTO {
 	private Integer id;
    private String krvnaGrupa;
@@ -13,6 +15,20 @@ public class ZKartonDTO {
    public Set<PregledDTO> pregled;
    public Set<LekDTO> lek;
    public Set<OperacijaDTO> operacija;
+   
+   public ZKartonDTO(ZKarton zk)
+   {
+	   this.datumRodjenja = zk.getDatumRodjenja();
+	   this.dioptrija = zk.getDioptrija();
+	   this.id = zk.getId();
+	   this.krvnaGrupa = zk.getKrvnaGrupa();
+	   this.lek = new java.util.HashSet<LekDTO>(); // ovo mora drugacije
+	   this.operacija = new java.util.HashSet<OperacijaDTO>();
+	   this.pol = zk.getPol();
+	   this.pregled = new java.util.HashSet<PregledDTO>();
+	   this.tezina = zk.getTezina();
+	   this.visina = zk.getVisina();
+   }
    
    public Integer getId() {
 		return id;

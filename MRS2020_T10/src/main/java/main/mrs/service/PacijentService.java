@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import main.mrs.model.Pacijent;
+import main.mrs.model.TipPregleda;
 import main.mrs.repository.PacijentRepository;
 
 @Service
@@ -33,5 +34,9 @@ public class PacijentService {
 
 	public void remove(Long id) {
 		PacijentRepository.deleteById(id);
+	}
+	
+	public Pacijent findById(int pacijentId) {
+		return PacijentRepository.findById(pacijentId);
 	}
 }

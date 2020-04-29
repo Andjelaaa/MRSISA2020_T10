@@ -17,4 +17,5 @@ values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '0651549
 insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id) 
 values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', 'lekar2', 'Nikolic', 0, null, 0, '21:00', '13:00', 2);
 
+insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Marko', 'Markovic', 'email.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22');
 --insert into adminkc (ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values ('Marko', 'Markovic', 'teosnedos@gmail.com', 'adminkc', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');

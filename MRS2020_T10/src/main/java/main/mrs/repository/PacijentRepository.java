@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Pacijent;
+import main.mrs.model.Pregled;
 import main.mrs.model.Pacijent;
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
@@ -34,7 +36,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Pacijent> findById(Long arg0);
+	 // Optional<Pacijent> findById(Long arg0);
 
 	 
 	  <S extends Pacijent> S save(S arg0);
@@ -83,4 +85,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 
 	 
 	  <S extends Pacijent> S saveAndFlush(S arg0);
+	  
+	  @Query(value = "SELECT * FROM PACIJENT WHERE ID = ?1", nativeQuery = true)
+	  Pacijent findById(int id);
 }

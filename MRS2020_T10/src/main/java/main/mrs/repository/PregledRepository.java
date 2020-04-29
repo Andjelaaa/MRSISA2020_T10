@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Pregled;
+import main.mrs.model.TipPregleda;
 
 public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	Page<Pregled> findAll(Pageable arg0);
@@ -33,7 +35,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Pregled> findById(Long arg0);
+	  //Optional<Pregled> findById(Long arg0);
 
 	 
 	  <S extends Pregled> S save(S arg0);
@@ -82,5 +84,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 
 	 
 	  <S extends Pregled> S saveAndFlush(S arg0);
+	  
+	  @Query(value = "SELECT * FROM PREGLED WHERE ID = ?1", nativeQuery = true)
+	  Pregled findById(long id);
 }
 
