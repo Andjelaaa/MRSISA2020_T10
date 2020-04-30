@@ -22,9 +22,10 @@ Vue.component('sifrarnik2', {
 		   <tr  v-for="l in dijagnoze">
 		   		<td>{{l.naziv}}</td>
 		   		<td>{{l.sifra}}</td>
+		   		<td><button v-on:click = "izmeni(l)">Izmeni</button></td>
 		   </tr>
 		    <tr>
-		   
+		   		<td></td>
 		   		<td><button v-on:click = "nazad()">Nazad</button></td>
 		   		
 		   </tr>
@@ -42,7 +43,7 @@ Vue.component('sifrarnik2', {
 		   		<td style="color: red">{{greska2}}</td>
 		   </tr>
 		    <tr>
-		   		
+		   		<td></td>
 		   		<td><button v-on:click = "napraviDijagnozu()">Dodaj dijagnozu</button></td>	   
 		   		
 		   </tr>
@@ -77,15 +78,24 @@ Vue.component('sifrarnik2', {
 			this.greska = '';
 			if(this.validacija()==1)
 				return;
-			
-			var newLek ={ "naziv": this.naziv, "sifra": this.sifra};
+			this.greska1 = '';
+			this.greska2 = '';
+			var newDijagn ={ "naziv": this.naziv, "sifra": this.sifra};
 			axios
-			.post('api/dijagnoze', newLek)
+			.post('api/dijagnoze', newDijagn)
 			.then((response)=>{
-				this.$router.push('/');
+				this.dijagnoze.push(newDijagn);
+				this.naziv ='';
+				this.sifra='';
+				this.greska='';
 			}).catch((response)=>{
 				this.greska = 'Dijagnoza vec postoji';
 			});
+		},
+		izmeni:function(lek){
+			alert("Mislim da cu implementirati tako da predje na sl stranicu. Ili napravim iskacuci prozor");
+			
+			
 		}
 		
 	},

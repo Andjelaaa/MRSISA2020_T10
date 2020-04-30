@@ -23,8 +23,24 @@
   border-bottom: 2px solid #ccc;
   display: table;
 }
+p.desna   {
+	top: 0;
+    width:45%;
+    float:right;
+}
+p.leva   {
+	top: 0;
+	float:left;
+    width:45%;
+    margin-left: 5px;
+}
 
-div.content {
-  display: table-cell;
-  vertical-align: middle;
+table#leva {
+   float:left;
+   width:45%;
+   margin-left: 5px;
+}
+table#desna   {
+    width:45%;
+    float:right;
 }

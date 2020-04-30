@@ -45,6 +45,18 @@ public class LekController {
 		lek.setSifra(LekDTO.getSifra());
 		
 		try {
+			
+			List<Lek> lekovi = LekService.findAll();
+			
+			for (Lek s : lekovi) {
+				if(s.getNaziv().equalsIgnoreCase(lek.getNaziv())) {
+					throw new Exception();
+					
+				}
+				if(s.getSifra().equalsIgnoreCase(lek.getSifra())) {
+					throw new Exception();
+				}
+			}
 			lek = LekService.save(lek);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new LekDTO(lek), HttpStatus.BAD_REQUEST);

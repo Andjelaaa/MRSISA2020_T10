@@ -12,8 +12,9 @@ Vue.component('sifrarnik1', {
 	
 	template: `
 		<div>
-		<h1>Sifrarnik lekova </h1>
-		<table border='1'>
+		<p class="leva">Sifrarnik lekova </p>
+		<p class="desna">Unesite novi lek</p>
+		<table id="leva" class="table table-bordered " >
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Sifra</th>
@@ -23,13 +24,14 @@ Vue.component('sifrarnik1', {
 		   		<td>{{l.naziv}}</td>
 		   		<td>{{l.sifra}}</td>
 		   </tr>
-		    <tr>
-		   
+		   <tr>
+		   		<td></td>
 		   		<td><button v-on:click = "nazad()">Nazad</button></td>
-		   		
 		   </tr>
+		   
 		</table>
-		<table>
+		
+		<table id="desna" class="table table-bordered">
 		   <tr>		   		
 		   		<td>Naziv</td>
 		   		<td><input id="naziv" type="text" v-model="naziv"></td>
@@ -42,7 +44,7 @@ Vue.component('sifrarnik1', {
 		   		<td style="color: red">{{greska2}}</td>
 		   </tr>
 		    <tr>
-		   		
+		   		<td></td>
 		   		<td><button v-on:click = "napraviLek()">Dodaj lek</button></td>	   
 		   		
 		   </tr>
@@ -75,14 +77,19 @@ Vue.component('sifrarnik1', {
 		},
 		napraviLek: function(){
 			this.greska = '';
+
 			if(this.validacija()==1)
 				return;
-			
+			this.greska1 = '';
+			this.greska2 = '';
 			var newLek ={ "naziv": this.naziv, "sifra": this.sifra};
 			axios
 			.post('api/lekovi', newLek)
 			.then((response)=>{
-				this.$router.push('/');
+				 this.lekovi.push(newLek);
+				 this.naziv ='';
+				 this.sifra='';
+				 this.greska = '';
 			}).catch((response)=>{
 				this.greska = 'Lek vec postoji';
 			});

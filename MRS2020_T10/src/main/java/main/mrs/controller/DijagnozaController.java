@@ -45,6 +45,18 @@ public class DijagnozaController {
 		dijagnoza.setSifra(DijagnozaDTO.getSifra());
 		
 		try {
+			List<Dijagnoza> dijagnoze = DijagnozaService.findAll();
+
+			for (Dijagnoza s : dijagnoze) {
+				if(s.getNaziv().equalsIgnoreCase(dijagnoza.getNaziv())) {
+					throw new Exception();
+					
+				}
+				if(s.getSifra().equalsIgnoreCase(dijagnoza.getSifra())) {
+					throw new Exception();
+				}
+								
+			}
 			dijagnoza = DijagnozaService.save(dijagnoza);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new DijagnozaDTO(dijagnoza), HttpStatus.BAD_REQUEST);
