@@ -21,6 +21,7 @@ Vue.component('sifrarnik1', {
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Sifra</th>
+		   		<th></th>
 		   </tr>
 		  
 		   <tr  v-for="l in lekovi">
@@ -131,6 +132,21 @@ Vue.component('sifrarnik1', {
 		restore: function(l){
 			l.naziv = this.selectedBackup.naziv;
 			l.sifra = this.selectedBackup.sifra;
+		},
+		save: function(){
+			axios
+			.post('api/lekovi/izmena', {lek:this.selected, naziv:this.selectedBackup.naziv})
+			.then((response)=>{
+				 this.naziv ='';
+				 this.sifra='';
+				 this.greska = '';
+			}).catch((response)=>{
+				 this.naziv ='';
+				 this.sifra='';
+				 this.selected.naziv = this.selectedBackup.naziv;
+				 this.selected.sifra = this.selectedBackup.sifra;
+				 this.greska = 'Lek vec postoji';
+			});
 		}
 		
 	},

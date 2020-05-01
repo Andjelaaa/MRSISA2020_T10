@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Lek;
+import main.mrs.model.TipPregleda;
 
 
 
@@ -84,4 +86,6 @@ public interface LekRepository  extends JpaRepository<Lek, Long>{
 
 	 
 	  <S extends Lek> S saveAndFlush(S arg0);
+	  @Query(value = "SELECT * FROM LEK WHERE NAZIV = ?1", nativeQuery = true)
+	  Lek findByNaziv(String naziv);
 }

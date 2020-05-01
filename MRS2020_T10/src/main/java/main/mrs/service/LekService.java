@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import main.mrs.model.Lek;
+import main.mrs.model.TipPregleda;
 import main.mrs.repository.LekRepository;
 
 @Service
@@ -33,5 +34,13 @@ public class LekService {
 
 	public void remove(Long id) {
 		LekRepository.deleteById(id);
+	}
+	public Lek findByNaziv(String naziv) {
+		return LekRepository.findByNaziv(naziv);
+	}
+
+	public void delete(Lek nadjiLek) {
+		 LekRepository.delete(nadjiLek);
+		
 	}
 }

@@ -3,7 +3,9 @@ Vue.component('odobri_zaht', {
 	data: function(){
 		return{
 			zahtevi:{},
-			greska:''	
+			greska:'',
+			opis:'',
+			showModal: false
 		}
 	}, 
 	
@@ -26,7 +28,7 @@ Vue.component('odobri_zaht', {
 		   		<th></th>
 		   </tr>
 		  
-		   <tr  v-for="z in zahtevi">
+		   <tr  v-for="z,ind in zahtevi">
 		   		<td>{{z.email}}</td>
 		   		<td>{{z.ime}}</td>
 		   		<td>{{z.prezime}}</td>
@@ -37,7 +39,24 @@ Vue.component('odobri_zaht', {
 		   		<td>{{z.lbo}}</td>
 		   		<td>{{z.lozinka}}</td>
 		   		<td><button v-on:click = "prihvati(z)">Prihvati</button></td>
-		   		<td><button v-on:click = "odbij(z)">Odbij zahtev</button></td>
+		   		<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Odbij zahtev</button>
+						<modal v-if="showModal" @close="showModal = false">
+	    
+	    					<h3 slot="header">Unesite razlog odbijanja registracije</h3>
+	    					<table slot="body" class="table table-hover table-light">
+								<tbody>
+									<tr>
+										<td><input  class="form-control" type="text" v-model = "opis"/></td>
+									</tr>									
+								</tbody>
+							</table>
+	    					
+	    					<div slot="footer">
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save(ind, z)"> Ukloni zahtev </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore()"> Odustani </button>								
+							</div>
+						</modal>
+				</td>
 		   </tr>
 		   <tr>
 		   		<td></td>
@@ -56,25 +75,51 @@ Vue.component('odobri_zaht', {
 		},
 		
 		prihvati:function(zahtev){
+			
 			axios
 			.post('api/adminkc/accepted', zahtev)
 			.then((response)=>{
 				this.greska='';
 				alert("Poslat email");
 			}).catch((response)=>{
-				this.greska = 'Klinika vec postoji';
+				this.greska = 'Email nije poslat';
 			}
 				
 			);
 			//alert("Obrisi iz baze i onda salji email i alertuj da je poslao potvrdu za reg");
 			
 		},
-		odbij:function(zahtev){
-			alert("Obrisi iz baze i onda ga posalji na drugu stranicu da napise razlog odbijanja " +
-					"i onda ga vrati na stranicu gde su zahtevi, sad ili to ili onaj iskacuci");
+		odbij:function(ind, zahtevBrisi){
+			axios
+			.post('api/adminkc/denied/', {user: zahtevBrisi, opis: this.opis})
+			.then((response)=>{
+				this.greska='';
+				this.zahtevi.splice(ind, 1);
+				alert("Poslat email");
+				
+			}).catch((response)=>{
+				this.greska = 'Email nije poslat';
+			}
+			);
+			
 
 		},
-		
+		restored:function(){
+			this.opis = '';
+			this.index ='';
+
+		},
+		save:function(ind, z){
+			if(!this.opis){
+				alert("Opis ne moze biti prazan");
+				
+			}			    
+			else{
+				this.odbij(ind, z);
+				
+			}
+			
+		}
 		
 	},
 	mounted(){

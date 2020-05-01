@@ -34,4 +34,7 @@ public class ZahtevRegService {
 	public void remove(Long id) {
 		ZahtevRegRepository.deleteById(id);
 	}
+	public void delete(ZahtevReg z) {
+		ZahtevRegRepository.delete(z);
+	}
 }

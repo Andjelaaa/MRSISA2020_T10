@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekDTO;
 import main.mrs.model.Lek;
+import main.mrs.model.PomocnaKlasa2;
 import main.mrs.service.LekService;
 
 @RestController
@@ -63,5 +64,21 @@ public class LekController {
 		}
 
 		return new ResponseEntity<>(new LekDTO(lek), HttpStatus.CREATED);
+	}
+	@PostMapping(value="/izmena",consumes = "application/json")
+	public ResponseEntity<LekDTO> changeLek(@RequestBody PomocnaKlasa2 data) {
+        LekDTO izmenjen = data.lek;
+		try {
+		     Lek nadjiLek = LekService.findByNaziv(data.naziv);
+		     LekService.delete(nadjiLek);
+		     System.out.println();
+		     nadjiLek.setNaziv(izmenjen.getNaziv());
+		     nadjiLek.setSifra(izmenjen.getSifra());
+			 nadjiLek = LekService.save(nadjiLek);
+		} catch (Exception e) {
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>( HttpStatus.CREATED);
 	}
 }

@@ -54,5 +54,25 @@ public class EmailService {
 		
 		
 	}
+	
+	@Async
+	public void sendNotificaitionDeniedAsync(ZahtevReg user, String opis) throws MailException, InterruptedException {
+		System.out.println("Slanje emaila...");
+
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setTo(user.getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Zahtev za registracijom je odbijen");
+			mail.setText("Pozdrav " + user.getIme() + ",\n\nzahtev Vam je odbijen iz razloga \n"+ opis);
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+		
+	}
 
 }

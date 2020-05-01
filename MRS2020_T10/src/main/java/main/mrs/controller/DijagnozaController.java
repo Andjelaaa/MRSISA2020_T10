@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.DijagnozaDTO;
+import main.mrs.dto.LekDTO;
 import main.mrs.model.Dijagnoza;
+import main.mrs.model.Lek;
+import main.mrs.model.PomocnaKlasa2;
+import main.mrs.model.PomocnaKlasa3;
 import main.mrs.service.DijagnozaService;
 
 @RestController
@@ -63,5 +67,20 @@ public class DijagnozaController {
 		}
 
 		return new ResponseEntity<>(new DijagnozaDTO(dijagnoza), HttpStatus.CREATED);
+	}
+	@PostMapping(value="/izmena",consumes = "application/json")
+	public ResponseEntity<DijagnozaDTO> changeDijagnoza(@RequestBody PomocnaKlasa3 data) {
+        DijagnozaDTO izmenjen = data.dijagnoza;
+		try {
+		     Dijagnoza nadjiDijagnozu = DijagnozaService.findByNaziv(data.naziv);
+		     DijagnozaService.delete(nadjiDijagnozu);
+		     nadjiDijagnozu.setNaziv(izmenjen.getNaziv());
+		     nadjiDijagnozu.setSifra(izmenjen.getSifra());
+		     nadjiDijagnozu = DijagnozaService.save(nadjiDijagnozu);
+		} catch (Exception e) {
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>( HttpStatus.CREATED);
 	}
 }

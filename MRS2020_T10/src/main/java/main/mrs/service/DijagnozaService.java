@@ -35,4 +35,13 @@ public class DijagnozaService {
 		DijagnozaRepository.deleteById(id);
 	}
 
+	public Dijagnoza findByNaziv(String naziv) {
+		return DijagnozaRepository.findByNaziv(naziv);
+	}
+
+	public void delete(Dijagnoza nadjiDijagnozu) {
+		DijagnozaRepository.delete(nadjiDijagnozu);
+		
+	}
+
 }

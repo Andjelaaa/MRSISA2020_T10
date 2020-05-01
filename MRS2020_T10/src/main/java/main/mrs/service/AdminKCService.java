@@ -35,5 +35,6 @@ public class AdminKCService {
 	public void remove(Long id) {
 		adminKCRepository.deleteById(id);
 	}
+	
 
 }

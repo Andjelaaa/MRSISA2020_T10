@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Dijagnoza;
+import main.mrs.model.Lek;
 
 
 
@@ -84,5 +86,9 @@ public interface DijagnozaRepository extends JpaRepository<Dijagnoza, Long>{
 
 	 
 	  <S extends Dijagnoza> S saveAndFlush(S arg0);
+
+	  @Query(value = "SELECT * FROM DIJAGNOZA WHERE NAZIV = ?1", nativeQuery = true)
+	  Dijagnoza findByNaziv(String naziv);
+
 
 }
