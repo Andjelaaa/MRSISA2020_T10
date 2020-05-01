@@ -23,6 +23,7 @@ Vue.component('sifrarnik1', {
 		   <tr  v-for="l in lekovi">
 		   		<td>{{l.naziv}}</td>
 		   		<td>{{l.sifra}}</td>
+		   		<td><button v-on:click = "izmeni(l)">Izmeni</button></td>
 		   </tr>
 		   <tr>
 		   		<td></td>
@@ -93,6 +94,11 @@ Vue.component('sifrarnik1', {
 			}).catch((response)=>{
 				this.greska = 'Lek vec postoji';
 			});
+		},
+		izmeni:function(lek){
+			alert("Mislim da cu implementirati tako da predje na sl stranicu. Ili napravim iskacuci prozor");
+			
+			
 		}
 		
 	},

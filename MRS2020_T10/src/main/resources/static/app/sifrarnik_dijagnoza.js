@@ -12,8 +12,9 @@ Vue.component('sifrarnik2', {
 	
 	template: `
 		<div>
-		<h1>Sifrarnik dijagnoza </h1>
-		<table border='1'>
+		<p class="leva">Sifrarnik sijagnoza </p>
+		<p class="desna">Unesite novu dijagnozu</p>
+		<table id="leva" class="table table-bordered " >
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Sifra</th>
@@ -30,7 +31,8 @@ Vue.component('sifrarnik2', {
 		   		
 		   </tr>
 		   </table>
-		   <table >
+		   <table id="desna" class="table table-bordered">
+
 		   <tr>		   		
 		   		<td>Naziv</td>
 		   		<td><input id="naziv" type="text" v-model="naziv"></td>
