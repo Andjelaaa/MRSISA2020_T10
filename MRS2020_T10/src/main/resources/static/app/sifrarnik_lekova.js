@@ -6,7 +6,10 @@ Vue.component('sifrarnik1', {
 			sifra:'',
 			greska:'',
 			greska1:'',
-			greska2:''
+			greska2:'',
+			showModal: false,
+			selected: {naziv:'', sifra:''},
+			selectedBackup: {naziv:'', sifra:''}
 		}
 	}, 
 	
@@ -23,7 +26,31 @@ Vue.component('sifrarnik1', {
 		   <tr  v-for="l in lekovi">
 		   		<td>{{l.naziv}}</td>
 		   		<td>{{l.sifra}}</td>
-		   		<td><button v-on:click = "izmeni(l)">Izmeni</button></td>
+		   		<td>		   		
+			   		<button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select(l)">Izmeni</button>
+						<modal v-if="showModal" @close="showModal = false">
+	    
+	    					<h3 slot="header">Izmena leka</h3>
+	    					<table slot="body" class="table table-hover table-light">
+								<tbody>
+										
+									<tr>
+										<td>Naziv</td>
+										<td><input class="form-control" type="text"  v-model="selected.naziv"/></td>
+									</tr>
+									<tr>
+										<td>Sifra</td>
+										<td><input  class="form-control" type="text" v-model = "selected.sifra"/></td>
+									</tr>									
+								</tbody>
+								</table>
+	    					
+	    					<div slot="footer">
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save()"> Save </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore(selected)"> Cancel </button>								
+							</div>
+						</modal>
+				</td>
 		   </tr>
 		   <tr>
 		   		<td></td>
@@ -95,10 +122,15 @@ Vue.component('sifrarnik1', {
 				this.greska = 'Lek vec postoji';
 			});
 		},
-		izmeni:function(lek){
-			alert("Mislim da cu implementirati tako da predje na sl stranicu. Ili napravim iskacuci prozor");
-			
-			
+		select : function(l){
+			this.selectedBackup.naziv = l.naziv;
+			this.selectedBackup.sifra = l.sifra;
+			this.selected = l;
+
+		},
+		restore: function(l){
+			l.naziv = this.selectedBackup.naziv;
+			l.sifra = this.selectedBackup.sifra;
 		}
 		
 	},

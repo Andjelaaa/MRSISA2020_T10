@@ -3,10 +3,45 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Klinika</title>
+	<!-- DODATI IKONICU OVDE link rel="shortcut icon" href="weather_cloud_cloudy_icon_124152.ico"-->
 	<link href="css/styles.css" rel="stylesheet" />
 	<link href="css/toast.css" rel="stylesheet" />
 	<link href="css/login.css" rel="stylesheet" />
-	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<!--link href="css/bootstrap.min.css" rel="stylesheet" /-->
+	<script src="https://unpkg.com/vue"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type="text/x-template" id="modal-template">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-container">
+
+              <div class="modal-header">
+                <slot name="header">
+                  default header
+                </slot>
+              </div>
+
+              <div class="modal-body">
+                <slot name="body">
+                  default body
+                </slot>
+              </div>
+
+              <div class="modal-footer">
+                <slot name="footer">
+                  default footer
+                  <button class="modal-default-button" @click="$emit('close')">
+                    OK
+                  </button>
+                </slot>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </script>
 </head>
 <body>
 	<div id="klinika">
@@ -38,7 +73,10 @@
 	<script src="app/stranica_za_registraciju.js"></script>
 	<script src="app/empty.js"></script>
 	<script src="app/app.js"></script>
-
-
+	<script>
+	Vue.component("modal", {
+	    template: "#modal-template"
+	  });
+	</script>
 </body>
 </html>
