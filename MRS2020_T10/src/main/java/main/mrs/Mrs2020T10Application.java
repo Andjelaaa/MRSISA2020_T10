@@ -2,8 +2,10 @@ package main.mrs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@EnableAsync //ukljucena podrska za izvrsavanje asinhronih zadataka 
 public class Mrs2020T10Application {
 
 	public static void main(String[] args) {

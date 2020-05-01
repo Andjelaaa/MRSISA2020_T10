@@ -8,7 +8,7 @@ const DodavanjeLekara = {template: '<dodlekara></dodlekara>'}
 const SifrarnikLekova = {template: '<sifrarnik1></sifrarnik1>'}
 const SifrarnikDijagnoza = {template: '<sifrarnik2></sifrarnik2>'}
 const KreirajZK = {template: '<kreirajzk></kreirajzk>'}
-const OdobravanjeReg = {template: '<odobri_zahtev></odobri_zahtev>'}
+const OdobravanjeReg = {template: '<odobri_zaht></odobri_zaht>'}
 const LekarPocetna = {template: '<lekar></lekar>'}
 const AdminPocetna = {template: '<admin></admin>'}
 const DodavanjePregleda = {template: '<dpregled></dpregled>'}
@@ -33,7 +33,7 @@ const router = new VueRouter({
 	    { path: '/admin', component: AdminPocetna},
 	    { path: '/dpregled', component: DodavanjePregleda},
 	    { path: '/tipovipregleda', component: TipoviPregleda},
-	    { path: '/predefinisanipregledi', component: PredefPregledi},
+	    { path: '/predefinisanipregledi', component: PredefPregledi}
 	  ]
 });
 

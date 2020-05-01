@@ -14,7 +14,7 @@ Vue.component('sifrarnik1', {
 		<div>
 		<p class="leva">Sifrarnik lekova </p>
 		<p class="desna">Unesite novi lek</p>
-		<table id="leva" class="table table-bordered " >
+		<table id="leva" class="table table-bordered" >
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Sifra</th>

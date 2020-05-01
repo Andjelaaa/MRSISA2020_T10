@@ -19,3 +19,6 @@ values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '0605
 
 insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Marko', 'Markovic', 'email.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22');
 --insert into adminkc (ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values ('Marko', 'Markovic', 'teosnedos@gmail.com', 'adminkc', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
+
+
+insert into zahtev_registracije(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Ivan', 'Ivic', 'trajkovicka.9909@gmail.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '3lbo133131');
