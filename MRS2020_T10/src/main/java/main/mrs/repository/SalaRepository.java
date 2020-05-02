@@ -28,13 +28,13 @@ public interface SalaRepository extends JpaRepository<Sala, Long>{
 	  void deleteAll(Iterable<? extends Sala> arg0);
 
 	 
-	  void deleteById(Long arg0);
+	  void deleteById(Integer id);
 
 	 
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Sala> findById(Long arg0);
+	  Optional<Sala> findById(Integer id);
 
 	 
 	  <S extends Sala> S save(S arg0);
@@ -89,4 +89,7 @@ public interface SalaRepository extends JpaRepository<Sala, Long>{
 
 	@Query(value = "SELECT * FROM SALA WHERE NAZIV = ?1", nativeQuery = true)
 	Sala findByNaziv(String naziv);
+
+	 @Query(value = "SELECT * FROM SALA WHERE NAZIV like %?%1", nativeQuery = true)
+	List<Sala> findSearchNaziv(String searchParam);
 }

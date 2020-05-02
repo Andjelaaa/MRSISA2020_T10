@@ -32,7 +32,7 @@ public class TipPregleda {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private StavkaCenovnika stavka;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name="tip_pregleda_id", nullable=true)
 	private Set<Lekar> lekar;
 	

@@ -15,7 +15,7 @@ public class SalaService {
 	@Autowired
 	private SalaRepository SalaRepository;
 
-	public Sala findOne(Long id) {
+	public Sala findOne(Integer id) {
 		return SalaRepository.findById(id).orElseGet(null);
 	}
 
@@ -31,7 +31,7 @@ public class SalaService {
 		return SalaRepository.save(Sala);
 	}
 
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		SalaRepository.deleteById(id);
 	}
 	public Sala findByBroj(int broj) {
@@ -40,5 +40,9 @@ public class SalaService {
 
 	public Sala findByNaziv(String naziv) {
 		return SalaRepository.findByNaziv(naziv);
+	}
+
+	public List<Sala> findSearchNaziv(String searchParam) {
+		return SalaRepository.findSearchNaziv(searchParam);
 	}
 }

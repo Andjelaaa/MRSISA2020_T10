@@ -28,7 +28,7 @@ public class Sala {
 	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Set<Pregled> pregled;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	public Klinika klinika;
 
 	public Klinika getKlinika() {

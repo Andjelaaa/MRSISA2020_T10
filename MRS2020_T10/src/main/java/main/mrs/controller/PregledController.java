@@ -117,6 +117,7 @@ public class PregledController {
 		Pregled.setDatumVreme(PregledDTO.getDatumVreme());
 		Pregled.setTrajanje(PregledDTO.getTrajanje());
 		Pregled.setStatus(Status.odobreno);	
+		Pregled.setPopust(PregledDTO.getPopust());
 		TipPregleda tp= TipPregledaService.findByNaziv(PregledDTO.getTipPregleda().getNaziv()); 
 		Pregled.setTipPregleda(tp);
 		Sala s = SalaService.findByNaziv(PregledDTO.getSala().getNaziv());

@@ -28,13 +28,13 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long>{
 	  void deleteAll(Iterable<? extends TipPregleda> arg0);
 
 	 
-	  void deleteById(Long arg0);
+	  void deleteById(Integer id);
 
 	 
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<TipPregleda> findById(Long arg0);
+	  Optional<TipPregleda> findById(Integer id);
 
 	 
 	  <S extends TipPregleda> S save(S arg0);

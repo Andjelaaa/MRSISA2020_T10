@@ -6,11 +6,13 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,6 +97,43 @@ public class TipPregledaController {
 			LekariDTO.add(LekarDTO);
 		}
 		return new ResponseEntity<>(LekariDTO, HttpStatus.OK);
+	}
+	
+	@Transactional // obavezno ova anotacija, inace puca
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deleteTipPregleda(@PathVariable Integer id) {
+		TipPregleda TipPregleda = TipPregledaService.findOne(id);
+
+		if (TipPregleda != null) {
+			try {
+				TipPregledaService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} catch (Exception e) {
+				// postoji pregled tog tipa
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping(consumes = "application/json", value = "/{id}")
+	public ResponseEntity<TipPregledaDTO> updateSTipPregleda(@RequestBody TipPregledaDTO TipPregledaDTO, @PathVariable Integer id) {
+
+		// a TipPregleda must exist
+		TipPregleda TipPregleda = TipPregledaService.findOne(id);
+		
+
+		if (TipPregleda == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		TipPregleda.setNaziv(TipPregledaDTO.getNaziv());
+		TipPregleda.setOpis(TipPregledaDTO.getOpis());
+
+		TipPregleda = TipPregledaService.save(TipPregleda);
+		return new ResponseEntity<>(new TipPregledaDTO(TipPregleda), HttpStatus.OK);
 	}
 
 }

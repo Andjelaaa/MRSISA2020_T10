@@ -1,6 +1,9 @@
-Vue.component('dodlekara', {
+Vue.component('lekari', {
 	data: function(){
 		return{
+			lekari: null,
+			pretraga: {ime:'', prezime:''},
+			
 			lekar: {tipPregleda: null},
 			tipPregleda: {},
 			tipoviPregleda: null,
@@ -16,72 +19,109 @@ Vue.component('dodlekara', {
 			krajGreska: '',
 			specijalizacijaGreska: '',
 			error: ''
-				
 		}
 	}, 
 	
 	template: `
-	
-		<div>
-		<h1> Forma za registraciju lekara </h1>
+		<div style="margin: 20px">
+		<h1>Lekari</h1>
+		
+
+		<div class="float-left">		
+		
+		Ime: <input  type="text" v-model="pretraga.ime" >
+		Prezime: <input  type="text" v-model="pretraga.prezime">
+		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
+		<table class="table table-hover table-light">
+		
+		   <tr>		   		
+		   		<th>Ime i prezime</th>
+		   		<th>Email adresa</th>
+		   		<th>Kontakt</th>
+		   		<th>Specijalizacija</th>
+		   		<th>Adresa</th>
+		   		<th>Prosecna ocena</th>
+		   		<th>Radno vreme</th>
+		   		<th></th>
+		   </tr>
+		  <tbody>
+		   <tr v-for="s in lekari">
+		   		<td>{{s.ime}} {{s.prezime}}</td>
+		   		<td>{{s.email}}</td>
+		   		<td>{{s.kontakt}}</td>
+		   		<td>{{s.tipPregleda.naziv}}</td>
+		   		<td>{{s.adresa}}, {{s.grad}}</td>
+		   		<td>{{s.prosecnaOcena}}</td>		   		
+		   		<td>{{s.rvPocetak}} - {{s.rvKraj}}</td>
+				<td><button class="btn btn-light" v-on:click="obrisi(s)">Obrisi</button></td>
+		   </tr>
+		   <tbody>
+		   <button v-on:click = "nazad()" class="btn btn-light">Nazad</button>
+		    
+		</table>
+		
+		</div>
+		<br>
+		<div class="float-right">
+		<h1> Registracija lekara </h1>
 		<p>{{error}}</p>
 		<table>
 			<tbody>
 				<tr>			   
 			   		<td>Email: </td>
-			   		<td><input id="email" type="text" v-model="lekar.email"></td>
+			   		<td><input class="form-control" id="email" type="text" v-model="lekar.email"></td>
 			   		<td style="color: red">{{emailGreska}}</td>
 			   </tr>
 			   <tr>
 			   		<td>Lozinka: </td>
-			   		<td><input id="lozinka" type="text" v-model="lekar.lozinka"></td>
+			   		<td><input class="form-control" id="lozinka" type="text" v-model="lekar.lozinka"></td>
 			   		<td style="color: red">{{lozinkaGreska}}</td>
 			   </tr>
 			   <tr>
 			   
 			   		<td>Ime: </td>
-			   		<td><input id="ime" type="text" v-model="lekar.ime"></td>
+			   		<td><input class="form-control" id="ime" type="text" v-model="lekar.ime"></td>
 			   		<td style="color: red">{{imeGreska}}</td>	
 			   </tr>
 			   <tr>
 			   		<td>Prezime: </td>
-			   		<td><input id="prezime" type="text" v-model="lekar.prezime"></td>
+			   		<td><input class="form-control" id="prezime" type="text" v-model="lekar.prezime"></td>
 			   		<td style="color: red">{{prezimeGreska}}</td>
 			   </tr>	
 			   <tr>			   
 			   		<td>Adresa: </td>
-			   		<td><input id="adresa" type="text" v-model="lekar.adresa"></td>
+			   		<td><input class="form-control" id="adresa" type="text" v-model="lekar.adresa"></td>
 			   		<td style="color: red">{{adresaGreska}}</td>
 			   </tr>
 			   <tr>
 			   		<td>Grad: </td>
-			   		<td><input id="grad" type="text" v-model="lekar.grad"></td>
+			   		<td><input class="form-control"  id="grad" type="text" v-model="lekar.grad"></td>
 			   		<td style="color: red">{{gradGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Drzava: </td>
-			   		<td><input id="drzava" type="text" v-model="lekar.drzava"></td>
+			   		<td><input  class="form-control" id="drzava" type="text" v-model="lekar.drzava"></td>
 			   		<td style="color: red">{{drzavaGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Kontakt telefon: </td>
-			   		<td><input id="kontakt" type="text" v-model="lekar.kontakt"></td>
+			   		<td><input class="form-control" id="kontakt" type="text" v-model="lekar.kontakt"></td>
 			   		<td style="color: red">{{kontaktGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Pocetak radnog vremena (format HH:MM): </td>
-			   		<td><input id="rvPocetak" type="text" v-model="lekar.rvPocetak"></td>
+			   		<td><input class="form-control" id="rvPocetak" type="text" v-model="lekar.rvPocetak"></td>
 			   		<td style="color: red">{{pocGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Kraj radnog vremena (format HH:MM): </td>
-			   		<td><input id="rvKraj" type="text" v-model="lekar.rvKraj"></td>
+			   		<td><input class="form-control" id="rvKraj" type="text" v-model="lekar.rvKraj"></td>
 			   		<td style="color: red">{{krajGreska}}</td>
 			   </tr>
 			   <tr>
 			   		<td>Specijalizacija: </td>
 			   		<td>
-						<select id="selectTP" v-model="tipPregleda.naziv">
+						<select class="form-control"  id="selectTP" v-model="tipPregleda.naziv">
 							<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
 						</select>
 					</td>
@@ -90,20 +130,42 @@ Vue.component('dodlekara', {
 			   
 			    <tr>
 			   
-			   		<td><button v-on:click="nazad()">Nazad</button></td>
-			   		<td><button v-on:click="dodaj()">Dodaj</button></td>
+			   		<td><button v-on:click="dodaj()" class="btn btn-light">Dodaj</button></td>
 			   		<td></td>
 			   </tr>
 		   </tbody>
 		</table>
 	
 		</div>
+		
+
+		</div>
 	
 	`, 
 	methods : {
 		nazad : function(){
-			this.$router.push('/admin')
+			this.$router.push('/admin');
 			return;
+		},
+		pretrazi: function(){
+			axios
+	       	.post('api/lekar/search', this.pretraga)
+	       	.then(response => (this.lekari = response.data));
+
+		},
+		obrisi: function(s){
+			console.log(s.id);
+			axios
+			.delete('api/lekar/'+s.id)
+			.then((res)=>{
+				console.log('uspesno');
+				 axios
+			       	.get('api/lekar/all')
+			       	.then(response => (this.lekari = response.data));
+			}).catch((res)=>{
+				console.log('Neuspesno brisanje');
+			});
+			
 		},
 		validacija: function(){
 			this.imeGreska = '';
@@ -158,7 +220,11 @@ Vue.component('dodlekara', {
 			.post('api/lekar', this.lekar)
 			.then((res)=>{
 				console.log('uspesno');
-				this.$router.push('/');
+				axios
+		       	.get('api/lekar/all')
+		       	.then(response => (this.lekari = response.data));
+				 
+				
 			}).catch((res)=>{
 				this.error = 'Vec postoji lekar sa istim email-om';
 			}
@@ -167,13 +233,17 @@ Vue.component('dodlekara', {
 		}
 		
 	},
-	mounted () {
-           axios
-          .get('api/tippregleda/all')
-          .then(res => {
-        	  this.tipoviPregleda = res.data;
+	mounted(){
+		 axios
+       	.get('api/lekar/all')
+       	.then(response => (this.lekari = response.data));
+		 
+		 axios
+         .get('api/tippregleda/all')
+         .then(res => {
+       	  this.tipoviPregleda = res.data;
 
-          })
-    },
+         })
+	}
 
 });

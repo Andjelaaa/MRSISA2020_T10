@@ -1,7 +1,7 @@
 Vue.component('dpregled', {
 	data: function(){
 		return{
-			pregled: {tipPregleda: null, lekar: null, sala: null},
+			pregled: {tipPregleda: null, lekar: null, sala: null, popust: 0},
 			lekari: null,
 			sale: null, 
 			tipoviPregleda: null,
@@ -14,6 +14,7 @@ Vue.component('dpregled', {
 			trajanjeGreska: '',
 			salaGreska: '',
 			lekarGreska: '',
+			popustGreska: '',
 			error: ''
 				
 		}
@@ -28,13 +29,13 @@ Vue.component('dpregled', {
 			<tbody>
 				<tr>			   
 			   		<td>Datum i vreme: </td>
-			   		<td><input id="datumvreme" type="datetime-local" v-model="pregled.datumVreme"></td>
+			   		<td><input class="form-control" id="datumvreme" type="datetime-local" v-model="pregled.datumVreme"></td>
 			   		<td style="color: red">{{datumVremeGreska}}</td>
 			   </tr>			   
 			   <tr>			   
 			   		<td>Tip pregleda: </td>
 					<td>
-						<select id="selectTP" v-model="tipPregleda.naziv">
+						<select class="form-control" id="selectTP" v-model="tipPregleda.naziv">
 							<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
 						</select>
 					</td>			   		
@@ -42,13 +43,13 @@ Vue.component('dpregled', {
 			   </tr>
 			   <tr>			   
 			   		<td>Trajanje: </td>
-			   		<td><input id="trajanje" type="number" v-model="pregled.trajanje"></td>
+			   		<td><input class="form-control" id="trajanje" type="number" v-model="pregled.trajanje"></td>
 			   		<td style="color: red">{{trajanjeGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Sala: </td>
 					<td>
-						<select id="selectSala" v-model="sala.naziv">
+						<select class="form-control" id="selectSala" v-model="sala.naziv">
 							<option v-for="s in sale" :value="s.naziv">{{s.naziv}}</option>
 						</select>
 					</td>			   		
@@ -58,18 +59,23 @@ Vue.component('dpregled', {
 			   <tr>			   
 			   		<td>Lekar: </td>
 					<td>
-						<select id="selectLekar" v-model="lekar.email">
+						<select class="form-control" id="selectLekar" v-model="lekar.email">
 							<option v-for="l in lekari" :value="l.email">{{l.ime}} {{l.prezime}}</option>
 						</select>
 					</td>			   		
 					<td style="color: red">{{lekarGreska}}</td>
 			   </tr>
+			   <tr>			   
+			   		<td>Popust: </td>
+			   		<td><input class="form-control" id="popust" type="number" v-model="pregled.popust"></td>
+			   		<td style="color: red">{{popustGreska}}</td>
+			   </tr>
 			   
 			   
 			    <tr>
 			   
-			   		<td><button v-on:click="nazad()">Nazad</button></td>
-			   		<td><button v-on:click="dodaj()">Dodaj</button></td>
+			   		<td><button v-on:click="nazad()" class="btn btn-light">Nazad</button></td>
+			   		<td><button v-on:click="dodaj()" class="btn btn-light">Dodaj</button></td>
 			   		<td></td>
 			   </tr>
 		   </tbody>
@@ -101,9 +107,11 @@ Vue.component('dpregled', {
 				this.lekarGreska = 'Lekar je obavezno polje!';
 			if(!this.sala.naziv)
 				this.salaGreska = 'Sala je obavezno polje!';
+			if(!this.pregled.popust)
+				this.popustGreska = 'Popust je obavezno polje!';
 
 
-			if(this.tipPregleda.naziv && this.pregled.trajanje && this.pregled.datumVreme && this.lekar.email && this.sala.naziv){
+			if(this.tipPregleda.naziv && this.pregled.trajanje && this.pregled.datumVreme && this.lekar.email && this.sala.naziv && this.pregled.popust){
 				return 0;
 			}
 			return 1;

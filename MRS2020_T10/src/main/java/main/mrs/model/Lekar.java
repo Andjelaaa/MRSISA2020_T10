@@ -30,7 +30,7 @@ public class Lekar extends Korisnik {
    @Column(name="rvKraj", unique=false, nullable=false)
    private String rvKraj;
    
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    public TipPregleda tipPregleda;
 
    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

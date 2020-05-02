@@ -15,7 +15,7 @@ public class TipPregledaService {
 	@Autowired
 	private TipPregledaRepository TipPregledaRepository;
 	
-	public TipPregleda findOne(Long id) {
+	public TipPregleda findOne(Integer id) {
 		return TipPregledaRepository.findById(id).orElseGet(null);
 	}
 
@@ -31,7 +31,7 @@ public class TipPregledaService {
 		return TipPregledaRepository.save(TipPregleda);
 	}
 
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		TipPregledaRepository.deleteById(id);
 	}
 

@@ -15,7 +15,7 @@ public class LekarService {
 	@Autowired
 	private LekarRepository LekarRepository;
 
-	public Lekar findOne(Long id) {
+	public Lekar findOne(Integer id) {
 		return LekarRepository.findById(id).orElseGet(null);
 	}
 
@@ -31,11 +31,15 @@ public class LekarService {
 		return LekarRepository.save(Lekar);
 	}
 
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		LekarRepository.deleteById(id);
 	}
 
 	public Lekar findByEmail(String email) {
 		return LekarRepository.findByEmail(email);
+	}
+
+	public List<Lekar> findByImeAndPrezime(String ime, String prezime) {
+		return LekarRepository.findByImeAndPrezime(ime, prezime);
 	}
 }

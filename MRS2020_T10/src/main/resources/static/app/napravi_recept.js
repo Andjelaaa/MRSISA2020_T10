@@ -1,6 +1,7 @@
 Vue.component('recept', {
+	data: function(){
 	return{
-		lekovi:{};
+		lekovi:{},
 		greska1: '',
 		dbError: ''
 		

@@ -28,13 +28,13 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 	  void deleteAll(Iterable<? extends Lekar> arg0);
 
 	 
-	  void deleteById(Long arg0);
+	  void deleteById(Integer id);
 
 	 
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Lekar> findById(Long arg0);
+	  Optional<Lekar> findById(Integer id);
 
 	 
 	  <S extends Lekar> S save(S arg0);
@@ -86,4 +86,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	@Query(value = "SELECT * FROM LEKAR WHERE EMAIL = ?1", nativeQuery = true)
 	Lekar findByEmail(String email);
+
+	@Query(value = "SELECT * FROM LEKAR WHERE IME like %?%1 and prezime like %?%2", nativeQuery = true)
+	List<Lekar> findByImeAndPrezime(String ime, String prezime);
 }
