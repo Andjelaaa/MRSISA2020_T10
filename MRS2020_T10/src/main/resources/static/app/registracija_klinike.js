@@ -64,10 +64,6 @@ Vue.component('regklinike', {
 		   </tr>
 		   
 		</v-data-table>
-		
-		<br>
-		<br>
-		<a href="#">Dodaj admina klinike</a>
 	    
 		</div>
 	

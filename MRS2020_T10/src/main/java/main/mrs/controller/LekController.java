@@ -69,11 +69,21 @@ public class LekController {
 	public ResponseEntity<LekDTO> changeLek(@RequestBody PomocnaKlasa2 data) {
         LekDTO izmenjen = data.lek;
 		try {
-		     Lek nadjiLek = LekService.findByNaziv(data.naziv);
-		     LekService.delete(nadjiLek);
-		     System.out.println();
-		     nadjiLek.setNaziv(izmenjen.getNaziv());
+			List<Lek> lekovi = LekService.findAll();
+			Lek nadjiLek = LekService.findByNaziv(data.naziv);
+			LekService.delete(nadjiLek);
+			 nadjiLek.setNaziv(izmenjen.getNaziv());
 		     nadjiLek.setSifra(izmenjen.getSifra());
+			for (Lek s : lekovi) {
+				if(s.getNaziv().equalsIgnoreCase(nadjiLek.getNaziv())) {
+					throw new Exception();
+					
+				}
+				if(s.getSifra().equalsIgnoreCase(nadjiLek.getSifra())) {
+					throw new Exception();
+				}
+			}
+		    
 			 nadjiLek = LekService.save(nadjiLek);
 		} catch (Exception e) {
 			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);

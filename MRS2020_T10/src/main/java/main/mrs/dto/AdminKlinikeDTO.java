@@ -1,12 +1,34 @@
 package main.mrs.dto;
 import java.util.*;
 
+import main.mrs.model.AdminKlinike;
+
 public class AdminKlinikeDTO extends KorisnikDTO {
    public Set<OdsustvoDTO> odsustvo;
    public KlinikaDTO klinika;
    
    
-   public Set<OdsustvoDTO> getOdsustvo() {
+   public AdminKlinikeDTO() {}
+   
+   public AdminKlinikeDTO(AdminKlinike s) {
+	   this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
+				s.getDrzava());
+   }
+   
+      
+   public AdminKlinikeDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
+		String drzava) {
+	this.id = id;
+	this.email = email;
+	this.lozinka = lozinka;
+	this.ime = ime;
+	this.prezime = prezime;
+	this.adresa = adresa;
+	this.grad = grad;
+	this.drzava = drzava;
+}
+
+public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new HashSet<OdsustvoDTO>();
       return odsustvo;

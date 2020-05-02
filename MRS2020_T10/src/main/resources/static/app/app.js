@@ -14,6 +14,10 @@ const AdminPocetna = {template: '<admin></admin>'}
 const DodavanjePregleda = {template: '<dpregled></dpregled>'}
 const TipoviPregleda = {template: '<tipovipregleda></tipovipregleda>'}
 const PredefPregledi = {template: '<predefpregledi></predefpregledi>'}
+const DodavanjeAdmina = {template: '<dodajadmina></dodajadmina>'}
+const ProfilMedSestre = {template: '<medsestra></medsestra>'}
+const Recept = {template: '<recept></recept>'}
+const ProfilKlinike = {template: '<klinika></klinika>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -33,8 +37,12 @@ const router = new VueRouter({
 	    { path: '/admin', component: AdminPocetna},
 	    { path: '/dpregled', component: DodavanjePregleda},
 	    { path: '/tipovipregleda', component: TipoviPregleda},
-	    { path: '/predefinisanipregledi', component: PredefPregledi}
-	  ]
+	    { path: '/predefinisanipregledi', component: PredefPregledi},
+	    { path: '/dadmin', component: DodavanjeAdmina},
+	    { path: '/medsestra', component: ProfilMedSestre},
+	    { path: '/recept', component: Recept},
+	    { path: '/profilklinike', component: ProfilKlinike}
+	    ]
 });
 
 var app = new Vue({

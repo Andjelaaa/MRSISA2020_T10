@@ -76,6 +76,19 @@ public class DijagnozaController {
 		     DijagnozaService.delete(nadjiDijagnozu);
 		     nadjiDijagnozu.setNaziv(izmenjen.getNaziv());
 		     nadjiDijagnozu.setSifra(izmenjen.getSifra());
+		     List<Dijagnoza> dijagnoze = DijagnozaService.findAll();
+
+				for (Dijagnoza s : dijagnoze) {
+					if(s.getNaziv().equalsIgnoreCase(nadjiDijagnozu.getNaziv())) {
+						throw new Exception();
+						
+					}
+					if(s.getSifra().equalsIgnoreCase(nadjiDijagnozu.getSifra())) {
+						throw new Exception();
+					}
+									
+				}
+		   
 		     nadjiDijagnozu = DijagnozaService.save(nadjiDijagnozu);
 		} catch (Exception e) {
 			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
