@@ -25,6 +25,7 @@ import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
@@ -42,7 +43,8 @@ public class PregledController {
 	private SalaService SalaService;
 	@Autowired
 	private TipPregledaService TipPregledaService;
-	
+	@Autowired
+	private EmailService EmailService;
 	@Autowired
 	private PacijentService PacijentService;
 	
@@ -94,12 +96,13 @@ public class PregledController {
 		try {
 			long minutes1 = p.getDatumVreme().getTime() / 60000 - 120; // omasi za 2 sata
 			long minutes2 = new Date().getTime()/60000;
-			if(minutes1 - minutes2 > 30)
+			if(minutes1 - minutes2 > 24*60)
 			{
-				//Pacijent pacijent = PacijentService.findById(pacijentId);
+				Pacijent pacijent = PacijentService.findById(pacijentId);
 				p.setPacijent(null);
 				//pacijent.addPregled(p);
 				p = PregledService.save(p);
+				EmailService.posaljiObavestenjeOtkazanPregled(pacijent, p);
 			}
 			else {
 				throw new Exception();
@@ -122,6 +125,8 @@ public class PregledController {
 		
 		try {
 			p = PregledService.save(p);
+			EmailService.posaljiObavestenjeZakazanPregled(pacijent, p);
+			
 		} catch (Exception e) {
 			return new ResponseEntity<>(new PregledDTO(p), HttpStatus.BAD_REQUEST);
 		}

@@ -5,40 +5,43 @@ Vue.component('pacijent', {
 		}
 	},
 	template: `
-	<div class="back">
-    <h1>Dobrodosli :)</h1>
-    <br>
-    <table>
-		<tr>
-			<td><button v-on:click="pocetna()" class="btn btn-light">Pocetna</button></td>
-			<td><button v-on:click="klinike()" class="btn btn-light">Klinike</button></td>
-			<td><button v-on:click="preglediOperacije()" class="btn btn-light">Pregledi/Operacije</button></td>
-			<td><button v-on:click="zk()" class="btn btn-light">Zdravstveni karton</button></td>
-			<td><button v-on:click="profil()" class="btn btn-light">Profil</button></td>
-			<td><button v-on:click="odjava()" class="btn btn-light">Odjavi se</button></td>
-		</tr>
-    </table>
+	<div>
+    <nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <a class="navbar-brand" href="#/pacijent">Pocetna</a>
+		
+		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/klinike">Klinike</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/pacijentpregledi">Pregledi/Operacije</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/">Zdravstveni karton</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/">Profil</a>
+		      </li>
+		       <li class="nav-item">
+		        <a class="nav-link" href="#/">Odjavi se</a>
+		      </li>
+		    </ul>
+		    <form class="form-inline my-2 my-lg-0">
+		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		    </form>
+		  </div>
+		</nav>
+		</br>
+	
 	</div>
 	`, 
 	methods: {
-		pocetna: function(){
-			this.$router.push('/pacijent');
-		},
-		klinike: function(){
-			this.$router.push('/klinike');
-		},
-		preglediOperacije: function(){
-			
-		},
-		zk: function(){
-			
-		},
-		profil: function(){
-			
-		},
-		odjava: function(){
-			this.$router.push('/');
-		},
+		
 	},
 	mounted(){
 		

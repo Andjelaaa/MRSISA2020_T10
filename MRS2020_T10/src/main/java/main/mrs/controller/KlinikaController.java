@@ -55,6 +55,9 @@ public class KlinikaController {
 		klinika.setOpis(KlinikaDTO.getOpis());
 		klinika.setEmailKlinike(KlinikaDTO.getEmailKlinike());
 		klinika.setKontaktKlinike(KlinikaDTO.getKontaktKlinike());
+		klinika.setProsecnaOcena(0.0);
+		klinika.setBrojOcena(0);
+		
 
 		try {
 			klinika = KlinikaService.save(klinika);
