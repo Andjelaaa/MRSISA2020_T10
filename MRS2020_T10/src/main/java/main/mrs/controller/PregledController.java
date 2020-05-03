@@ -60,10 +60,10 @@ public class PregledController {
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/slobodniPregledi")
-	public ResponseEntity<List<PregledDTO>> dobaviSlobodnePreglede() {
+	@GetMapping(value = "/slobodniPregledi/{klinikaId}")
+	public ResponseEntity<List<PregledDTO>> dobaviSlobodnePreglede(@PathVariable int klinikaId) {
 
-		List<Pregled> Pregleds = PregledService.getUnscheduled();
+		List<Pregled> Pregleds = PregledService.getUnscheduled(klinikaId);
 
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();

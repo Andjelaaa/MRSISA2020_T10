@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,14 @@ public class KlinikaController {
 		}
 
 		return new ResponseEntity<>(KlinikeDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/detalji/{klinikaId}")
+	public ResponseEntity<KlinikaDTO> detaljiKlinike(@PathVariable int klinikaId) {
+
+		Klinika Klinika = KlinikaService.findOneById(klinikaId);
+		// convert Klinike to DTOs
+		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = "application/json")

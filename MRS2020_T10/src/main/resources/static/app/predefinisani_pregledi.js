@@ -103,7 +103,7 @@ Vue.component('predefpregledi', {
 	
 	mounted () {
 		axios
-		.get('api/pregled/slobodniPregledi')
+		.get('api/pregled/slobodniPregledi/'+this.$route.params.name)
 		.then(res => {
 			this.pregledi = res.data;
 		})

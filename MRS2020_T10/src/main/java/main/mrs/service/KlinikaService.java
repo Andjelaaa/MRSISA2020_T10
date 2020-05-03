@@ -35,4 +35,9 @@ public class KlinikaService {
 	public void remove(Long id) {
 		KlinikaRepository.deleteById(id);
 	}
+
+	public Klinika findOneById(int klinikaId) {
+		// TODO Auto-generated method stub
+		return KlinikaRepository.findOneById(klinikaId);
+	}
 }

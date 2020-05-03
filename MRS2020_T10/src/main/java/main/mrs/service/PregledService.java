@@ -50,9 +50,9 @@ public class PregledService {
 		return PregledRepository.findAfterDate(datum);
 	}
 
-	public List<Pregled> getUnscheduled() {
+	public List<Pregled> getUnscheduled(int klinikaId) {
 		// TODO Auto-generated method stub
-		return PregledRepository.getUnscheduled();
+		return PregledRepository.getUnscheduled(klinikaId);
 	}
 
 	public List<Pregled> getScheduled(int pacijentId) {

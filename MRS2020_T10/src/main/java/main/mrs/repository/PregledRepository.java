@@ -95,8 +95,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	  @Query(value = "SELECT * FROM PREGLED WHERE  PACIJENT_ID IS null AND DATUM_VREME >= ?1 ORDER BY DATUM_VREME ASC", nativeQuery = true)
 	  List<Pregled> findAfterDate(Date datum);
 
-	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID IS null", nativeQuery = true)
-	  List<Pregled> getUnscheduled();
+	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID IS null AND KLINIKA_ID =?1", nativeQuery = true)
+	  List<Pregled> getUnscheduled(int klinikaId);
 
 	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID = ?1 AND IZVESTAJ_ID is null" , nativeQuery = true)
 	  List<Pregled> getScheduled(int pacijentId);

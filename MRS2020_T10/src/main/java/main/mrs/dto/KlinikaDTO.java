@@ -47,11 +47,11 @@ public void setSale(Set<SalaDTO> sale) {
 public KlinikaDTO() {}
    
    public KlinikaDTO(Klinika s) {
-		this(s.getNaziv(), s.getAdresa(), s.getOpis(), s.getEmailKlinike(), s.getKontaktKlinike());
+		this(s.getId(), s.getNaziv(), s.getAdresa(), s.getOpis(), s.getEmailKlinike(), s.getKontaktKlinike());
 	}
 
-	public KlinikaDTO(String naziv2, String adresa, String opis2, String em, String ko) {
-		//this.id = id2;
+	public KlinikaDTO(int id2, String naziv2, String adresa, String opis2, String em, String ko) {
+		this.id = id2;
 		this.naziv = naziv2;
 		this.adresa = adresa;
 		this.opis = opis2;

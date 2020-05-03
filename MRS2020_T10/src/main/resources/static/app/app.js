@@ -19,6 +19,8 @@ const Sale = {template: '<sale></sale>'}
 const Lekari = {template: '<lekari></lekari>'}
 const PacijentPocetna = {template: '<pacijent></pacijent>'}
 const ZakazaniPregledi = {template: '<zakazani-pregledi></zakazani-pregledi>'}
+const KlinikePrikaz = {template: '<klinike-prikaz></klinike-prikaz>'}
+const KlinikaDetalji = {template: '<klinika-detalji></klinika-detalji>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -35,7 +37,7 @@ const router = new VueRouter({
 	    { path: '/admin', component: AdminPocetna},
 	    { path: '/dpregled', component: DodavanjePregleda},
 	    { path: '/tipovipregleda', component: TipoviPregleda},
-	    { path: '/predefinisanipregledi', component: PredefPregledi},
+	    { path: '/predefinisanipregledi/:name', component: PredefPregledi},
 	    { path: '/dadmin', component: DodavanjeAdmina},
 	    { path: '/medsestra', component: ProfilMedSestre},
 	    { path: '/recept', component: Recept},
@@ -43,7 +45,9 @@ const router = new VueRouter({
 	    { path: '/sale', component: Sale},
 	    { path: '/lekari', component: Lekari},
 	    { path: '/pacijent', component: PacijentPocetna},
-	    { path: '/pacijentpregledi', component: ZakazaniPregledi}
+	    { path: '/pacijentpregledi', component: ZakazaniPregledi},
+	    { path: '/klinike', component: KlinikePrikaz},
+	    { path: '/detaljiKlinike/:name', component: KlinikaDetalji}
 	    ]
 });
 
