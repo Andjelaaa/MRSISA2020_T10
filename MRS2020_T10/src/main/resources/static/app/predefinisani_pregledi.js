@@ -41,7 +41,7 @@ Vue.component('predefpregledi', {
 			</tr>
 			
 			<tr v-for="(p, index) in pregledi">
-				<td>{{p.datumVreme}}</td>
+				<td>{{p.datumVreme | formatDate}}</td>
 				<td>{{p.trajanje}}</td>
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
@@ -102,8 +102,13 @@ Vue.component('predefpregledi', {
 	},
 	
 	mounted () {
+//		axios
+//		.get('api/pregled/slobodniPregledi/'+this.$route.params.name)
+//		.then(res => {
+//			this.pregledi = res.data;
+//		})
 		axios
-		.get('api/pregled/slobodniPregledi/'+this.$route.params.name)
+		.get('api/pregled/all')
 		.then(res => {
 			this.pregledi = res.data;
 		})
