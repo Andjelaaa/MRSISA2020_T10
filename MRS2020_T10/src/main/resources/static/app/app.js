@@ -17,6 +17,8 @@ const Recept = {template: '<recept></recept>'}
 const ProfilKlinike = {template: '<klinika></klinika>'}
 const Sale = {template: '<sale></sale>'}
 const Lekari = {template: '<lekari></lekari>'}
+const PacijentPocetna = {template: '<pacijent></pacijent>'}
+const ZakazaniPregledi = {template: '<zakazani-pregledi></zakazani-pregledi>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -39,7 +41,9 @@ const router = new VueRouter({
 	    { path: '/recept', component: Recept},
 	    { path: '/profilklinike', component: ProfilKlinike},
 	    { path: '/sale', component: Sale},
-	    { path: '/lekari', component: Lekari}
+	    { path: '/lekari', component: Lekari},
+	    { path: '/pacijent', component: PacijentPocetna},
+	    { path: '/pacijentpregledi', component: ZakazaniPregledi}
 	    ]
 });
 

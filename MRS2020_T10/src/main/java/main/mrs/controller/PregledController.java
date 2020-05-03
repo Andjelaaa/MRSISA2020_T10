@@ -2,6 +2,7 @@ package main.mrs.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,13 +60,63 @@ public class PregledController {
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/slobodniPregledi")
+	public ResponseEntity<List<PregledDTO>> dobaviSlobodnePreglede() {
+
+		List<Pregled> Pregleds = PregledService.getUnscheduled();
+
+		// convert Pregleds to DTOs
+		List<PregledDTO> PregledsDTO = new ArrayList<>();
+		for (Pregled s : Pregleds) {
+			PregledsDTO.add(new PregledDTO(s));
+		}
+
+		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/zakazaniPregledi/{pacijentId}")
+	public ResponseEntity<List<PregledDTO>> dobaviZakazanePreglede(@PathVariable int pacijentId) {
+
+		List<Pregled> Pregleds = PregledService.getScheduled(pacijentId);
+
+		// convert Pregleds to DTOs
+		List<PregledDTO> PregledsDTO = new ArrayList<>();
+		for (Pregled s : Pregleds) {
+			PregledsDTO.add(new PregledDTO(s));
+		}
+
+		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/otkazi/{pregledId}/{pacijentId}")
+	public ResponseEntity<PregledDTO> otkaziPregled(@PathVariable long pregledId, @PathVariable int pacijentId){
+		Pregled p = PregledService.findById(pregledId);
+		try {
+			long minutes1 = p.getDatumVreme().getTime() / 60000 - 120; // omasi za 2 sata
+			long minutes2 = new Date().getTime()/60000;
+			if(minutes1 - minutes2 > 30)
+			{
+				//Pacijent pacijent = PacijentService.findById(pacijentId);
+				p.setPacijent(null);
+				//pacijent.addPregled(p);
+				p = PregledService.save(p);
+			}
+			else {
+				throw new Exception();
+			}
+		}
+		catch(Exception e)
+		{
+			return new ResponseEntity<>(new PregledDTO(p), HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/{pregledId}/{pacijentId}")
 	public ResponseEntity<PregledDTO> zakaziPregled(@PathVariable long pregledId, @PathVariable int pacijentId){
-		System.out.println("Zakazujem pregled");
 		Pregled p = PregledService.findById(pregledId);
-		System.out.println(p.getTrajanje());
 		Pacijent pacijent = PacijentService.findById(pacijentId);
-		System.out.println(pacijent.getIme());
 		p.setPacijent(pacijent);
 		//pacijent.addPregled(p);
 		
@@ -95,7 +146,6 @@ public class PregledController {
 			System.out.println(datum);
 			date1=new SimpleDateFormat("yyyy-MM-dd").parse(datum);
 		} catch (ParseException e) {
-			System.out.println("PUCA PUCA PUCA");
 			// TODO Auto-generated catch block
 			return null;
 		}

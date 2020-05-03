@@ -49,4 +49,14 @@ public class PregledService {
 		// TODO Auto-generated method stub
 		return PregledRepository.findAfterDate(datum);
 	}
+
+	public List<Pregled> getUnscheduled() {
+		// TODO Auto-generated method stub
+		return PregledRepository.getUnscheduled();
+	}
+
+	public List<Pregled> getScheduled(int pacijentId) {
+		// TODO Auto-generated method stub
+		return PregledRepository.getScheduled(pacijentId);
+	}
 }

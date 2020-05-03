@@ -3,10 +3,10 @@ Vue.component('recept', {
 	return{
 		lekovi:{},
 		greska1: '',
-		dbError: ''
-		
-	   
-	}
+		dbError: ''  
+		}
+	},
+	
 	template: `
 	<h1> Novi recept: </h1>
 		{{dbError}}
