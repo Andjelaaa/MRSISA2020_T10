@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
+import main.mrs.dto.StavkaCenovnikaDTO;
 import main.mrs.dto.TipPregledaDTO;
 import main.mrs.model.Lekar;
 import main.mrs.model.TipPregleda;
@@ -38,7 +39,9 @@ public class TipPregledaController {
 		// convert TipPregledas to DTOs
 		List<TipPregledaDTO> TipPregledasDTO = new ArrayList<>();
 		for (TipPregleda s : TipPregledas) {
-			TipPregledasDTO.add(new TipPregledaDTO(s));
+			TipPregledaDTO tp = new TipPregledaDTO(s);
+			tp.setStavka(new StavkaCenovnikaDTO(s.getStavka()));
+			TipPregledasDTO.add(tp);
 		}
 
 		return new ResponseEntity<>(TipPregledasDTO, HttpStatus.OK);

@@ -26,10 +26,10 @@ Vue.component('sale', {
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		      <li class="nav-item active">
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
-		      <li class="nav-item">
+		      <li class="nav-item active">
 		        <a class="nav-link" href="#/sale">Sale</a>
 		      </li>
 		      <li class="nav-item">
@@ -47,12 +47,11 @@ Vue.component('sale', {
 		</nav>
 		</br>
 		
-		
+
+		<div class="float-left">
 		Naziv: <input type="text" id="search" v-model="pretraga" >
 		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
-
-		<div class="left">
-		<table id="leva" class="table table-hover table-light">
+		<table class="table table-hover table-light">
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Broj</th>
@@ -96,8 +95,8 @@ Vue.component('sale', {
 		</div>
 		<br>
 		
-		<div class="float-right" style="width:45%">
-		<h1> Nova sala </h1>
+		<div class="float-right" style="width:75%">
+		<h3> Nova sala </h3>
 		<p>{{error}}</p>
 		<table>
 			<tbody>
@@ -118,8 +117,8 @@ Vue.component('sale', {
 		   
 			    <tr>
 			   
-			   		<td><button v-on:click="dodaj()" class="btn btn-light">Dodaj</button></td>
 			   		<td></td>
+			   		<td><button v-on:click="dodaj()" class="btn btn-success float-right">Dodaj</button></td>
 			   </tr>
 		   </tbody>
 		</table>

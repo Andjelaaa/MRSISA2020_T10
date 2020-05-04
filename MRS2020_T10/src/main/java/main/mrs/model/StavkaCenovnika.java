@@ -28,7 +28,7 @@ public class StavkaCenovnika {
 	public TipPregleda tipPregleda;
 
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     public Cenovnik cenovnik;
 	
 	public Cenovnik getCenovnik() {

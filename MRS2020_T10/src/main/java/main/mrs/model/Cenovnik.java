@@ -19,7 +19,7 @@ public class Cenovnik {
 	private Integer id;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="cenovnik", nullable=false)
+	@JoinColumn(name="cenovnik", nullable=true)
     public Set<StavkaCenovnika> stavkaCenovnika;
    
 	public Integer getId() {

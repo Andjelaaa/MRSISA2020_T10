@@ -7,10 +7,13 @@ Vue.component('tipovipregleda', {
 			selectedBackup: {naziv:'', opis: ''},
 			showModal: false,
 			
+			
 			tipPregleda: {naziv:'', opis:'', brojAktvnih:0},
 			nazivGreska: '',
 			opisGreska: '',
-			error: ''
+			error: '',
+			stavkaCenovnika: {},
+			cenaGreska: '',
 
 		}
 	}, 
@@ -25,13 +28,13 @@ Vue.component('tipovipregleda', {
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		      <li class="nav-item active">
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/sale">Sale</a>
 		      </li>
-		      <li class="nav-item">
+		      <li class="nav-item active">
 		        <a class="nav-link" href="#/tipovipregleda">Tipovi pregleda</a>
 		      </li>
 		      <li class="nav-item">
@@ -45,7 +48,7 @@ Vue.component('tipovipregleda', {
 		  </div>
 		</nav>
 		</br>
-		<div class="float-left d-block p-2">		
+		<div class="float-left">		
 		
 		Pretraga: <input type="text" id="search" v-model="pretraga">
 		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
@@ -54,11 +57,13 @@ Vue.component('tipovipregleda', {
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Opis</th>
+		   		<th>Cena</th>
 		   </tr>
 		  <tbody>
 		   <tr  v-for="t in tipoviPregleda">
 		   		<td>{{t.naziv}}</td>
 		   		<td>{{t.opis}}</td>
+		   		<td>{{t.stavka.cena}} RSD</td>
 		   		<td>
 					<button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select(t)">Izmeni</button>
 						<modal v-if="showModal" @close="showModal = false">
@@ -75,6 +80,11 @@ Vue.component('tipovipregleda', {
 										<td>Opis:</td>
 										<td><input  class="form-control" type="text" v-model = "selected.opis"/></td>
 									</tr>
+									<tr>
+										<td>Cena:</td>
+										<td><input  class="form-control" type="number" v-model = "selected.stavka.cena"/></td>
+									</tr>
+									
 									
 								</tbody>
 								</table>
@@ -94,30 +104,31 @@ Vue.component('tipovipregleda', {
 		</div>
 		<br>
 		<br>
-		<div class="float-right" style="width:45%">
-		<h3> Novi tipa pregleda </h3>
+		<div class="float-right" style="width:65%">
+		<h3> Novi tip pregleda </h3>
 		<p>{{error}}</p>
 		
 		<table>
 			<tbody>
-			   <tr>
-			   
+			   <tr>			   
 			   		<td>Naziv tipa pregleda: </td>
 			   		<td><input class="form-control" id="naziv" type="text" v-model="tipPregleda.naziv"></td>
-			   		<td style="color: red">{{nazivGreska}}</td>
-	
+			   		<td style="color: red">{{nazivGreska}}</td>	
 			   </tr>
 
-			   <tr>
-			   		
+			   <tr>			   		
 			   		<td>Opis tipa pregleda: </td>
 			   		<td><input class="form-control" id="opis" type="text" v-model="tipPregleda.opis"></td>
 			   		<td style="color: red">{{opisGreska}}</td>
-			   </tr>		   
-			    <tr>
-			   
-			   		<td><button v-on:click="dodaj()" class="btn btn-light">Dodaj</button></td>
+			   </tr>	
+			    <tr>			   		
+			   		<td>Cena tipa pregleda: </td>
+			   		<td><input class="form-control" id="cena" type="number" v-model="stavkaCenovnika.cena"></td>
+			   		<td style="color: red">{{cenaGreska}}</td>
+			   </tr>	   
+			    <tr>			   
 			   		<td></td>
+			   		<td><button v-on:click="dodaj()" class="btn btn-success float-right">Dodaj</button></td>
 			   </tr>
 		   </tbody>
 		</table>
@@ -143,12 +154,14 @@ Vue.component('tipovipregleda', {
 		select : function(s){
 			this.selectedBackup.naziv = s.naziv;
 			this.selectedBackup.opis = s.opis;
+			this.selectedBackup.cena = s.stavka.cena;
 			this.selected = s;
 
 		},
 		restore: function(s){
 			s.naziv = this.selectedBackup.naziv;
 			s.opis = this.selectedBackup.opis;
+			s.stavka.cena = this.selectedBackup.cena;
 		},
 		obrisi: function(s){
 			axios
@@ -172,6 +185,21 @@ Vue.component('tipovipregleda', {
 				console.log('Neuspesna izmena');
 			});
 			
+			console.log(s.stavka.cena);
+			console.log(this.selectedBackup.cena);
+			if(s.stavka.cena != this.selectedBackup.cena){
+				axios
+				.post('api/stavkacenovnika/'+s.naziv, {cena: s.stavka.cena})
+				.then((res)=>{
+					console.log('Uspesno');
+					axios
+			       	.get('api/tippregleda/all')
+			       	.then(response => (this.tipoviPregleda = response.data));
+				}).catch((res)=>{
+					this.error = 'Neuspesno dodavanje';
+				})
+			}
+			
 		},
 		validacija: function(){
 			this.nazivGreska = '';
@@ -182,7 +210,9 @@ Vue.component('tipovipregleda', {
 
 			if(!this.tipPregleda.opis)
 				this.opisGreska = 'Opis je obavezno polje!';
-			if(this.tipPregleda.naziv && this.tipPregleda.opis){
+			if(!this.stavkaCenovnika.cena)
+				this.cenaGreska = 'Cena je obavezno polje!';
+			if(this.tipPregleda.naziv && this.tipPregleda.opis && this.stavkaCenovnika.cena){
 				return 0;
 			}
 			return 1;
@@ -197,14 +227,22 @@ Vue.component('tipovipregleda', {
 			.post('api/tippregleda', this.tipPregleda)
 			.then((res)=>{
 				console.log('uspesno');
+			}).catch((res)=>{
+				this.error = 'Vec postoji pregled sa istim imenom';
+				return;
+			});
+			
+			axios
+			.post('api/stavkacenovnika/'+this.tipPregleda.naziv, this.stavkaCenovnika)
+			.then((res)=>{
+				console.log('Uspesno');
 				axios
 		       	.get('api/tippregleda/all')
 		       	.then(response => (this.tipoviPregleda = response.data));
 			}).catch((res)=>{
-				this.error = 'Vec postoji pregled sa istim imenom';
-			}
-				
-			)
+				this.error = 'Neuspesno dodavanje';
+			})
+			
 		}
 		
 	},

@@ -31,7 +31,7 @@ Vue.component('dpregled', {
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		      <li class="nav-item active">
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
 		      <li class="nav-item">
@@ -40,7 +40,7 @@ Vue.component('dpregled', {
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/tipovipregleda">Tipovi pregleda</a>
 		      </li>
-		      <li class="nav-item">
+		      <li class="nav-item active">
 		        <a class="nav-link" href="#/dpregled">Novi termin za pregled</a>
 		      </li>
 		    </ul>
@@ -51,6 +51,7 @@ Vue.component('dpregled', {
 		  </div>
 		</nav>
 		</br>
+		<h3 style="margin:20px">Novi predefinisani pregled</h3>
 		<p>{{error}}</p>
 		<table style="margin:20px">
 			<tbody>

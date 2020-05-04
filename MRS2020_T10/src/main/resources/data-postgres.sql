@@ -1,8 +1,17 @@
 insert into klinicki_centar (naziv) values ('Klinicki centar Srbije');
 insert into klinika (naziv, adresa, opis, prosecna_ocena, email_klinike, kontakt_klinike, kc_id, broj_ocena) values ('Kardiologija', 'Nemanjina 12', 'kardiologija i kardiohirurgija', 7.6, 'kardio@klinika.com', '365/658',1, 5);
+insert into admin_klinike (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id) 
+values ('Cara Dusana 123', 'Srbija', 'admin1@gmail.com', 'Novi Sad', 'Aca', '065154513', 'admin1', 'Peric', 1);
+
+insert into cenovnik (id) values (nextval('Cenovnik_id_SEQ'));
 
 insert into tip_pregleda (naziv, opis, broj_aktvnih) values ('Opsti', 'opsti pregled', 0);
 insert into tip_pregleda (naziv, opis, broj_aktvnih) values ('Ultrazvuk', 'opis pregleda', 0);
+
+insert into stavka_cenovnika (cena, cenovnik_id, tip_pregleda_id) values (2000, 1, 1);
+update tip_pregleda set stavka_id=1 where id=1;
+insert into stavka_cenovnika (cena, cenovnik_id, tip_pregleda_id) values (3000, 1, 2);
+update tip_pregleda set stavka_id=2 where id=2;
 
 insert into lek (naziv,sifra) values ('Bromazepam', 'B1');
 insert into lek (naziv, sifra) values ('Hloramfenikol', 'H1');

@@ -88,10 +88,10 @@ Vue.component('lekari', {
 		
 		</div>
 		<br>
-		<div class="float-right">
-		<h1> Registracija lekara </h1>
+		<div class="float-right" style="width:35%">
+		<h3> Registracija lekara </h3>
 		<p>{{error}}</p>
-		<table>
+		<table >
 			<tbody>
 				<tr>			   
 			   		<td>Email: </td>
@@ -156,8 +156,8 @@ Vue.component('lekari', {
 			   
 			    <tr>
 			   
-			   		<td><button v-on:click="dodaj()" class="btn btn-light">Dodaj</button></td>
 			   		<td></td>
+			   		<td><button v-on:click="dodaj()" class="btn btn-success float-right">Dodaj</button></td>
 			   </tr>
 		   </tbody>
 		</table>

@@ -3,11 +3,31 @@ package main.mrs.dto;
 import java.util.*;
 
 import main.mrs.model.Cenovnik;
+import main.mrs.model.StavkaCenovnika;
 
 public class StavkaCenovnikaDTO {
 	private Integer id;
 	private double cena;
 	public CenovnikDTO cenovnik;
+	
+	public StavkaCenovnikaDTO() {}
+
+	public StavkaCenovnikaDTO(StavkaCenovnika s) {
+		this(s.getId(), s.getCena());
+	}
+
+	public StavkaCenovnikaDTO(int id, double cena2) {
+		this.id = id;
+		this.cena = cena2;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public CenovnikDTO getCenovnik() {
 		return cenovnik;

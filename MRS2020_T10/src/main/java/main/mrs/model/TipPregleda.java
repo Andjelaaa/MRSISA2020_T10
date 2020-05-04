@@ -29,7 +29,7 @@ public class TipPregleda {
 	@Column(name="brojAktvnih", unique=false, nullable=false)
     private int brojAktvnih;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private StavkaCenovnika stavka;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
