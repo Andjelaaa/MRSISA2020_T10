@@ -58,7 +58,7 @@ Vue.component('regklinike', {
 		</br>
 		<h3 style="margin:20px"> Registracija klinike: </h3>
 		{{dbError}}
-		<table style="margin:20px">
+		<table class="table table-sm">
 		   <tr>
 		   
 		   		<td>Naziv klinike: </td>
@@ -96,8 +96,8 @@ Vue.component('regklinike', {
 		   </tr>
 		    <tr>
 		   
-		   		<td><button v-on:click = "nazad()" class="btn btn-light">Nazad</button></td>
-		   		<td><button v-on:click = "napraviKliniku()" class="btn btn-light">Napavi kliniku</button></td>	   
+		   		<td><button v-on:click = "nazad()" class="btn btn-success"> Nazad </button></td>
+		   		<td><button v-on:click = "napraviKliniku()" class="btn btn-danger"> Napavi kliniku </button></td>	   
 		   </tr>
 		   
 		</v-data-table>

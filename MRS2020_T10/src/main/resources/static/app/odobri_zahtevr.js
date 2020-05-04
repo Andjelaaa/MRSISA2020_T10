@@ -52,7 +52,7 @@ Vue.component('odobri_zaht', {
 		</br>
 		
 		
-		<table class="table table-hover table-light " >
+		<table class="table table-sm table-hover table-light " >
 		   <tr>		   		
 		   		<th>Email adresa</th>
 		   		<th>Ime</th>
@@ -77,8 +77,8 @@ Vue.component('odobri_zaht', {
 		   		<td>{{z.kontakt}}</td>
 		   		<td>{{z.lbo}}</td>
 		   		<td>{{z.lozinka}}</td>
-		   		<td><button v-on:click = "prihvati(z)" class="btn btn-light">Prihvati</button></td>
-		   		<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Odbij zahtev</button>
+		   		<td><button v-on:click = "prihvati(z)" class="btn btn-success">Prihvati</button></td>
+		   		<td><button class="btn btn-danger" id="show-modal" @click="showModal = true" >Odbij zahtev</button>
 						<modal v-if="showModal" @close="showModal = false">
 	    
 	    					<h3 slot="header">Unesite razlog odbijanja registracije</h3>

@@ -86,8 +86,8 @@ Vue.component('sifrarnik1', {
 								</table>
 	    					
 	    					<div slot="footer">
-	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save()"> Save </button>       						
-								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore(selected)"> Cancel </button>								
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save()"> Sacuvaj izmene </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore(selected)"> Odustani </button>								
 							</div>
 						</modal>
 				</td>
@@ -122,10 +122,6 @@ Vue.component('sifrarnik1', {
 	
 	`, 
 	methods : {
-		nazad : function(){
-			this.$router.push('/sprofil');
-			return;
-		},
 		validacija : function(){
 			this.greska1 = '';
 			this.greska2 = '';

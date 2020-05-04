@@ -55,7 +55,7 @@ Vue.component('sifrarnik2', {
 		<p class="leva">Sifrarnik sijagnoza </p>
 		<p class="desna">Unesite novu dijagnozu</p>
 		<div class="float-left">
-		<table class="table table-hover table-light " >
+		<table class="table table-hover table-light" >
 		   <tr>		   		
 		   		<th>Naziv</th>
 		   		<th>Sifra</th>
@@ -85,8 +85,8 @@ Vue.component('sifrarnik2', {
 								</table>
 	    					
 	    					<div slot="footer">
-	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save()"> Save </button>       						
-								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore(selected)"> Cancel </button>								
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="save()"> Sacuvaj izmene </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore(selected)"> Odustani </button>								
 							</div>
 						</modal>
 				</td>
@@ -121,10 +121,6 @@ Vue.component('sifrarnik2', {
 	
 	`, 
 	methods : {
-		nazad : function(){
-			this.$router.push('/sprofil');
-			return;
-		},
 		validacija : function(){
 			this.greska1 = '';
 			this.greska2 = '';
