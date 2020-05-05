@@ -50,6 +50,7 @@ public class StavkaCenovnikaController {
 	@PostMapping(consumes = "application/json", value = "/{nazivTipaPregleda}")
 	public ResponseEntity<StavkaCenovnikaDTO> saveStavkaCenovnika(@RequestBody StavkaCenovnikaDTO StavkaCenovnikaDTO, @PathVariable String nazivTipaPregleda) {
 
+		
 		TipPregleda tp = TipPregledaService.findByNaziv(nazivTipaPregleda);
 		Cenovnik c = CenovnikService.findOne(1);
 		StavkaCenovnika StavkaCenovnika = new StavkaCenovnika();

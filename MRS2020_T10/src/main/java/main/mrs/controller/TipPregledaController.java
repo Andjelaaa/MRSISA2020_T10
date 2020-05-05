@@ -77,7 +77,7 @@ public class TipPregledaController {
 		}
 
 
-		return new ResponseEntity<>(new TipPregledaDTO(tipPregleda), HttpStatus.CREATED);
+		return new ResponseEntity<>(TipPregledaDTO, HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/{tipPregledaNaziv}/lekari")

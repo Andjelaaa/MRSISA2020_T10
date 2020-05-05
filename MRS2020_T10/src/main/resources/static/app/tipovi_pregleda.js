@@ -181,24 +181,23 @@ Vue.component('tipovipregleda', {
 			.put('api/tippregleda/'+s.id, s)
 			.then((res)=>{
 				console.log('Uspesna izmena');
+				if(s.stavka.cena != this.selectedBackup.cena){
+					axios
+					.post('api/stavkacenovnika/'+s.naziv, {cena: s.stavka.cena})
+					.then((res)=>{
+						console.log('Uspesno');
+						axios
+				       	.get('api/tippregleda/all')
+				       	.then(response => (this.tipoviPregleda = response.data));
+					}).catch((res)=>{
+						console.log('Neuspesna izmena');
+					})
+				}
+				
 			}).catch((res)=>{
 				console.log('Neuspesna izmena');
 			});
-			
-			console.log(s.stavka.cena);
-			console.log(this.selectedBackup.cena);
-			if(s.stavka.cena != this.selectedBackup.cena){
-				axios
-				.post('api/stavkacenovnika/'+s.naziv, {cena: s.stavka.cena})
-				.then((res)=>{
-					console.log('Uspesno');
-					axios
-			       	.get('api/tippregleda/all')
-			       	.then(response => (this.tipoviPregleda = response.data));
-				}).catch((res)=>{
-					this.error = 'Neuspesno dodavanje';
-				})
-			}
+
 			
 		},
 		validacija: function(){
@@ -227,22 +226,20 @@ Vue.component('tipovipregleda', {
 			.post('api/tippregleda', this.tipPregleda)
 			.then((res)=>{
 				console.log('uspesno');
+				axios
+				.post('api/stavkacenovnika/'+this.tipPregleda.naziv, this.stavkaCenovnika)
+				.then((res)=>{
+					console.log('Uspesno');
+					axios
+			       	.get('api/tippregleda/all')
+			       	.then(response => (this.tipoviPregleda = response.data));
+				}).catch((res)=>{
+					this.error = 'Neuspesno dodavanje';
+				})
 			}).catch((res)=>{
 				this.error = 'Vec postoji pregled sa istim imenom';
 				return;
 			});
-			
-			axios
-			.post('api/stavkacenovnika/'+this.tipPregleda.naziv, this.stavkaCenovnika)
-			.then((res)=>{
-				console.log('Uspesno');
-				axios
-		       	.get('api/tippregleda/all')
-		       	.then(response => (this.tipoviPregleda = response.data));
-			}).catch((res)=>{
-				this.error = 'Neuspesno dodavanje';
-			})
-			
 		}
 		
 	},
