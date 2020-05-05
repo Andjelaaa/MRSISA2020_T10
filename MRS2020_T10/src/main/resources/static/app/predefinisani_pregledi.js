@@ -71,6 +71,7 @@ Vue.component('predefpregledi', {
 			<th>Cena</th>
 			<th>Popust</th>
 			<th>Cena sa popustom</th>
+			<th></th>
 			</tr>
 			
 			<tr v-for="(p, index) in pregledi">
@@ -79,9 +80,9 @@ Vue.component('predefpregledi', {
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
 				<td>{{p.sala.broj}}</td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{p.tipPregleda.stavka.cena}} RSD</td>
+				<td>{{p.popust}} %</td>
+				<td>{{(100-p.popust)*p.tipPregleda.stavka.cena/100}} RSD</td>
 				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Zakazi</button>
 						<modal v-if="showModal" @close="showModal = false">
         
@@ -145,6 +146,8 @@ Vue.component('predefpregledi', {
 				console.log('neuspesno');
 			})
 		},
+		
+		
 	},
 	
 	mounted () {

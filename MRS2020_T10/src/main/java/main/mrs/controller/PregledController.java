@@ -56,7 +56,11 @@ public class PregledController {
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();
 		for (Pregled s : Pregleds) {
-			PregledsDTO.add(new PregledDTO(s));
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
+			
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
@@ -70,7 +74,10 @@ public class PregledController {
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();
 		for (Pregled s : Pregleds) {
-			PregledsDTO.add(new PregledDTO(s));
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
@@ -84,7 +91,10 @@ public class PregledController {
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();
 		for (Pregled s : Pregleds) {
-			PregledsDTO.add(new PregledDTO(s));
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
@@ -139,7 +149,10 @@ public class PregledController {
 		List<Pregled> result = PregledService.findByTipPregleda(tp.getId());
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : result) {
-			preglediDTO.add(new PregledDTO(s));
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			preglediDTO.add(pregled);
 		}
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
@@ -158,7 +171,10 @@ public class PregledController {
 		List<Pregled> result = PregledService.findAfterDate(date1);
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : result) {
-			preglediDTO.add(new PregledDTO(s));
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			preglediDTO.add(pregled);
 		}
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
