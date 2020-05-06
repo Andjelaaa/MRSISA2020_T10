@@ -13,6 +13,9 @@ import javax.persistence.OneToOne;
 
 public class Pacijent extends Korisnik {
 	
+	@Column(name="enabled")
+	private boolean aktivan;
+	
 	@Column(name="lbo", unique=true, nullable=false)
 	private String lbo;
 	
@@ -21,6 +24,22 @@ public class Pacijent extends Korisnik {
 	
 	@OneToMany(mappedBy="pacijent",fetch= FetchType.LAZY, cascade= CascadeType.ALL)
 	public Set<Pregled> pregled;
+
+	public boolean isAktivan() {
+		return aktivan;
+	}
+
+	public void setAktivan(boolean aktivan) {
+		this.aktivan = aktivan;
+	}
+
+	public ZKarton getzKarton() {
+		return zKarton;
+	}
+
+	public void setzKarton(ZKarton zKarton) {
+		this.zKarton = zKarton;
+	}
 
 	public String getLbo() {
 		return lbo;

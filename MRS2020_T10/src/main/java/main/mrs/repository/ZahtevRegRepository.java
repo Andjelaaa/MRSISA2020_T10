@@ -27,7 +27,7 @@ public interface ZahtevRegRepository extends JpaRepository<ZahtevReg, Long>{
 	  void deleteAll(Iterable<? extends ZahtevReg> arg0);
 
 	 
-	  void deleteById(Long arg0);
+	  void deleteById(Integer id);
 
 	 
 	  boolean existsById(Long arg0);
@@ -82,4 +82,7 @@ public interface ZahtevRegRepository extends JpaRepository<ZahtevReg, Long>{
 
 	 
 	  <S extends ZahtevReg> S saveAndFlush(S arg0);
+
+
+	ZahtevReg findByEmail(String email);
 }

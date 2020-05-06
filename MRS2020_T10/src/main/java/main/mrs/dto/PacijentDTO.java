@@ -8,7 +8,7 @@ public class PacijentDTO extends KorisnikDTO {
 	private String lbo;
 	public ZKartonDTO zKarton;
 	public Set<PregledDTO> pregled;
-	
+	private boolean aktivan;
 	
 	public PacijentDTO(Pacijent p)
 	{
@@ -25,6 +25,7 @@ public class PacijentDTO extends KorisnikDTO {
 		this.zKarton = new ZKartonDTO(p.zKarton);
 		this.pregled = new java.util.HashSet<PregledDTO>();
 		this.lbo = p.getLbo();
+		this.aktivan = false;
 		//this.zKarton = new ZKartonDTO(p.zKarton);
 		
 	}
@@ -67,6 +68,14 @@ public class PacijentDTO extends KorisnikDTO {
 	public void removeAllPregled() {
 		if (pregled != null)
 			pregled.clear();
+	}
+
+	public boolean isAktivan() {
+		return aktivan;
+	}
+
+	public void setAktivan(boolean aktivan) {
+		this.aktivan = aktivan;
 	}
 
 }

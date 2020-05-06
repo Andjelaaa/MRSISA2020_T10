@@ -51,6 +51,7 @@ public class ZahtevRegController {
 		zahtevReg.setPrezime(ZahtevRegDTO.getPrezime());
 		zahtevReg.setLbo(ZahtevRegDTO.getLbo());
 		
+		//ovde mi proveravaaj sve validne podatke sa svim korisnicima
 		try {
 			zahtevReg = ZahtevRegService.save(zahtevReg);
 		} catch (Exception e) {

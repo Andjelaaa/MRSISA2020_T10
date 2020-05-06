@@ -39,4 +39,7 @@ public class PacijentService {
 	public Pacijent findById(int pacijentId) {
 		return PacijentRepository.findById(pacijentId);
 	}
+
+	
+
 }

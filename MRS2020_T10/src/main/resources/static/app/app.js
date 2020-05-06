@@ -21,6 +21,7 @@ const PacijentPocetna = {template: '<pacijent></pacijent>'}
 const ZakazaniPregledi = {template: '<zakazani-pregledi></zakazani-pregledi>'}
 const KlinikePrikaz = {template: '<klinike-prikaz></klinike-prikaz>'}
 const KlinikaDetalji = {template: '<klinika-detalji></klinika-detalji>'}
+const PotvrdaPacijenta = {template: '<potvrdareg></potvrdareg>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -47,7 +48,8 @@ const router = new VueRouter({
 	    { path: '/pacijent', component: PacijentPocetna},
 	    { path: '/pacijentpregledi', component: ZakazaniPregledi},
 	    { path: '/klinike', component: KlinikePrikaz},
-	    { path: '/detaljiKlinike/:name', component: KlinikaDetalji}
+	    { path: '/detaljiKlinike/:name', component: KlinikaDetalji},
+	    { path: '/potvrdiRegistraciju/:token', component: PotvrdaPacijenta}
 	    ]
 });
 

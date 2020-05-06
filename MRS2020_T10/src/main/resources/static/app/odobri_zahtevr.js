@@ -77,7 +77,7 @@ Vue.component('odobri_zaht', {
 		   		<td>{{z.kontakt}}</td>
 		   		<td>{{z.lbo}}</td>
 		   		<td>{{z.lozinka}}</td>
-		   		<td><button v-on:click = "prihvati(z)" class="btn btn-success">Prihvati</button></td>
+		   		<td><button v-on:click = "prihvati(ind, z)" class="btn btn-success">Prihvati</button></td>
 		   		<td><button class="btn btn-danger" id="show-modal" @click="showModal = true" >Odbij zahtev</button>
 						<modal v-if="showModal" @close="showModal = false">
 	    
@@ -109,12 +109,13 @@ Vue.component('odobri_zaht', {
 			return;
 		},
 		
-		prihvati:function(zahtev){
+		prihvati:function(ind, zahtev){
 			
 			axios
-			.post('api/adminkc/accepted', zahtev)
+			.post('api/verification/accepted', zahtev)
 			.then((response)=>{
 				this.greska='';
+				this.zahtevi.splice(ind, 1);
 				alert("Poslat email");
 			}).catch((response)=>{
 				this.greska = 'Email nije poslat';

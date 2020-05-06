@@ -73,22 +73,22 @@ public class AdminKCController {
 		AdminKC = adminKCService.save(AdminKC);
 		return new ResponseEntity<>(new AdminKCDTO(AdminKC), HttpStatus.CREATED);
 	}
-	@PostMapping(value= "/accepted")
-	public String acceptedRegAsync(@RequestBody ZahtevReg user){
-		try {
-			System.out.println(user.getEmail()+"OK JEE");
-			emailService.sendNotificaitionAsync(user);
-		}catch( Exception e ){
-			//logger.info("Greska prilikom slanja emaila: " + e.getMessage());
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-
-		return "success";
-	}
 	
 	@PostMapping(value= "/denied",  consumes="application/json")
    	public ResponseEntity deniedRegAsync(@RequestBody PomocnaKlasa data){
-		ZahtevReg user = data.user;
+		ZahtevReg user = new ZahtevReg();
+		
+		user.setAdresa(data.user.getAdresa());
+		user.setIme(data.user.getIme());
+		user.setPrezime(data.user.getPrezime());
+		user.setEmail(data.user.getEmail());
+		user.setKontakt(data.user.getKontakt());
+		user.setGrad(data.user.getGrad());
+		user.setLozinka(data.user.getLozinka());
+		user.setDrzava(data.user.getDrzava());
+		user.setLbo(data.user.getLbo());
+		
+		
 		String opis = data.opis;
 		try {
 			zahtevService.delete(user);

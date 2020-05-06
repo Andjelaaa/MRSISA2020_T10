@@ -18,6 +18,9 @@ public class ZahtevRegService {
 	public ZahtevReg findOne(Long id) {
 		return ZahtevRegRepository.findById(id).orElseGet(null);
 	}
+	public ZahtevReg findByEmail(String email) {
+		return ZahtevRegRepository.findByEmail(email);
+	}
 
 	public List<ZahtevReg> findAll() {
 		return ZahtevRegRepository.findAll();
@@ -31,7 +34,7 @@ public class ZahtevRegService {
 		return ZahtevRegRepository.save(ZahtevReg);
 	}
 
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		ZahtevRegRepository.deleteById(id);
 	}
 	public void delete(ZahtevReg z) {

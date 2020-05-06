@@ -1,5 +1,7 @@
 package main.mrs.service;
 
+import java.util.UUID;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import main.mrs.model.Pacijent;
 import main.mrs.model.Pregled;
 import main.mrs.model.ZahtevReg;
+import main.mrs.verification_handler.OnAccessLinkEvent;
 
 
 
@@ -32,29 +35,29 @@ public class EmailService {
 	 * Anotacija za oznacavanje asinhronog zadatka
 	 * Vise informacija na: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#scheduling
 	 */
-	@Async
-	public void sendNotificaitionAsync(ZahtevReg user) throws MailException, InterruptedException {
-		System.out.println("Slanje emaila...");
-
-		try {
-			MimeMessage message = javaMailSender.createMimeMessage();
-	
-	        message.setSubject("Potvrda registracije na Klinici");
-	        MimeMessageHelper helper;
-	        helper = new MimeMessageHelper(message, true);
-	        helper.setFrom(env.getProperty("spring.mail.username"));
-	        helper.setTo(user.getEmail());
-	        String text ="Pozdrav " + user.getIme() + ",<br>potvrdite email za aktivaciju vaseg naloga na sajtu Klinike.<br> <a href=http://localhost:8080/>Aktivacioni link</a>";
-	        message.setContent(text,"text/html");
-			javaMailSender.send(message);
-			System.out.println("Email poslat!");
-		}
-		catch(Exception e) {
-			System.out.println("Doslo je do greske...");
-		}
-		
-		
-	}
+//	@Async
+//	public void sendNotificaitionAsync(ZahtevReg user) throws MailException, InterruptedException {
+//		System.out.println("Slanje emaila...");
+//
+//		try {
+//			MimeMessage message = javaMailSender.createMimeMessage();
+//	
+//	        message.setSubject("Potvrda registracije na Klinici");
+//	        MimeMessageHelper helper;
+//	        helper = new MimeMessageHelper(message, true);
+//	        helper.setFrom(env.getProperty("spring.mail.username"));
+//	        helper.setTo(user.getEmail());
+//	        String text ="Pozdrav " + user.getIme() + ",<br>potvrdite email za aktivaciju vaseg naloga na sajtu Klinike.<br> <a href=http://localhost:8080/>Aktivacioni link</a>";
+//	        message.setContent(text,"text/html");
+//			javaMailSender.send(message);
+//			System.out.println("Email poslat!");
+//		}
+//		catch(Exception e) {
+//			System.out.println("Doslo je do greske...");
+//		}
+//		
+//		
+//	}
 	
 	
 	
@@ -126,4 +129,27 @@ public class EmailService {
 		
 	}
 
+	@Async
+	public void sendNotificaitionAsync(String url, String recipient, String subject) {
+		System.out.println("Slanje emaila...");
+
+		try {
+			 
+	        SimpleMailMessage email = new SimpleMailMessage();
+	        email.setText("Potvrdite vas email za aktivaciju profila");
+	        email.setTo(recipient);
+	        email.setSubject(subject);
+	        email.setText("http://localhost:8080/#" + url);
+	        System.out.println(url);
+	        javaMailSender.send(email);	
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
+
+
+	
 }
