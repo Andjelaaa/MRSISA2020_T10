@@ -10,6 +10,7 @@ public class PacijentDTO extends KorisnikDTO {
 	public Set<PregledDTO> pregled;
 	private boolean aktivan;
 	
+	public PacijentDTO() {}
 	public PacijentDTO(Pacijent p)
 	{
 		// podesiti atribute nadklase
@@ -22,7 +23,7 @@ public class PacijentDTO extends KorisnikDTO {
 		this.id = p.getId();
 		this.kontakt = p.getKontakt();
 		this.lozinka = p.getLozinka();
-		this.zKarton = new ZKartonDTO(p.zKarton);
+		this.zKarton = new ZKartonDTO(); // PROMENITI
 		this.pregled = new java.util.HashSet<PregledDTO>();
 		this.lbo = p.getLbo();
 		this.aktivan = false;

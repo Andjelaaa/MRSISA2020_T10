@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.repository.LekarRepository;
 
@@ -41,5 +43,14 @@ public class LekarService {
 
 	public List<Lekar> findByImeAndPrezime(String ime, String prezime) {
 		return LekarRepository.findByImeAndPrezime(ime, prezime);
+	}
+	
+	public UserDetails loadUserByUsername(String arg0) {
+		Lekar korisnik = LekarRepository.findByEmail(arg0);
+		if (korisnik == null) {
+			return null;
+		} else {
+			return (Lekar) korisnik;
+		}
 	}
 }

@@ -1,8 +1,8 @@
 package main.mrs.dto;
 
+import main.mrs.model.Korisnik;
 
-
-public abstract class KorisnikDTO {
+public class KorisnikDTO {
 	protected Integer id;
 	protected String email;
 	protected String lozinka;
@@ -12,6 +12,19 @@ public abstract class KorisnikDTO {
 	protected String grad;
 	protected String drzava;
 	protected String kontakt;
+
+	public KorisnikDTO() {}
+	public KorisnikDTO(Korisnik p) {
+		this.ime = p.getIme();
+		this.prezime = p.getPrezime();
+		this.adresa = p.getAdresa();
+		this.drzava = p.getDrzava();
+		this.email = p.getEmail();
+		this.grad = p.getGrad();
+		this.id = p.getId();
+		this.kontakt = p.getKontakt();
+		this.lozinka = p.getLozinka();
+	}
 
 	public Integer getId() {
 		return id;

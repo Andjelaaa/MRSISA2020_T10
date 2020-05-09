@@ -30,7 +30,11 @@ public class ZKartonDTO {
 	   this.visina = zk.getVisina();
    }
    
-   public Integer getId() {
+   public ZKartonDTO() {
+	// TODO Auto-generated constructor stub
+}
+
+public Integer getId() {
 		return id;
 	}
 

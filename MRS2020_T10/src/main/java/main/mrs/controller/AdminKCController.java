@@ -38,7 +38,6 @@ public class AdminKCController {
 	@Autowired
 	private ZahtevRegService zahtevService;
 
-	//private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private EmailService emailService;

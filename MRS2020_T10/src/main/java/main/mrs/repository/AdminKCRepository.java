@@ -84,4 +84,7 @@ public interface AdminKCRepository extends JpaRepository<AdminKC, Long>{
 	 
 	  <S extends AdminKC> S saveAndFlush(S arg0);
 
+
+	AdminKC findByEmail(String name);
+
 }

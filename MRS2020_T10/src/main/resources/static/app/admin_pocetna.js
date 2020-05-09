@@ -2,6 +2,7 @@ Vue.component('admin', {
 
 	data: function(){
 		return{	
+			admin:{},
 			klinika: {}
 		}
 	}, 
@@ -31,15 +32,14 @@ Vue.component('admin', {
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		      <!--input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"-->
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
 		  </div>
 		</nav>
 		</br>
 		<div class="float-left" style="margin: 20px">
 			<h3> Klinika: {{klinika.naziv}} </h3>
-		<p>{{error}}</p>
 		<table class="table">
 			<tbody>
 			
@@ -80,10 +80,28 @@ Vue.component('admin', {
 	</div>
 	
 	`, 
+	methods : {
+		odjava : function(){
+				localStorage.removeItem("token");
+				this.$router.push('/');
+		}
+		
+	},
 	mounted(){
-		 axios
-      	.get('api/klinika/detalji/'+'1') // promeniti na id klinike ulogovanog admina
-      	.then(response => (this.klinika = response.data));
+		
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+	      	.get('api/admini/klinika/'+this.admin.email )
+	      	.then(response => (this.klinika = response.data))
+	        .catch(function (error) { this.$router.push('/'); });
+        })
+        .catch(function (error) { this.$router.push('/'); });
+	
+	
+		 
 	}
 
 });

@@ -1,8 +1,8 @@
 package main.mrs.controller;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,18 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 import main.mrs.dto.ZahtevRegDTO;
+import main.mrs.model.Autoritet;
 import main.mrs.model.Pacijent;
 import main.mrs.model.VerificationToken;
+import main.mrs.model.ZKarton;
 import main.mrs.model.ZahtevReg;
 import main.mrs.service.PacijentService;
 import main.mrs.service.VerificationTokenService;
@@ -63,9 +62,15 @@ public class VerificationTokenController {
 		registrovaniPacijent.setEmail(zahtev.getEmail());
 		registrovaniPacijent.setKontakt(zahtev.getKontakt());
 		registrovaniPacijent.setGrad(zahtev.getGrad());
-		registrovaniPacijent.setLozinka(zahtev.getLozinka());
+		registrovaniPacijent.setLozinka(pacijentService.encodePassword(zahtev.getLozinka()));
 		registrovaniPacijent.setDrzava(zahtev.getDrzava());
 		registrovaniPacijent.setLbo(zahtev.getLbo());
+		ArrayList<Autoritet> a = new ArrayList<Autoritet>();
+		Autoritet aut = new Autoritet();
+		aut.setIme("ROLE_PACIJENT");
+		a.add(aut);
+		registrovaniPacijent.setAutoriteti(a);
+		registrovaniPacijent.setzKarton(new ZKarton());
 		
 		ZahtevReg user = new ZahtevReg();
 		user.setAdresa(zahtev.getAdresa());

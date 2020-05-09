@@ -1,22 +1,26 @@
 package main.mrs.model;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /** Lekar ima recnik pregleda, kljuc je datum, vrednost pregled
  * 
  *  */
 @Entity
 @Table(name="Lekar")
-public class Lekar extends Korisnik {
+public class Lekar extends Korisnik implements UserDetails {
 	
    @Column(name="prosecnaOcena", unique=false, nullable=true)
    private Double prosecnaOcena;
@@ -43,6 +47,9 @@ public class Lekar extends Korisnik {
    public Set<Pregled> pregled;
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Klinika klinika;
+   
+   @ManyToMany(fetch = FetchType.EAGER)
+	private List<Autoritet> autoriteti;
    
    public Set<Pregled> getPregled() {
 	return pregled;
@@ -170,5 +177,54 @@ public void setTipPregleda(TipPregleda tipPregleda) {
 //public void setPregled(Set<Pregled> pregled) {
 //	this.pregled = pregled;
 //}
+public List<Autoritet> getAutoriteti() {
+return autoriteti;
+}
+
+public void setAutoriteti(List<Autoritet> autoriteti) {
+	this.autoriteti = autoriteti;
+}
+
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+	// TODO Auto-generated method stub
+	return this.autoriteti;
+}
+
+@Override
+public String getPassword() {
+	// TODO Auto-generated method stub
+	return this.getLozinka();
+}
+
+@Override
+public String getUsername() {
+	// TODO Auto-generated method stub
+	return this.getEmail();
+}
+
+@Override
+public boolean isAccountNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isAccountNonLocked() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isCredentialsNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+}
+
+@Override
+public boolean isEnabled() {
+	// TODO Auto-generated method stub
+	return true;
+}
 
 }

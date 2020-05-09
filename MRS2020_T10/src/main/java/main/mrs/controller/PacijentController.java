@@ -6,13 +6,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.KorisnikDTO;
 import main.mrs.dto.PacijentDTO;
+import main.mrs.model.Autoritet;
+import main.mrs.model.Korisnik;
 import main.mrs.model.Pacijent;
 import main.mrs.service.PacijentService;
 
@@ -54,4 +59,6 @@ public class PacijentController {
 		Pacijent = pacijentService.save(Pacijent);
 		return new ResponseEntity<>(new PacijentDTO(Pacijent), HttpStatus.CREATED);
 	}
+	
+
 }

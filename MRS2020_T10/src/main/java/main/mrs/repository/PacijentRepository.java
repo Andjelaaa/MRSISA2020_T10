@@ -88,4 +88,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 	  
 	  @Query(value = "SELECT * FROM PACIJENT WHERE ID = ?1", nativeQuery = true)
 	  Pacijent findById(int id);
+
+
+	Pacijent findByEmail(String arg0);
 }

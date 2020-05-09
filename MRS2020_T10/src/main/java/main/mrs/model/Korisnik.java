@@ -1,19 +1,27 @@
 package main.mrs.model;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 //@Entity
 @MappedSuperclass
-public abstract class Korisnik {
-	
+public class Korisnik {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 //	@GeneratedValue(generator = "Korisnik_SequenceStyleGenerator")
 //	@GenericGenerator(name = "Korisnik_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
@@ -51,6 +59,10 @@ public abstract class Korisnik {
 	
 	@Column(name="kontakt", unique=false, nullable=true)
 	private String kontakt;
+	
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "autoriteti_korisnika")
+//	private List<Autoritet> autoriteti;
 	
 	public Integer getId() {
 		return id;
@@ -128,5 +140,56 @@ public abstract class Korisnik {
 	public void setKontakt(String kontakt) {
 		this.kontakt = kontakt;
 	}
+	
+//	public List<Autoritet> getAutoriteti() {
+//		return autoriteti;
+//	}
+//
+//	public void setAutoriteti(List<Autoritet> autoriteti) {
+//		this.autoriteti = autoriteti;
+//	}
+//
+//	@Override
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//		// TODO Auto-generated method stub
+//		return this.autoriteti;
+//	}
+//
+//	@Override
+//	public String getPassword() {
+//		// TODO Auto-generated method stub
+//		return this.lozinka;
+//	}
+//
+//	@Override
+//	public String getUsername() {
+//		// TODO Auto-generated method stub
+//		return this.email;
+//	}
+//
+//	@Override
+//	public boolean isAccountNonExpired() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isAccountNonLocked() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isCredentialsNonExpired() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isEnabled() {
+//		// TODO Auto-generated method stub
+//		return true;
+//	}
+
 
 }

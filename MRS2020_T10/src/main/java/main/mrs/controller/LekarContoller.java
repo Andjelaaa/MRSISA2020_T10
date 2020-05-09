@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.SearchLekar;
+import main.mrs.model.Autoritet;
 import main.mrs.model.Lekar;
-import main.mrs.model.Sala;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.AutoritetService;
 import main.mrs.service.LekarService;
+import main.mrs.service.PacijentService;
 import main.mrs.service.TipPregledaService;
 
 @RestController
@@ -29,6 +31,11 @@ public class LekarContoller {
 	
 	@Autowired
 	private LekarService LekarService;
+	
+	@Autowired
+	private PacijentService PacijentService;
+	@Autowired
+	private AutoritetService autoritetService;
 	
 	@Autowired
 	TipPregledaService tps = new TipPregledaService();	
@@ -47,6 +54,7 @@ public class LekarContoller {
 		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
 	}
 
+	 @Transactional
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO LekarDTO) {
 
@@ -54,7 +62,7 @@ public class LekarContoller {
 		Lekar.setIme(LekarDTO.getIme());
 		Lekar.setPrezime(LekarDTO.getPrezime());
 		Lekar.setEmail(LekarDTO.getEmail());
-		Lekar.setLozinka(LekarDTO.getLozinka());
+		Lekar.setLozinka(PacijentService.encodePassword(LekarDTO.getLozinka()));
 		Lekar.setGrad(LekarDTO.getGrad());
 		Lekar.setAdresa(LekarDTO.getAdresa());
 		Lekar.setDrzava(LekarDTO.getDrzava());
@@ -65,6 +73,7 @@ public class LekarContoller {
 		Lekar.setBrojOcena(0);
 		TipPregleda tp= tps.findByNaziv(LekarDTO.getTipPregleda().getNaziv()); 
 		Lekar.setTipPregleda(tp);
+		Lekar.setAutoriteti(autoritetService.findByName("ROLE_LEKAR"));
 		
 		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
 		//Lekar.setKlinika();

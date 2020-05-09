@@ -34,7 +34,7 @@ public interface AdminKlinikeRepository extends JpaRepository<AdminKlinike, Long
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<AdminKlinike> findById(Long arg0);
+	  Optional<AdminKlinike> findById(Integer idAdmina);
 
 	 
 	  <S extends AdminKlinike> S save(S arg0);
@@ -83,4 +83,7 @@ public interface AdminKlinikeRepository extends JpaRepository<AdminKlinike, Long
 
 	 
 	  <S extends AdminKlinike> S saveAndFlush(S arg0);
+
+
+	AdminKlinike findByEmail(String name);
 }

@@ -39,7 +39,6 @@ public class ZahtevRegController {
 
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ZahtevRegDTO> saveZahtevReg(@RequestBody ZahtevRegDTO ZahtevRegDTO) {
-
 		ZahtevReg zahtevReg = new ZahtevReg();
 		zahtevReg.setAdresa(ZahtevRegDTO.getAdresa());
 		zahtevReg.setDrzava(ZahtevRegDTO.getDrzava());
@@ -53,6 +52,7 @@ public class ZahtevRegController {
 		
 		//ovde mi proveravaaj sve validne podatke sa svim korisnicima
 		try {
+			
 			zahtevReg = ZahtevRegService.save(zahtevReg);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ZahtevRegDTO(zahtevReg), HttpStatus.BAD_REQUEST);
