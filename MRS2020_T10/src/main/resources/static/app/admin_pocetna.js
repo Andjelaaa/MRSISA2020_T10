@@ -6,7 +6,9 @@ Vue.component('admin', {
 			klinika: {},
 			showModal:false,
 			selected:{},
-			selectedBackup:{}
+			selectedBackup:{},
+			ulica: null,
+			grad:null
 		}
 	}, 
 	
@@ -41,7 +43,7 @@ Vue.component('admin', {
 		  </div>
 		</nav>
 		</br>
-		<div class="float-left" style="margin: 20px">
+		<div class="float-left" style="margin-left: 20px">
 			<h3> Klinika: {{klinika.naziv}} </h3>
 		<table class="table">
 			<tbody>
@@ -54,7 +56,7 @@ Vue.component('admin', {
 			   <tr>
 			   
 			   		<td>Adresa: </td>
-			   		<td>{{klinika.adresa}}</td>	
+			   		<td>{{klinika.adresa}} {{klinika.grad}}</td>	
 			   </tr>
 
 			   <tr>
@@ -76,7 +78,7 @@ Vue.component('admin', {
 			   
 			   		<td></td>
 			   		<td>
-			   		<button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select()">Izmeni</button>
+			   		<button class="btn btn-light float-right" id="show-modal" @click="showModal = true" v-on:click="select()">Izmeni</button>
 						<modal v-if="showModal" @close="showModal = false">
         
         					<h3 slot="header">Izmena sale</h3>
@@ -117,6 +119,10 @@ Vue.component('admin', {
 		   </tbody>
 		</table>
 		</div>
+		<div class="float-right" style="width:60%">
+			<br>
+			<div id="map" style="width: 500px; height: 400px"></div>
+		</div>
 	</div>
 	
 	`, 
@@ -155,6 +161,66 @@ Vue.component('admin', {
 			}
 			
 		},
+		mapa: function(){
+			ymaps.ready(function () {
+				axios
+		      	.get('api/admini/klinika/a')
+		      	.then(response => {
+		      		this.klinika = response.data;		      		
+		      	
+		      	console.log(this.klinika.adresa);
+				if (this.klinika.adresa.includes(",")) {
+					var podaci = this.klinika.adresa.split(",");
+					if (podaci[1].includes(" ")){
+						this.grad = podaci[1].trim();
+						this.grad = this.grad.replace(" ","+");
+					}
+					else {
+						this.grad = podaci[1];
+					}
+					if (podaci[0].includes(" ")){
+						this.ulica = podaci[0].split(" ").join("+");
+	
+						console.log(this.ulica);
+					}
+				}
+					
+					
+				axios 
+			      .get('http://www.mapquestapi.com/geocoding/v1/address?key=eCqaQpFzyG7CUIGfq2QAGmPYOYpZs3vt&street='.concat(this.ulica,'&city=',this.grad))
+			      .then(res => {
+			    	  console.log(res.data.results[0].locations[0].displayLatLng.lat, res.data.results[0].locations[0].displayLatLng.lng);
+					    	var myMap = new ymaps.Map('map', {
+					    	center: [res.data.results[0].locations[0].displayLatLng.lat, res.data.results[0].locations[0].displayLatLng.lng],
+					    	zoom: 14
+				        }, {
+				            searchControlProvider: 'yandex#search'
+				        }),
+				        MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+				            '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
+				        ),
+				        myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+				            hintContent: '',
+				            balloonContent: 'Lokacija klinike'
+				        }, {
+				            iconLayout: 'default#image',
+				            iconImageHref: 'https://www.clipartsfree.net/vector/large/43060-placemark-clipart.png',
+				            iconImageSize: [48, 48],
+				            iconImageOffset: [-5, -38]
+				        })
+	
+				    myMap.geoObjects
+				        .add(myPlacemark)
+
+	
+					})
+				.catch(reponse => {
+					console.log('nema');
+				});
+		      	})		
+			})
+		
+		}
 		
 	},
 	mounted(){
@@ -172,7 +238,11 @@ Vue.component('admin', {
 		    	}else{
 		    		axios
 			      	.get('api/admini/klinika/'+this.admin.email )
-			      	.then(response => (this.klinika = response.data))
+			      	.then(response => {
+			      		this.klinika = response.data;
+			      		this.mapa();
+			      		
+			      	})
 			        .catch(function (error) { this.$router.push('/'); });		    		
 		    	}
 		    })
@@ -180,9 +250,8 @@ Vue.component('admin', {
    
         })
         .catch(function (error) { router.push('/'); });
-	
-	
-		 
-	}
+		
+	}		      		
+	 
 
 });
