@@ -88,6 +88,6 @@ public interface TipPregledaRepository extends JpaRepository<TipPregleda, Long>{
 	  @Query(value = "SELECT * FROM TIP_PREGLEDA WHERE NAZIV = ?1", nativeQuery = true)
 	  TipPregleda findByNaziv(String naziv);
 
-	  @Query(value = "SELECT * FROM TIP_PREGLEDA WHERE NAZIV like %?%1", nativeQuery = true)
+	  @Query(value = "SELECT * FROM TIP_PREGLEDA WHERE upper(NAZIV) like %?%1", nativeQuery = true)
 	  List<TipPregleda> findSearchNaziv(String searchParam);
 }

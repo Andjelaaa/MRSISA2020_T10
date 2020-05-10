@@ -3,7 +3,10 @@ Vue.component('admin', {
 	data: function(){
 		return{	
 			admin:{},
-			klinika: {}
+			klinika: {},
+			showModal:false,
+			selected:{},
+			selectedBackup:{}
 		}
 	}, 
 	
@@ -72,7 +75,44 @@ Vue.component('admin', {
 			    <tr>
 			   
 			   		<td></td>
-			   		<td><button v-on:click="izmeni()" class="btn btn-light float-right">Izmeni</button></td>
+			   		<td>
+			   		<button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select()">Izmeni</button>
+						<modal v-if="showModal" @close="showModal = false">
+        
+        					<h3 slot="header">Izmena sale</h3>
+        					<table slot="body" >
+								<tbody>
+										
+									<tr>
+										<td>Naziv:</td>
+										<td><input class="form-control" type="text"  v-model="selected.naziv"/></td>
+									</tr>
+									<tr>
+										<td>Opis:</td>
+										<td><input  class="form-control" type="text" v-model = "selected.opis"/></td>
+									</tr>
+									<tr>
+										<td>Adresa:</td>
+										<td><input  class="form-control" type="text" v-model = "selected.adresa"/></td>
+									</tr>
+									<tr>
+										<td>Kontakt:</td>
+										<td><input  class="form-control" type="text" v-model = "selected.kontaktKlinike"/></td>
+									</tr>
+									<tr>
+										<td>Email:</td>
+										<td><input  class="form-control" type="text" v-model = "selected.emailKlinike"/></td>
+									</tr>
+									
+								</tbody>
+								</table>
+        					
+        					<div slot="footer">
+        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="sacuvaj()"> Sacuvaj </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore()"> Nazad </button>								
+							</div>
+						</modal>
+						</td>
 			   </tr>
 		   </tbody>
 		</table>
@@ -84,7 +124,37 @@ Vue.component('admin', {
 		odjava : function(){
 				localStorage.removeItem("token");
 				this.$router.push('/');
-		}
+		},
+		select : function(s){
+			this.selectedBackup.naziv = this.klinika.naziv;
+			this.selectedBackup.opis = this.klinika.opis;
+			this.selectedBackup.adresa = this.klinika.adresa;
+			this.selectedBackup.kontaktKlinike = this.klinika.kontaktKlinike;
+			this.selectedBackup.emailKlinike = this.klinika.emailKlinike;
+			this.selected = this.klinika;
+
+		},
+		restore: function(){
+			this.klinika.naziv = this.selectedBackup.naziv;
+			this.klinika.opis = this.selectedBackup.opis;
+			this.klinika.adresa = this.selectedBackup.adresa;
+			this.klinika.kontaktKlinike = this.selectedBackup.kontaktKlinike;
+			this.klinika.emailKlinike = this.selectedBackup.emailKlinike;
+		},
+		sacuvaj: function(){
+			if(this.klinika.naziv != '' && this.klinika.opis != '' && this.klinika.adresa != '' && this.klinika.kontaktKlinike != '' && this.klinika.emailKlinike!= ''){
+				axios
+				.put('api/klinika/'+this.klinika.id, this.klinika)
+				.then((res)=>{
+					console.log('Uspesna izmena');
+				}).catch((res)=>{
+					console.log('Neuspesna izmena');
+				});
+			}else{
+				this.restore();
+			}
+			
+		},
 		
 	},
 	mounted(){
@@ -94,11 +164,22 @@ Vue.component('admin', {
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
         .then(response => { this.admin = response.data; 
 	        axios
-	      	.get('api/admini/klinika/'+this.admin.email )
-	      	.then(response => (this.klinika = response.data))
-	        .catch(function (error) { this.$router.push('/'); });
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    		this.$router.push('/');
+		    	}else{
+		    		axios
+			      	.get('api/admini/klinika/'+this.admin.email )
+			      	.then(response => (this.klinika = response.data))
+			        .catch(function (error) { this.$router.push('/'); });		    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
         })
-        .catch(function (error) { this.$router.push('/'); });
+        .catch(function (error) { router.push('/'); });
 	
 	
 		 

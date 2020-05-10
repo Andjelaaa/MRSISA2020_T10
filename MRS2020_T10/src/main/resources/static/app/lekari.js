@@ -46,8 +46,7 @@ Vue.component('lekari', {
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
 		  </div>
 		</nav>
@@ -169,6 +168,10 @@ Vue.component('lekari', {
 	
 	`, 
 	methods : {
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 		nazad : function(){
 			this.$router.push('/admin');
 			return;
@@ -249,10 +252,12 @@ Vue.component('lekari', {
 				axios
 		       	.get('api/lekar/all')
 		       	.then(response => (this.lekari = response.data));
+				this.lekar = {};
 				 
 				
 			}).catch((res)=>{
 				this.error = 'Vec postoji lekar sa istim email-om';
+				this.lekar = {};
 			}
 				
 			)
@@ -260,16 +265,35 @@ Vue.component('lekari', {
 		
 	},
 	mounted(){
-		 axios
-       	.get('api/lekar/all')
-       	.then(response => (this.lekari = response.data));
-		 
-		 axios
-         .get('api/tippregleda/all')
-         .then(res => {
-       	  this.tipoviPregleda = res.data;
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    		this.$router.push('/');
+		    	}else{
+		    		 axios
+		    	       	.get('api/lekar/all')
+		    	       	.then(response => (this.lekari = response.data));
+		    			 
+		    			 axios
+		    	         .get('api/tippregleda/all')
+		    	         .then(res => {
+		    	       	  this.tipoviPregleda = res.data;
 
-         })
+		    	         })		    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
+        })
+        .catch(function (error) { router.push('/'); });
+		
+		
 	}
 
 });

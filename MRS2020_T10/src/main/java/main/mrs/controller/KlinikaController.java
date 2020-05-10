@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.KlinikaDTO;
+import main.mrs.dto.KlinikaDTO;
+import main.mrs.model.Klinika;
 import main.mrs.model.Klinika;
 import main.mrs.service.KlinikaService;;
 
@@ -67,6 +70,26 @@ public class KlinikaController {
 
 
 		return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.CREATED);
+	}
+	
+	@PutMapping(consumes = "application/json", value = "/{id}")
+	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO KlinikaDTO, @PathVariable Integer id) {
+
+		// a Klinika must exist
+		Klinika Klinika = KlinikaService.findOne(id);
+
+		if (Klinika == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Klinika.setNaziv(KlinikaDTO.getNaziv());
+		Klinika.setOpis(KlinikaDTO.getOpis());
+		Klinika.setAdresa(KlinikaDTO.getAdresa());
+		Klinika.setEmailKlinike(KlinikaDTO.getEmailKlinike());
+		Klinika.setKontaktKlinike(KlinikaDTO.getKontaktKlinike());
+
+		Klinika = KlinikaService.save(Klinika);
+		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
 	}
 
 }

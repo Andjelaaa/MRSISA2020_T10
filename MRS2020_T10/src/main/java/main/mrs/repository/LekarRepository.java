@@ -87,6 +87,6 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 	@Query(value = "SELECT * FROM LEKAR WHERE EMAIL = ?1", nativeQuery = true)
 	Lekar findByEmail(String email);
 
-	@Query(value = "SELECT * FROM LEKAR WHERE IME like %?%1 and prezime like %?%2", nativeQuery = true)
+	@Query(value = "SELECT * FROM LEKAR WHERE upper(IME) like %?%1 and upper(prezime) like %?%2", nativeQuery = true)
 	List<Lekar> findByImeAndPrezime(String ime, String prezime);
 }

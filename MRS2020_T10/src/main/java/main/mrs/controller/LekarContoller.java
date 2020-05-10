@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.SearchLekar;
-import main.mrs.model.Autoritet;
 import main.mrs.model.Lekar;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.AutoritetService;
@@ -91,7 +90,7 @@ public class LekarContoller {
 	@PostMapping(value = "/search")
 	public ResponseEntity<List<LekarDTO>> getSearchLekars(@RequestBody SearchLekar sl) {
 		System.out.println(sl.getIme()+sl.getPrezime());
-		List<Lekar> Lekars = LekarService.findByImeAndPrezime(sl.getIme(), sl.getPrezime());
+		List<Lekar> Lekars = LekarService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
 
 		// convert Lekars to DTOs
 		List<LekarDTO> LekarsDTO = new ArrayList<>();

@@ -64,7 +64,7 @@ public class SalaController {
 	@GetMapping(value = "/search/{searchParam}")
 	public ResponseEntity<List<SalaDTO>> getSearchSala(@PathVariable String searchParam) {
 		System.out.println(searchParam);
-		List<Sala> Salas = SalaService.findSearchNaziv(searchParam);
+		List<Sala> Salas = SalaService.findSearchNaziv(searchParam.toUpperCase());
 
 		// convert Salas to DTOs
 		List<SalaDTO> SalasDTO = new ArrayList<>();

@@ -16,7 +16,7 @@ public class KlinikaService {
 	@Autowired
 	private KlinikaRepository KlinikaRepository;
 	
-	public Klinika findOne(Long id) {
+	public Klinika findOne(Integer id) {
 		return KlinikaRepository.findById(id).orElseGet(null);
 	}
 

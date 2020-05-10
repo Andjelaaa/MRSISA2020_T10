@@ -70,7 +70,6 @@ Vue.component('empty', {
 					axios
 		    		.put('/auth/dobaviulogu', this.kor, { headers: { Authorization: 'Bearer ' + this.token }} )
 		            .then(response => {
-		            	console.log(this.uloga);
 		            	this.uloga = response.data;
 		            	if (this.uloga == "ROLE_PACIJENT") {
 		            		console.log("PACIJENT JE");

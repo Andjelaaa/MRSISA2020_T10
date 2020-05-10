@@ -90,6 +90,6 @@ public interface SalaRepository extends JpaRepository<Sala, Long>{
 	@Query(value = "SELECT * FROM SALA WHERE NAZIV = ?1", nativeQuery = true)
 	Sala findByNaziv(String naziv);
 
-	 @Query(value = "SELECT * FROM SALA WHERE NAZIV like %?%1", nativeQuery = true)
+	 @Query(value = "SELECT * FROM SALA WHERE upper(NAZIV) like %?%1", nativeQuery = true)
 	List<Sala> findSearchNaziv(String searchParam);
 }

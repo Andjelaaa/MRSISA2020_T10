@@ -50,7 +50,7 @@ public class TipPregledaController {
 	@GetMapping(value = "/search/{searchParam}")
 	public ResponseEntity<List<TipPregledaDTO>> getSearchTipPregleda(@PathVariable String searchParam) {
 		System.out.println(searchParam);
-		List<TipPregleda> TipPregledas = TipPregledaService.findSearchNaziv(searchParam);
+		List<TipPregleda> TipPregledas = TipPregledaService.findSearchNaziv(searchParam.toUpperCase());
 
 		// convert TipPregledas to DTOs
 		List<TipPregledaDTO> TipPregledasDTO = new ArrayList<>();

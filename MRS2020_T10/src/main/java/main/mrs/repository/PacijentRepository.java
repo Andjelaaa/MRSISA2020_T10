@@ -11,8 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.Pacijent;
-import main.mrs.model.Pregled;
-import main.mrs.model.Pacijent;
+
 
 public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 	Page<Pacijent> findAll(Pageable arg0);
@@ -91,4 +90,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 
 
 	Pacijent findByEmail(String arg0);
+
+	@Query(value = "SELECT * FROM PACIJENT WHERE upper(IME) like %?%1 and upper(prezime) like %?%2 and upper(lbo) like %?%3", nativeQuery = true)
+	List<Pacijent> findByImeAndPrezimeAndLbo(String ime, String prezime, String lbo);
 }

@@ -34,7 +34,7 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Long> {
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Klinika> findById(Long arg0);
+	  Optional<Klinika> findById(Integer id);
 
 	 
 	  <S extends Klinika> S save(S arg0);

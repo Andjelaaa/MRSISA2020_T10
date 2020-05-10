@@ -21,34 +21,34 @@ Vue.component('strzareg', {
 		<form action="">
 			<h1>Registracija</h1>
 			<div>
-				<input type="text" placeholder="Email" required=""  v-model="email"/>
+				<input type="text" placeholder="Email"   v-model="email"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Ime" required=""  v-model="imePacijenta"/>
+				<input type="text" placeholder="Ime"   v-model="imePacijenta"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Prezime" required=""  v-model="prezimePacijenta"/>
+				<input type="text" placeholder="Prezime"   v-model="prezimePacijenta"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Adresa prebivalista" required=""  v-model="adresaPacijenta"/>
+				<input type="text" placeholder="Adresa prebivalista"   v-model="adresaPacijenta"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Grad" required=""  v-model="grad"/>
+				<input type="text" placeholder="Grad"   v-model="grad"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Drzava" required=""  v-model="drzava"/>
+				<input type="text" placeholder="Drzava"   v-model="drzava"/>
 			</div>
 			<div>
-				<input type="text" placeholder="Kontakt telefon" required=""  v-model="telefonPacijenta"/>
+				<input type="text" placeholder="Kontakt telefon"   v-model="telefonPacijenta"/>
 			</div>
 			<div>
-				<input type="password" placeholder="LBO" required="" v-model="lbo"/>
+				<input type="text" placeholder="LBO"  v-model="lbo"/>
 			</div>
 			<div>
-				<input type="password" placeholder="Lozinka" required="" v-model="lozinka"/>
+				<input type="password" placeholder="Lozinka"  v-model="lozinka"/>
 			</div>
 			<div>
-				<input type="password" placeholder="Ponoviti lozinku" required="" v-model="lozinkaPonovo"/>
+				<input type="password" placeholder="Ponoviti lozinku" v-model="lozinkaPonovo"/>
 			</div>
 			
 			<div>
@@ -65,7 +65,7 @@ Vue.component('strzareg', {
 		
 		methods : {
 			nazad : function(){
-//				this.$router.push('/prethodnastranica')
+				this.$router.push('/')
 				return;
 			},
 			validacija: function(){
