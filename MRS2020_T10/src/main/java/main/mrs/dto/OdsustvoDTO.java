@@ -17,7 +17,7 @@ public class OdsustvoDTO {
 	private Integer id;
 	private StatusDTO status;
 	private String opis;
-	private MedSestraDTO sestra;
+	private MedSestraDTO med_sestra;
 	private LekarDTO lekar;
 	private Date pocetak;
 	private Date kraj;
@@ -33,34 +33,36 @@ public class OdsustvoDTO {
 		  
 	}
 	public OdsustvoDTO(Odsustvo s) {
-		this(s.getId(), s.getKraj(), s.getLekar(),s.getOpis(), s.getPocetak(), s.getSestra(), s.getStatus(), s.getTip());
+		this(s.getId(), s.getKraj(),s.getOpis(), s.getPocetak(), s.getStatus(), s.getTip());
 	}	
 		
-	public OdsustvoDTO(Integer id2, Date kraj2, Lekar lekar2, String opis2, Date pocetak2, MedSestra sestra2,
+	public OdsustvoDTO(Integer id2, Date kraj2, String opis2, Date pocetak2,
 			Status status2, String tip2) {
 		this.id = id2;
 		this.status = StatusDTO.valueOf(status2.toString());
 		this.opis = opis2;
-		this.sestra = setujSestra(sestra2);
-		this.lekar = setujLekar(lekar2);
+		//this.sestra =null;
+		this.lekar = null;
 		this.kraj = kraj2;
 		this.pocetak = pocetak2;
 		this.tip = tip2;
 	}
-		
+	
+	
 	public MedSestraDTO setujSestra(MedSestra sestra) {
 		
 		MedSestraDTO ms = new MedSestraDTO();
+		System.out.println(sestra.getAdresa().toString()+"dasdasa");
 		ms.setAdresa(sestra.getAdresa());
 		ms.setDrzava(sestra.getDrzava());
 		ms.setEmail(sestra.getEmail());
 		ms.setGrad(sestra.getGrad());
 		ms.setIme(sestra.getIme());
 		ms.setPrezime(sestra.getPrezime());
-		ms.setKlinika(null);// treba da se namesti konvertor IZ DTO
+		//ms.setKlinika(null);// treba da se namesti konvertor IZ DTO
 		ms.setKontakt(sestra.getKontakt());
 		ms.setLozinka(sestra.getLozinka());
-		ms.setRadKalendar(null);// i ovooooooooooo
+		//ms.setRadKalendar(null);// i ovooooooooooo
 		ms.setRadvr_kraj(sestra.getRadvr_kraj());
 		ms.setRadvr_pocetak(sestra.getRadvr_pocetak());
 		return ms;
@@ -120,11 +122,11 @@ public class OdsustvoDTO {
 		this.kraj = kraj;
 	}
 	public MedSestraDTO getSestra() {
-		return sestra;
+		return med_sestra;
 	}
 
 	public void setSestra(MedSestraDTO sestra) {
-		this.sestra = sestra;
+		this.med_sestra = sestra;
 	}
 
 	public LekarDTO getLekar() {

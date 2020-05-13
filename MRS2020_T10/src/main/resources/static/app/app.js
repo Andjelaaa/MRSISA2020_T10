@@ -25,8 +25,8 @@ const PotvrdaPacijenta = {template: '<potvrdareg></potvrdareg>'}
 const PacijentiLista = {template: '<pacijenti></pacijenti>'}
 const MedSestraPocetna = {template: '<med_sestra_pocetna></med_sestra_pocetna>'}
 const OveraRecepata = {template: '<overa></overa>'}
-const ZahtevOdmor =  {template: '<odmor></odmor>'}
-
+const ZahtevOdmor =  {template: '<odmoor></odmoor>'}
+const Kalendar =  {template: '<calendar></calendar>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -58,7 +58,8 @@ const router = new VueRouter({
 	    { path: '/pacijenti', component: PacijentiLista},
 	    { path: '/med_sestra_pocetna', component: MedSestraPocetna},
 	    { path: '/overa', component: OveraRecepata},
-	    { path: '/zahtevodmor', component: ZahtevOdmor}
+	    { path: '/odmor', component: ZahtevOdmor},
+	    { path: '/kalendarr', component: Kalendar}
 	    ]
 });
 

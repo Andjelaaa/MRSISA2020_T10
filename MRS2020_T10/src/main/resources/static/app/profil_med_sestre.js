@@ -3,7 +3,8 @@ Vue.component('medsestra', {
 	data: function(){
 		return{	
 			medicinska_sestra:{},
-			uloga: ''
+			uloga: '',
+			token: ''
 		}
 	}, 
 	
@@ -22,10 +23,13 @@ Vue.component('medsestra', {
 		      </li>
 		      
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/zahtevgo">Zahtev za godisnji odmor/odsustvo</a>
+		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/overa">Overa recepata</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/kalendarr">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/medsestra">Profil: {{medicinska_sestra.ime}} {{medicinska_sestra.prezime}}</a>

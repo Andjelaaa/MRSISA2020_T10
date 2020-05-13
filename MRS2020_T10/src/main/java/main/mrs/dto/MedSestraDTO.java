@@ -1,44 +1,56 @@
 package main.mrs.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 
 import main.mrs.model.MedSestra;
-
-
+import main.mrs.model.Odsustvo;
 
 
 public class MedSestraDTO extends KorisnikDTO {
-   public RadniKalendarDTO radKalendar;
+   public Set<OdsustvoDTO> odsustvo;
    public KlinikaDTO klinika;
    private String radvr_pocetak;
    private String radvr_kraj;
-   
+   public MedSestraDTO() {
+	
+	}
+	
    public MedSestraDTO(MedSestra s) {
-	   this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
-				s.getDrzava(), s.getKontakt());
+	   this(s.getOdsustvo(),s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
+				s.getDrzava(), s.getKontakt(), s.getRadvr_kraj(), s.getRadvr_pocetak());
 	}
 	
 	
-	public MedSestraDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
-			String drzava, String kontakt) {
-		this.id = id;
+	
+	public MedSestraDTO(Set<Odsustvo> set, Integer integer, String email, String lozinka, String ime, String prezime, String adresa, 
+			String grad, String drzava, String kontakt, String kraj, String pocetak) {
+		this.odsustvo = konvertuj(set);
+		this.id = integer;
 		this.email = email;
 		this.lozinka = lozinka;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.adresa = adresa;
 		this.grad = grad;
+		this.kontakt = kontakt;
 		this.drzava = drzava;
-	
-	}
-	
-	
-	public MedSestraDTO() {
-		// TODO Auto-generated constructor stub
+		this.radvr_kraj= kraj;
+		this.radvr_pocetak = pocetak;
 	}
 
+
+	private Set<OdsustvoDTO> konvertuj(Set<Odsustvo> set) {
+		 Set<OdsustvoDTO> novi = new  HashSet<OdsustvoDTO>();
+		 for(Odsustvo o: set) {
+			 OdsustvoDTO od = new OdsustvoDTO(o);
+
+			 novi.add(od);
+		 }
+		return novi;
+	}
 
 	public KlinikaDTO getKlinika() {
 		return klinika;
@@ -50,13 +62,14 @@ public class MedSestraDTO extends KorisnikDTO {
 	}
 	
 	
-	public RadniKalendarDTO getRadKalendar() {
-		return radKalendar;
+
+	public Set<OdsustvoDTO> getOdsustvo() {
+		return odsustvo;
 	}
-	
-	
-	public void setRadKalendar(RadniKalendarDTO radKalendar) {
-		this.radKalendar = radKalendar;
+
+
+	public void setOdsustvo(Set<OdsustvoDTO> odsustvo) {
+		this.odsustvo = odsustvo;
 	}
 
 

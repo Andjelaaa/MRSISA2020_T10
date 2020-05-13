@@ -1,11 +1,11 @@
-Vue.component('odmor', {
+Vue.component('odmoor', {
 
 	data: function(){
 		return{	
-			medicinska_sestra:{},
+			medicinska_sestra:[],
 			uloga: '',
 			tipZahteva:'',
-			opis:'',
+			opis:"nema opisa",
 			datPocetka:'',
 			datKraja:'',
 			greska:''
@@ -27,10 +27,13 @@ Vue.component('odmor', {
 		      </li>
 		      
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/zahtevgo">Zahtev za godisnji odmor/odsustvo</a>
+		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/overa">Overa recepata</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/kalendarr">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/medsestra">Profil: {{medicinska_sestra.ime}} {{medicinska_sestra.prezime}}</a>
@@ -60,13 +63,13 @@ Vue.component('odmor', {
 			   <tr>
 			   		<td>Pocev od: </td>
 			   		<td>
-						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
+						<td><input id="datPocetka" type="datetime-local" v-model="datPocetka"></td>
 					</td>
 			   </tr>
 			    <tr>
 			   		<td>Zakljucno sa: </td>
 			   		<td>
-						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
+						<td><input id="datKraja" type="datetime-local" v-model="datKraja"></td>
 					</td>
 			   </tr>
 			   	   
@@ -91,6 +94,7 @@ Vue.component('odmor', {
 	</div>
 	
 	`, methods : {
+		//:{email:'',lozinka:'',ime:'',prezime:'',prezime:'',adresa:'', grad:'',drzava:'',kontakt:''},
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
@@ -105,9 +109,10 @@ Vue.component('odmor', {
 				this.greska="Razlog odsustva je obavezan";
 				return 1;
 			}
+	
 				
 			if(!this.datPocetka || !this.datKraja){
-				this.greska = "Sva polja su obavezna";
+				this.greska = "Sva polja su obavezna!!!";
 				return 1;
 			}
 			return 0;
@@ -120,16 +125,16 @@ Vue.component('odmor', {
 			if(this.validacija()==1)
 				return;
 			
-			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja,
-					 "medSestra": this.medicinska_sestra,
-					 "lekar": null};
+			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja};
+			//proveravace se role, ako je role lekar onda ce se setovati lekar  a med sestra na ne znam
 			
 			axios
-			.post('api/zahteviOdsustvo', zahtev)
+			.post('api/zahteviodsustvo/'+this.medicinska_sestra.email, zahtev)
 			.then((response)=>{
+				this.greska ='';
 				this.$router.push('/med_sestra_pocetna');
 			}).catch((response)=>{
-				this.greska = "Sva polja su obavezna";
+				this.greska = "Sva polja su obavezna!";
 			});
 				
 			
@@ -150,10 +155,10 @@ Vue.component('odmor', {
 		    		this.$router.push('/');
 		    	}
 		    })
-		    .catch(function (error) { console.log(error);});
+		    .catch((response)=>{ alert("NIJE OK");});
 		    
 	    })
-	    .catch(function (error) { this.$router.push('/'); });	 
+	    .catch((response) =>{ this.$router.push('/'); });	 
 	}
 	
 });

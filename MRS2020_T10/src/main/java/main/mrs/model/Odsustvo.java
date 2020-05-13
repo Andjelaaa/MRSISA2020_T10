@@ -23,9 +23,9 @@ public class Odsustvo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="status", unique=false, nullable=false)
+	@Column(name="status", unique=false, nullable=true)
 	private Status status;
-	@Column(name="tip", unique=false, nullable=false)
+	@Column(name="tip", unique=false, nullable=true)
 	private String tip;
 	@Column(name="opis", unique=false, nullable=true)
 	private String opis;
@@ -36,11 +36,10 @@ public class Odsustvo {
 	@Column(name="kraj", unique=false, nullable=false)
 	private Date kraj;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name="medSestra_id", nullable=true)
-	private MedSestra medSestra;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private MedSestra med_sestra;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="lekar_id", nullable=true)
 	private Lekar lekar;
 	
@@ -93,25 +92,36 @@ public class Odsustvo {
 	}
 
 	public MedSestra getSestra() {
-		return medSestra;
+		return med_sestra;
 	}
 
-	public void setSestra(MedSestraDTO sestra) {
+	public void setSestra(MedSestra m) {
 		
 		MedSestra ms = new MedSestra();
-		ms.setAdresa(sestra.getAdresa());
-		ms.setDrzava(sestra.getDrzava());
-		ms.setEmail(sestra.getEmail());
-		ms.setGrad(sestra.getGrad());
-		ms.setIme(sestra.getIme());
-		ms.setPrezime(sestra.getPrezime());
-		ms.setKlinika(null);// treba da se namesti konvertor IZ DTO
-		ms.setKontakt(sestra.getKontakt());
-		ms.setLozinka(sestra.getLozinka());
-		ms.setRadKalendar(null);// i ovooooooooooo
-		ms.setRadvr_kraj(sestra.getRadvr_kraj());
-		ms.setRadvr_pocetak(sestra.getRadvr_pocetak());
 		
+		ms.setAdresa(m.getAdresa());
+		
+		ms.setDrzava(m.getDrzava());
+		
+		ms.setEmail(m.getEmail());
+	
+		ms.setGrad(m.getGrad());
+	
+		ms.setIme(m.getIme());
+		
+		ms.setPrezime(m.getPrezime());
+	
+		//ms.setKlinika(null);// treba da se namesti konvertor IZ DTO
+		ms.setKontakt(m.getKontakt());
+		
+		ms.setLozinka(m.getLozinka());
+	
+	//	ms.setRadKalendar(null);// i ovooooooooooo
+		ms.setRadvr_kraj(m.getRadvr_kraj());
+		
+		ms.setRadvr_pocetak(m.getRadvr_pocetak());
+		
+	
 	}
 
 	public Lekar getLekar() {
@@ -126,7 +136,7 @@ public class Odsustvo {
 		le.setGrad(lekar.getGrad());
 		le.setIme(lekar.getIme());
 		le.setPrezime(lekar.getPrezime());
-		le.setKlinika(null);// treba da se namesti konvertor IZ DTO
+		//le.setKlinika(null);// treba da se namesti konvertor IZ DTO
 		le.setKontakt(lekar.getKontakt());
 		le.setLozinka(lekar.getLozinka());
 		//le.setRadKalendar(null);// i ovooooooooooo

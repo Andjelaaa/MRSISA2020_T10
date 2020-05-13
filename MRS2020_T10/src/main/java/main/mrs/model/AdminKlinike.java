@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class AdminKlinike extends Korisnik implements UserDetails{
    
 	@OneToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-	@JoinColumn(name="odsustvo_id", nullable=false)
+	@JoinColumn(name="admin_klinike_id", nullable=true)
     public Set<Odsustvo> odsustvo;
 	
 	@ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)

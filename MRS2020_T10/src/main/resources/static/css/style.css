@@ -61,3 +61,43 @@
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+.fullscreen
+{
+  height:600px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
+
+.thead-default, .thead-default a {
+  background-color: #00bcd4;
+  color:#fff;
+}
+
+.tbody-default {
+  background-color: #eee;
+}
+
+a {
+  padding: 10px 10px 10px 10px
+}
+
+.center-title {
+  text-align: center;
+}
+
+a.cal-selected,
+a.cal-selected:focus {
+  background-color: #368CB2;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: bold;
+  /*font-size: 1.8em*/
+}

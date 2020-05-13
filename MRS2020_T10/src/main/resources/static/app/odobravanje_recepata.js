@@ -28,6 +28,9 @@ Vue.component('overa', {
 		        <a class="nav-link" href="#/overa">Overa recepata</a>
 		      </li>
 		      <li class="nav-item">
+		        <a class="nav-link" href="#/kalendarr">Radni kalendar</a>
+		      </li>
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/medsestra">Profil: {{medicinska_sestra.ime}} {{medicinska_sestra.prezime}}</a>
 		      </li>
 		    </ul>

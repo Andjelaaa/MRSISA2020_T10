@@ -32,25 +32,24 @@ public class MedSestra extends Korisnik implements UserDetails {
    @Column(name="radvr_kraj", unique=false, nullable=false)
    private String radvr_kraj;
    
-   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   // @JoinColumn(name="medSestra", nullable=false)
-    public RadniKalendar radniKalendar;
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @JoinColumn(name="med_sestra_id", nullable=true)
+   public Set<Odsustvo> odsustvo;
    
+	public Set<Odsustvo> getOdsustvo() {
+	return odsustvo;
+}
+
+
+public void setOdsustvo(Set<Odsustvo> odsustvo) {
+	this.odsustvo = odsustvo;
+}
+
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Autoritet> autoriteti;
    
-  
-	public RadniKalendar getRadKalendar() {
-		return radniKalendar;
-	}
-	
-	
-	public void setRadKalendar(RadniKalendar radKalendar) {
-		this.radniKalendar = radKalendar;
-	}
-	
-
-
+ 
 	public Klinika getKlinika() {
 		return klinika;
 	}

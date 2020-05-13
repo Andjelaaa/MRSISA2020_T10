@@ -26,10 +26,17 @@ Vue.component('pacijenti', {
 		      </li>
 		      
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/zahtevgo">Zahtev za godisnji odmor/odsustvo</a>
+		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
+		      </li>
+		        <li class="nav-item">
+		        <a v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/overa">Overa recepata</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/profil">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
+		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/kalendarr">Radni kalendar</a>
+		      </li>
+		      <li class="nav-item">
+		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/medsestra">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
+		        <a v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/profil">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
