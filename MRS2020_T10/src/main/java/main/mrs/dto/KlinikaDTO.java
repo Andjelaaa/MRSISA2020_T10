@@ -38,15 +38,15 @@ public class KlinikaDTO {
    
    public Set<SalaDTO> getSale() {
 	return sale;
-}
-
-public void setSale(Set<SalaDTO> sale) {
-	this.sale = sale;
-}
-
-public KlinikaDTO() {}
+	}
+	
+	public void setSale(Set<SalaDTO> sale) {
+		this.sale = sale;
+	}
+	
+	public KlinikaDTO() {}
    
-   public KlinikaDTO(Klinika s) {
+	public KlinikaDTO(Klinika s) {
 		this(s.getId(), s.getNaziv(), s.getAdresa(), s.getOpis(), s.getEmailKlinike(), s.getKontaktKlinike(), s.getBrojOcena(), s.getProsecnaOcena());
 	}
 

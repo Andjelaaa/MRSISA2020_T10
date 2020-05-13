@@ -1,4 +1,4 @@
-Vue.component('medsestra', {
+Vue.component('med_sestra_pocetna', {
 
 	data: function(){
 		return{	
@@ -38,46 +38,11 @@ Vue.component('medsestra', {
 		  </div>
 		</nav>
 		</br>
-		</table>
 		<div class="float-left" style="margin: 20px">
+			<h3> Radni kalendar </h3>
 		<table class="table">
 			<tbody>
-			   <tr>		   		
-			   		<td>Ime</td>
-			   		<td>{{medicinska_sestra.ime}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.ime)" class="btn btn-light">Izmeni</button></td>	 
-			   </tr>
-			  
-			   <tr>
-			   		<td>Prezime</td>
-			   		<td>{{medicinska_sestra.prezime}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.prezime)" class="btn btn-light">Izmeni</button></td>	 
-			   </tr>
-			    <tr>
-			   		<td>Email</td>
-			   		<td>{{medicinska_sestra.email}}</td>	  
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.email)" class="btn btn-light">Izmeni</button></td>	  
-			   	</tr>
-			   	<tr>
-			   		<td>Adresa</td>
-			   		<td>{{medicinska_sestra.adresa}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.adresa)" class="btn btn-light">Izmeni</button></td>	 	   
-			   	</tr>
-			   	<tr>
-			   		<td>Grad</td>
-			   		<td>{{medicinska_sestra.grad}}</td>	   
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.grad)" class="btn btn-light">Izmeni</button></td>	 
-			   	</tr>
-				<tr>
-			   		<td>Drzava</td>
-			   		<td>{{medicinska_sestra.drzava}}</td>	  
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.drzava)" class="btn btn-light">Izmeni</button></td>	  
-			   	</tr>
-			   	<tr>
-			   		<td>Kontakt</td>
-			   		<td>{{medicinska_sestra.kontakt}}</td>
-			   		<td><button v-on:click = "izmeni(medicinska_sestra.kontakt)" class="btn btn-light">Izmeni</button></td>	 	   
-			   	</tr>
+			<!-- ovde ubaciti radni kalendar -->
 			  
 		   </tbody>
 		</table>
@@ -88,9 +53,6 @@ Vue.component('medsestra', {
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
-		},
-		izmeni:function(i){
-			alert("Not implemented yet");
 		}
 		
 	},

@@ -79,6 +79,7 @@ Vue.component('empty', {
 		            		this.$router.push('/lekar');
 		            	} else if (this.uloga == "ROLE_MED_SESTRA") {
 		            		console.log("MED SESTRA JE");
+		            		this.$router.push('/med_sestra_pocetna');
 		            		//this.$router.replace({ name: 'pacijenti' });
 		            	} else if (this.uloga == "ROLE_ADMIN_KLINICKOG_CENTRA") {
 		            		console.log("ADMIN KC JE");

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -24,6 +25,12 @@ public class MedSestra extends Korisnik implements UserDetails {
 	
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Klinika klinika;
+   
+   @Column(name="radvr_pocetak", unique=false, nullable=false)
+   private String radvr_pocetak;
+   
+   @Column(name="radvr_kraj", unique=false, nullable=false)
+   private String radvr_kraj;
    
    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    // @JoinColumn(name="medSestra", nullable=false)
@@ -100,6 +107,26 @@ public class MedSestra extends Korisnik implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+
+	public String getRadvr_pocetak() {
+		return radvr_pocetak;
+	}
+
+
+	public void setRadvr_pocetak(String radvr_pocetak) {
+		this.radvr_pocetak = radvr_pocetak;
+	}
+
+
+	public String getRadvr_kraj() {
+		return radvr_kraj;
+	}
+
+
+	public void setRadvr_kraj(String radvr_kraj) {
+		this.radvr_kraj = radvr_kraj;
 	}
 
 

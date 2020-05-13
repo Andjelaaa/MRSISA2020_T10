@@ -1,9 +1,14 @@
-Vue.component('medsestra', {
+Vue.component('odmor', {
 
 	data: function(){
 		return{	
 			medicinska_sestra:{},
-			uloga: ''
+			uloga: '',
+			tipZahteva:'',
+			opis:'',
+			datPocetka:'',
+			datKraja:'',
+			greska:''
 		}
 	}, 
 	
@@ -38,48 +43,49 @@ Vue.component('medsestra', {
 		  </div>
 		</nav>
 		</br>
-		</table>
 		<div class="float-left" style="margin: 20px">
+			<h3> Zahtev za godisnji odmor/odsustvo </h3>
 		<table class="table">
 			<tbody>
-			   <tr>		   		
-			   		<td>Ime</td>
-			   		<td>{{medicinska_sestra.ime}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.ime)" class="btn btn-light">Izmeni</button></td>	 
+				<tr>			   
+			   		<td>Zahtevam: </td>
+			   		<td>
+						<select class="form-control"  id="tipZahteva" v-model="tipZahteva">
+							<option value="Odmor"> Odmor </option>
+							<option value="Odsustvo"> Odsustvo </option>
+						</select>
+					</td>
 			   </tr>
-			  
+			 
 			   <tr>
-			   		<td>Prezime</td>
-			   		<td>{{medicinska_sestra.prezime}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.prezime)" class="btn btn-light">Izmeni</button></td>	 
+			   		<td>Pocev od: </td>
+			   		<td>
+						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
+					</td>
 			   </tr>
 			    <tr>
-			   		<td>Email</td>
-			   		<td>{{medicinska_sestra.email}}</td>	  
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.email)" class="btn btn-light">Izmeni</button></td>	  
-			   	</tr>
-			   	<tr>
-			   		<td>Adresa</td>
-			   		<td>{{medicinska_sestra.adresa}}</td>
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.adresa)" class="btn btn-light">Izmeni</button></td>	 	   
-			   	</tr>
-			   	<tr>
-			   		<td>Grad</td>
-			   		<td>{{medicinska_sestra.grad}}</td>	   
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.grad)" class="btn btn-light">Izmeni</button></td>	 
-			   	</tr>
-				<tr>
-			   		<td>Drzava</td>
-			   		<td>{{medicinska_sestra.drzava}}</td>	  
-			   			<td><button v-on:click = "izmeni(medicinska_sestra.drzava)" class="btn btn-light">Izmeni</button></td>	  
-			   	</tr>
-			   	<tr>
-			   		<td>Kontakt</td>
-			   		<td>{{medicinska_sestra.kontakt}}</td>
-			   		<td><button v-on:click = "izmeni(medicinska_sestra.kontakt)" class="btn btn-light">Izmeni</button></td>	 	   
-			   	</tr>
-			  
+			   		<td>Zakljucno sa: </td>
+			   		<td>
+						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
+					</td>
+			   </tr>
+			   	   
+			   
+			    <tr v-if="tipZahteva=='Odsustvo'">
+			   		<td>Radi</td>
+			   		<td>
+						<td><input id="opis" type="text" v-model="opis"></td>
+					</td>
+			   </tr>
+			   
+			    <tr>
+			   
+			   		<td></td>
+			   		<td><button v-on:click="salji()" class="btn btn-light float-right"> Posalji zahtev </button></td>
+			   		
+			   </tr>
 		   </tbody>
+		   {{greska}}
 		</table>
 		</div>
 	</div>
@@ -89,8 +95,44 @@ Vue.component('medsestra', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		izmeni:function(i){
-			alert("Not implemented yet");
+		validacija:function(){
+			if(!this.tipZahteva){
+				this.greska="Tip zahteva je obavezan";
+				return 1;
+			}
+				
+			if(this.tipZahteva =="Odsustvo" && !this.opis){
+				this.greska="Razlog odsustva je obavezan";
+				return 1;
+			}
+				
+			if(!this.datPocetka || !this.datKraja){
+				this.greska = "Sva polja su obavezna";
+				return 1;
+			}
+			return 0;
+				
+			
+		},
+		salji: function(){
+			this.greska = '';
+
+			if(this.validacija()==1)
+				return;
+			
+			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja,
+					 "medSestra": this.medicinska_sestra,
+					 "lekar": null};
+			
+			axios
+			.post('api/zahteviOdsustvo', zahtev)
+			.then((response)=>{
+				this.$router.push('/med_sestra_pocetna');
+			}).catch((response)=>{
+				this.greska = "Sva polja su obavezna";
+			});
+				
+			
 		}
 		
 	},
