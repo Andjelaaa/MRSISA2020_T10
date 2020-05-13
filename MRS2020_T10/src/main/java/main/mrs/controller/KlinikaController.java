@@ -1,6 +1,9 @@
 package main.mrs.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.KlinikaDTO;
-import main.mrs.dto.KlinikaDTO;
 import main.mrs.model.Klinika;
-import main.mrs.model.Klinika;
-import main.mrs.service.KlinikaService;;
+import main.mrs.model.Lekar;
+import main.mrs.model.Odsustvo;
+import main.mrs.model.Pregled;
+import main.mrs.model.TipPregleda;
+import main.mrs.service.KlinikaService;
+import main.mrs.service.LekarService;
+import main.mrs.service.OdsustvoService;
+import main.mrs.service.PregledService;
+import main.mrs.service.TipPregledaService;;
 
 @RestController
 @RequestMapping(value="api/klinika")
@@ -26,6 +35,15 @@ public class KlinikaController {
 
 	@Autowired
 	private KlinikaService KlinikaService;
+	@Autowired
+	private TipPregledaService TipPregledaService;
+	@Autowired
+	private LekarService LekarService;
+	@Autowired
+	private OdsustvoService OdsustvoService;
+	@Autowired
+	private PregledService PregledService;
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<KlinikaDTO>> getAllKlinike() {
 
@@ -46,6 +64,104 @@ public class KlinikaController {
 		Klinika Klinika = KlinikaService.findOneById(klinikaId);
 		// convert Klinike to DTOs
 		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/slobodnitermini/{datum}/{tipPregleda}")
+	public ResponseEntity<List<KlinikaDTO>> klinikeSlobodniTermini(@PathVariable String datum, @PathVariable String tipPregleda) {
+		System.out.println("TRAZIM TERMINE SLOBODNE");
+		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
+		Date date1 = null;
+		List<KlinikaDTO> KlinikeDTO = new ArrayList<>();
+		try {
+			System.out.println(datum);
+			date1=new SimpleDateFormat("yyyy-MM-dd").parse(datum);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+		// za trazeni tip pregleda i datum moramo pronaci lekare koji u svom
+		// radnom kalendaru imaju vremena taj dan da izvrse preglede
+		// i prikazati kliniku u kojoj rade
+		
+		//izvuci lekare koji rade taj tip preglade
+		List<Lekar> lekari = LekarService.findByTipPregledaId(tp.getId());
+		
+		// za svakog lekara proveriti da li odsustvuje taj dan
+		ArrayList<Lekar> lekariKojiRade = new ArrayList<Lekar>();
+		for (Lekar l: lekari)
+		{
+			Odsustvo odsustvuje = OdsustvoService.daLiOdsustvuje(l.getId(), date1);
+			if(odsustvuje == null)
+			{
+				// ako je null onda taj lekar ne odsustvuje tj radi taj dan
+				lekariKojiRade.add(l);
+			}
+		}
+		
+		/*
+		SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String time = localDateFormat.format(new Date());
+        */
+		// za svakog lekara koji radi proveriti da li ima vremena da izvrsi pregled taj dan
+		for (Lekar l: lekariKojiRade)
+		{
+			boolean slobodan = false;
+			Date rvPocetak = null;
+			Date rvKraj = null;
+			// vrati pregelede (vreme pregleda) koje izvrsava taj dan
+			// iz baze vraca sortirano
+			List<Pregled> pregledi = PregledService.nadjiPregledeLekaraZaDan(l.getId(), date1);
+			
+			// proveri da li ima slobodno u zavisnosti od njegovog radnog vremena
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm"); //if 24 hour format
+			try {
+				rvPocetak =(java.util.Date)format.parse(l.getRvPocetak());
+				rvKraj =(java.util.Date)format.parse(l.getRvKraj());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			for(Pregled p: pregledi)
+			{
+				// ispitati kad je slobodan
+				SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+				String time = localDateFormat.format(p.getDatumVreme());
+				Date vremePregleda = null;
+				try {
+					vremePregleda = (Date)format.parse(time);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(vremePregleda.after(rvPocetak))
+				{
+					slobodan = true;
+					System.out.println("Slobodno vreme: od " + rvPocetak + " do " + vremePregleda);
+					long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+					long vremeUMinutima = vremePregleda.getTime();
+					
+					// kad se zavrsi taj pregled on ima novi pocetak "radnog vremena"
+					rvPocetak = new Date(vremeUMinutima + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+				}
+				else
+				{
+					// pomeri se vreme pocetka za trajanje pregleda
+					long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+					long vremeUMinutima = vremePregleda.getTime();
+					rvPocetak = new Date(vremeUMinutima + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+				}
+		      
+			}
+			System.out.println("Slobodno vreme: od " + rvPocetak + " do " + rvKraj);
+			
+			if(slobodan || pregledi.isEmpty())
+			{
+				System.out.println("SLOBODNA KLINIKA " + l.getKlinika().getNaziv());
+				KlinikeDTO.add(new KlinikaDTO(l.getKlinika()));
+			}
+		}
+		return new ResponseEntity<>(KlinikeDTO, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = "application/json")

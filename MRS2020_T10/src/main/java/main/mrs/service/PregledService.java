@@ -59,4 +59,14 @@ public class PregledService {
 		// TODO Auto-generated method stub
 		return PregledRepository.getScheduled(pacijentId);
 	}
+
+	public List<Pregled> nadjiPregledeLekaraZaDan(Integer id, Date date1) {
+		// TODO Auto-generated method stub
+		return PregledRepository.nadjiPregledeLekaraZaDan(id, date1);
+	}
+
+	public List<Pregled> dobaviIstoriju(int pacijentId) {
+		// TODO Auto-generated method stub
+		return PregledRepository.dobaviIstoriju(pacijentId);
+	}
 }

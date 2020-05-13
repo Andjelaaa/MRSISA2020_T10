@@ -53,4 +53,9 @@ public class LekarService {
 			return (Lekar) korisnik;
 		}
 	}
+
+	public List<Lekar> findByTipPregledaId(Integer id) {
+		// TODO Auto-generated method stub
+		return LekarRepository.findByTipPregledaId(id);
+	}
 }

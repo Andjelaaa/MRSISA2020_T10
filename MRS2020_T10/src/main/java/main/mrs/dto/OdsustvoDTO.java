@@ -41,14 +41,14 @@ public class OdsustvoDTO {
 		this.id = id2;
 		this.status = StatusDTO.valueOf(status2.toString());
 		this.opis = opis2;
-		this.sestra = setSestra(sestra2);
-		this.lekar = setLekar(lekar2);
+		this.sestra = setujSestra(sestra2);
+		this.lekar = setujLekar(lekar2);
 		this.kraj = kraj2;
 		this.pocetak = pocetak2;
 		this.tip = tip2;
 	}
 		
-	public MedSestraDTO setSestra(MedSestra sestra) {
+	public MedSestraDTO setujSestra(MedSestra sestra) {
 		
 		MedSestraDTO ms = new MedSestraDTO();
 		ms.setAdresa(sestra.getAdresa());
@@ -65,7 +65,7 @@ public class OdsustvoDTO {
 		ms.setRadvr_pocetak(sestra.getRadvr_pocetak());
 		return ms;
 	}
-	public LekarDTO setLekar(Lekar lekar) {
+	public LekarDTO setujLekar(Lekar lekar) {
 		LekarDTO le = new LekarDTO();
 		le.setAdresa(lekar.getAdresa());
 		le.setDrzava(lekar.getDrzava());

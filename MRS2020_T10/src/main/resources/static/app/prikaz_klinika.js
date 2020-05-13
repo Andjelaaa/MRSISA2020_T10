@@ -1,13 +1,15 @@
 Vue.component('klinike-prikaz', {
 	data: function(){
 		return{
-			klinike: null,
+			klinike: [],
 			idPacijenta: 1,
 			tipPregleda: {naziv: null},
 			datum: null,
 			tipoviPregleda: null,
 			greskaDatum: '',
-			greskaTipPregleda: ''
+			greskaTipPregleda: '',
+			currentSort:'prosecnaOcena',
+			  currentSortDir:'asc'
 		}
 	},
 
@@ -51,12 +53,12 @@ Vue.component('klinike-prikaz', {
 			<tr>
 			<th>Naziv klinike</th>
 			<th>Adersa</th>
-			<th>Prosecna ocena</th>
+			<th @click="sort('prosecnaOcena')">Prosecna ocena</th>
 			<th>Kontakt</th>
 			<th></th>
 			</tr>
 			
-			<tr v-for="(k, index) in klinike">
+			<tr v-for="k, index in sortedKlinike">
 				<td>{{k.naziv}}</td>
 				<td>{{k.adresa}}</td>
 				<td>{{k.prosecnaOcena}}</td>
@@ -98,29 +100,40 @@ Vue.component('klinike-prikaz', {
 			this.greskaDatum = '';
 			this.greskaTipPregleda = '';
 			
-			if(!this.datum)
+			if(!this.datum){
 				this.greskaDatum = 'Datum je obavezno polje!';
+				return 1;
+			}
 
-			if(!this.tipPregleda)
+			if(!this.tipPregleda.naziv){
 				this.greskaTipPregleda = 'Tip pregleda je obavezno polje!';
-			if(this.datum && this.greskaTipPregleda){
+				return 1;
+			}
+			if(this.datum && this.greskaTipPregleda.naziv){
 				return 0;
 			}
-			return 1;
+			return 0;
 
 		},
 		pretragaTermina: function(){
 			if(this.validacija() == 1){
+				console.log('cao');
 				return;
 			}
 			this.greskaDatum = '';
 			this.greskaTipPregleda = '';
 			// da se desi pretraga po datumu i tipu pregleda
 			
+			axios
+	       	.post('api/klinika/slobodnitermini/'+ this.datum + '/' + this.tipPregleda.naziv)
+	       	.then(response => (this.klinike = response.data))
+	       	.catch((res)=>{
+	        	  console.log('neuspesno');
+	       	})
 		},
 		
 		detalji: function(klinikaId){
-			if(this.datum && this.greskaTipPregleda){
+			if(this.datum && this.greskaTipPregleda.naziv){
 				// onda detalje za zakazivanje
 			}
 			else{
@@ -128,9 +141,28 @@ Vue.component('klinike-prikaz', {
 				console.log(klinikaId);
 				this.$router.push('/detaljiKlinike/'+klinikaId);
 			}
-		}
+		},
+		sort:function(s) {
+		    //if s == current sort, reverse
+		    if(s === this.currentSort) {
+		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+		    }
+		    this.currentSort = s;
+		  }
 		
 	},
+	
+	computed:{
+		  sortedKlinike:function() {
+		    return this.klinike.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+		      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+		      return 0;
+		    });
+		  }
+		},
 	
 	mounted () {
 		axios

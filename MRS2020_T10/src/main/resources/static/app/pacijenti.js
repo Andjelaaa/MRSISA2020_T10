@@ -45,7 +45,6 @@ Vue.component('pacijenti', {
 		Prezime: <input  type="text" v-model="pretraga.prezime">
 		LBO: <input  type="text" v-model="pretraga.lbo">
 		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
-		<button v-on:click = "sortiraj()" class="btn btn-light">Sortiraj</button>
 		
 		<table class="table table-hover table-light ">		
 		   <tr>		   		

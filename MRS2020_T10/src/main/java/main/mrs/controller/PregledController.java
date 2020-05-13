@@ -100,6 +100,23 @@ public class PregledController {
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/istorijaPregleda/{pacijentId}")
+	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
+
+		List<Pregled> Pregleds = PregledService.dobaviIstoriju(pacijentId);
+
+		// convert Pregleds to DTOs
+		List<PregledDTO> PregledsDTO = new ArrayList<>();
+		for (Pregled s : Pregleds) {
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
+		}
+
+		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/otkazi/{pregledId}/{pacijentId}")
 	public ResponseEntity<PregledDTO> otkaziPregled(@PathVariable long pregledId, @PathVariable int pacijentId){
 		Pregled p = PregledService.findById(pregledId);
@@ -181,9 +198,8 @@ public class PregledController {
 	
 	
 	
-	@PostMapping(consumes = "application/json")
+	@PostMapping(consumes = "application/json;charset=UTF-8")
 	public ResponseEntity<PregledDTO> savePregled(@RequestBody PregledDTO PregledDTO) {
-
 		Pregled Pregled = new Pregled();
 		Pregled.setDatumVreme(PregledDTO.getDatumVreme());
 		Pregled.setTrajanje(PregledDTO.getTrajanje());

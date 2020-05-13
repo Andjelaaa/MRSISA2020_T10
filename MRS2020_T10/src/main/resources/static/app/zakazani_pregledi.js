@@ -2,6 +2,7 @@ Vue.component('zakazani-pregledi', {
 	data: function(){
 		return{
 			pregledi: null,
+			istorijaPregleda: null,
 			idPacijenta: 1,
 			showModal: false
 		}
@@ -70,6 +71,37 @@ Vue.component('zakazani-pregledi', {
 						</modal></td>
 			</tr>
 		</table>
+		
+		<h3> Istorija pregleda </h3>
+		
+		<table class="table table-hover table-light ">
+			<tr>
+			<th>Datum i vreme</th>
+			<th>Trajanje</th>
+			<th>Tip pregleda</th>
+			<th>Lekar</th>
+			<th>Sala</th>
+			<th></th>
+			</tr>
+			
+			<tr v-for="(p, index) in istorijaPregleda">
+				<td>{{p.datumVreme | formatDate}}</td>
+				<td>{{p.trajanje}}</td>
+				<td>{{p.tipPregleda.naziv}}</td>
+				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
+				<td>{{p.sala.broj}}</td>
+				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
+						<modal v-if="showModal" @close="showModal = false">
+        
+        					<h3 slot="header">Potvrdi otkazivanje</h3>
+        					<p slot="body">Da li ste sigurni?</p>
+        					<div slot="footer">
+        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="otkazi(p.id, index)"> Potvrdi </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
+							</div>
+						</modal></td>
+			</tr>
+		</table>
 		</div>
 	`, 
 	
@@ -96,6 +128,11 @@ Vue.component('zakazani-pregledi', {
 		.get('api/pregled/zakazaniPregledi/'+this.idPacijenta)
 		.then(res => {
 			this.pregledi = res.data;
+		}),
+		axios
+		.get('api/pregled/istorijaPregleda/'+this.idPacijenta)
+		.then(res => {
+			this.istorijaPregleda = res.data;
 		})
 		
 	},

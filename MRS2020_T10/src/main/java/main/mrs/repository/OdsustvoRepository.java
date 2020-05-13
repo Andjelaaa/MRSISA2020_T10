@@ -1,5 +1,6 @@
 package main.mrs.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
 
 
@@ -83,6 +86,11 @@ public interface OdsustvoRepository  extends JpaRepository<Odsustvo, Long>{
 
 	 
 	  <S extends Odsustvo> S saveAndFlush(S arg0);
+
+
+	  // vraca id lekara koji odsustvuje
+	@Query(value = "SELECT * FROM ODSUSTVO WHERE LEKAR_ID = ?1 AND ?2 >= POCETAK AND ?2 <= KRAJ", nativeQuery = true)
+	Odsustvo daLiOdsustvuje(Integer id, Date date1);
 
 
 }
