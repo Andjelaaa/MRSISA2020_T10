@@ -40,7 +40,6 @@ public class Odsustvo {
 	private MedSestra medSestra;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="lekar_id", nullable=true)
 	private Lekar lekar;
 	
 	public String getTip() {
@@ -128,20 +127,20 @@ public class Odsustvo {
 		return lekar;
 	}
 
-	public void setLekar(LekarDTO lekar) {
+	public void setLekar(Lekar l) {
 		Lekar le = new Lekar();
-		le.setAdresa(lekar.getAdresa());
-		le.setDrzava(lekar.getDrzava());
-		le.setEmail(lekar.getEmail());
-		le.setGrad(lekar.getGrad());
-		le.setIme(lekar.getIme());
-		le.setPrezime(lekar.getPrezime());
+		le.setAdresa(l.getAdresa());
+		le.setDrzava(l.getDrzava());
+		le.setEmail(l.getEmail());
+		le.setGrad(l.getGrad());
+		le.setIme(l.getIme());
+		le.setPrezime(l.getPrezime());
 		//le.setKlinika(null);// treba da se namesti konvertor IZ DTO
-		le.setKontakt(lekar.getKontakt());
-		le.setLozinka(lekar.getLozinka());
+		le.setKontakt(l.getKontakt());
+		le.setLozinka(l.getLozinka());
 		//le.setRadKalendar(null);// i ovooooooooooo
-		le.setRvKraj(lekar.getRvKraj());
-		le.setRvPocetak(lekar.getRvPocetak());
+		le.setRvKraj(l.getRvKraj());
+		le.setRvPocetak(l.getRvPocetak());
 
 	}
 

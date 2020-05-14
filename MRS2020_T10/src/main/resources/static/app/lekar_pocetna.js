@@ -22,7 +22,7 @@ Vue.component('lekar', {
 		      </li>
 		      
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/zahtevgo">Zahtev za godisnji odmor/odsustvo</a>
+		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/profil">Profil: {{lekar.ime}} {{lekar.prezime}}</a>

@@ -2,7 +2,7 @@ Vue.component('odmoor', {
 
 	data: function(){
 		return{	
-			medicinska_sestra:[],
+			korisnik:[],
 			uloga: '',
 			tipZahteva:'',
 			opis:"nema opisa",
@@ -18,7 +18,8 @@ Vue.component('odmoor', {
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
-		  <a class="navbar-brand" href="#/med_sestra_pocetna">Pocetna</a>
+		  <a v-if="uloga=='ROLE_LEKAR'" class="navbar-brand" href="#/lekar">Pocetna</a>
+			<a v-if="uloga=='ROLE_MED_SESTRA'" class="navbar-brand" href="#/medsestra">Pocetna</a>
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -29,14 +30,15 @@ Vue.component('odmoor', {
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
 		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/overa">Overa recepata</a>
+		        <li class="nav-item">
+		        <a v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/overa">Overa recepata</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/kalendarr">Radni kalendar</a>
+		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/kalendarr">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/medsestra">Profil: {{medicinska_sestra.ime}} {{medicinska_sestra.prezime}}</a>
+				<a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/medsestra">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
+		        <a v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/profil">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
@@ -62,15 +64,11 @@ Vue.component('odmoor', {
 			 
 			   <tr>
 			   		<td>Pocev od: </td>
-			   		<td>
-						<td><input id="datPocetka" type="datetime-local" v-model="datPocetka"></td>
-					</td>
+					<td><input id="datPocetka" type="datetime-local" v-model="datPocetka"></td>
 			   </tr>
 			    <tr>
 			   		<td>Zakljucno sa: </td>
-			   		<td>
-						<td><input id="datKraja" type="datetime-local" v-model="datKraja"></td>
-					</td>
+					<td><input id="datKraja" type="datetime-local" v-model="datKraja"></td>
 			   </tr>
 			   	   
 			   
@@ -129,14 +127,17 @@ Vue.component('odmoor', {
 			//proveravace se role, ako je role lekar onda ce se setovati lekar  a med sestra na ne znam
 			
 			axios
-			.post('api/zahteviodsustvo/'+this.medicinska_sestra.email, zahtev)
+			.post('api/zahteviodsustvo/'+this.korisnik.email, zahtev)
 			.then((response)=>{
 				this.greska ='';
-				this.$router.push('/med_sestra_pocetna');
+				alert('Uspesno ste poslali zahtev!');
+				if(this.uloga == "ROLE_MED_SESTRA")
+					this.$router.push('/med_sestra_pocetna');
+				else
+					this.$router.push('/lekar');
 			}).catch((response)=>{
 				this.greska = "Sva polja su obavezna!";
 			});
-				
 			
 		}
 		
@@ -146,12 +147,12 @@ Vue.component('odmoor', {
 		this.token = localStorage.getItem("token");
 		axios
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
-	    .then(response => { this.medicinska_sestra = response.data;
+	    .then(response => { this.korisnik = response.data;
 		    axios
-			.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+			.put('/auth/dobaviulogu', this.korisnik, { headers: { Authorization: 'Bearer ' + this.token }} )
 		    .then(response => {
 		    	this.uloga = response.data;
-		    	if (this.uloga != "ROLE_MED_SESTRA") {
+		    	if (this.uloga != "ROLE_MED_SESTRA" && this.uloga != "ROLE_LEKAR") {
 		    		this.$router.push('/');
 		    	}
 		    })
