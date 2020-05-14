@@ -37,7 +37,7 @@ public class Odsustvo {
 	private Date kraj;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private MedSestra med_sestra;
+	private MedSestra medSestra;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="lekar_id", nullable=true)
@@ -92,7 +92,7 @@ public class Odsustvo {
 	}
 
 	public MedSestra getSestra() {
-		return med_sestra;
+		return medSestra;
 	}
 
 	public void setSestra(MedSestra m) {

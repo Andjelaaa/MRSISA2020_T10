@@ -43,7 +43,6 @@ public class OdsustvoController {
 		try {
 			zahtev = OdsustvoService.save(zahtev);
 		} catch (Exception e) {
-			System.out.println("DSADASD      jel sacuvo");
 			return new ResponseEntity<>(new OdsustvoDTO(zahtev), HttpStatus.BAD_REQUEST);
 		}
 

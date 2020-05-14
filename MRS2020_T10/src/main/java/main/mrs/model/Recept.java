@@ -1,4 +1,5 @@
 package main.mrs.model;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import main.mrs.dto.LekDTO;
 @Entity
 public class Recept {
 	
@@ -26,6 +29,25 @@ public class Recept {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Lek> lek;
    
+	public MedSestra getMedSestra() {
+		return medSestra;
+	}
+	public static Set<Lek> changeDTO(Set<LekDTO> lek2) {
+		Set<Lek> novi = new HashSet<Lek>();
+		for(LekDTO l: lek2) {
+			Lek ld = new Lek();
+			ld.setNaziv(l.getNaziv());
+			ld.setId(l.getId());
+			ld.setSifra(l.getSifra());
+			novi.add(ld);
+		}
+		return novi;
+	}
+
+	public void setMedSestra(MedSestra medSestra) {
+		this.medSestra = medSestra;
+	}
+
 	public Integer getId() {
 		return id;
 	}

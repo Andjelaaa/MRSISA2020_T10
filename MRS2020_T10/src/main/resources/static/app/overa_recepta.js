@@ -8,8 +8,7 @@ Vue.component('overa', {
 			opis:'',
 			datPocetka:'',
 			datKraja:'',
-			greska:'',
-			lekar:{}
+			recepti:{id:'', lek:{id:'',naziv:'',sifra:''}}
 		}
 	}, 
 	
@@ -48,49 +47,29 @@ Vue.component('overa', {
 		</nav>
 		</br>
 		<div class="float-left" style="margin: 20px">
-			<h3> Zahtev za godisnji odmor/odsustvo </h3>
+			<h3> Overite recepte </h3>
 		<table class="table">
 			<tbody>
-				<tr>			   
-			   		<td>Zahtevam: </td>
-			   		<td>
-						<select class="form-control"  id="tipZahteva" v-model="tipZahteva">
-							<option value="Odmor"> Odmor </option>
-							<option value="Odsustvo"> Odsustvo </option>
-						</select>
-					</td>
-			   </tr>
-			 
-			   <tr>
-			   		<td>Pocev od: </td>
-			   		<td>
-						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
-					</td>
-			   </tr>
-			    <tr>
-			   		<td>Zakljucno sa: </td>
-			   		<td>
-						<td><input id="datPocetka" type="text" v-model="datPocetka"></td>
-					</td>
-			   </tr>
-			   	   
-			   
-			    <tr v-if="tipZahteva=='Odsustvo'">
-			   		<td>Radi</td>
-			   		<td>
-						<td><input id="opis" type="text" v-model="opis"></td>
-					</td>
-			   </tr>
-			   
-			    <tr>
-			   
-			   		<td></td>
-			   		<td><button v-on:click="salji()" class="btn btn-light float-right"> Posalji zahtev </button></td>
-			   		
-			   </tr>
-		   </tbody>
-		   {{greska}}
-		</table>
+				<table class="table table-sm table-hover table-light " >
+				   <tr>		   		
+				   		<th>Id recepta</th>
+				   		<th>Lekovi</th>
+				   		<th></th>
+				   </tr>
+				  
+				   <tr  v-for="r,ind in recepti">
+				   		<td>{{r.id}}</td>
+				   		<td>
+				   			<p v-for="l in r.lek">{{l.naziv}}</p>
+				   		</td>
+				   		<td><button v-on:click = "overa(r, ind)" class="btn btn-success">Overi</button></td>
+				   </tr>
+				 
+				   </table>
+				   </tbody>
+			</table>
+				
+				
 		</div>
 	</div>
 	
@@ -99,48 +78,21 @@ Vue.component('overa', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		validacija:function(){
-			if(!this.tipZahteva){
-				this.greska="Tip zahteva je obavezan";
-				return 1;
-			}
-				
-			if(this.tipZahteva =="Odsustvo" && !this.opis){
-				this.greska="Razlog odsustva je obavezan";
-				return 1;
-			}
-				
-			if(!this.datPocetka || !this.datKraja){
-				this.greska = "Sva polja su obavezna";
-				return 1;
-			}
-			return 0;
-				
-			
-		},
-		salji: function(){
-			this.greska = '';
-
-			if(this.validacija()==1)
-				return;
-			
-			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja,
-					 "medSestra": this.medicinska_sestra,
-					 "lekar": this.lekar};
-			
+		overa: function(recept, index){
+			console.log(recept.lek.length);
 			axios
-			.post('api/zahteviOdsustvo', zahtev)
-			.then((response)=>{
-				this.$router.push('/med_sestra_pocetna');
-			}).catch((response)=>{
-				this.greska = "Sva polja su obavezna";
-			});
-				
+	        .put('api/recept/izmeni/'+this.medicinska_sestra.email, recept)
+	        .then((response) => {
+	          this.recepti.splice(index, 1);
+	      	  alert("Uspesno ste overili recept");
+	        })
+	        .catch((response)=> {alert("Desila se greska sa serverom!");});
 			
 		}
 		
 	},
 	mounted(){
+		
 		
 		this.token = localStorage.getItem("token");
 		axios
@@ -154,10 +106,17 @@ Vue.component('overa', {
 		    		this.$router.push('/');
 		    	}
 		    })
-		    .catch(function (error) { console.log(error);});
+		    .catch((response)=> { console.log(error);});
 		    
 	    })
-	    .catch(function (error) { this.$router.push('/'); });	 
+	    .catch((response)=>{ this.$router.push('/'); });	 
+		
+		axios
+        .get('api/recept/neovereni')
+        .then((response) => {
+      	  this.recepti = response.data;
+        }).catch(response=>{alert("Doslo je do greske");});
 	}
+	
 	
 });

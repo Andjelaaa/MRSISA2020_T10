@@ -17,6 +17,7 @@ update tip_pregleda set stavka_id=2 where id=2;
 
 insert into lek (naziv,sifra) values ('Bromazepam', 'B1');
 insert into lek (naziv, sifra) values ('Hloramfenikol', 'H1');
+insert into lek (naziv, sifra) values ('Panklav', 'P1');
 
 insert into dijagnoza (naziv,sifra) values ('Opis prve dijagnoze', 'D1');
 insert into dijagnoza (naziv, sifra) values ('Opis druge dijagnoze', 'D2');
@@ -54,5 +55,16 @@ insert into lekar_autoriteti (lekar_id, autoriteti_id) values (2, 2);
 insert into medicinska_sestra_autoriteti (med_sestra_id, autoriteti_id) values (1, 5);
 insert into medicinska_sestra_autoriteti (med_sestra_id, autoriteti_id) values (2, 5);
 
+
+insert into recept (id) values (nextval('Recept_id_SEQ'));
+insert into recept (id) values (nextval('Recept_id_SEQ'));
+insert into recept (id) values (nextval('Recept_id_SEQ'));
+
+insert into recept_lek (recept_id, lek_id) values(1,1);
+
+insert into recept_lek (recept_id, lek_id) values(1,2);
+
+insert into recept_lek (recept_id, lek_id) values(2,3);
+insert into recept_lek (recept_id, lek_id) values(3,2);
 
 insert into zahtev_registracije(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Ivan', 'Ivic', 'trajkovicka.9909@gmail.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '3lbo133131');
