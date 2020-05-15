@@ -5,7 +5,7 @@ Vue.component('odmoor', {
 			korisnik:[],
 			uloga: '',
 			tipZahteva:'',
-			opis:"nema opisa",
+			opis:'',
 			datPocetka:'',
 			datKraja:'',
 			greska:''
@@ -104,6 +104,10 @@ Vue.component('odmoor', {
 				
 			if(this.tipZahteva =="Odsustvo" && !this.opis){
 				this.greska="Razlog odsustva je obavezan";
+				return 1;
+			}
+			if(this.tipZahteva =="Odmor" ){
+				this.opis="nema opisa";
 				return 1;
 			}
 	

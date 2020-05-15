@@ -38,12 +38,12 @@ public class MedSestra extends Korisnik implements UserDetails {
    
 	public Set<Odsustvo> getOdsustvo() {
 	return odsustvo;
-}
-
-
-public void setOdsustvo(Set<Odsustvo> odsustvo) {
-	this.odsustvo = odsustvo;
-}
+	}
+	
+	
+	public void setOdsustvo(Set<Odsustvo> odsustvo) {
+		this.odsustvo = odsustvo;
+	}
 
 
 	@ManyToMany(fetch = FetchType.EAGER)

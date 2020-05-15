@@ -78,4 +78,12 @@ insert into recept_lek (recept_id, lek_id) values(1,2);
 insert into recept_lek (recept_id, lek_id) values(2,3);
 insert into recept_lek (recept_id, lek_id) values(3,2);
 
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+values('2020-05-13 12:00:00', 'nema opisa', '2020-05-10 11:00:00', 1, 'Odmor' , null, 1, null);
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+values('2020-05-25 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 1, 'Odsustvo' , null, 1, null);
+
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , null, 1, null);
+
 insert into zahtev_registracije(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Ivan', 'Ivic', 'trajkovicka.9909@gmail.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '3lbo133131');
