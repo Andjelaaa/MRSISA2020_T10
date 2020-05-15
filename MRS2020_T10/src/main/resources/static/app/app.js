@@ -30,6 +30,11 @@ const Kalendar =  {template: '<calendar></calendar>'}
 const Kalendar2 =  {template: '<calendar_doc></calendar_doc>'}
 const Kalendar3 =  {template: '<calendar_ned></calendar_ned>'}
 const Kalendar4 =  {template: '<calendar_god></calendar_god>'}
+const NadjiPacijenta =  {template: '<nadjipacijenta></nadjipacijenta>'}
+const ZahteviPregledOperacija =  {template: '<zahtevipo></zahtevipo>'}
+const ZakaziSalu = {template: '<zakazisalu></zakazisalu>'}
+
+
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -65,13 +70,16 @@ const router = new VueRouter({
 	    { path: '/kalendarr', component: Kalendar},
 	    { path: '/kalendarlekar', component: Kalendar2},
 	    { path: '/kalendarnedeljni', component: Kalendar3},
-	    { path: '/kalendargodisnji', component: Kalendar4}
+	    { path: '/kalendargodisnji', component: Kalendar4},
+	    { path: '/pacijenti/:lbo', component: NadjiPacijenta},
+	    { path: '/zahtevipo', component: ZahteviPregledOperacija},
+	    { path: '/zakazisalu/:id', component: ZakaziSalu}
 	    ]
 });
 
 Vue.filter('formatDate', function(value) {
 	  if (value) {
-	    return moment(String(value)).format('DD/MM/YYYY hh:mm')
+	    return moment(String(value)).format('DD/MM/YYYY HH:mm')
 	  }
 });
 

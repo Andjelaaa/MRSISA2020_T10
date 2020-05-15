@@ -1,6 +1,7 @@
 package main.mrs.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.SalaDTO;
+import main.mrs.dto.ZauzeceDTO;
+import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
+import main.mrs.service.PregledService;
 import main.mrs.service.SalaService;
 
 
@@ -27,6 +31,9 @@ public class SalaController {
 
 	@Autowired
 	private SalaService SalaService;
+	
+	@Autowired
+	private PregledService PregledService;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<SalaDTO>> getAllSalas() {
@@ -114,5 +121,29 @@ public class SalaController {
 		return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/zauzece/{idPregleda}/{idSale}")
+	public ResponseEntity<List<ZauzeceDTO>> getSlobodne(@PathVariable int idPregleda, @PathVariable int idSale) {
+
+		Pregled pregled = PregledService.findById(idPregleda);
+		System.out.println(pregled.getDatumVreme());
+		Sala sala = SalaService.findOne(idSale);
+		List<Pregled> Pregleds = PregledService.findAll();
+		
+		List<ZauzeceDTO> zauzecaDTO = new ArrayList<ZauzeceDTO>();
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		for(Pregled p: Pregleds) {
+			if(p.getSala() != null) {
+				if(p.getSala().getId() == sala.getId()) {
+					
+				    long curTimeInMs = p.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(p.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+
+		return new ResponseEntity<>(zauzecaDTO, HttpStatus.OK);
+	}
 	
 }

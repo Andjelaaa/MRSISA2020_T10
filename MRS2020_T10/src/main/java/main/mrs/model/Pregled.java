@@ -40,7 +40,7 @@ public class Pregled {
     public Sala sala;
     
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="pregled_id", nullable=false)
+    @JoinColumn(name="tip_pregleda_id", nullable=false)
     public TipPregleda tipPregleda;
     
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

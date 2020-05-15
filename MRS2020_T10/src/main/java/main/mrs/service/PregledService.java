@@ -69,4 +69,8 @@ public class PregledService {
 		// TODO Auto-generated method stub
 		return PregledRepository.dobaviIstoriju(pacijentId);
 	}
+
+	public List<Pregled> findAllZahtevi() {
+		return PregledRepository.findAllZahtevi();
+	}
 }

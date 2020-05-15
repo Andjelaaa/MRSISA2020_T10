@@ -1,13 +1,12 @@
-Vue.component('pacijenti', {
+Vue.component('nadjipacijenta', {
 
 	data: function(){
 		return{	
 			korisnik:{},
 			uloga: '',
-			pacijenti: [],
-			pretraga: {ime:'', prezime:'', lbo:''},
-			currentSort:'ime',
-		    currentSortDir:'asc'
+			pacijent: {},
+			zKarton: {}
+
 		}
 	}, 
 	
@@ -48,31 +47,27 @@ Vue.component('pacijenti', {
 		</nav>
 
 		<div class="float-left" style="margin: 20px">		
-		<h3> Pacijenti </h3>
-		Ime: <input  type="text" v-model="pretraga.ime" >
-		Prezime: <input  type="text" v-model="pretraga.prezime">
-		LBO: <input  type="text" v-model="pretraga.lbo">
-		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
+		<h3> Pacijent {{pacijent.ime}} {{pacijent.prezime}} </h3>
 		
 		<table class="table table-hover table-light ">		
 		   <tr>		   		
-		   		<th @click="sort('ime')">Ime</th>
-		   		<th @click="sort('prezime')">Prezime</td>
-		   		<th>Email adresa</th>
-		   		<th>Kontakt</th>
-		   		<th @click="sort('lbo')">LBO</th>
-		   		<th @click="sort('adresa')">Adresa</th>
+		   		<th>Krvna grupa</th>
+		   		<th>Visina</td>
+		   		<th>Tezina</th>
+		   		<th>Dioptrija</th>
+		   		<th>Pol</th>
+		   		<th>Datum rodjenja</th>
 		   		<th></th>
 		   </tr>
 		  <tbody>
-		   <tr v-for="s,i in sortedPacijenti">
-		   		<td>{{s.ime}}</td>
-		   		<td>{{s.prezime}}</td>
-		   		<td>{{s.email}}</td>
-		   		<td>{{s.kontakt}}</td>
-		   		<td>{{s.lbo}}</td>
-		   		<td>{{s.adresa}}, {{s.grad}}</td>
-		   		<td><button class="btn btn-outline-success" v-on:click="nadjipacijenta(s,i)">Profil</button></td>		   		
+		   <tr>
+		   		<td>{{zKarton.krvnaGrupa}}</td>
+		   		<td>{{zKarton.visina}}</td>
+		   		<td>{{zKarton.tezina}}</td>
+		   		<td>{{zKarton.dioptrija}}</td>
+		   		<td>{{zKarton.pol}}</td>
+		   		<td>{{zKarton.datumRodjenja}}</td>
+		   		<td></td>		   		
 		   </tr>
 		   </tbody>
 		    
@@ -85,36 +80,9 @@ Vue.component('pacijenti', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		nadjipacijenta: function(s, i){
-			// nije uradjeno
-			this.$router.push('/pacijenti/'+s.lbo);			
-		},
-		pretrazi: function(){
-			axios
-	       	.post('api/pacijent/search', this.pretraga)
-	       	.then(response => (this.pacijenti = response.data));
-
-		},
-		sort:function(s) {
-		    //if s == current sort, reverse
-		    if(s === this.currentSort) {
-		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-		    }
-		    this.currentSort = s;
-		  }
 	
 },
-computed:{
-	  sortedPacijenti:function() {
-	    return this.pacijenti.sort((a,b) => {
-	      let modifier = 1;
-	      if(this.currentSortDir === 'desc') modifier = -1;
-	      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-	      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-	      return 0;
-	    });
-	  }
-	},
+
 mounted(){
 	
 	this.token = localStorage.getItem("token");
@@ -128,10 +96,14 @@ mounted(){
 	    	if (this.uloga != "ROLE_LEKAR" && this.uloga != "ROLE_MED_SESTRA") {
 	    		this.$router.push('/');
 	    	}else{
-	    		// dobavi pacijente
+	    		// dobavi pacijenta PROMENI
+	    		console.log(this.$route.params.lbo);
 	    		axios
-	           	.get('api/pacijent/all')
-	           	.then(response => (this.pacijenti = response.data));
+	           	.get('api/pacijent/'+this.$route.params.lbo)
+	           	.then(response => {
+	           			this.pacijent = response.data; 
+	           			this.zKarton = this.pacijent.zKarton;
+	           	});
 	    	
 	    	}
 	    })

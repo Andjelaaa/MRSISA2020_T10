@@ -93,4 +93,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Long> {
 
 	@Query(value = "SELECT * FROM PACIJENT WHERE upper(IME) like %?%1 and upper(prezime) like %?%2 and upper(lbo) like %?%3", nativeQuery = true)
 	List<Pacijent> findByImeAndPrezimeAndLbo(String ime, String prezime, String lbo);
+
+
+	Pacijent findByLbo(String lbo);
 }

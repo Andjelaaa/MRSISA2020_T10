@@ -62,13 +62,15 @@ public class PacijentService{
 	}
 
 	public Pacijent findByEmail(String name) {
-		// TODO Auto-generated method stub
 		return PacijentRepository.findByEmail(name);
 	}
 
 	public List<Pacijent> findByImeAndPrezimeAndLbo(String ime, String prezime, String lbo) {
-		// TODO Auto-generated method stub
 		return PacijentRepository.findByImeAndPrezimeAndLbo(ime, prezime, lbo);
+	}
+
+	public Pacijent findByLbo(String lbo) {
+		return PacijentRepository.findByLbo(lbo);
 	}
 
 	

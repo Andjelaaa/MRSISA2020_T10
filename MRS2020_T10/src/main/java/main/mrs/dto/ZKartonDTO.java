@@ -23,9 +23,9 @@ public class ZKartonDTO {
 	   this.id = zk.getId();
 	   this.krvnaGrupa = zk.getKrvnaGrupa();
 	   this.lek = new java.util.HashSet<LekDTO>(); // ovo mora drugacije
-	   this.operacija = new java.util.HashSet<OperacijaDTO>();
+	   this.operacija = new java.util.HashSet<OperacijaDTO>(); // i ovo
 	   this.pol = zk.getPol();
-	   this.pregled = new java.util.HashSet<PregledDTO>();
+	   this.pregled = new java.util.HashSet<PregledDTO>(); // i ovo
 	   this.tezina = zk.getTezina();
 	   this.visina = zk.getVisina();
    }

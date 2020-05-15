@@ -27,8 +27,11 @@ public class PregledDTO {
 		this.trajanje = s.getTrajanje();
 		this.datumVreme = s.getDatumVreme();
 		this.lekar = new LekarDTO(s.getLekar());
-		this.sala = new SalaDTO(s.getSala());
+		if (s.getSala() != null)
+			this.sala = new SalaDTO(s.getSala());
 		this.tipPregleda = new TipPregledaDTO(s.getTipPregleda());
+		if(s.getPacijent() != null)
+			this.pacijent = new PacijentDTO(s.getPacijent());
 }
 
    public Integer getId() {

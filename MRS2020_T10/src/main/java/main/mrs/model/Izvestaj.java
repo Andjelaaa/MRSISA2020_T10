@@ -1,6 +1,4 @@
 package main.mrs.model;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +7,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Izvestaj {
@@ -20,11 +19,11 @@ public class Izvestaj {
 	@Column(name="opis", unique=false, nullable=false)
 	private String opis; 
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public Set<Dijagnoza> dijagnoza;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Dijagnoza dijagnoza;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public Set<Lek> lek;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Recept recept;
    
 	public Integer getId() {
 		return id;
@@ -33,71 +32,25 @@ public class Izvestaj {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-   public Set<Dijagnoza> getDijagnoza() {
-      if (dijagnoza == null)
-         dijagnoza = new HashSet<Dijagnoza>();
-      return dijagnoza;
-   }
+   
+   
+   public Dijagnoza getDijagnoza() {
+		return dijagnoza;
+	}
 
-   
-   public void setDijagnoza(Set<Dijagnoza> newDijagnoza) {
-      this.dijagnoza = newDijagnoza;
-   }
-   
-   public void addDijagnoza(Dijagnoza newDijagnoza) {
-      if (newDijagnoza == null)
-         return;
-      if (this.dijagnoza == null)
-         this.dijagnoza = new HashSet<Dijagnoza>();
-      if (!this.dijagnoza.contains(newDijagnoza))
-         this.dijagnoza.add(newDijagnoza);
-   }
-   
-   public void removeDijagnoza(Dijagnoza oldDijagnoza) {
-      if (oldDijagnoza == null)
-         return;
-      if (this.dijagnoza != null)
-         if (this.dijagnoza.contains(oldDijagnoza))
-            this.dijagnoza.remove(oldDijagnoza);
-   }
-   
-   public void removeAllDijagnoza() {
-      if (dijagnoza != null)
-         dijagnoza.clear();
-   }
-   public Set<Lek> getLek() {
-      if (lek == null)
-         lek = new HashSet<Lek>();
-      return lek;
-   }
-   
-   public void setLek(Set<Lek> newLek) {
-      this.lek = newLek;
-   }
-   
-   public void addLek(Lek newLek) {
-      if (newLek == null)
-         return;
-      if (this.lek == null)
-         this.lek = new java.util.HashSet<Lek>();
-      if (!this.lek.contains(newLek))
-         this.lek.add(newLek);
-   }
-   
-   public void removeLek(Lek oldLek) {
-      if (oldLek == null)
-         return;
-      if (this.lek != null)
-         if (this.lek.contains(oldLek))
-            this.lek.remove(oldLek);
-   }
-   
-   public void removeAllLek() {
-      if (lek != null)
-         lek.clear();
-   }
-   
-   public String getOpis() {
+	public void setDijagnoza(Dijagnoza dijagnoza) {
+		this.dijagnoza = dijagnoza;
+	}
+
+	public Recept getRecept() {
+		return recept;
+	}
+
+	public void setRecept(Recept recept) {
+		this.recept = recept;
+	}
+
+public String getOpis() {
 	return opis;
 }
 

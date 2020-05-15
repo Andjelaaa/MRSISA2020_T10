@@ -3,6 +3,7 @@ package main.mrs.dto;
 public enum StatusDTO {
    zahtev,
    odobreno,
-   odbijeno;
+   odbijeno,
+   zahtev_lekar;
 
 }

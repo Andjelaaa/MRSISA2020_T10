@@ -38,6 +38,9 @@ Vue.component('sale', {
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/dpregled">Novi termin za pregled</a>
 		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/zahtevipo">Zahtevi za pregled/operaciju</a>
+		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
 		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>

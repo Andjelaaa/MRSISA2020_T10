@@ -222,4 +222,22 @@ public class PregledController {
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
 	
+	@GetMapping(value = "/zahtevi")
+	public ResponseEntity<List<PregledDTO>> getZahtevi() {
+
+		List<Pregled> Pregleds = PregledService.findAllZahtevi();
+
+		// convert Pregleds to DTOs
+		List<PregledDTO> PregledsDTO = new ArrayList<>();
+		for (Pregled s : Pregleds) {
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
+			
+		}
+
+		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
 }
