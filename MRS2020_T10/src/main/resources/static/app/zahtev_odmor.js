@@ -35,6 +35,7 @@ Vue.component('odmoor', {
 		      </li>
 		      <li class="nav-item">
 		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/kalendarr">Radni kalendar</a>
+		        <a  v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
 				<a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/medsestra">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
@@ -74,9 +75,7 @@ Vue.component('odmoor', {
 			   
 			    <tr v-if="tipZahteva=='Odsustvo'">
 			   		<td>Radi</td>
-			   		<td>
-						<td><input id="opis" type="text" v-model="opis"></td>
-					</td>
+			   		<td><input id="opis" type="text" v-model="opis"></td>
 			   </tr>
 			   
 			    <tr>

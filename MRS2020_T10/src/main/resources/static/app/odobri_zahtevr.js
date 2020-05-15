@@ -122,7 +122,7 @@ Vue.component('odobri_zaht', {
 			}
 				
 			);
-			//alert("Obrisi iz baze i onda salji email i alertuj da je poslao potvrdu za reg");
+			
 			
 		},
 		odbij:function(ind, zahtevBrisi){

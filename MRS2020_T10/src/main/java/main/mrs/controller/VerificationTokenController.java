@@ -1,7 +1,6 @@
 package main.mrs.controller;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import main.mrs.dto.ZahtevRegDTO;
-import main.mrs.model.Autoritet;
 import main.mrs.model.Pacijent;
 import main.mrs.model.VerificationToken;
 import main.mrs.model.ZKarton;
 import main.mrs.model.ZahtevReg;
+import main.mrs.service.AutoritetService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.VerificationTokenService;
 import main.mrs.service.ZahtevRegService;
@@ -47,7 +46,8 @@ public class VerificationTokenController {
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 	
-	
+	@Autowired
+	private AutoritetService autoritetService;
 	@Autowired
 	private VerificationTokenService verificationService;
 	
@@ -65,12 +65,11 @@ public class VerificationTokenController {
 		registrovaniPacijent.setLozinka(pacijentService.encodePassword(zahtev.getLozinka()));
 		registrovaniPacijent.setDrzava(zahtev.getDrzava());
 		registrovaniPacijent.setLbo(zahtev.getLbo());
-		ArrayList<Autoritet> a = new ArrayList<Autoritet>();
-		Autoritet aut = new Autoritet();
-		aut.setIme("ROLE_PACIJENT");
-		a.add(aut);
-		registrovaniPacijent.setAutoriteti(a);
+	
+		registrovaniPacijent.setAutoriteti(autoritetService.findByName("ROLE_PACIJENT"));
 		registrovaniPacijent.setzKarton(new ZKarton());
+		
+		//ZKARTON ZKARYON i id pacijenta 
 		
 		ZahtevReg user = new ZahtevReg();
 		user.setAdresa(zahtev.getAdresa());

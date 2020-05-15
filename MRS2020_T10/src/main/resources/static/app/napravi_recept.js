@@ -3,7 +3,9 @@ Vue.component('recept', {
 	return{
 		lekovi:{},
 		greska1: '',
-		dbError: ''  
+		dbError: '',
+		lekovi:{},
+		odabrani_lekovi:[]
 		}
 	},
 	
@@ -42,16 +44,29 @@ Vue.component('recept', {
 			
 		   <tr>
 		   
-		   		<td>Drzava: </td>
-		   		<td><input id="drzava" type="text" v-model="drzava"></td>
-		   		<td style="color: red">{{greska5}}</td>
+		   		<td>Lekovi: </td>
+		   		<td>
+		   		<div class="dropdown">
+				  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Odaberi lek
+				  </button>
+				  <form class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+				    <label class="dropdown-item" v-for="l in lekovi" name="" value="l.naziv"><input type="checkbox" >{{l.naziv}}</label>
+				   
+
+				  </form>
+				</div>
+				
+	
+		   		
+		   		</td>
 		   
 		   </tr>
 		    
 		    <tr>
 		   
-		   		<td><button v-on:click = "nazad()">Nazad</button></td>
-		   		<td><button v-on:click = "recept()">Napravi recept</button></td>	   
+		   		<td><button class="btn btn-light" v-on:click = "nazad()">Nazad</button></td>
+		   		<td><button  class="btn btn-light" v-on:click = "recept()">Napravi recept</button></td>	   
 		   </tr>
 		   
 		</table>
@@ -60,6 +75,7 @@ Vue.component('recept', {
 	
 	`, 
 	methods : {
+		
 		nazad : function(){
 			//this.$router.push('/nazaad negde nzm');
 			return;
@@ -84,9 +100,14 @@ Vue.component('recept', {
 			if(this.validacija()==1)
 				return;
 			
-			//upis u bp namesti
+			//upis u bp namesti kad zavrsi pregled 
 		}		
 	},
+	mounted(){
+		 axios
+     	.get('api/lekovi/all')
+     	.then(response => (this.lekovi = response.data));
+	}
 
 
 });

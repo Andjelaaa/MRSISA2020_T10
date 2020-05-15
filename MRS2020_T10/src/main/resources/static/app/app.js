@@ -27,6 +27,9 @@ const MedSestraPocetna = {template: '<med_sestra_pocetna></med_sestra_pocetna>'}
 const OveraRecepata = {template: '<overa></overa>'}
 const ZahtevOdmor =  {template: '<odmoor></odmoor>'}
 const Kalendar =  {template: '<calendar></calendar>'}
+const Kalendar2 =  {template: '<calendar_doc></calendar_doc>'}
+const Kalendar3 =  {template: '<calendar_ned></calendar_ned>'}
+const Kalendar4 =  {template: '<calendar_god></calendar_god>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -59,7 +62,10 @@ const router = new VueRouter({
 	    { path: '/med_sestra_pocetna', component: MedSestraPocetna},
 	    { path: '/overa', component: OveraRecepata},
 	    { path: '/odmor', component: ZahtevOdmor},
-	    { path: '/kalendarr', component: Kalendar}
+	    { path: '/kalendarr', component: Kalendar},
+	    { path: '/kalendarlekar', component: Kalendar2},
+	    { path: '/kalendarnedeljni', component: Kalendar3},
+	    { path: '/kalendargodisnji', component: Kalendar4}
 	    ]
 });
 

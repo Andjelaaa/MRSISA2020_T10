@@ -7,7 +7,7 @@ Vue.component('pacijenti', {
 			pacijenti: [],
 			pretraga: {ime:'', prezime:'', lbo:''},
 			currentSort:'ime',
-			  currentSortDir:'asc'
+		    currentSortDir:'asc'
 		}
 	}, 
 	
@@ -33,6 +33,7 @@ Vue.component('pacijenti', {
 		      </li>
 		      <li class="nav-item">
 		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/kalendarr">Radni kalendar</a>
+		        <a  v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
 		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/medsestra">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>

@@ -16,20 +16,20 @@ import javax.persistence.OneToMany;
 public class ZKarton {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="krvnaGrupa", unique=false, nullable=false)
+	@Column(name="krvnaGrupa", unique=false, nullable=true)
     private String krvnaGrupa;
-	@Column(name="visina", unique=false, nullable=false)
+	@Column(name="visina", unique=false, nullable=true)
     private Double visina;
-	@Column(name="tezina", unique=false, nullable=false)
+	@Column(name="tezina", unique=false, nullable=true)
     private Double tezina;
-	@Column(name="dioptrija", unique=false, nullable=false)
+	@Column(name="dioptrija", unique=false, nullable=true)
     private Double dioptrija;
-	@Column(name="pol", unique=false, nullable=false)
+	@Column(name="pol", unique=false, nullable=true)
     private String pol;
-	@Column(name="datumRodjenja", unique=false, nullable=false)
+	@Column(name="datumRodjenja", unique=false, nullable=true)
     private Date datumRodjenja;
    
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
