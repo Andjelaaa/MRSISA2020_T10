@@ -99,7 +99,7 @@ values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , 1
 
 
 insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 
-values('2020-05-9 12:00:00', 1, 30, 1, null, null, null,1 );
+values('2020-05-5 12:00:00', 1, 30, 1, null, null, null,1 );
 
 insert into operacija_lekar(operacija_id, lekar_id) values(1,1);
 --insert into pregled(datum_vreme, popust,status, trajanje, izvestaj_id, lekar_id,pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) 

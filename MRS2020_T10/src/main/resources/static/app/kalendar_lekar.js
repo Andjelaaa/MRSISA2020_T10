@@ -99,31 +99,35 @@ Vue.component('calendar_doc', {
 	         
 	          <tbody class="tbody-default" data-bind="foreach:gridArray">
 	            <tr v-for="item in gridArray">
-	              <td v-for="(v,i) in item" :key="i">
-	              		<p >{{v.title.getDate()}}</p>
-	            		<p v-if="v.key=='0' || v.key=='3' || v.key=='4'">{{pocetak}}-{{kraj}}</p>
-	            		<p v-if="v.key=='1'" style="background:#F3EE3F">Odsustvo</p>
-	            		<p v-if="v.key=='2'" style="background:#8BED79">Odmor</p>
-	            		<p v-if="v.key=='3'" style="background:#70A1F9">
-	            		<a href="#" v-on:click="goToOp()" >Operacija</a>
+	              <td v-for="(v,i) in item" :key="i"> 
+	              	   <p >{{v.date.getDate()}}</p>
+	              	   <p v-if="v.datas.key=='0' || v.datas.key=='3' || v.datas.key=='4'">{{pocetak}}-{{kraj}}</p>
+	              	<div v-for="(value,kk) in v.datas" :key="kk"> 
+
+	            		
+	            		<p v-if="value.key=='1'" style="background:#F3EE3F">Odsustvo</p>
+	            		<p v-if="value.key=='2'" style="background:#8BED79">Odmor</p>
+	            		<p v-if="value.key=='3'" style="background:#16CEF0">
+	            		Operacija
 	            		<br>
-	            		Vreme pocetka: {{dFormatSati(v.vreme)}}
+	            		Vreme pocetka: {{dFormatSati(value.vreme)}}
 	            		<br>
-	            		Trajanje: {{v.trajanje}}
+	            		Trajanje: {{value.trajanje}}
 	            		<br>
-	            		Pacijent: {{v.ime}} {{v.prezime}}
+	            		Pacijent: {{value.ime}} {{value.prezime}}
 	            		</p>
 	            		
-	            		<p v-if="v.key=='4'" style="background:#70F9F0">
-	            		<a :href="'#/pacijenti/' + v.lbo" >Pregled</a>
+	            		<p v-if="value.key=='4'" style="background:#70F9F0">
+	            		<a :href="'#/pacijenti/' + value.lbo" >Pregled</a>
 	            		<br>
-		  				Vreme pocetka: {{dFormatSati(v.vreme)}}
+		  				Vreme pocetka: {{dFormatSati(value.vreme)}}
 		  				<br>
-		  			    Trajanje: {{v.trajanje}}
+		  			    Trajanje: {{value.trajanje}}
 	            		<br>
-	            		Pacijent: {{v.ime}} {{v.prezime}}
+	            		Pacijent: {{value.ime}} {{value.prezime}}
 	            		</p>
 	            	  	   
+	              </div>
 	              </td>
 	            </tr>
 	
@@ -136,10 +140,6 @@ Vue.component('calendar_doc', {
 		  
 		  </div>
   </div>`,
-  //<a href="#" v-on:click="setDate(data)" ">
-  //{{date.getDate()}}
-  //</a>
-  //ne diraj, treba mi za lekara
 	  methods: {
 	    previousMonth: function() {
 	      var tmpDate = this.selectedMonth;
@@ -160,10 +160,7 @@ Vue.component('calendar_doc', {
 
 	        return [hours, minutes].join('-');
 	    },
-	    goToOp:function(){
-	    	
-	    },
-	   
+
 	    dFormat: function(date) {
 	        var d = new Date(date),
 	            month = '' + (d.getMonth() + 1),
@@ -197,98 +194,162 @@ Vue.component('calendar_doc', {
 	    },
 	    getCalendarMatrix: function(date) {
 		      var calendarMatrix = []
-
+              
 			  var startDay = new Date(date.getFullYear(), date.getMonth(), 1)
 			  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-			      // Modify the result of getDay so that we treat Monday = 0 instead of Sunday = 0
 		      var startDow = (startDay.getDay() + 6) % 7;
 		      var endDow = (lastDay.getDay() + 6) % 7;
-			      // If the month didn't start on a Monday, start from the last Monday of the previous month
+			      
 		      startDay.setDate(startDay.getDate() - startDow);
-			      // If the month didn't end on a Sunday, end on the following Sunday in the next month
+			      
 		      lastDay.setDate(lastDay.getDate() + (6 - endDow));
 
 			     
 		      var week = [];
-				     
-				   
+			  var broj =0; 
+		      
 		      while (startDay <= lastDay) {
+		    	  var weekdatas=[];
 		    	  var validator=0;
+		    	  var abc=0;
 			    	  
 				  for(let i in this.odsustva){
 				   		if(this.dFormat(startDay) == this.dFormat(this.odsustva[i])){
-				   			var obj ={ title: new Date(startDay), key: '1' ,
-				   				 ime: '',
-								 prezime:  '',
-								 trajanje: '',
-								 vreme: '',
-								 lbo:'' };
-				   			week.push(obj)// odsustva
+				   			var p ={ key: '1' ,
+					   				 ime: '',
+									 prezime:  '',
+									 trajanje: '',
+									 vreme: '',
+									 lbo:'' };
+				   			weekdatas.push(p);
+				   			
+				   			var obj = {date: new Date(startDay),datas: weekdatas};
+				   			week.push(obj);
 				   			validator=1;
+				   			broj++;
 				   		}
 				    		
 				  }
 				  for(let i in this.odmori){
 				   		if(this.dFormat(startDay) == this.dFormat(this.odmori[i])){
-				   			var obj ={ title: new Date(startDay), key: '2',
-				   				 ime: '',
-								 prezime:  '',
-								 trajanje: '',
-								 vreme: '',
-								 lbo:'' };
-				   			week.push(obj)// odmor
+				   			var p ={ key: '2' ,
+					   				 ime: '',
+									 prezime:  '',
+									 trajanje: '',
+									 vreme: '',
+									 lbo:'' };
+				   			weekdatas.push(p);
+				   							   			
+				   			var obj ={ date: new Date(startDay),datas: weekdatas};
+				   			week.push(obj);
 				   			validator=1;
+				   			broj++;
 				    	}
 				    		
 				 }
 				
 				 for(let i in this.operacije){
-					 if(this.dFormat(startDay) == this.dFormat(this.operacije[i].datumVreme)){
-						 
-						 var obj ={ title: new Date(startDay), key: '3' , ime: this.operacije[i].pacijent.ime,
+					 if((this.dFormat(startDay) == this.dFormat(this.operacije[i].datumVreme)&& abc!=0)){
+						 abc++;
+						 var p ={key: '3' , ime: this.operacije[i].pacijent.ime,
 								 prezime:  this.operacije[i].pacijent.prezime,
 								 trajanje: this.operacije[i].trajanje,
 								 vreme: new Date(this.operacije[i].datumVreme),
 								 lbo:this.operacije[i].pacijent.lbo };
-				   			week.push(obj);
-				   			validator=1;
+						 var date= new Date(startDay);
+						 var weekHelper= []
+						 weekHelper = this.spajanjeDatuma(p,date,week);
+						 week = [];
+						 week = weekHelper;
+						 console.log(startDay.getDate()+" na ovaj datum");
+						
+					 }
+					 if((this.dFormat(startDay) == this.dFormat(this.operacije[i].datumVreme) && abc==0)){
+						 abc++;
+						 var p ={key: '3' , ime: this.operacije[i].pacijent.ime,
+								 prezime:  this.operacije[i].pacijent.prezime,
+								 trajanje: this.operacije[i].trajanje,
+								 vreme: new Date(this.operacije[i].datumVreme),
+								 lbo:this.operacije[i].pacijent.lbo };
+						 weekdatas.push(p);
+						 
+						 var obj ={ date: new Date(startDay),datas: weekdatas};
+				   		 week.push(obj);
+				   		 validator=1;
+				   		 
 					 }
 				 }
 				 for(let i in this.pregledi){
-					
-					 if(this.dFormat(startDay) == this.dFormat(this.pregledi[i].datumVreme)){
-						 var obj ={ title: new Date(startDay), key: '4' , ime: this.pregledi[i].pacijent.ime,
+					 if((this.dFormat(startDay) == this.dFormat(this.pregledi[i].datumVreme )&& abc!=0)){
+						 abc++;
+						 var p ={key: '4' , ime: this.pregledi[i].pacijent.ime,
 								 prezime:  this.pregledi[i].pacijent.prezime,
 								 trajanje: this.pregledi[i].trajanje,
 								 vreme: new Date(this.pregledi[i].datumVreme),
 								 lbo:this.pregledi[i].pacijent.lbo };
-				   			week.push(obj)
-				   			validator=1;
+						 var date= new Date(startDay);
+						 var weekHelper= []
+						 weekHelper = this.spajanjeDatuma(p,date,week);
+						 week = [];
+						 week = weekHelper;
+						 console.log(startDay.getDate()+" na ovaj datum");
+						
+					 }
+					 
+					 if((this.dFormat(startDay) == this.dFormat(this.pregledi[i].datumVreme )&& abc==0)){
+						 abc++;
+						 var p ={key: '4' , ime: this.pregledi[i].pacijent.ime,
+								 prezime:  this.pregledi[i].pacijent.prezime,
+								 trajanje: this.pregledi[i].trajanje,
+								 vreme: new Date(this.pregledi[i].datumVreme),
+								 lbo:this.pregledi[i].pacijent.lbo };
+						 weekdatas.push(p);
+						 var obj ={ date: new Date(startDay), datas: weekdatas};
+				   		 week.push(obj)
+				   		 validator=1;
+
 					 }
 				 }
 				 
 				 
 				 
 				 if(validator==0){
-					 	var obj ={ title: new Date(startDay), key: '0' , ime: '',
-								 prezime:  '',
-								 trajanje: '',
-								 vreme: '',
-								 lbo:''};
+					 	var p ={ key: '0' , ime: '',
+							 prezime:  '',
+							 trajanje: '',
+							 vreme: '',
+							 lbo:''};
+					 	
+					 	weekdatas.push(p);
+					 	var obj ={ date: new Date(startDay),datas: weekdatas};
 					 	week.push(obj);
+					 	broj++;
 				 }
 				 if (week.length === 7) {
 				     calendarMatrix.push(week);
 				     week = [];     
 				 }
 				 startDay.setDate(startDay.getDate() + 1);
-				 
+				 weekdatas=[];
 		     }    
+		    
 			return calendarMatrix;
+		    },
+		    spajanjeDatuma:function(p,date,week){
+		    
+		    	for(let i in week){
+		    		if(week[i].date.getDate() == date.getDate())
+		    		{
+		    			week[i].datas.push(p);
+		    			
+		    		}
+		    		
+		    	}
+		    	return week;
+		    	
 		    }
 		},
 	  computed: {
-	    // a computed getter
 	    gridArray: function() {
 	      var grid = this.getCalendarMatrix(this.selectedMonth);
 	      return grid;

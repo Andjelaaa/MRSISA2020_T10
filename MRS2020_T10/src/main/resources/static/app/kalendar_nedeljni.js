@@ -97,7 +97,7 @@ Vue.component('calendar_ned', {
 	          </thead>
 	         
 	          <tbody class="tbody-default" data-bind="foreach:gridArray">
-	            <tr >
+	            <tr>
 	            	<td v-for="item in gridArray">
 		          	 	{{item.getDate()}}
 				  	     <br>
@@ -114,10 +114,7 @@ Vue.component('calendar_ned', {
 		  
 		  </div>
   </div>`,
-  //<a href="#" v-on:click="setDate(data)" v-bind:class="{'cal-selected':isActive(data)}">
-  //{{date.getDate()}}
-  //</a>
-  //ne diraj, treba mi za lekara
+
 	  methods: {
 	    previousWeek: function() {
 	      var monday = new Date(this.mondayyyy.getTime()-7*24*60*60*1000);
