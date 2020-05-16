@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.OperacijaDTO;
 import main.mrs.dto.PregledDTO;
 import main.mrs.model.Lekar;
+import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
@@ -35,6 +37,7 @@ import main.mrs.service.TipPregledaService;
 @RestController
 @RequestMapping(value="api/pregled")
 public class PregledController {
+	private SimpleDateFormat sdf;
 	@Autowired
 	private PregledService PregledService;
 	@Autowired
@@ -79,7 +82,7 @@ public class PregledController {
 			pregled.setPopust(s.getPopust());
 			PregledsDTO.add(pregled);
 		}
-
+		
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 	
@@ -99,7 +102,28 @@ public class PregledController {
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
-	
+
+	@GetMapping(value = "/{pacijent_id}/{lekar_id}")
+	public ResponseEntity<PregledDTO>dobaviPregledeZaDan( @PathVariable Integer pacijent_id, @PathVariable Integer lekar_id) {
+
+		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<Pregled> pregledi = PregledService.getPreglediByPL(pacijent_id, lekar_id);
+       
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : pregledi) {
+			
+			if(sdf.format(s.getDatumVreme()).equals(sdf.format(new Date()))) {
+				PregledDTO pregled = new PregledDTO(s);
+				preglediDTO.add(pregled);
+			}
+			
+		}
+		if(preglediDTO.isEmpty())
+			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
+		else
+			return new ResponseEntity<>(preglediDTO.get(0), HttpStatus.OK);
+	}
 	@GetMapping(value = "/istorijaPregleda/{pacijentId}")
 	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
 
@@ -141,6 +165,16 @@ public class PregledController {
 		}
 		
 		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
+	}
+	@GetMapping(value = "/lekarpre/{id}")
+	public ResponseEntity<List<PregledDTO>> getAllPregledeLekara(@PathVariable Integer id){
+		List<Pregled> pregledi = PregledService.findByLekarId(id);
+
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : pregledi) {
+			preglediDTO.add(new PregledDTO(s));
+		}
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/{pregledId}/{pacijentId}")

@@ -38,28 +38,22 @@ public class Lekar extends Korisnik implements UserDetails {
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    public TipPregleda tipPregleda;
 
-   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   public Set<Operacija> operacija;
+  // @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   //public Set<Operacija> operacija;
    
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="lekar_id", nullable=true)
    public Set<Odsustvo> odsustvo;
    
-   @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   public Set<Pregled> pregled;
+  // @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+ //  public Set<Pregled> pregled;
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    public Klinika klinika;
    
    @ManyToMany(fetch = FetchType.EAGER)
 	private List<Autoritet> autoriteti;
    
-   public Set<Pregled> getPregled() {
-	return pregled;
-}
-
-public void setPregled(Set<Pregled> pregled) {
-	this.pregled = pregled;
-}
+  
 
 public Klinika getKlinika() {
 	return klinika;
@@ -69,37 +63,7 @@ public void setKlinika(Klinika klinika) {
 	this.klinika = klinika;
 }
 
-public Set<Operacija> getOperacija() {
-      if (operacija == null)
-         operacija = new java.util.HashSet<Operacija>();
-      return operacija;
-   }
-   
-   public void setOperacija(Set<Operacija> newOperacija) {
-      this.operacija = newOperacija;
-   }
-   
-   public void addOperacija(Operacija newOperacija) {
-      if (newOperacija == null)
-         return;
-      if (this.operacija == null)
-         this.operacija = new java.util.HashSet<Operacija>();
-      if (!this.operacija.contains(newOperacija))
-         this.operacija.add(newOperacija);
-   }
-   
-   public void removeOperacija(Operacija oldOperacija) {
-      if (oldOperacija == null)
-         return;
-      if (this.operacija != null)
-         if (this.operacija.contains(oldOperacija))
-            this.operacija.remove(oldOperacija);
-   }
-   
-   public void removeAllOperacija() {
-      if (operacija != null)
-         operacija.clear();
-   }
+  
    public Set<Odsustvo> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new java.util.HashSet<Odsustvo>();

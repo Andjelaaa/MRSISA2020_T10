@@ -22,7 +22,7 @@ public class PregledDTO {
    public PregledDTO() {}
    
    // dopuniti konverziju
-   public PregledDTO(Pregled s) {
+   public PregledDTO(Pregled s) { 
 		this.id = s.getId();
 		this.trajanje = s.getTrajanje();
 		this.datumVreme = s.getDatumVreme();
@@ -32,7 +32,11 @@ public class PregledDTO {
 		this.tipPregleda = new TipPregledaDTO(s.getTipPregleda());
 		if(s.getPacijent() != null)
 			this.pacijent = new PacijentDTO(s.getPacijent());
-}
+		this.status = StatusDTO.valueOf(s.getStatus().toString());
+		this.popust = s.getPopust();
+		this.lek = new HashSet<LekDTO>();
+		this.dijagnoza = new HashSet<DijagnozaDTO>();
+   }
 
    public Integer getId() {
 		return id;

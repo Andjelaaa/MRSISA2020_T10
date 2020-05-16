@@ -86,7 +86,6 @@ Vue.component('pacijenti', {
 			this.$router.push('/');
 		},
 		nadjipacijenta: function(s, i){
-			// nije uradjeno
 			this.$router.push('/pacijenti/'+s.lbo);			
 		},
 		pretrazi: function(){

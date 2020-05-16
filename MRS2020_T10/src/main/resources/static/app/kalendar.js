@@ -8,6 +8,7 @@ Vue.component('calendar', {
 		    token:'',
 		    pocetak:'',
 		    kraj:'',
+		    uloga:'',
 		    odsustva:[],
 		    odmori:[]
 		}
@@ -145,59 +146,53 @@ Vue.component('calendar', {
 	    isActive: function(date) {
 	      return date === this.filterDate;
 	    },
-	 	    getCalendarMatrix: function(date) {
-	    	 var calendarMatrix = []
+	 	 getCalendarMatrix: function(date) {
+	      var calendarMatrix = []
 
-		      var startDay = new Date(date.getFullYear(), date.getMonth(), 1)
-		      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-
+		  var startDay = new Date(date.getFullYear(), date.getMonth(), 1)
+		  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
 		      // Modify the result of getDay so that we treat Monday = 0 instead of Sunday = 0
-		      var startDow = (startDay.getDay() + 6) % 7;
-		      var endDow = (lastDay.getDay() + 6) % 7;
-
+	      var startDow = (startDay.getDay() + 6) % 7;
+	      var endDow = (lastDay.getDay() + 6) % 7;
 		      // If the month didn't start on a Monday, start from the last Monday of the previous month
-		      startDay.setDate(startDay.getDate() - startDow);
-
+	      startDay.setDate(startDay.getDate() - startDow);
 		      // If the month didn't end on a Sunday, end on the following Sunday in the next month
-		      lastDay.setDate(lastDay.getDate() + (6 - endDow));
+	      lastDay.setDate(lastDay.getDate() + (6 - endDow));
 
 		     
-		      var week = [];
+	      var week = [];
 			     
 			   
-			      while (startDay <= lastDay) {
-	              var validator=0;
-			    	  
-			    	for(let i in this.odsustva){
-			    		if(this.dFormat(startDay) == this.dFormat(this.odsustva[i])){
-			    			var obj ={ title: new Date(startDay), key: '1' };
-			    			week.push(obj)// odsustva
-			    			validator=1;
-			    		}
+	      while (startDay <= lastDay) {
+	    	  var validator=0;
+		    	  
+			  for(let i in this.odsustva){
+			   		if(this.dFormat(startDay) == this.dFormat(this.odsustva[i])){
+			   			var obj ={ title: new Date(startDay), key: '1' };
+			   			week.push(obj)// odsustva
+			   			validator=1;
+			   		}
 			    		
+			  }
+			  for(let i in this.odmori){
+			   		if(this.dFormat(startDay) == this.dFormat(this.odmori[i])){
+			   			var obj ={ title: new Date(startDay), key: '2' };
+			   			week.push(obj)// odmor
+			   			validator=1;
 			    	}
-			    	for(let i in this.odmori){
-			    		if(this.dFormat(startDay) == this.dFormat(this.odmori[i])){
-			    			var obj ={ title: new Date(startDay), key: '2' };
-			    			
-			    			week.push(obj)// odmor
-			    			validator=1;
-			    		}
 			    		
-			    	}
-			    	if(validator==0){
-			    		var obj ={ title: new Date(startDay), key: '0' };
-			    		week.push(obj);
-			    	}
-			        if (week.length === 7) {
-			          calendarMatrix.push(week);
-			          week = [];
-			         
-			        }
-			        startDay.setDate(startDay.getDate() + 1);
-			      }
-		      
-		      return calendarMatrix;
+			 }
+			 if(validator==0){
+			 	var obj ={ title: new Date(startDay), key: '0' };
+			 	week.push(obj);
+			 }
+			 if (week.length === 7) {
+			     calendarMatrix.push(week);
+			     week = [];     
+			 }
+			 startDay.setDate(startDay.getDate() + 1);
+	     }    
+		return calendarMatrix;
 	    }
 	  },
 

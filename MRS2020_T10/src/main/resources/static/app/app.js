@@ -13,7 +13,6 @@ const TipoviPregleda = {template: '<tipovipregleda></tipovipregleda>'}
 const PredefPregledi = {template: '<predefpregledi></predefpregledi>'}
 const DodavanjeAdmina = {template: '<dodajadmina></dodajadmina>'}
 const ProfilMedSestre = {template: '<medsestra></medsestra>'}
-const Recept = {template: '<recept></recept>'}
 const ProfilKlinike = {template: '<klinika></klinika>'}
 const Sale = {template: '<sale></sale>'}
 const Lekari = {template: '<lekari></lekari>'}
@@ -54,7 +53,6 @@ const router = new VueRouter({
 	    { path: '/predefinisanipregledi/:name', component: PredefPregledi},
 	    { path: '/dadmin', component: DodavanjeAdmina},
 	    { path: '/medsestra', component: ProfilMedSestre},
-	    { path: '/recept', component: Recept},
 	    { path: '/profilklinike', component: ProfilKlinike},
 	    { path: '/sale', component: Sale},
 	    { path: '/lekari', component: Lekari},

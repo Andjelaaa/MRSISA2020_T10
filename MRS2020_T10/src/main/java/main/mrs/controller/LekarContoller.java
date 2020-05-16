@@ -108,9 +108,9 @@ public class LekarContoller {
 
 		if (Lekar != null) {
 			// Provera da li je lekar ima zakazane preglede
-			if(!Lekar.getPregled().isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
+//			if(!Lekar.getPregled().isEmpty()) {                                        ////DOVRSIITIIII
+//				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//			}
 			LekarService.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {

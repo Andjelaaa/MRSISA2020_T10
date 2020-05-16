@@ -3,6 +3,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import main.mrs.model.Lekar;
+import main.mrs.model.Odsustvo;
+import main.mrs.model.Operacija;
+import main.mrs.model.Pregled;
+import main.mrs.model.TipPregleda;
 
 
 
@@ -19,22 +23,22 @@ public class LekarDTO extends KorisnikDTO {
    
    // specijalizacija
    public TipPregledaDTO tipPregleda;
-   public Set<OperacijaDTO> operacija;
-   public Set<OdsustvoDTO> odsustvo;
+  
    public KlinikaDTO klinika;
-   public Set<PregledDTO> pregled;
+    public Set<OdsustvoDTO> odsustvo;
    
    public LekarDTO() {}
    
    public LekarDTO(Lekar s) {
 		this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
-				s.getDrzava(), s.getRvPocetak(), s.getRvKraj(), s.getKontakt(), s.getProsecnaOcena(), s.getBrojOcena());
+				s.getDrzava(), s.getRvPocetak(), s.getRvKraj(), s.getKontakt(), s.getProsecnaOcena(), s.getBrojOcena(),
+				s.getOdsustvo());
 		this.tipPregleda = new TipPregledaDTO(s.getTipPregleda());
 	}
 
 
 	public LekarDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
-			String drzava, String rvPoc, String rvKraj, String Kontakt, Double po, int bo) {
+			String drzava, String rvPoc, String rvKraj, String Kontakt, Double po, int bo, Set<Odsustvo> odsustv) {
 		this.id = id;
 		this.email = email;
 		this.lozinka = lozinka;
@@ -48,53 +52,31 @@ public class LekarDTO extends KorisnikDTO {
 		//this.tipPregleda = new TipPregledaDTO(); 
 		this.rvPocetak = rvPoc;
 		this.rvKraj = rvKraj;
-		this.operacija = new HashSet<OperacijaDTO>();
-		this.odsustvo = new HashSet<OdsustvoDTO>();
-		this.pregled = new HashSet<PregledDTO>();
+		this.odsustvo = konvertuj(odsustv);
 		this.klinika = new KlinikaDTO();
 		this.kontakt = Kontakt;
 	}
    
-   
+ 
+	private Set<OdsustvoDTO> konvertuj(Set<Odsustvo> odsustv) {
+		   Set<OdsustvoDTO> novi = new  HashSet<OdsustvoDTO>();
+			 for(Odsustvo o: odsustv) {
+				 OdsustvoDTO od = new OdsustvoDTO(o);
+	
+				 novi.add(od);
+			 }
+			return novi;
+		}
+
    public KlinikaDTO getKlinika() {
-	return klinika;
+	   return klinika;
 	}
 	
 	public void setKlinika(KlinikaDTO klinika) {
 		this.klinika = klinika;
 	}
   
-   public Set<OperacijaDTO> getOperacija() {
-      if (operacija == null)
-         operacija = new java.util.HashSet<OperacijaDTO>();
-      return operacija;
-   }
    
-   public void setOperacija(Set<OperacijaDTO> newOperacija) {
-      this.operacija = newOperacija;
-   }
-   
-   public void addOperacija(OperacijaDTO newOperacija) {
-      if (newOperacija == null)
-         return;
-      if (this.operacija == null)
-         this.operacija = new java.util.HashSet<OperacijaDTO>();
-      if (!this.operacija.contains(newOperacija))
-         this.operacija.add(newOperacija);
-   }
-   
-   public void removeOperacija(OperacijaDTO oldOperacija) {
-      if (oldOperacija == null)
-         return;
-      if (this.operacija != null)
-         if (this.operacija.contains(oldOperacija))
-            this.operacija.remove(oldOperacija);
-   }
-   
-   public void removeAllOperacija() {
-      if (operacija != null)
-         operacija.clear();
-   }
    public Set<OdsustvoDTO> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new java.util.HashSet<OdsustvoDTO>();
@@ -167,12 +149,6 @@ public void setTipPregleda(TipPregledaDTO tipPregleda) {
 	this.tipPregleda = tipPregleda;
 }
 
-public Set<PregledDTO> getPregled() {
-	return pregled;
-}
 
-public void setPregled(Set<PregledDTO> pregled) {
-	this.pregled = pregled;
-}
 
 }

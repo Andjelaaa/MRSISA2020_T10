@@ -110,5 +110,11 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	  // zahtevi pacijenta ili lekara
 	  @Query(value = "SELECT * FROM PREGLED WHERE STATUS = 0 OR STATUS = 3" , nativeQuery = true)
 	  List<Pregled> findAllZahtevi();
+	  
+	  @Query(value = "SELECT * FROM PREGLED WHERE LEKAR_ID = ?1", nativeQuery = true)
+	  List<Pregled> findAllByLekarId(Integer id);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID=?1 AND LEKAR_ID = ?2", nativeQuery = true)
+	  List<Pregled> getPreglediByPL(Integer pacijent_id, Integer lekar_id);
 }
 

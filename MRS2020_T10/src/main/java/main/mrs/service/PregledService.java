@@ -73,4 +73,12 @@ public class PregledService {
 	public List<Pregled> findAllZahtevi() {
 		return PregledRepository.findAllZahtevi();
 	}
+
+	public List<Pregled> findByLekarId(Integer id) {
+		return  PregledRepository.findAllByLekarId(id);
+	}
+
+	public List<Pregled> getPreglediByPL(Integer pacijent_id, Integer lekar_id) {
+		return  PregledRepository.getPreglediByPL(pacijent_id,lekar_id);
+	}
 }

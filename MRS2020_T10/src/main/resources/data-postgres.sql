@@ -41,11 +41,15 @@ insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt
 
 
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-20 12:00:00', 5, 3, 60, null, 1, 1, null, 1, 1, 1);
+('2020-05-02 12:00:00', 5, 3, 60, null, 1, 1, null, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-20 10:00:00', 5, 1, 60, null, 1, 1, 1, 1, 1, 1);
+('2020-05-05 10:00:00', 5, 1, 60, null, 1, 2, 1, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-20 15:00:00', 5, 1, 60, null, 1, 1, 1, 1, 1, 1);
+('2020-05-16 15:00:00', 5, 1, 60, null, 1, 1, 1, 1, 1, 1);
+--
+--insert into lekar_pregled(lekar_id,pregled_id) values(1,1);
+--insert into lekar_pregled(lekar_id,pregled_id) values(1,2);
+--insert into lekar_pregled(lekar_id,pregled_id) values(1,3);
 
 insert into medicinska_sestra (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
 values ('Bul. Oslobodjenja 12', 'Srbija', 'meds1@gmail.com', 'Novi Sad', 'Manja', '064154123', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nekic', null, '15:00', '07:00');
@@ -77,13 +81,29 @@ insert into recept_lek (recept_id, lek_id) values(1,2);
 
 insert into recept_lek (recept_id, lek_id) values(2,3);
 insert into recept_lek (recept_id, lek_id) values(3,2);
+--
+--insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+--values('2020-05-13 12:00:00', 'nema opisa', '2020-05-10 11:00:00', 1, 'Odmor' , null, 1, null);
+--insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+--values('2020-05-25 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 1, 'Odsustvo' , null, 1, null);
+--
+--insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
+--values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , null, 1, null);
+
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
-values('2020-05-13 12:00:00', 'nema opisa', '2020-05-10 11:00:00', 1, 'Odmor' , null, 1, null);
-insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
-values('2020-05-25 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 1, 'Odsustvo' , null, 1, null);
+values('2020-05-25 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 1, 'Odsustvo' , 1, null, null);
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
-values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , null, 1, null);
+values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , 1, null, null);
 
+
+insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 
+values('2020-05-9 12:00:00', 1, 30, 1, null, null, null,1 );
+
+insert into operacija_lekar(operacija_id, lekar_id) values(1,1);
+--insert into pregled(datum_vreme, popust,status, trajanje, izvestaj_id, lekar_id,pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) 
+--values('2020-05-7 12:00:00', 5, 1, 45, null, 1, 1, 1,  1, null, null);
+--
+--insert into lekar_pregled(lekar_id,pregled_id) values(1,1);
 insert into zahtev_registracije(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo) values ('Ivan', 'Ivic', 'trajkovicka.9909@gmail.com', 'asdf', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '3lbo133131');

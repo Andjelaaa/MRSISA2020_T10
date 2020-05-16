@@ -1,18 +1,31 @@
 package main.mrs.dto;
 
 
+import main.mrs.model.Dijagnoza;
+import main.mrs.model.Izvestaj;
 import main.mrs.model.Recept;
 
 public class IzvestajDTO {
 	private Integer id;
 	private String opis;   
 	public DijagnozaDTO dijagnoza;
-	public Recept recept;
+	public ReceptDTO recept;
    
 	public IzvestajDTO() {
 		super();
 	}
 	
+	public IzvestajDTO(Izvestaj s) {
+		this(s.getDijagnoza(), s.getId(),s.getOpis(), s.getRecept());
+	}
+
+	public IzvestajDTO(Dijagnoza dijagnoza2, Integer id2, String opis2, Recept recept2) {
+		this.id = id2;
+		this.opis = opis2;
+		this.dijagnoza = new DijagnozaDTO(dijagnoza2);
+		this.recept = new ReceptDTO(recept2);
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -32,17 +45,17 @@ public class IzvestajDTO {
 		this.dijagnoza = dijagnoza;
 	}
 
-	public Recept getRecept() {
+	public ReceptDTO getRecept() {
 		return recept;
 	}
 
-	public void setRecept(Recept recept) {
+	public void setRecept(ReceptDTO recept) {
 		this.recept = recept;
 	}
 
-public String getOpis() {
-	return opis;
-}
+	public String getOpis() {
+		return opis;
+	}
 
 
 	public void setOpis(String opis) {

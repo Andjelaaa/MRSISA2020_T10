@@ -5,7 +5,13 @@ Vue.component('nadjipacijenta', {
 			korisnik:{},
 			uloga: '',
 			pacijent: {},
-			zKarton: {}
+			zKarton: {},
+			pregled:{},
+			pocinjanje:false,
+			izvestaj: {opis:'', recept:{}, dijagnoza:{}},
+			dijagnoze:[],
+			lekovi:[],
+			odabraniLekovi:[],
 
 		}
 	}, 
@@ -72,7 +78,53 @@ Vue.component('nadjipacijenta', {
 		   </tbody>
 		    
 		</table>
+	<button v-if="uloga=='ROLE_LEKAR' && pregled!=null" class="btn btn-light" v-on:click="pocni()"> Zapocni pregled </button>
+	<p v-if="pregled==null"> Nema pregleda za zapocinjanje </p>
 	</div>
+	<div class="float-right" style="margin: 20px" v-if="pocinjanje">
+		<h3> Unesi izvestaj </h3>
+		
+		<table class="table table-hover table-light ">		
+		  <tbody>
+		   <tr>
+		   		<td>Informacije o pregledu</td>
+		   		<td><input type="text" class="form-control" v-model="izvestaj.opis"></td>   		
+		   </tr>
+		    <tr>
+		   		<td>Dijagnoza</td>
+		   		<td>
+		   			<select class="form-control"  v-model="izvestaj.dijagnoza">
+						<option v-for="t in dijagnoze" :value="t">{{t.naziv}} {{t.sifra}}</option>
+					</select>
+		   		</td>   		
+		   </tr>
+		    <tr>
+		   		<td>Dodaj lekove u receptu</td>
+		   		<td>
+		   			 <div class="dropdown">
+						  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Odaberi lek
+						  </button>
+						  <form class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+						    	<label class="dropdown-item" v-for="l in lekovi" name="" value="l.naziv">
+						    		<input id="l" name="l.naziv" :value="l" type="checkbox" v-model="odabraniLekovi">{{l.naziv}}
+						    	</label>
+						  </form>
+					</div>
+		   		</td>   		
+		   </tr>
+		   <tr>
+		   		<td>
+		   			<button class="btn btn-light" v-on:click="noviPO()"> Zakazi novi pregled/operaciju </button>
+		   		</td>
+		   		<td>
+		   			<button class="btn btn-light" v-on:click="zavrsiPregled()"> Zavrsi pregled </button>
+		   		</td>   		
+		   </tr>
+		   </tbody>
+		    
+		</table>
+	</div>	
 	</div>
 	
 	`, methods : {
@@ -80,11 +132,31 @@ Vue.component('nadjipacijenta', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
+		pocni:function(){
+			this.pocinjanje = true;
+		},
+		noviPO:function(){
+			//iskcacui prozor za novi pregled ili operaciju
+		},
+	    zavrsiPregled:function(){
+	    	if(!this.izvestaj.opis)
+	    		alert("Niste uneli informacije o pregledu!");
+	    	else{
+	    		this.pocinjanje = false;
+		    	this.izvestaj.recept.lek = this.odabraniLekovi;
+		    	axios
+	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj)
+	           	.then(response => {
+	           		this.dijagnoze = response.data; 
+	           	});
+	    	}
+	    	
+	    	
+	    }
+	},
 	
-},
-
-mounted(){
-	
+	mounted(){
+		
 	this.token = localStorage.getItem("token");
 	axios
 	.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
@@ -96,14 +168,29 @@ mounted(){
 	    	if (this.uloga != "ROLE_LEKAR" && this.uloga != "ROLE_MED_SESTRA") {
 	    		this.$router.push('/');
 	    	}else{
-	    		// dobavi pacijenta PROMENI
-	    		console.log(this.$route.params.lbo);
+	    	
 	    		axios
 	           	.get('api/pacijent/'+this.$route.params.lbo)
 	           	.then(response => {
 	           			this.pacijent = response.data; 
 	           			this.zKarton = this.pacijent.zKarton;
+	           			axios
+	    	           	.get('api/pregled/'+this.pacijent.id+'/'+ this.korisnik.id)
+	    	           	.then(response => {
+	    	           			this.pregled = response.data; 
+	    	           	}).catch((response)=>
+	    	           			{this.pregled = null; 
+	    	           			console.log("Pregled ne postoji");}
+	    	           	);
 	           	});
+	    		axios
+	           	.get('api/dijagnoze/all')
+	           	.then(response => {
+	           		this.dijagnoze = response.data; 
+	           	});
+	    		 axios
+	    	     	.get('api/lekovi/all')
+	    	     	.then(response => (this.lekovi = response.data));
 	    	
 	    	}
 	    })

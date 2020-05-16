@@ -4,6 +4,7 @@ public enum Status {
    zahtev,
    odobreno,
    odbijeno,
-   zahtev_lekar;
+   zahtev_lekar,
+   zavrseno;
 
 }

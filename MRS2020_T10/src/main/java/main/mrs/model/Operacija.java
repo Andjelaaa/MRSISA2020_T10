@@ -35,7 +35,18 @@ public class Operacija {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinColumn(name="operacija_id", nullable=false)
     public Set<Lekar> lekar;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="pacijent_id", nullable=true)
+	public Pacijent pacijent;
    
+	public Pacijent getPacijent() {
+		return pacijent;
+	}
+
+	public void setPacijent(Pacijent pacijent) {
+		this.pacijent = pacijent;
+	}
+
 	public Integer getId() {
 		return id;
 	}
