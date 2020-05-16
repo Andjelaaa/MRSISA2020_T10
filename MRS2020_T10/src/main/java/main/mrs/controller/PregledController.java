@@ -274,4 +274,32 @@ public class PregledController {
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 	
+	@PostMapping(consumes = "application/json;charset=UTF-8", value="/lekarzahtev")
+	public ResponseEntity<PregledDTO> saveZahtevLekar(@RequestBody PregledDTO PregledDTO) {
+		Pregled Pregled = new Pregled();
+		Pregled.setDatumVreme(PregledDTO.getDatumVreme());
+		Pregled.setTrajanje(PregledDTO.getTrajanje());
+		Pregled.setStatus(Status.zahtev_lekar);	
+		Pregled.setPopust(0.0);
+		TipPregleda tp= TipPregledaService.findByNaziv(PregledDTO.getLekar().getTipPregleda().getNaziv()); 
+		Pregled.setTipPregleda(tp);
+		Pregled.setSala(null);
+		Lekar l = LekarService.findByEmail(PregledDTO.getLekar().getEmail());
+		Pregled.setLekar(l);
+		Pacijent p = PacijentService.findByEmail(PregledDTO.getPacijent().getEmail());
+		Pregled.setPacijent(p);
+		
+		// OVO NE BRISATI
+		System.out.println(l.getKlinika().getAdminKlinike().isEmpty());
+		
+		try {
+			Pregled = PregledService.save(Pregled);
+			EmailService.mailAdminuZakazanPregled(Pregled);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
+	}
+	
 }

@@ -1,22 +1,21 @@
 package main.mrs.service;
 
-import java.util.UUID;
-
-import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import main.mrs.model.AdminKlinike;
+import main.mrs.model.Lekar;
+import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
 import main.mrs.model.Pregled;
 import main.mrs.model.ZahtevReg;
-import main.mrs.verification_handler.OnAccessLinkEvent;
 
 
 
@@ -149,6 +148,55 @@ public class EmailService {
 		}
 		
 	}
+	
+	@Async
+	public void mailAdminuZakazanPregled(Pregled pregled) {
+		System.out.println("Slanje emaila...");
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			System.out.println((new ArrayList<AdminKlinike>(pregled.getLekar().getKlinika().getAdminKlinike())).get(0).getEmail());
+			mail.setTo((new ArrayList<AdminKlinike>(pregled.getLekar().getKlinika().getAdminKlinike())).get(0).getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Zahtev za pregled");
+			mail.setText("Postovani,\n\nZahtev za pregled:\n\nDatum i vreme: "+ pregled.getDatumVreme()+
+					"\nTrajanje: "+pregled.getTrajanje() + "\nTip pregleda: " + pregled.getTipPregleda().getNaziv() + 
+					"\nLekar: " + pregled.getLekar().getIme() + " " + pregled.getLekar().getPrezime()+
+					"\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime());
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println(e.getStackTrace());
+			System.out.println(e.getCause());
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
+	
+	@Async
+	public void mailAdminuZakazanaOperacija(Operacija operacija, Lekar l) {
+		System.out.println("Slanje emaila...");
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			System.out.println((new ArrayList<AdminKlinike>(l.getKlinika().getAdminKlinike())).get(0).getEmail());
+			mail.setTo((new ArrayList<AdminKlinike>(l.getKlinika().getAdminKlinike())).get(0).getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Zahtev za operaciju");
+			mail.setText("Postovani,\n\nZahtev za operaciju:\n\nDatum i vreme: "+ operacija.getDatumVreme()+
+					"\nTrajanje: "+operacija.getTrajanje() +
+					"\nLekar: " + l.getIme() + " " + l.getPrezime()+
+					"\nPacijent: " + operacija.getPacijent().getIme() + " " + operacija.getPacijent().getPrezime());
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println(e.getStackTrace());
+			System.out.println(e.getCause());
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
+	
 
 
 	

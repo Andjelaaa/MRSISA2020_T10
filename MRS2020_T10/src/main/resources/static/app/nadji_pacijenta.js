@@ -12,6 +12,13 @@ Vue.component('nadjipacijenta', {
 			dijagnoze:[],
 			lekovi:[],
 			odabraniLekovi:[],
+			showModal: false,
+			noviTermin: {},
+			datumVremeGreska: '',
+			tipTerminaGreska: '',
+			trajanjeGreska: '',
+			tipTermina: ''
+			
 
 		}
 	}, 
@@ -115,7 +122,48 @@ Vue.component('nadjipacijenta', {
 		   </tr>
 		   <tr>
 		   		<td>
-		   			<button class="btn btn-light" v-on:click="noviPO()"> Zakazi novi pregled/operaciju </button>
+		   			<button class="btn btn-light" id="show-modal" @click="showModal = true">Zakazi novi pregled/operaciju</button>
+						<modal v-if="showModal" @close="showModal = false">
+        
+        					<h3 slot="header">Novi termin</h3>
+        					<table slot="body" >
+								<tbody>
+									<tr>
+										<td>Novi termin za: </td>
+										<td>
+											<select class="form-control" id="selectSala" v-model="tipTermina">
+												<option value="pregled">Pregled</option>
+												<option value="operacija">Operacija</option>
+											</select>
+											<p style="color: red">{{tipTerminaGreska}}</p>
+										</td>
+										
+										
+									</tr>	
+									<tr>			   
+								   		<td>Datum i vreme: </td>
+								   		<td><input class="form-control" id="datumvreme" type="datetime-local" v-model="noviTermin.datumVreme">
+								   			<p style="color: red">{{datumVremeGreska}}</p>
+								   		</td>
+								   		
+			   						</tr>
+									<tr>			   
+								   		<td>Trajanje: </td>
+								   		<td><input class="form-control" id="trajanje" type="number" v-model="noviTermin.trajanje">
+								   			<p style="color: red">{{trajanjeGreska}}</p>
+								   		</td>
+								   		
+			   						</tr>
+									
+									
+								</tbody>
+								</table>
+        					
+        					<div slot="footer">
+        						<button style="margin:5px;" class="btn btn-success" v-on:click="noviPO()"> Sacuvaj </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="isprazniPolja()"> Nazad </button>								
+							</div>
+						</modal>
 		   		</td>
 		   		<td>
 		   			<button class="btn btn-light" v-on:click="zavrsiPregled()"> Zavrsi pregled </button>
@@ -135,8 +183,55 @@ Vue.component('nadjipacijenta', {
 		pocni:function(){
 			this.pocinjanje = true;
 		},
+		validacija: function(){
+			this.datumVremeGreska = '';
+			this.trajanjeGreska = '';
+			
+			if(!this.tipTermina)
+				this.tipTerminaGreska = 'Tip termina je obavezno polje!';
+			if(!this.noviTermin.trajanje)
+				this.trajanjeGreska = 'Trajanje je obavezno polje!';
+			if(!this.noviTermin.datumVreme)
+				this.datumVremeGreska = 'Datum i vreme je obavezno polje!';
+
+
+			if(this.tipTermina && this.noviTermin.trajanje && this.noviTermin.datumVreme){
+				return 0;
+			}
+			return 1;
+			
+		},
 		noviPO:function(){
-			//iskcacui prozor za novi pregled ili operaciju
+			if(this.validacija()==1)
+				return;
+			this.showModal = false;
+			this.noviTermin.lekar = this.korisnik;
+			this.noviTermin.pacijent = this.pacijent;
+
+			if(this.tipTermina == 'pregled'){
+				axios
+				.post('api/pregled/lekarzahtev', this.noviTermin)
+				.then((res)=>{
+					alert('Uspesno poslat zahtev za pregled!');
+				}).catch((res)=>{
+					this.error = 'Greska pri dodavanju';
+				});
+				
+			}else if(this.tipTermina == 'operacija'){
+				this.noviTermin.lekar = [];
+				this.noviTermin.lekar.push(this.korisnik);
+				axios
+				.post('api/operacije/lekarzahtev', this.noviTermin)
+				.then((res)=>{
+					alert('Uspesno poslat zahtev za operaciju!');
+				}).catch((res)=>{
+					this.error = 'Greska pri dodavanju';
+				});				
+			}
+			this.isprazniPolja();
+			
+			
+			
 		},
 	    zavrsiPregled:function(){
 	    	if(!this.izvestaj.opis)
@@ -152,8 +247,13 @@ Vue.component('nadjipacijenta', {
 		    	this.izvestaj= {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}};
 		    	this.pregled= null;
 	    	}
-	    	
-	    	
+	    },
+	    isprazniPolja: function(){
+	    	this.noviTermin= {};
+			this.datumVremeGreska= '';
+			this.tipTerminaGreska= '';
+			this.trajanjeGreska= '';
+			this.tipTermina= '';
 	    }
 	},
 	
