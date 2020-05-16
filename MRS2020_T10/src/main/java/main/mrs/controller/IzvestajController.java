@@ -58,28 +58,41 @@ public class IzvestajController {
 	}
 
 	@PostMapping(consumes = "application/json", value= "/{id_pregleda}")
-	public ResponseEntity<IzvestajDTO> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
+	public ResponseEntity<String> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
+		
 		Izvestaj izvestaj = new Izvestaj();
+		
 		try {
 			Recept recept = new Recept();
 			recept.setMedSestra(null);
-			Set<Lek> lekovi = new HashSet<Lek>();
-			for(LekDTO dto : IzvestajDTO.getRecept().getLek()) {
-				Lek lek = LekService.findByNaziv(dto.getNaziv());
-				lekovi.add(lek);	
+			
+			if(IzvestajDTO.getRecept().getLek().isEmpty()) {
+				recept.setLek(null);
+				
+			}else {
+				Set<Lek> lekovi = new HashSet<Lek>();
+				for(LekDTO dto : IzvestajDTO.getRecept().getLek()) {
+					Lek lek = LekService.findByNaziv(dto.getNaziv());
+					lekovi.add(lek);	
+				}
+				recept.setLek(lekovi);
 			}
-			recept.setLek(lekovi);
+			
 			recept = ReceptService.save(recept);
 			
-			Dijagnoza dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
-			
-			
-			
-			izvestaj.setDijagnoza(dijagnoza);
+			if(IzvestajDTO.getDijagnoza().getNaziv().isEmpty()) {
+				izvestaj.setDijagnoza(null);
+			}else {
+				
+				Dijagnoza dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
+				izvestaj.setDijagnoza(dijagnoza);
+			}
 			izvestaj.setOpis(IzvestajDTO.getOpis());
+
 			izvestaj.setRecept(recept);
-			
+	
 			izvestaj = IzvestajService.save(izvestaj);
+		
 			Pregled pregled = PregledService.findById(id_pregleda);
 			
 			
@@ -89,9 +102,9 @@ public class IzvestajController {
 			pregled = PregledService.save(pregled);
 		}
 		catch(Exception e) {
-			return new ResponseEntity<>(new IzvestajDTO(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(new IzvestajDTO(izvestaj), HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 }

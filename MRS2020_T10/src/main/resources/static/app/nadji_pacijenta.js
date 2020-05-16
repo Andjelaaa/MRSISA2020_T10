@@ -8,7 +8,7 @@ Vue.component('nadjipacijenta', {
 			zKarton: {},
 			pregled:{},
 			pocinjanje:false,
-			izvestaj: {opis:'', recept:{}, dijagnoza:{}},
+			izvestaj: {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}},
 			dijagnoze:[],
 			lekovi:[],
 			odabraniLekovi:[],
@@ -147,8 +147,10 @@ Vue.component('nadjipacijenta', {
 		    	axios
 	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj)
 	           	.then(response => {
-	           		this.dijagnoze = response.data; 
+	           		alert("Uspesno je zavrsen izvestaj");
 	           	});
+		    	this.izvestaj= {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}};
+		    	this.pregled= null;
 	    	}
 	    	
 	    	
