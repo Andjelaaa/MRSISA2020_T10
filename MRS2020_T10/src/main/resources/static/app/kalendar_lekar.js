@@ -101,7 +101,7 @@ Vue.component('calendar_doc', {
 	            <tr v-for="item in gridArray">
 	              <td v-for="(v,i) in item" :key="i"> 
 	              	   <p >{{v.date.getDate()}}</p>
-	              	   <p v-if="v.datas.key=='0' || v.datas.key=='3' || v.datas.key=='4'">{{pocetak}}-{{kraj}}</p>
+	              	   <p v-if="v.datas[0].key=='0'|| v.datas[0].key=='3' || v.datas[0].key=='4'">{{pocetak}}-{{kraj}}</p>
 	              	<div v-for="(value,kk) in v.datas" :key="kk"> 
 
 	            		
@@ -206,7 +206,7 @@ Vue.component('calendar_doc', {
 
 			     
 		      var week = [];
-			  var broj =0; 
+			  
 		      
 		      while (startDay <= lastDay) {
 		    	  var weekdatas=[];
@@ -243,7 +243,6 @@ Vue.component('calendar_doc', {
 				   			var obj ={ date: new Date(startDay),datas: weekdatas};
 				   			week.push(obj);
 				   			validator=1;
-				   			broj++;
 				    	}
 				    		
 				 }

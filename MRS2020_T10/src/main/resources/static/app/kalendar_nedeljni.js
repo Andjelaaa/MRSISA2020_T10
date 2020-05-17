@@ -104,7 +104,7 @@ Vue.component('calendar_ned', {
 	            <tr > 
 	              <td v-for="(v,i) in gridArray" :key="i"> 
 	              	   <p >{{v.date.getDate()}}</p>
-	              	   <p v-if="v.datas.key=='0' || v.datas.key=='3' || v.datas.key=='4'">{{pocetak}}-{{kraj}}</p>
+	              	   <p v-if="v.datas[0].key=='0'|| v.datas[0].key=='3' || v.datas[0].key=='4'">{{pocetak}}-{{kraj}}</p>
 	              	<div v-for="(value,kk) in v.datas" :key="kk"> 
 
 	            		

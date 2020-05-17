@@ -8,7 +8,14 @@ Vue.component('calendar_god', {
 		    token:'',
 		    pocetak:'',
 		    kraj:'',
-		    uloga:''
+		    uloga:'',
+		    meseci:['Januar','Februar','Mart','April','Maj','Jun','Jul','Avgust','Septembar','Oktobar','Novembar','Decembar'],
+		    odsustva:[],
+		    odmori:[],
+		    operacije:[],
+		    pregledi:[]
+		
+		
 		}
 	    
 	  },
@@ -70,40 +77,60 @@ Vue.component('calendar_god', {
 	      </transition>
 	      
 	      
-	      <table class="table table-bordered " v-for="nn in gridArray">
+	      <table class="table table-bordered " v-for="nn,bb in gridArray">
 	      	  <tbody>
 	      
 			      <div id="app-table" class="table-responsive">
 			        <table class="table table-bordered ">
 			          <thead class="thead-default">
 			            <tr>
-			              <th colspan="7" class="center-title">
-			                {{currentMonthAndYear}}
+			              <th colspan="7" class="center-title" >
+			                {{meseci[bb]}}
 			              </th>
 			            </tr>
 			            <tr>
-			              <th>P</th>
-			              <th>U</th>
-			              <th>S</th>
-			              <th>C</th>
-			              <th>P</th>
-			              <th>S</th>
-			              <th>N</th>
+			              <th>Ponedeljak</th>
+			              <th>Utorak</th>
+			              <th>Sreda</th>
+			              <th>Cetvrtak</th>
+			              <th>Petak</th>
+			              <th>Subota</th>
+			              <th>Nedelja</th>
 			            </tr>
 			          </thead>
 			         
 			          <tbody class="tbody-default" >
-			            <tr v-for="ned in nn">
-			              	<td v-for="date in ned">
-					  	     	{{date.getDate()}}
-		  							<br>
-					  	     	{{pocetak}}-{{kraj}}
-					  	    
-					  	    
-			              </td>
-			            
-			            </tr>
-			
+			            <tr v-for="item in nn">
+				              <td v-for="(v,i) in item" > 
+				              	   <p >{{v.date.getDate()}}</p>
+				              	   <p v-if="v.datas[0].key=='0'|| v.datas[0].key=='3' || v.datas[0].key=='4'">{{pocetak}}-{{kraj}}</p>
+				              	<div v-for="(value,kk) in v.datas" :key="kk"> 
+		  						
+				            		<p v-if="value.key=='1'" style="background:#F3EE3F">Odsustvo</p>
+				            		<p v-if="value.key=='2'" style="background:#8BED79">Odmor</p>
+				            		<p v-if="value.key=='3'" style="background:#16CEF0">
+				            		Operacija
+				            		<br>
+				            		Vreme pocetka: {{dFormatSati(value.vreme)}}
+				            		<br>
+				            		Trajanje: {{value.trajanje}}
+				            		<br>
+				            		Pacijent: {{value.ime}} {{value.prezime}}
+				            		</p>
+				            		
+				            		<p v-if="value.key=='4'" style="background:#70F9F0">
+				            		<a :href="'#/pacijenti/' + value.lbo" >Pregled</a>
+				            		<br>
+					  				Vreme pocetka: {{dFormatSati(value.vreme)}}
+					  				<br>
+					  			    Trajanje: {{value.trajanje}}
+				            		<br>
+				            		Pacijent: {{value.ime}} {{value.prezime}}
+				            		</p>
+				            	  	   
+				              </div>
+				              </td>
+				            </tr>
 			          </tbody>
 			        </table>
 			      </div>
@@ -114,10 +141,7 @@ Vue.component('calendar_god', {
 		  
 		  </div>
   </div>`,
-  //<a href="#" v-on:click="setDate(data)" v-bind:class="{'cal-selected':isActive(data)}">
-  //{{date.getDate()}}
-  //</a>
-  //ne diraj, treba mi za lekara
+
 	  methods: {
 	   
 	    setDate: function(date) {
@@ -128,6 +152,32 @@ Vue.component('calendar_god', {
 	      } else {
 	        this.filterDate = date;
 	      }
+	    },
+	    dFormatSati: function(date) {
+	        var d = new Date(date),
+	            hours = '' + d.getHours() ,
+	            minutes = '' + d.getMinutes();
+
+	        if (hours.length < 2) 
+	        	hours = '0' + hours;
+	        if (minutes.length < 2) 
+	        	minutes = '0' + minutes;
+
+	        return [hours, minutes].join('-');
+	    },
+
+	    dFormat: function(date) {
+	        var d = new Date(date),
+	            month = '' + (d.getMonth() + 1),
+	            day = '' + d.getDate(),
+	            year = d.getFullYear();
+
+	        if (month.length < 2) 
+	            month = '0' + month;
+	        if (day.length < 2) 
+	            day = '0' + day;
+
+	        return [year, month, day].join('-');
 	    },
 	    isActive: function(date) {
 	      return date === this.filterDate;
@@ -151,17 +201,127 @@ Vue.component('calendar_god', {
 	      var week = [];
 	   
 	      while (startDay <= lastDay) {
-	        week.push(new Date(startDay))
-	        
-	        if (week.length === 7) {
-	          calendarMatrix.push(week);
-	          week = [];
-	         
-	        }
-	        startDay.setDate(startDay.getDate() + 1);
-	      }
-	      
-	      return calendarMatrix;
+	    	  var weekdatas=[];
+	    	  var validator=0;
+	    	  var abc=0;
+		    	  
+			  for(let i in this.odsustva){
+			   		if(this.dFormat(startDay) == this.dFormat(this.odsustva[i])){
+			   			var p ={ key: '1' ,
+				   				 ime: '',
+								 prezime:  '',
+								 trajanje: '',
+								 vreme: '',
+								 lbo:'' };
+			   			weekdatas.push(p);
+			   			
+			   			var obj = {date: new Date(startDay),datas: weekdatas};
+			   			week.push(obj);
+			   			validator=1;
+			   			
+			   		}
+			   		
+			    		
+			  }
+			  for(let i in this.odmori){
+			   		if(this.dFormat(startDay) == this.dFormat(this.odmori[i])){
+			   			var p ={ key: '2' ,
+				   				 ime: '',
+								 prezime:  '',
+								 trajanje: '',
+								 vreme: '',
+								 lbo:'' };
+			   			weekdatas.push(p);
+			   							   			
+			   			var obj ={ date: new Date(startDay),datas: weekdatas};
+			   			week.push(obj);
+			   			validator=1;
+			    	}
+			    		
+			 }
+			
+			 for(let i in this.operacije){
+				 if((this.dFormat(startDay) == this.dFormat(this.operacije[i].datumVreme)&& abc!=0)){
+					 abc++;
+					 var p ={key: '3' , ime: this.operacije[i].pacijent.ime,
+							 prezime:  this.operacije[i].pacijent.prezime,
+							 trajanje: this.operacije[i].trajanje,
+							 vreme: new Date(this.operacije[i].datumVreme),
+							 lbo:this.operacije[i].pacijent.lbo };
+					 var date= new Date(startDay);
+					 var weekHelper= []
+					 weekHelper = this.spajanjeDatuma(p,date,week);
+					 week = [];
+					 week = weekHelper;
+					
+					
+				 }
+				 if((this.dFormat(startDay) == this.dFormat(this.operacije[i].datumVreme) && abc==0)){
+					 abc++;
+					 var p ={key: '3' , ime: this.operacije[i].pacijent.ime,
+							 prezime:  this.operacije[i].pacijent.prezime,
+							 trajanje: this.operacije[i].trajanje,
+							 vreme: new Date(this.operacije[i].datumVreme),
+							 lbo:this.operacije[i].pacijent.lbo };
+					 weekdatas.push(p);
+					 
+					 var obj ={ date: new Date(startDay),datas: weekdatas};
+			   		 week.push(obj);
+			   		 validator=1;
+			   		 
+				 }
+			 }
+			 for(let i in this.pregledi){
+				 if((this.dFormat(startDay) == this.dFormat(this.pregledi[i].datumVreme )&& abc!=0)){
+					 abc++;
+					 var p ={key: '4' , ime: this.pregledi[i].pacijent.ime,
+							 prezime:  this.pregledi[i].pacijent.prezime,
+							 trajanje: this.pregledi[i].trajanje,
+							 vreme: new Date(this.pregledi[i].datumVreme),
+							 lbo:this.pregledi[i].pacijent.lbo };
+					 var date= new Date(startDay);
+					 var weekHelper= []
+					 weekHelper = this.spajanjeDatuma(p,date,week);
+					 week = [];
+					 week = weekHelper;
+					
+					
+				 }
+				 
+				 if((this.dFormat(startDay) == this.dFormat(this.pregledi[i].datumVreme )&& abc==0)){
+					 abc++;
+					 var p ={key: '4' , ime: this.pregledi[i].pacijent.ime,
+							 prezime:  this.pregledi[i].pacijent.prezime,
+							 trajanje: this.pregledi[i].trajanje,
+							 vreme: new Date(this.pregledi[i].datumVreme),
+							 lbo:this.pregledi[i].pacijent.lbo };
+					 weekdatas.push(p);
+					 var obj ={ date: new Date(startDay), datas: weekdatas};
+			   		 week.push(obj)
+			   		 validator=1;
+
+				 }
+			 }
+			 
+			 if(validator==0){
+				 	var p ={ key: '0' , ime: '',
+						 prezime:  '',
+						 trajanje: '',
+						 vreme: '',
+						 lbo:''};
+				 	
+				 	weekdatas.push(p);
+				 	var obj ={ date: new Date(startDay),datas: weekdatas};
+				 	week.push(obj);
+			 }
+			 if (week.length === 7) {
+			     calendarMatrix.push(week);
+			     week = [];     
+			 }
+			 startDay.setDate(startDay.getDate() + 1);
+			 weekdatas=[];
+	     }    
+		return calendarMatrix;
 	    },
 	    
 	    functionYear: function() {
@@ -169,10 +329,22 @@ Vue.component('calendar_god', {
 	    	//salji godinu i mesec
 	    	for(let i=1;i<=12;i++){
 	    		 grid.push(this.getCalendarMatrix(i));
-			     
 	    	}
 	    	return grid;
-		},
+		}, 
+		spajanjeDatuma:function(p,date,week){
+		    
+	    	for(let i in week){
+	    		if(week[i].date.getDate() == date.getDate())
+	    		{
+	    			week[i].datas.push(p);
+	    			
+	    		}
+	    		
+	    	}
+	    	return week;
+	    	
+	    }
 	    
 	  },
 	  computed: {
@@ -196,7 +368,51 @@ Vue.component('calendar_god', {
 		    	
 		    	this.pocetak = this.korisnik.rvPocetak;
 		    	this.kraj=this.korisnik.rvKraj;
+		    
+		    	for(let i in this.korisnik.odsustvo){
+		   		 
+		    		if(this.korisnik.odsustvo[i].tip =="Odsustvo"){
+		    			var pp = new Date(this.korisnik.odsustvo[i].pocetak);
+		    			var kk = new Date(this.korisnik.odsustvo[i].kraj);
+		    			while(pp<=kk){
+		    				this.odsustva.push(new Date(pp));
+		    				pp.setDate(pp.getDate() + 1);
+		    				
+		    			}
+		    			
+		    			
+		    		}
+		    		else{
+
+		    			var p = new Date(this.korisnik.odsustvo[i].pocetak);
+		    			var k =new Date(this.korisnik.odsustvo[i].kraj);	
+		    			while(p<=k){
+		    				this.odmori.push(new Date(p));
+		    				p.setDate(p.getDate() + 1);
+		    			}
+		    					    			
+		    		}	
+		    		
+		    		
+		    	}
+		    	axios
+					.get('api/pregled/lekarpre/'+this.korisnik.id)
+				    .then(response => {
+				    	this.pregledi = response.data;
+				    })
+				.catch((response)=> { console.log("Doslo je do greske sa dobavljanjem preglega");});
+		    	
+		    	axios
+				.get('api/operacije/lekarop/'+this.korisnik.id)
+			    .then(response => {
+			    	this.operacije = response.data;			    	
+			    })
+			    .catch((response)=> { console.log("Doslo je do greske sa dobavljanjem operacija");});
+		    	
+		    	
+		    	
 			    });
+			
 		}
 		
 
