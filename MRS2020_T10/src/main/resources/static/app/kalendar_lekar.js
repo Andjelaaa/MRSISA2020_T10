@@ -226,7 +226,7 @@ Vue.component('calendar_doc', {
 				   			var obj = {date: new Date(startDay),datas: weekdatas};
 				   			week.push(obj);
 				   			validator=1;
-				   			broj++;
+				   			
 				   		}
 				    		
 				  }
@@ -311,8 +311,6 @@ Vue.component('calendar_doc', {
 					 }
 				 }
 				 
-				 
-				 
 				 if(validator==0){
 					 	var p ={ key: '0' , ime: '',
 							 prezime:  '',
@@ -323,7 +321,6 @@ Vue.component('calendar_doc', {
 					 	weekdatas.push(p);
 					 	var obj ={ date: new Date(startDay),datas: weekdatas};
 					 	week.push(obj);
-					 	broj++;
 				 }
 				 if (week.length === 7) {
 				     calendarMatrix.push(week);
