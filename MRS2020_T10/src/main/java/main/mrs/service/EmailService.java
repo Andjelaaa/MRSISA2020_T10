@@ -196,6 +196,46 @@ public class EmailService {
 		}
 		
 	}
+
+	public void posaljiPacijentuOdobrenPregled(Pregled p) {
+		System.out.println("Slanje emaila...");
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setTo(p.getPacijent().getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Odobren zahtev za pregled");
+			mail.setText("Postovani,\n\nZahtev za pregled:\n\nDatum i vreme: "+ p.getDatumVreme()+
+					"\nTrajanje: "+p.getTrajanje() +
+					"\nLekar: " + p.getLekar().getIme() + " " + p.getLekar().getPrezime()+
+					"\nPacijent: " + p.getPacijent().getIme() + " " + p.getPacijent().getPrezime());
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
+
+	public void posaljiLekaruOdobrenPregled(Pregled p) {
+		System.out.println("Slanje emaila...");
+		try {
+			SimpleMailMessage mail = new SimpleMailMessage();
+			mail.setTo(p.getLekar().getEmail());
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Odobren zahtev za pregled");
+			mail.setText("Postovani,\n\nZahtev za pregled:\n\nDatum i vreme: "+ p.getDatumVreme()+
+					"\nTrajanje: "+p.getTrajanje() +
+					"\nLekar: " + p.getLekar().getIme() + " " + p.getLekar().getPrezime()+
+					"\nPacijent: " + p.getPacijent().getIme() + " " + p.getPacijent().getPrezime());
+			javaMailSender.send(mail);
+			System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
 	
 
 

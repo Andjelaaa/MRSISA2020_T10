@@ -81,4 +81,6 @@ public class PregledService {
 	public List<Pregled> getPreglediByPL(Integer pacijent_id, Integer lekar_id) {
 		return  PregledRepository.getPreglediByPL(pacijent_id,lekar_id);
 	}
+
+
 }

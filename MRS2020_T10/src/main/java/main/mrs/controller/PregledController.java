@@ -302,4 +302,34 @@ public class PregledController {
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
 	
+	@SuppressWarnings("deprecation")
+	@PostMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
+	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId, @PathVariable Integer salaId, @PathVariable String prviSlobodan){
+		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
+		
+		Date datum = null;
+		try {
+			datum = sdf.parse(prviSlobodan);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		Pregled p = PregledService.findById(pregledId);
+		Sala s = SalaService.findOne(salaId);
+		p.setSala(s);
+		p.setStatus(Status.odobreno);
+		datum.setHours(datum.getHours()+2);
+		p.setDatumVreme(datum);
+		try {
+			PregledService.save(p);
+			EmailService.posaljiPacijentuOdobrenPregled(p);
+			EmailService.posaljiLekaruOdobrenPregled(p);
+		}
+		catch(Exception e)
+		{
+			return new ResponseEntity<>(new PregledDTO(p), HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
+	}
+	
 }

@@ -6,7 +6,14 @@ Vue.component('zakazisalu', {
 			klinika: {},
 			pregled: {},
 			sale: [],
-			zauzeca: [] 
+			zauzeca: [],
+			prviSlobodni: [],
+			noviDatum: null,
+			pretragaSale: [],
+			pretragaZauzeca: [],
+			pretragaPrviSlobodni: [],
+			searchparam:''
+			
 		}
 	}, 
 	
@@ -45,22 +52,29 @@ Vue.component('zakazisalu', {
 		</nav>
 		</br>
 		<div class="float-left" style="margin-left: 20px">
-			<h3> Slobodne sale </h3>
+			<h3> Slobodne sale </h3> <h3 v-if="!noviDatum">{{prviSlobodni[0] | formatDate}}</h3>
+		<input type='date' v-model='noviDatum'>
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="nadjiZaDatum()">Nađi</button>
+		<br>
+		<input type='text' v-model='searchparam' placeholder='Naziv ili broj sale'>
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="pretraga()">Pretraži</button>
 		<table class="table table-hover table-light">
 			<thead>
 				<th>Naziv</th>
 				<th>Broj</th>
-				<th>Zauzece</th>
+				<th>Zauzeća za odabrani datum</th>
+				<th>Prvi slobodni termin</th>
 				<th></th>
 			
 			</thead>
 			<tbody>
 			
-			   <tr v-for="s, i in sale">			   		
+			   <tr v-for="s, i in pretragaSale">			   		
 			   		<td>{{s.naziv}}</td>
 			   		<td>{{s.broj}}</td>
-			   		<td><p  v-for="z in zauzeca[i]">{{z.pocetak | formatDate}} - {{z.kraj | formatDate}}</p></td>
-			   		<td><button>Posalji</button></td>
+			   		<td><p  v-for="z in pretragaZauzeca[i]">{{z.pocetak | formatDate}} - {{z.kraj | formatDate}}</p></td>
+			   		<td><p>{{pretragaPrviSlobodni[i] | formatDate}}</p></td>
+			   		<td><button class="btn btn-success my-2 my-sm-0" type="submit" v-on:click="rezervisi(s, pretragaPrviSlobodni[i])">Rezervisi</button></td>
 
 			   </tr>
 			   
@@ -75,6 +89,60 @@ Vue.component('zakazisalu', {
 		odjava : function(){
 				localStorage.removeItem("token");
 				this.$router.push('/');
+		},
+		rezervisi: function(s, prviSlobodan){
+			axios
+	      	.post('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan)
+	      	.then(response => {
+	      		alert('Uspesno rezervisana sala! Mejl poslat!');
+	      		this.$router.push('/zahtevipo');
+	      	})
+	        .catch(function (error) { console.log('Greska11') });	
+			
+		},
+		nadjiZaDatum: function(){
+			axios
+	      	.get('api/sala/all')
+	      	.then(response => {
+	      		this.sale = response.data;
+	      		this.pretragaSale = response.data;
+	      		this.zauzeca = [];
+	      		this.prviSlobodni = [];
+	      		this.pretragaZauzeca = [];
+	      		this.pretragaPrviSlobodni = [];
+	      		for(var s of this.sale){
+	      			console.log(s.id);
+	      			axios
+			      	.get('api/sala/prvislobodan/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id)
+			      	.then(response => {			      		
+			      		this.retVal = response.data;
+			      		this.zauzeca.push(this.retVal.zauzeca);
+			      		this.prviSlobodni.push(this.retVal.prviSlobodan);
+			      		this.pretragaZauzeca.push(this.retVal.zauzeca);
+			      		this.pretragaPrviSlobodni.push(this.retVal.prviSlobodan);
+			      		
+			      	})
+			        .catch(function (error) { console.log('Greska11') });	
+	      			
+	      		}
+	      	})
+	        .catch(function (error) { console.log('Greska22') });		
+			
+		},
+		pretraga: function(){
+			this.pretragaSale = [];
+			this.pretragaZauzeca = [];
+			this.pretragaPrviSlobodan = [];
+			
+			var i;
+			for (i = 0; i < this.sale.length; i++) {
+				if(this.sale[i].naziv.includes(this.searchparam) || this.sale[i].broj.toString().includes(this.searchparam)){
+					this.pretragaSale.push(this.sale[i]);
+					this.pretragaZauzeca.push(this.zauzeca[i]);
+					this.pretragaPrviSlobodan.push(this.prviSlobodni[i]);
+				}
+			}
+			
 		}
 		
 	},
@@ -91,16 +159,20 @@ Vue.component('zakazisalu', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/sala/all')
+			      	.get('api/sala/slobodnesale/'+this.$route.params.id)
 			      	.then(response => {
 			      		this.sale = response.data;
+			      		this.pretragaSale = response.data;
 			      		for(var s of this.sale){
 			      			console.log(s.id);
 			      			axios
 					      	.get('api/sala/zauzece/'+this.$route.params.id+'/'+s.id)
 					      	.then(response => {
-					      		console.log(response.data);
-					      		this.zauzeca.push(response.data);
+					      		this.retVal = response.data;
+					      		this.zauzeca.push(this.retVal.zauzeca);
+					      		this.prviSlobodni.push(this.retVal.prviSlobodan);
+					      		this.pretragaZauzeca.push(this.retVal.zauzeca);
+					      		this.pretragaPrviSlobodni.push(this.retVal.prviSlobodan);
 					      	})
 					        .catch(function (error) { console.log('Greska11') });	
 			      			

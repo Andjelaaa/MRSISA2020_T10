@@ -61,10 +61,9 @@ Vue.component('zahtevipo', {
 			   		<td>{{pregled.lekar.ime}} {{pregled.lekar.prezime}}</td>
 			   		<td>{{pregled.datumVreme | formatDate}}</td>
 			   		<td>{{pregled.tipPregleda.naziv}}</td>
-			   		<td v-if="pregled.sala == null"><button v-on:click="nadji(pregled)">Nadji salu</button></td>
+			   		<td v-if="pregled.sala == null"><button v-on:click="nadji(pregled)" class="btn btn-outline-success my-2 my-sm-0">Nadji salu</button></td>
 			   		<td v-else>pregled.sala</td>
-			   		<td v-if="pregled.sala == null"></td>
-			   		<td v-else><button>Posalji</button></td>
+
 
 			   </tr>
 			   
