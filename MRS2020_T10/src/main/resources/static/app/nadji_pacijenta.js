@@ -13,13 +13,14 @@ Vue.component('nadjipacijenta', {
 			lekovi:[],
 			odabraniLekovi:[],
 			showModal: false,
+			showModal1: false,
 			noviTermin: {},
 			datumVremeGreska: '',
 			tipTerminaGreska: '',
 			trajanjeGreska: '',
-			tipTermina: ''
-			
-
+			tipTermina: '',
+			selected: {krvnaGrupa:'', visina:'',tezina:'', dioptrija:'' },
+			selectedBackup:  {krvnaGrupa:'', visina:'',tezina:'', dioptrija:'' }
 		}
 	}, 
 	
@@ -80,7 +81,37 @@ Vue.component('nadjipacijenta', {
 		   		<td>{{zKarton.dioptrija}}</td>
 		   		<td>{{zKarton.pol}}</td>
 		   		<td>{{zKarton.datumRodjenja}}</td>
-		   		<td></td>		   		
+		   		<td>
+		   		<button v-if="pocinjanje"  class="btn btn-light" id="show-modal" @click="showModal1 = true" v-on:click="izmeniKarton(zKarton)">Izmeni karton</button>
+				<modal v-if="showModal1" @close="showModal1 = false">
+	    			<h3 slot="header">Izmena podataka u zdravstvenom kartonu</h3>
+	    			<table slot="body" class="table table-hover table-light">
+						<tbody>
+							<tr>
+							  <td>Krvna grupa</td>
+							  <td><input class="form-control" type="text"  v-model="selected.krvnaGrupa"/></td>
+							</tr>
+							<tr>
+							  <td>Visina</td>
+							  <td><input  class="form-control" type="text" v-model = "selected.visina"/></td>
+							 </tr>
+							  <tr>
+								<td>Tezina</td>
+								<td><input  class="form-control" type="text" v-model = "selected.tezina"/></td>
+							   </tr>	
+							   <tr>
+								 <td>Dioptrija</td>
+								 <td><input  class="form-control" type="text" v-model = "selected.dioptrija"/></td>
+								</tr>								
+							</tbody>
+					</table>
+	    					
+	    			<div slot="footer">
+	    				<button @click="showModal1=false" style="margin:5px;" class="btn btn-success" v-on:click="save(selected)"> Sacuvaj izmene </button>       						
+						<button style="margin:5px;" class="btn btn-secondary" @click="showModal1=false" v-on:click="restore(selected)"> Odustani </button>								
+					</div>
+				</modal>
+		   	</td>		   		
 		   </tr>
 		   </tbody>
 		    
@@ -182,6 +213,37 @@ Vue.component('nadjipacijenta', {
 		},
 		pocni:function(){
 			this.pocinjanje = true;
+		},
+		save: function(objekat){
+			axios
+			.post('api/pregled/izmenikarton/'+ this.korisnik.id, objekat)
+			.then((response)=>{
+				
+				 alert("Uspesno ste izmenili");
+				
+			}).catch((response)=>{
+				 this.selected.krvnaGrupa = this.selectedBackup.krvnaGrupa;
+				 this.selected.visina = this.selectedBackup.visina;
+				 this.selected.tezina = this.selectedBackup.tezina;
+				 this.selected.dioptrija = this.selectedBackup.dioptrija;
+				 alert("Pogresili ste sa izmenom");
+			});
+		},
+		restore:function(zkarton){
+			zkarton.krvnaGrupa = this.selectedBackup.krvnaGrupa;
+			zkarton.visina = this.selectedBackup.visina;
+			zkarton.tezina = this.selectedBackup.tezina;
+			zkarton.dioptrija = this.selectedBackup.dioptrija;
+			
+			
+		},
+		izmeniKarton: function(zkarton){
+			this.selectedBackup.krvnaGrupa = zkarton.krvnaGrupa;
+			this.selectedBackup.visina = zkarton.visina;
+			this.selectedBackup.tezina = zkarton.tezina;
+			this.selectedBackup.dioptrija = zkarton.dioptrija;
+			this.selected = zkarton;
+			
 		},
 		validacija: function(){
 			this.datumVremeGreska = '';

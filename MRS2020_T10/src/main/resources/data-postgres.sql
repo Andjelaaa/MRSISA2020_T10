@@ -45,7 +45,7 @@ insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-16 10:00:00', 5, 1, 60, null, 1, 2, 2, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-16 15:00:00', 5, 1, 60, null, 1, 1, 2, 1, 1, 1);
+('2020-05-17 21:44:00', 5, 1, 60, null, 1, 1, 2, 1, 1, 1);
 --
 --insert into lekar_pregled(lekar_id,pregled_id) values(1,1);
 --insert into lekar_pregled(lekar_id,pregled_id) values(1,2);

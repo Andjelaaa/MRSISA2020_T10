@@ -2,11 +2,9 @@ package main.mrs.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.OperacijaDTO;
 import main.mrs.dto.PregledDTO;
+import main.mrs.dto.ZKartonDTO;
 import main.mrs.model.Lekar;
-import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
+import main.mrs.model.PomocnaKlasa4;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
 import main.mrs.model.TipPregleda;
+import main.mrs.model.ZKarton;
 import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
@@ -194,6 +193,26 @@ public class PregledController {
 		
 		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
 	}
+	@PostMapping(value = "izmenikarton/{pacijentId}")
+	public ResponseEntity<String> izmeniKarton(@RequestBody PomocnaKlasa4 klasa, @PathVariable Integer pacijentId){
+		Pacijent pacijent = PacijentService.findById(pacijentId);
+		ZKarton karton = pacijent.getzKarton();
+		
+	    karton.setDioptrija(klasa.dioptrija);
+	    karton.setTezina(klasa.tezina);
+	    karton.setVisina(klasa.visina);
+	    karton.setKrvnaGrupa(klasa.krvnaGrupa);
+		
+		try {
+			pacijent = PacijentService.save(pacijent);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>( HttpStatus.OK);
+	}
+	
+
 	@GetMapping(value = "/tip/{tipPregleda}")
 	public ResponseEntity<List<PregledDTO>> zaTipPregleda(@PathVariable String tipPregleda) {
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);

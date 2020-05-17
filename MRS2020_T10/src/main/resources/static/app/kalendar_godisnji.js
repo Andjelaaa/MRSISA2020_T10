@@ -168,7 +168,6 @@ Vue.component('calendar_god', {
 	    	var grid =[]
 	    	//salji godinu i mesec
 	    	for(let i=1;i<=12;i++){
-	    		
 	    		 grid.push(this.getCalendarMatrix(i));
 			     
 	    	}
