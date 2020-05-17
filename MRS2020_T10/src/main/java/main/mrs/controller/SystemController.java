@@ -30,6 +30,10 @@ public class SystemController {
 	
 	@Autowired
 	public SalaController controllerSala;
+	
+	@Autowired
+	public PregledController controllerPregled;
+	
 	@Autowired
 	public OperacijaService OperacijaService;
 
@@ -132,8 +136,83 @@ public class SystemController {
 	}
 
 	private void logikaZaDodeljivanjeSalaZaPregled() {
-		// TODO Auto-generated method stub
+		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
+		//ne treba dto
+		List<Pregled> pregledi = PregledService.findAllZahtevi();
+
+		List<Sala> sveSale = SalaService.findAll();
+		Random rand = new Random(); 
+		Integer idSale = 1;
+		try {
+			idSale = rand.nextInt(sveSale.size()-1) + 1; // ovo je zato sto krene od 0
+		}
+		catch(Exception e) {
+			System.out.println("Puklo je");
+		}
+		sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		//sve sale
+		for(Pregled p : pregledi) {
+			List<Sala> sale =  dobaviSalePregled(p);
+			if(!sale.isEmpty()) {
+				controllerPregled.rezervisiSaluZaPregled(p.getId(), sale.get(0).getId(), sdf.format(p.getDatumVreme()));
+				System.out.println(" odradio ");
+			}
+			else {
+				//ovde ako nema slobodnih sala za taj datum onda bilo koji
+				int datum = p.getDatumVreme().getDate() + 1;
+				p.getDatumVreme().setDate(datum);
+				ResponseEntity<ZauzecaSlobodniDTO>  slobodni=controllerSala.getZauzecaZaDatumOP(sdf1.format(p.getDatumVreme()), idSale, p.getId());
+				controllerPregled.rezervisiSaluZaPregled(p.getId(), idSale, sdf.format(slobodni.getBody().getPrviSlobodan()));
+				System.out.println(" odradio 222 ");
+			}
+			
+		}
+
 		
+		
+	}
+
+	private List<Sala> dobaviSalePregled(Pregled pregled) {
+sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		long curTimeInMs = pregled.getDatumVreme().getTime();
+	    Date afterAddingMins = new Date(curTimeInMs + (pregled.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+		
+		List<Pregled> SviPregledi = PregledService.findAll();
+		List<Sala> ZauzeteSale = new ArrayList<Sala>();
+		
+		List<Operacija> SveOperacije=  OperacijaService.findAll();
+		for (Pregled p : SviPregledi) {
+			long l = p.getDatumVreme().getTime();
+		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			if((p.getDatumVreme().equals(pregled.getDatumVreme())) || 
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && p.getDatumVreme().before(afterAddingMins)) ||
+				(krajPregleda.after(pregled.getDatumVreme()) && p.getDatumVreme().before(pregled.getDatumVreme())) ||
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && krajPregleda.before(afterAddingMins))){
+					ZauzeteSale.add(p.getSala());				
+				}
+		}
+		for (Operacija p : SveOperacije) {
+			long l = p.getDatumVreme().getTime();
+		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			if((p.getDatumVreme().equals(pregled.getDatumVreme())) || 
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && p.getDatumVreme().before(afterAddingMins)) ||
+				(krajPregleda.after(pregled.getDatumVreme()) && p.getDatumVreme().before(pregled.getDatumVreme())) ||
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && krajPregleda.before(afterAddingMins))){
+					ZauzeteSale.add(p.getSala());				
+				}
+		}
+		List<Sala> slobodne = new ArrayList<Sala>();
+		List<Sala> sveSale = SalaService.findAll();
+		for (Sala sala : sveSale) {
+			if(!ZauzeteSale.contains(sala)) {
+				System.out.println(sala.getNaziv());
+				slobodne.add(sala);
+			}
+		}
+		
+		return slobodne;
 	}
 
 }
