@@ -24,11 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.SalaDTO;
 import main.mrs.dto.ZauzecaSlobodniDTO;
 import main.mrs.dto.ZauzeceDTO;
+import main.mrs.model.Operacija;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.service.PregledService;
 import main.mrs.service.SalaService;
-
+import main.mrs.service.OperacijaService;
 
 @RestController
 @RequestMapping(value="api/sala")
@@ -39,6 +40,10 @@ public class SalaController {
 	
 	@Autowired
 	private PregledService PregledService;
+	
+	
+	@Autowired
+	private OperacijaService OperacijaService;
 	
 	private SimpleDateFormat sdf;
 
@@ -150,6 +155,19 @@ public class SalaController {
 				}
 			}
 		}
+		List<Operacija> operacije = OperacijaService.findAll();
+		for(Operacija o: operacije) {
+			
+			if(o.getSala() != null) {
+				if(o.getSala().getId() == sala.getId() && sdf.format(o.getDatumVreme()).equals(sdf.format(pregled.getDatumVreme()))) {
+					
+				    long curTimeInMs = o.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (o.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(o.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
 		ZauzecaSlobodniDTO zs = new ZauzecaSlobodniDTO();
 		zs.setZauzeca(zauzecaDTO);
 		zs.setPrviSlobodan(pregled.getDatumVreme());
@@ -169,7 +187,19 @@ public class SalaController {
 		System.out.println(pregled.getDatumVreme());
 		List<Pregled> SviPregledi = PregledService.findAll();
 		List<Sala> ZauzeteSale = new ArrayList<Sala>();
+		
+		List<Operacija> SveOperacije=  OperacijaService.findAll();
 		for (Pregled p : SviPregledi) {
+			long l = p.getDatumVreme().getTime();
+		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			if((p.getDatumVreme().equals(pregled.getDatumVreme())) || 
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && p.getDatumVreme().before(afterAddingMins)) ||
+				(krajPregleda.after(pregled.getDatumVreme()) && p.getDatumVreme().before(pregled.getDatumVreme())) ||
+				(p.getDatumVreme().after(pregled.getDatumVreme()) && krajPregleda.before(afterAddingMins))){
+					ZauzeteSale.add(p.getSala());				
+				}
+		}
+		for (Operacija p : SveOperacije) {
 			long l = p.getDatumVreme().getTime();
 		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
 			if((p.getDatumVreme().equals(pregled.getDatumVreme())) || 
@@ -196,6 +226,7 @@ public class SalaController {
 		return new ResponseEntity<>(SalasDTO, HttpStatus.OK);
 	}
 	
+	
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/prvislobodan/{datumStr}/{idSale}/{idPregleda}")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaZaDatum(@PathVariable String datumStr, @PathVariable Integer idSale, @PathVariable Integer idPregleda) {
@@ -203,7 +234,7 @@ public class SalaController {
 		Pregled pregled = PregledService.findById(idPregleda);
 		Sala sala = SalaService.findOne(idSale);
 		List<Pregled> Pregleds = PregledService.findAll();
-		
+		List<Operacija> operacije = OperacijaService.findAll();
 		Date datum = null;
 		try {
 			datum = sdf.parse(datumStr);
@@ -225,6 +256,18 @@ public class SalaController {
 				}
 			}
 		}
+		for(Operacija p: operacije) {
+			if(p.getSala() != null) {
+				if(p.getSala().getId() == sala.getId() && sdf.format(p.getDatumVreme()).equals(sdf.format(datum))) {
+					
+				    long curTimeInMs = p.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(p.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+
 		
 		Collections.sort(zauzecaDTO, new Comparator<ZauzeceDTO>() {
 			@Override
@@ -252,4 +295,168 @@ public class SalaController {
 
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value = "/zauzeceop/{idOperacije}/{idSale}")
+	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaOP(@PathVariable Integer idOperacije, @PathVariable int idSale) {
+		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Operacija operacija = OperacijaService.findOne(idOperacije);
+		Sala sala = SalaService.findOne(idSale);
+		List<Pregled> Pregleds = PregledService.findAll();
+		
+		List<ZauzeceDTO> zauzecaDTO = new ArrayList<ZauzeceDTO>();
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		for(Pregled p: Pregleds) {
+			if(p.getSala() != null) {
+				if(p.getSala().getId() == sala.getId() && sdf.format(p.getDatumVreme()).equals(sdf.format(operacija.getDatumVreme()))) {
+					
+				    long curTimeInMs = p.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(p.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+		List<Operacija> operacije = OperacijaService.findAll();
+		for(Operacija o: operacije) {
+			
+			if(o.getSala() != null) {
+				if(o.getSala().getId() == sala.getId() && sdf.format(o.getDatumVreme()).equals(sdf.format(operacija.getDatumVreme()))) {
+					
+				    long curTimeInMs = o.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (o.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(o.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+		ZauzecaSlobodniDTO zs = new ZauzecaSlobodniDTO();
+		zs.setZauzeca(zauzecaDTO);
+		zs.setPrviSlobodan(operacija.getDatumVreme());
+
+		return new ResponseEntity<>(zs, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/slobodnesaleop/{idOperacije}")
+	public ResponseEntity<List<SalaDTO>> getSlobodneOP(@PathVariable Integer idOperacije) {
+		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Operacija operacija = OperacijaService.findOne(idOperacije);
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		long curTimeInMs = operacija.getDatumVreme().getTime();
+	    Date afterAddingMins = new Date(curTimeInMs + (operacija.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+		
+		List<Pregled> SviPregledi = PregledService.findAll();
+		List<Sala> ZauzeteSale = new ArrayList<Sala>();
+		
+		List<Operacija> SveOperacije=  OperacijaService.findAll();
+		for (Pregled p : SviPregledi) {
+			long l = p.getDatumVreme().getTime();
+		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			if((p.getDatumVreme().equals(operacija.getDatumVreme())) || 
+				(p.getDatumVreme().after(operacija.getDatumVreme()) && p.getDatumVreme().before(afterAddingMins)) ||
+				(krajPregleda.after(operacija.getDatumVreme()) && p.getDatumVreme().before(operacija.getDatumVreme())) ||
+				(p.getDatumVreme().after(operacija.getDatumVreme()) && krajPregleda.before(afterAddingMins))){
+					ZauzeteSale.add(p.getSala());				
+				}
+		}
+		for (Operacija p : SveOperacije) {
+			long l = p.getDatumVreme().getTime();
+		    Date krajPregleda = new Date(l + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			if((p.getDatumVreme().equals(operacija.getDatumVreme())) || 
+				(p.getDatumVreme().after(operacija.getDatumVreme()) && p.getDatumVreme().before(afterAddingMins)) ||
+				(krajPregleda.after(operacija.getDatumVreme()) && p.getDatumVreme().before(operacija.getDatumVreme())) ||
+				(p.getDatumVreme().after(operacija.getDatumVreme()) && krajPregleda.before(afterAddingMins))){
+					ZauzeteSale.add(p.getSala());				
+				}
+		}
+		List<Sala> slobodne = new ArrayList<Sala>();
+		List<Sala> sveSale = SalaService.findAll();
+		for (Sala sala : sveSale) {
+			if(!ZauzeteSale.contains(sala)) {
+				System.out.println(sala.getNaziv());
+				slobodne.add(sala);
+			}
+		}
+		
+		List<SalaDTO> SalasDTO = new ArrayList<>();
+		for (Sala s : slobodne) {
+			SalasDTO.add(new SalaDTO(s));
+		}
+
+		return new ResponseEntity<>(SalasDTO, HttpStatus.OK);
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	@GetMapping(value = "/prvislobodanop/{datumStr}/{idSale}/{idOperacije}")
+	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaZaDatumOP(@PathVariable String datumStr, @PathVariable Integer idSale,
+			@PathVariable Integer idOperacije) {
+		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Operacija operacija = OperacijaService.findOne(idOperacije);
+		Sala sala = SalaService.findOne(idSale);
+		List<Pregled> Pregleds = PregledService.findAll();
+		List<Operacija> operacije = OperacijaService.findAll();
+		Date datum = null;
+		try {
+			datum = sdf.parse(datumStr);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<ZauzeceDTO> zauzecaDTO = new ArrayList<ZauzeceDTO>();
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		for(Pregled p: Pregleds) {
+			if(p.getSala() != null) {
+				if(p.getSala().getId() == sala.getId() && sdf.format(p.getDatumVreme()).equals(sdf.format(datum))) {
+					
+				    long curTimeInMs = p.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(p.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+		for(Operacija p: operacije) {
+			if(p.getSala() != null) {
+				if(p.getSala().getId() == sala.getId() && sdf.format(p.getDatumVreme()).equals(sdf.format(datum))) {
+					
+				    long curTimeInMs = p.getDatumVreme().getTime();
+				    Date afterAddingMins = new Date(curTimeInMs + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+					ZauzeceDTO z = new ZauzeceDTO(p.getDatumVreme(), afterAddingMins);
+					zauzecaDTO.add(z);
+				}
+			}
+		}
+
+		
+		Collections.sort(zauzecaDTO, new Comparator<ZauzeceDTO>() {
+			@Override
+			public int compare(ZauzeceDTO o1, ZauzeceDTO o2) {
+				return o1.getPocetak().compareTo(o2.getPocetak());
+			}         
+        });		
+		
+		Date prviSlobodan = datum;
+		prviSlobodan.setHours(operacija.getDatumVreme().getHours()-2);
+		prviSlobodan.setMinutes(operacija.getDatumVreme().getMinutes());
+		if(!zauzecaDTO.isEmpty()) {
+			prviSlobodan = zauzecaDTO.get(0).getKraj();
+			for (int i = 0; i<zauzecaDTO.size()-1;i++) {
+				if(zauzecaDTO.get(i+1).getPocetak().getTime() - zauzecaDTO.get(i).getKraj().getTime() >= operacija.getTrajanje()*ONE_MINUTE_IN_MILLIS) {
+					prviSlobodan = zauzecaDTO.get(i).getKraj();
+					break;
+				}			
+			}
+		}		
+		ZauzecaSlobodniDTO retVal = new ZauzecaSlobodniDTO();
+		retVal.setZauzeca(zauzecaDTO);
+		prviSlobodan.setHours(prviSlobodan.getHours()+2);
+		retVal.setPrviSlobodan(prviSlobodan);
+
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+	
+	
 }

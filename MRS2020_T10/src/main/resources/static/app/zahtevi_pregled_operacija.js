@@ -4,7 +4,8 @@ Vue.component('zahtevipo', {
 		return{	
 			admin:{},
 			klinika: {},
-			pregledi: []
+			pregledi: [],
+			operacije:[]
 		}
 	}, 
 	
@@ -70,6 +71,35 @@ Vue.component('zahtevipo', {
 		   </tbody>
 		</table>
 		</div>
+		
+		
+		<div class="float-right" style="margin-left: 20px">
+			<h3> Zahtevi za operacije </h3>
+		<table class="table table-hover table-light">
+			<thead>
+				<th>Pacijent</th>
+				<th>Datum i vreme</th>
+				<th>Lekar</th>
+				<th>Sala</th>
+				<th></th>
+			
+			</thead>
+			<tbody>
+			
+			   <tr v-for="op in operacije">			   		
+			   		<td>{{op.pacijent.ime}} {{op.pacijent.prezime}}</td>
+			   		<td>{{op.datumVreme | formatDate}}</td>
+			   		<td>{{op.lekar[0].ime}} {{op.lekar[0].prezime}}</td>
+			   		<td><button v-on:click="nadjiSaluZaOP(op)" class="btn btn-outline-success my-2 my-sm-0">Nadji salu</button></td>
+			   </tr>
+			   
+		   </tbody>
+		</table>
+		
+		
+		
+		
+		</div>
 
 	</div>
 	
@@ -82,8 +112,10 @@ Vue.component('zahtevipo', {
 		nadji: function(pregled){
 			this.$router.push('/zakazisalu/'+pregled.id.toString());
 			
+		},
+		nadjiSaluZaOP:function(operacija){
+			this.$router.push('/zakazisaluop/'+operacija.id.toString());
 		}
-		
 	},
 	mounted(){
 		
@@ -103,7 +135,14 @@ Vue.component('zahtevipo', {
 			      	.then(response => {
 			      		this.pregledi = response.data;			      		
 			      	})
-			        .catch(function (error) { console.log('Greska') });		    		
+			        .catch(function (error) { console.log('Greska') });	
+		    		
+		    		axios
+			      	.get('api/operacije/zahtevi')
+			      	.then(response => {
+			      		this.operacije = response.data;			      		
+			      	})
+			        .catch(function (error) { console.log('Greska sa dobavljanjem zahteva') });	
 		    	}
 		    })
 		    .catch(function (error) { console.log(error); });

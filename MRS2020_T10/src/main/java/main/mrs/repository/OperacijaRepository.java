@@ -34,7 +34,7 @@ public interface OperacijaRepository  extends JpaRepository<Operacija, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Operacija> findById(Long integer);
+	  Optional<Operacija> findById(Integer idOperacije);
 
 	 
 	  <S extends Operacija> S save(S arg0);
@@ -86,6 +86,9 @@ public interface OperacijaRepository  extends JpaRepository<Operacija, Long>{
 
 	@Query(value = "SELECT * FROM OPERACIJA_LEKAR WHERE LEKAR_ID = ?1", nativeQuery = true)
 	List<Integer> findAllByLekarId(Integer id);
+
+	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3", nativeQuery = true)
+	List<Operacija> findAllZahtevi();
 
 	
 

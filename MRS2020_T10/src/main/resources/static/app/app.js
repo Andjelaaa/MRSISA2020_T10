@@ -32,7 +32,7 @@ const Kalendar4 =  {template: '<calendar_god></calendar_god>'}
 const NadjiPacijenta =  {template: '<nadjipacijenta></nadjipacijenta>'}
 const ZahteviPregledOperacija =  {template: '<zahtevipo></zahtevipo>'}
 const ZakaziSalu = {template: '<zakazisalu></zakazisalu>'}
-
+const ZakaziSaluOP = {template: '<zakazisaluop></zakazisaluop>'}
 
 
 const router = new VueRouter({
@@ -71,7 +71,8 @@ const router = new VueRouter({
 	    { path: '/kalendargodisnji', component: Kalendar4},
 	    { path: '/pacijenti/:lbo', component: NadjiPacijenta},
 	    { path: '/zahtevipo', component: ZahteviPregledOperacija},
-	    { path: '/zakazisalu/:id', component: ZakaziSalu}
+	    { path: '/zakazisalu/:id', component: ZakaziSalu},
+	    { path: '/zakazisaluop/:id', component: ZakaziSaluOP}
 	    ]
 });
 

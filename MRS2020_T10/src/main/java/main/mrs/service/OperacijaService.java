@@ -15,8 +15,8 @@ public class OperacijaService {
 	@Autowired
 	private OperacijaRepository OperacijaRepository;
 
-	public Operacija findOne(Long id) {
-		return OperacijaRepository.findById(id).orElseGet(null);
+	public Operacija findOne(Integer idOperacije) {
+		return OperacijaRepository.findById(idOperacije).orElseGet(null);
 	}
 
 	public List<Operacija> findAll() {
@@ -41,6 +41,10 @@ public class OperacijaService {
 
 	public List<Operacija> findAllById(List<Integer> idOperacija) {
 		return OperacijaRepository.findAllByIdIn(idOperacija);
+	}
+
+	public List<Operacija> findAllZahtevi() {
+		return OperacijaRepository.findAllZahtevi();
 	}
 
 
