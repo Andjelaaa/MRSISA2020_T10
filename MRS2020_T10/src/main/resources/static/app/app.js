@@ -59,7 +59,7 @@ const router = new VueRouter({
 	    { path: '/pacijent', component: PacijentPocetna},
 	    { path: '/pacijentpregledi', component: ZakazaniPregledi},
 	    { path: '/klinike', component: KlinikePrikaz},
-	    { path: '/detaljiKlinike/:name', component: KlinikaDetalji},
+	    { path: '/detaljiKlinike/:name/:date/:tip', component: KlinikaDetalji},
 	    { path: '/potvrdiRegistraciju/:token', component: PotvrdaPacijenta},
 	    { path: '/pacijenti', component: PacijentiLista},
 	    { path: '/med_sestra_pocetna', component: MedSestraPocetna},
@@ -79,6 +79,12 @@ const router = new VueRouter({
 Vue.filter('formatDate', function(value) {
 	  if (value) {
 	    return moment(String(value)).format('DD/MM/YYYY HH:mm')
+	  }
+});
+
+Vue.filter('formatTime', function(value) {
+	  if (value) {
+	    return moment(String(value)).format('HH:mm')
 	  }
 });
 

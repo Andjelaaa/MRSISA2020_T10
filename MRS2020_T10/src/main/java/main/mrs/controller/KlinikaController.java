@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.platform.engine.reporting.ReportEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.KlinikaDTO;
+import main.mrs.dto.LekarDTO;
 import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
+import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.Pregled;
+import main.mrs.model.SlobodnoVreme;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.KlinikaService;
 import main.mrs.service.LekarService;
@@ -64,6 +68,119 @@ public class KlinikaController {
 		Klinika Klinika = KlinikaService.findOneById(klinikaId);
 		// convert Klinike to DTOs
 		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/slobodnitermini/lekari/{datum}/{tipPregleda}")
+	public ResponseEntity<List<PomocnaKlasa5>> LekariSlobodniTermini(@PathVariable String datum, @PathVariable String tipPregleda) {
+		System.out.println("TRAZIM TERMINE SLOBODNE");
+		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
+		Date date1 = null;
+		List<PomocnaKlasa5> retVal = new ArrayList<>();
+		try {
+			System.out.println(datum);
+			date1=new SimpleDateFormat("yyyy-MM-dd").parse(datum);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+		// za trazeni tip pregleda i datum moramo pronaci lekare koji u svom
+		// radnom kalendaru imaju vremena taj dan da izvrse preglede
+		// i prikazati kliniku u kojoj rade
+		
+		//izvuci lekare koji rade taj tip preglade
+		List<Lekar> lekari = LekarService.findByTipPregledaId(tp.getId());
+		
+		// za svakog lekara proveriti da li odsustvuje taj dan
+		ArrayList<Lekar> lekariKojiRade = new ArrayList<Lekar>();
+		for (Lekar l: lekari)
+		{
+			Odsustvo odsustvuje = OdsustvoService.daLiOdsustvuje(l.getId(), date1);
+			if(odsustvuje == null)
+			{
+				// ako je null onda taj lekar ne odsustvuje tj radi taj dan
+				lekariKojiRade.add(l);
+			}
+		}
+		
+		/*
+		SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String time = localDateFormat.format(new Date());
+        */
+		// za svakog lekara koji radi proveriti da li ima vremena da izvrsi pregled taj dan
+		for (Lekar l: lekariKojiRade)
+		{
+			PomocnaKlasa5 lekarTermini = new PomocnaKlasa5();
+			lekarTermini.lekar = new LekarDTO(l);
+			
+			boolean slobodan = false;
+			Date rvPocetak = null;
+			Date rvKraj = null;
+			// vrati pregelede (vreme pregleda) koje izvrsava taj dan
+			// iz baze vraca sortirano
+			List<Pregled> pregledi = PregledService.nadjiPregledeLekaraZaDan(l.getId(), date1);
+			
+			// proveri da li ima slobodno u zavisnosti od njegovog radnog vremena
+			SimpleDateFormat format = new SimpleDateFormat("HH:mm"); //if 24 hour format
+			try {
+				rvPocetak =(java.util.Date)format.parse(l.getRvPocetak());
+				rvKraj =(java.util.Date)format.parse(l.getRvKraj());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(pregledi.isEmpty())
+			{
+				System.out.println("Slobodno vreme: od " + rvPocetak + " do " + rvKraj);
+				SlobodnoVreme slobodanTermin = new SlobodnoVreme(rvPocetak, rvKraj);
+				lekarTermini.slobodnoVreme.add(slobodanTermin);
+			}
+			
+			for(Pregled p: pregledi)
+			{
+				// ispitati kad je slobodan
+				SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+				String time = localDateFormat.format(p.getDatumVreme());
+				Date vremePregleda = null;
+				try {
+					vremePregleda = (Date)format.parse(time);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(vremePregleda.after(rvPocetak))
+				{
+					slobodan = true;
+					
+					SlobodnoVreme slobodanTermin = new SlobodnoVreme(rvPocetak, vremePregleda);
+					lekarTermini.slobodnoVreme.add(slobodanTermin);
+					
+					System.out.println("Slobodno vreme: od " + rvPocetak + " do " + vremePregleda);
+					long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+					long vremeUMinutima = vremePregleda.getTime();
+					
+					// kad se zavrsi taj pregled on ima novi pocetak "radnog vremena"
+					rvPocetak = new Date(vremeUMinutima + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+				}
+				else
+				{
+					// pomeri se vreme pocetka za trajanje pregleda
+					long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+					long vremeUMinutima = vremePregleda.getTime();
+					rvPocetak = new Date(vremeUMinutima + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+				}
+		      
+			}
+			
+			
+			if(slobodan || pregledi.isEmpty())
+			{
+				System.out.println("SLOBODNA KLINIKA " + l.getKlinika().getNaziv());
+				retVal.add(lekarTermini);
+			}
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+		//return new ResponseEntity<>(LekarDTO, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/slobodnitermini/{datum}/{tipPregleda}")
@@ -164,6 +281,44 @@ public class KlinikaController {
 		return new ResponseEntity<>(KlinikeDTO, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/proveriTermin/{vreme}")
+	public ResponseEntity<KlinikaDTO> proveriTermin(@PathVariable String vreme, @RequestBody PomocnaKlasa5 lekarTermini)
+	{
+		Date izabranoVremePocetak = null;
+		Date izabranoVremeKraj = null;
+		
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm"); //if 24 hour format
+		try {
+			izabranoVremePocetak =(java.util.Date)format.parse(vreme);
+			
+			long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+			long vremeUMinutima = izabranoVremePocetak.getTime();
+			// za kraj dodaje se 30 min trajanja pregleda
+			izabranoVremeKraj = new Date(vremeUMinutima + (30 * ONE_MINUTE_IN_MILLIS));
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		boolean uklapa = false;
+		for(SlobodnoVreme s: lekarTermini.slobodnoVreme)
+		{
+			if(izabranoVremePocetak.equals(s.pocetak) || izabranoVremePocetak.after(s.pocetak))
+			{
+				if(izabranoVremeKraj.equals(s.kraj) || izabranoVremeKraj.before(s.kraj))
+				{
+					uklapa = true;
+				}
+			}
+		}
+		if(uklapa)
+		{
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<KlinikaDTO> saveKlinika(@RequestBody KlinikaDTO KlinikaDTO) {
 

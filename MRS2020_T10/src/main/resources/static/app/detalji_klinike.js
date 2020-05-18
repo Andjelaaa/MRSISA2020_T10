@@ -4,10 +4,19 @@ Vue.component('klinika-detalji', {
 			klinika: {naziv: '', adresa: '', prosecnaOcena: 0, kontaktKlinike: '000/000'},
 			idPacijenta: 1,
 			tipPregleda: {naziv: null},
-			datum: null,
+			datum: '',
 			tipoviPregleda: null,
 			greskaDatum: '',
-			greskaTipPregleda: ''
+			greskaTipPregleda: '',
+			lekariTermini: null,
+			showModal: false,
+			izabranoVreme: '',
+			izabraniLekar: null,
+			slobodniTermini: [],
+			sveJeOk: false,
+			currentSort:'prosecnaOcena',
+			  currentSortDir:'asc',
+			zahtevPregled: {lekarEmail: '', tipPregledaNaziv: '', datum: '', vreme: '', klinikaId: '', pacijentId: ''}
 		}
 	},
 
@@ -46,7 +55,7 @@ Vue.component('klinika-detalji', {
 		</nav>
 		</br>
 		
-		<p class="desna"><br>Pretraga termina</p>
+		
 		<div class="float-left" style="margin:20px">
 		<td><button v-on:click = "brzoZakazivanje()" class="btn btn-success">Brzo zakazivanje</button></td>
 		<br>
@@ -79,6 +88,59 @@ Vue.component('klinika-detalji', {
 			
 		</table>
 		</div>
+		<div class="float-right" style="width:45%">
+			<br>
+			<h3>Slobodni lekari</h3>
+			<br>
+			
+			<table class="table table-hover table-light">
+			  <tr>		   		
+		   		<th>Ime i prezime</th>
+		   		<th>Email adresa</th>
+		   		<th>Kontakt</th>
+		   		<th @click="sort('prosecnaOcena')" >Prosecna ocena</th>
+		   		<th></th>
+		   </tr>
+		  <tbody>
+		   <tr v-for="s in lekariTermini">
+		   		<td>{{s.lekar.ime}} {{s.lekar.prezime}}</td>
+		   		<td>{{s.lekar.email}}</td>
+		   		<td>{{s.lekar.kontakt}}</td>
+		   		<td>{{s.lekar.prosecnaOcena}}</td>		   		
+				<td>
+					<button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="izaberiTermin(s)">Izaberi Termin</button>
+						<modal v-if="showModal" @close="showModal = false">
+	    
+	    					<h3 slot="header">Izbor termina</h3>
+	    					<table slot="body" class="table table-hover table-light">
+								<tbody>
+									<tr><td>Lekar {{izabraniLekar.ime}} {{izabraniLekar.prezime}}</td>
+									<td>slobodni intervali</td>
+									<tr v-for="s in slobodniTermini">
+										<td></td>
+										<td>{{s.pocetak | formatTime}} - {{s.kraj | formatTime}}</td>
+									</tr>
+									<tr>
+										<td>Unesi vreme</td>
+										<td><input  class="form-control" type="time" v-model = "izabranoVreme"/></td>
+									</tr>									
+								</tbody>
+								</table>
+								
+								<div slot="body">
+								<p>Obratite paznju da pregled traje 30 min.</p>
+								</div>
+	    					<div slot="footer">
+	    						
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="zakazi(s)"> Posalji upit </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
+							</div>
+						</modal>
+				</td>
+		   </tr>
+		   </tbody>
+		</table>
+		</div>
 		</div>
 	`, 
 	
@@ -88,8 +150,71 @@ Vue.component('klinika-detalji', {
 			this.$router.push('/predefinisanipregledi/'+ this.$route.params.name)
 		},
 		
+		izaberiTermin: function(s)
+		{
+			// s je objekat PomocnaKlasa5 ima u sebi Lekara i listu vremena kada je on slobodan
+			// korisniku prikazati vreme kada je slobodan 
+			this.izabraniLekar = s.lekar;
+			this.slobodniTermini = s.slobodnoVreme;
+			
+		},
+		
+		zakazi: function(s)
+		{
+			// s je PomcnaKlasa5
+			if(this.izabranoVreme)
+			{
+				axios
+		       	.post('api/klinika/proveriTermin/'+ this.izabranoVreme, s)
+		       	.then(res => {
+		       		// ne znam kako drugacije ovaj prozor 
+		       		var r = confirm("Potvrdi termin: " + this.$route.params.date + " vreme: " + this.izabranoVreme);
+		       		if (r == true) {
+		       			console.log("Potvrdjen termin treba poslati zahtev")
+		       			this.zahtevPregled.lekarEmail = this.izabraniLekar.email;
+		       			this.zahtevPregled.tipPregledaNaziv = this.$route.params.tip;
+		       			this.zahtevPregled.datum = this.$route.params.date;
+		       			this.zahtevPregled.vreme = this.izabranoVreme;
+		       			this.zahtevPregled.klinikaId = this.$route.params.name;
+		       			this.zahtevPregled.pacijentId = this.idPacijenta;
+		       			this.sveJeOk = true;
+		       			axios
+		       			.post('api/pregled/pacijentzahtev', this.zahtevPregled)
+		       			.then(res=>{
+		       				
+		       			})
+		       			.catch((res)=>{
+		       				
+		       			})
+		       		}
+				})
+		       	.catch((res)=>{
+		       		alert("Izabrano vreme se ne uklapa u slobodne vremenske intervale!");
+		       	})
+			}
+		},
+		sort:function(s) {
+		    //if s == current sort, reverse
+		    if(s === this.currentSort) {
+		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+		    }
+		    this.currentSort = s;
+		  }
+		
 		
 	},
+	
+	computed:{
+		  sortedLekari:function() {
+		    return this.lekariTermini.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+		      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+		      return 0;
+		    });
+		  }
+		},
 	
 	mounted () {
 		axios
@@ -97,6 +222,13 @@ Vue.component('klinika-detalji', {
 		.then(res => {
 			this.klinika = res.data;
 		})
+		
+		axios
+		.get('api/klinika/slobodnitermini/lekari/'+ this.$route.params.date + '/' + this.$route.params.tip)
+       	.then(response => (this.lekariTermini = response.data))
+       	.catch((res)=>{
+        	  console.log('neuspesno');
+       	})
 		
 	},
 

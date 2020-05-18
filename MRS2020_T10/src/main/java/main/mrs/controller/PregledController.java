@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.PregledDTO;
 import main.mrs.dto.ZKartonDTO;
+import main.mrs.dto.ZahtevRegDTO;
+import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa4;
@@ -26,7 +28,9 @@ import main.mrs.model.Sala;
 import main.mrs.model.Status;
 import main.mrs.model.TipPregleda;
 import main.mrs.model.ZKarton;
+import main.mrs.model.ZahtevPregled;
 import main.mrs.service.EmailService;
+import main.mrs.service.KlinikaService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
@@ -49,6 +53,8 @@ public class PregledController {
 	private EmailService EmailService;
 	@Autowired
 	private PacijentService PacijentService;
+	@Autowired
+	private KlinikaService KlinikaService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAllPregleds() {
@@ -318,6 +324,48 @@ public class PregledController {
 			return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.BAD_REQUEST);
 		}
 
+		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
+	}
+	
+
+	@PostMapping(consumes = "application/json;charset=UTF-8", value="/pacijentzahtev")
+	public ResponseEntity<PregledDTO> saveZahtevPacijent(@RequestBody ZahtevPregled zahtev) {
+		System.out.println("E cao saljem zahtev za dan " + zahtev.datum);
+		Pregled Pregled = new Pregled();
+		//Pregled.setDatumVreme(PregledDTO.getDatumVreme());
+		String datumVreme = zahtev.datum + " " + zahtev.vreme;
+		//2020-05-21 hh:mm
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-mm HH:mm");
+		
+		try {
+			System.out.println("Sad cu da parsiram datum");
+			Pregled.setDatumVreme((Date)(sdf.parse(datumVreme)));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("E nije uspelo parsiranje");
+			e1.printStackTrace();
+		}
+		Pacijent p = PacijentService.findById(Integer.parseInt(zahtev.pacijentId));
+		Pregled.setPacijent(p);
+		//Klinika k = KlinikaService.findOne(Integer.parseInt(zahtev.klinikaId));
+		Pregled.setTrajanje(30);
+		Pregled.setStatus(Status.zahtev);	
+		Pregled.setPopust(0.0);
+		TipPregleda tp= TipPregledaService.findByNaziv(zahtev.tipPregledaNaziv); 
+		Pregled.setTipPregleda(tp);
+		Pregled.setSala(null);
+		Lekar l = LekarService.findByEmail(zahtev.lekarEmail);
+		Pregled.setLekar(l);
+		
+		
+		try {
+			System.out.println(" pokusacu da ga sacuvam");
+			Pregled = PregledService.save(Pregled);
+		} catch (Exception e) {
+			System.out.println("E nije uspelo cuvanje");
+			return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("E SVE JE OOKKKKKK");
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
 	

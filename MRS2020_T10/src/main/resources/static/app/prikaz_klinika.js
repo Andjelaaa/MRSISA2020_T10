@@ -139,7 +139,7 @@ Vue.component('klinike-prikaz', {
 			else{
 				// samo detalji za kliniku
 				console.log(klinikaId);
-				this.$router.push('/detaljiKlinike/'+klinikaId);
+				this.$router.push('/detaljiKlinike/'+klinikaId+'/'+this.datum+'/'+this.tipPregleda.naziv);
 			}
 		},
 		sort:function(s) {
