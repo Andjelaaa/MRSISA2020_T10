@@ -83,7 +83,7 @@ Vue.component('empty', {
 		            		//this.$router.replace({ name: 'pacijenti' });
 		            	} else if (this.uloga == "ROLE_ADMIN_KLINICKOG_CENTRA") {
 		            		console.log("ADMIN KC JE");
-		            		this.$router.push('/superprofil');
+		            		this.$router.push('/sprofil');
 		            	} else if (this.uloga == "ROLE_ADMIN_KLINIKE") {
 		            		console.log("ADMIN JE");
 		            		this.$router.push('/admin');

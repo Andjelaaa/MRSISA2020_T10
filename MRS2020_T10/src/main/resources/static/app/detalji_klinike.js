@@ -102,7 +102,7 @@ Vue.component('klinika-detalji', {
 		   		<th>Ime i prezime</th>
 		   		<th>Email adresa</th>
 		   		<th>Kontakt</th>
-		   		<th @click="sort('prosecnaOcena')" >Prosecna ocena</th>
+		   		<th @click="sort('prosecnaOcena')" class="class1">Prosecna ocena</th>
 		   		<th></th>
 		   </tr>
 		  <tbody>

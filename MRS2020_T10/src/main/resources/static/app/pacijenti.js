@@ -54,14 +54,14 @@ Vue.component('pacijenti', {
 		LBO: <input  type="text" v-model="pretraga.lbo">
 		<button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button>
 		
-		<table class="table table-hover table-light ">		
-		   <tr>		   		
-		   		<th @click="sort('ime')">Ime</th>
-		   		<th @click="sort('prezime')">Prezime</td>
+		<table class="table table-hover table-light">		
+		   <tr >		   		
+		   		<th @click="sort('ime')" class="class1">Ime</th>
+		   		<th @click="sort('prezime')" class="class1">Prezime</td>
 		   		<th>Email adresa</th>
 		   		<th>Kontakt</th>
-		   		<th @click="sort('lbo')">LBO</th>
-		   		<th @click="sort('adresa')">Adresa</th>
+		   		<th @click="sort('lbo')" class="class1">LBO</th>
+		   		<th @click="sort('adresa')" class="class1">Adresa</th>
 		   		<th></th>
 		   </tr>
 		  <tbody>

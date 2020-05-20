@@ -48,4 +48,6 @@ table#desna   {
 .dropdown-menu label {
   display: block;
 }
-
+.class1 {
+    cursor: pointer;
+}

@@ -108,7 +108,6 @@ Vue.component('odmoor', {
 			}
 			if(this.tipZahteva =="Odmor" ){
 				this.opis="nema opisa";
-				return 1;
 			}
 	
 				
@@ -122,10 +121,10 @@ Vue.component('odmoor', {
 		},
 		salji: function(){
 			this.greska = '';
-
+            console.log("usao123");
 			if(this.validacija()==1)
 				return;
-			
+			console.log("usao222");
 			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja};
 			//proveravace se role, ako je role lekar onda ce se setovati lekar  a med sestra na ne znam
 			
@@ -133,6 +132,7 @@ Vue.component('odmoor', {
 			.post('api/zahteviodsustvo/'+this.korisnik.email, zahtev)
 			.then((response)=>{
 				this.greska ='';
+				console.log("usao");
 				alert('Uspesno ste poslali zahtev!');
 				if(this.uloga == "ROLE_MED_SESTRA")
 					this.$router.push('/med_sestra_pocetna');

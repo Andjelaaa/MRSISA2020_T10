@@ -53,7 +53,7 @@ Vue.component('klinike-prikaz', {
 			<tr>
 			<th>Naziv klinike</th>
 			<th>Adersa</th>
-			<th @click="sort('prosecnaOcena')">Prosecna ocena</th>
+			<th @click="sort('prosecnaOcena')" class="class1">Prosecna ocena</th>
 			<th>Kontakt</th>
 			<th></th>
 			</tr>

@@ -54,10 +54,10 @@ Vue.component('zakazisalu', {
 		<div class="float-left" style="margin-left: 20px">
 			<h3> Slobodne sale </h3> <h3 v-if="!noviDatum">{{prviSlobodni[0] | formatDate}}</h3>
 		<input type='date' v-model='noviDatum'>
-		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="nadjiZaDatum()">Nađi</button>
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="nadjiZaDatum()">Nadji</button>
 		<br>
 		<input type='text' v-model='searchparam' placeholder='Naziv ili broj sale'>
-		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="pretraga()">Pretraži</button>
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="pretraga()">Pretrazi</button>
 		<table class="table table-hover table-light">
 			<thead>
 				<th>Naziv</th>
