@@ -4,6 +4,8 @@ Vue.component('zakazani-pregledi', {
 			pregledi: null,
 			istorijaPregleda: null,
 			idPacijenta: 1,
+			ocene: {ocenaLekar: 0, ocenaKlinika: 0},
+			oceneBackup: {ocenaLekar: 0, ocenaKlinika: 0},
 			showModal: false
 		}
 	},
@@ -58,7 +60,8 @@ Vue.component('zakazani-pregledi', {
 				<td>{{p.trajanje}}</td>
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
-				<td>{{p.sala.broj}}</td>
+				<td>broj sale</td>
+				<!--<td>{{p.sala.broj}}</td>-->
 				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
 						<modal v-if="showModal" @close="showModal = false">
         
@@ -90,14 +93,26 @@ Vue.component('zakazani-pregledi', {
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
 				<td>{{p.sala.broj}}</td>
-				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
+				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select(p)">Oceni</button>
 						<modal v-if="showModal" @close="showModal = false">
         
-        					<h3 slot="header">Potvrdi otkazivanje</h3>
-        					<p slot="body">Da li ste sigurni?</p>
+        					<h3 slot="header">Ocenjivanje</h3>
+        					<table slot="body" class="table table-hover table-light">
+								<tbody>
+										
+									<tr>
+										<td>Ocena Klinike</td>
+										<td><input class="form-control" type="number" min="0" max="10" v-model="ocene.ocenaKlinika"/></td>
+									</tr>
+									<tr>
+										<td>Ocena Lekara</td>
+										<td><input  class="form-control" type="number" min="0" max="10" v-model = "ocene.ocenaLekar"/></td>
+									</tr>									
+								</tbody>
+								</table>
         					<div slot="footer">
-        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="otkazi(p.id, index)"> Potvrdi </button>       						
-								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
+        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="oceni(p)"> Potvrdi </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false" v-on:click="restore()"> Odustani </button>								
 							</div>
 						</modal></td>
 			</tr>
@@ -120,7 +135,50 @@ Vue.component('zakazani-pregledi', {
 	        	  alert("Ne mozete otkazati pregled!");
 	        	  console.log('neuspesno');
 	          })
-		},	
+		},
+		
+		select: function(p)
+		{
+			// odmah podesi backup
+			axios
+			.post('api/pregled/ocene', p)
+			.then(res=>{
+				this.ocene = res.data;
+				this.oceneBackup.ocenaLekar = this.ocene.ocenaLekar;
+				this.oceneBackup.ocenaKlinika = this.ocene.ocenaKlinika;
+			})
+			
+		},
+		oceni : function(p)
+		{
+			// ceo pregled iz njega mi treba id klinike i ili id lekara ako je potvrdio ocenu
+			// this.ocene;
+			if(this.ocene.ocenaKlinika != this.oceneBackup.ocenaKlinika)
+			{
+				// oceni kliniku
+				//.post('api/ocenaklinika/oceni/'+ p.lekar.klinika.id + '/' + this.idPacijenta + '/' + this.ocene.ocenaKlinika)
+				axios
+				.post('api/ocenaklinika/oceni/1/' + this.idPacijenta + '/' + this.ocene.ocenaKlinika)
+				.then(res=>{
+					
+				})
+			}
+			if(this.ocene.ocenaLekar != this.oceneBackup.ocenaLekar)
+			{
+				// oceni lekara
+				axios
+				.post('api/ocenalekar/oceni/'+ p.lekar.id + '/' + this.idPacijenta+'/'+this.ocene.ocenaLekar)
+				.then(res=>{
+					
+				})
+			}
+		},
+		
+		restore : function()
+		{
+			this.ocene.ocenaLekar = this.oceneBackup.ocenaLekar;
+			this.ocene.ocenaKlinika = this.oceneBackup.ocenaKlinika;
+		}
 	},
 	
 	mounted () {

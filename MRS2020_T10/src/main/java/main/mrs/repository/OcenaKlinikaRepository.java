@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.OcenaKlinika;
 
@@ -80,4 +81,7 @@ public interface OcenaKlinikaRepository extends JpaRepository<OcenaKlinika, Long
 
 	 
 	  <S extends OcenaKlinika> List<S> saveAll(Iterable<S> arg0);
+
+	@Query(value = "SELECT * FROM OCENA_KLINIKA WHERE PACIJENT_ID = ?2 AND KLINIKA_ID = ?1", nativeQuery = true)
+	OcenaKlinika findOcenu(int klinikaId, int pacijentId);
 }

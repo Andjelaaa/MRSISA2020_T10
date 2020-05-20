@@ -40,4 +40,9 @@ public class OcenaLekarService {
 		 OcenaLekarRepository.delete(ocena);
 		
 	}
+
+	public OcenaLekar findOcenu(int lekarId, int pacijentId) {
+		// TODO Auto-generated method stub
+		return OcenaLekarRepository.findOcenu(lekarId, pacijentId);
+	}
 }

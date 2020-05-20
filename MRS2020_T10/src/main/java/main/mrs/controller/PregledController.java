@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.PregledDTO;
-import main.mrs.dto.ZKartonDTO;
-import main.mrs.dto.ZahtevRegDTO;
-import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
+import main.mrs.model.OcenaKlinika;
+import main.mrs.model.OcenaLekar;
+import main.mrs.model.Ocene;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa4;
 import main.mrs.model.Pregled;
@@ -32,6 +32,8 @@ import main.mrs.model.ZahtevPregled;
 import main.mrs.service.EmailService;
 import main.mrs.service.KlinikaService;
 import main.mrs.service.LekarService;
+import main.mrs.service.OcenaKlinikaService;
+import main.mrs.service.OcenaLekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
 import main.mrs.service.SalaService;
@@ -55,6 +57,10 @@ public class PregledController {
 	private PacijentService PacijentService;
 	@Autowired
 	private KlinikaService KlinikaService;
+	@Autowired
+	private OcenaLekarService OcenaLekarService;
+	@Autowired
+	private OcenaKlinikaService OcenaKlinikaService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAllPregleds() {
@@ -72,6 +78,32 @@ public class PregledController {
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/ocene")
+	public ResponseEntity<Ocene> dobaviOcene(@RequestBody PregledDTO data) {
+		System.out.println("Dosao sam ovde da dobavim ocene");
+		Ocene ocene = new Ocene(); // podesi ocene na 0, ako je 0 onda nije ni ocenjeno
+		
+		// dobavimo stare ocene ako postoje
+		// kad namestimmo da se setuje i klinika za lekara odkomentarisatiii
+		// int klinikaId = data.getLekar().getKlinika().getId();
+		int klinikaId = 1;
+		int pacijentId = data.getPacijent().getId();
+		int lekarId = data.getLekar().getId();
+		OcenaLekar ocenaLekara = OcenaLekarService.findOcenu(lekarId, pacijentId);
+		OcenaKlinika ocenaKlinike = OcenaKlinikaService.findOcenu(klinikaId, pacijentId);
+		
+		if(ocenaLekara != null)
+		{
+			ocene.ocenaLekar = ocenaLekara.getOcena();
+		}
+		if(ocenaKlinike != null)
+		{
+			ocene.ocenaKlinika = ocenaKlinike.getOcena();
+		}
+		
+		return new ResponseEntity<>(ocene, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/slobodniPregledi/{klinikaId}")
