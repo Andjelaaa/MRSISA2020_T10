@@ -1,6 +1,7 @@
 Vue.component('klinika-detalji', {
 	data: function(){
 		return{
+			pretraga: {ime: '', prezime: '', ocena: 0, lekariTermini: []},
 			klinika: {naziv: '', adresa: '', prosecnaOcena: 0, kontaktKlinike: '000/000'},
 			idPacijenta: 1,
 			tipPregleda: {naziv: null},
@@ -9,6 +10,7 @@ Vue.component('klinika-detalji', {
 			greskaDatum: '',
 			greskaTipPregleda: '',
 			lekariTermini: null,
+			sviSlobodni: null,
 			showModal: false,
 			izabranoVreme: '',
 			izabraniLekar: null,
@@ -89,6 +91,8 @@ Vue.component('klinika-detalji', {
 		</table>
 		</div>
 		<div class="float-right" style="width:45%">
+		
+		
 			<br>
 			<h3>Slobodni lekari</h3>
 			<br>
@@ -139,6 +143,14 @@ Vue.component('klinika-detalji', {
 				</td>
 		   </tr>
 		   </tbody>
+		</table>
+		<br>
+		<h3>Pretraga</h3>
+		<table class="table table-hover table-light">
+			<tr><td>Ime:</td><td><input  type="text" v-model="pretraga.ime" ></td></tr>
+			<tr><td>Prezime:</td><td><input  type="text" v-model="pretraga.prezime"></td></tr>
+			<tr><td>Ocena:</td><td><input type="number" v-model="pretraga.ocena"></td></tr>
+			<tr><td></td><td><button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button></td></tr>
 		</table>
 		</div>
 		</div>
@@ -199,7 +211,15 @@ Vue.component('klinika-detalji', {
 		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
 		    }
 		    this.currentSort = s;
-		  }
+		  },
+		  
+		  pretrazi: function(){
+			  this.pretraga.lekariTermini = this.sviSlobodni;
+				axios
+		       	.post('api/lekar/slobodniLekari/search', this.pretraga)
+		       	.then(response => (this.lekariTermini = response.data));
+
+			}
 		
 		
 	},
@@ -225,7 +245,10 @@ Vue.component('klinika-detalji', {
 		
 		axios
 		.get('api/klinika/slobodnitermini/lekari/'+ this.$route.params.date + '/' + this.$route.params.tip)
-       	.then(response => (this.lekariTermini = response.data))
+       	.then(response => {
+       		this.lekariTermini = response.data;
+       		this.sviSlobodni = this.lekariTermini;
+       	})
        	.catch((res)=>{
         	  console.log('neuspesno');
        	})
