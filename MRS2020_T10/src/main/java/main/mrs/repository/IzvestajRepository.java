@@ -33,7 +33,7 @@ public interface IzvestajRepository extends JpaRepository<Izvestaj, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Izvestaj> findById(Long arg0);
+	  Optional<Izvestaj> findById(Integer pregled_id);
 
 	 
 	  <S extends Izvestaj> S save(S arg0);

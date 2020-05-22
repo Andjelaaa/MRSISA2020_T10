@@ -15,8 +15,8 @@ public class IzvestajService {
 	@Autowired
 	private IzvestajRepository IzvestajRepository;
 
-	public Izvestaj findOne(Long id) {
-		return IzvestajRepository.findById(id).orElseGet(null);
+	public Izvestaj findOne(Integer pregled_id) {
+		return IzvestajRepository.findById(pregled_id).orElseGet(null);
 	}
 
 	public List<Izvestaj> findAll() {

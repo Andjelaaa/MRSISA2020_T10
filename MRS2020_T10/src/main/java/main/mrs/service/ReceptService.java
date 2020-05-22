@@ -15,8 +15,8 @@ public class ReceptService {
 	@Autowired
 	private ReceptRepository ReceptRepository;
 
-	public Recept findOne(Long id) {
-		return ReceptRepository.findById(id).orElseGet(null);
+	public Recept findOne(Integer integer) {
+		return ReceptRepository.findById(integer).orElseGet(null);
 	}
 
 	public List<Recept> findAll() {

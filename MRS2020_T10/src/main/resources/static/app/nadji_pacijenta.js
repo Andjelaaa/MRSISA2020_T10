@@ -14,13 +14,26 @@ Vue.component('nadjipacijenta', {
 			odabraniLekovi:[],
 			showModal: false,
 			showModal1: false,
+			showModal2: false,
+			showModal3: false,
 			noviTermin: {},
 			datumVremeGreska: '',
 			tipTerminaGreska: '',
 			trajanjeGreska: '',
 			tipTermina: '',
+			istorijaPregleda: {},
 			selected: {krvnaGrupa:'', visina:'',tezina:'', dioptrija:'' },
-			selectedBackup:  {krvnaGrupa:'', visina:'',tezina:'', dioptrija:'' }
+			selectedBackup:  {krvnaGrupa:'', visina:'',tezina:'', dioptrija:'' },
+			
+			selectedIzvestaj: {datumVreme:'', trajanje:'',tipPregleda:{}, lekar:'', sala:{},
+			izvestaj:{ id:'',dijagnoza:'',  recept:{lek:[]}} },
+		
+			selectedBackupIzvestaj:  {datumVreme:'', trajanje:'',tipPregleda:{}, lekar:'', sala:{},
+			izvestaj:{ id:'', dijagnoza:'', recept:{lek:[]}} },
+			promenjenaDijagnoza:'',
+			funkcionalnost:false,
+			menjaDijagnozu:'',
+			menjaLekove:[]
 		}
 	}, 
 	
@@ -118,8 +131,91 @@ Vue.component('nadjipacijenta', {
 		</table>
 	<button v-if="uloga=='ROLE_LEKAR' && pregled!=null" class="btn btn-light" v-on:click="pocni()"> Zapocni pregled </button>
 	<p v-if="pregled==null"> Nema pregleda za zapocinjanje </p>
+	<br>
+			<h3> Istorija pregleda </h3>
+		
+		<table class="table table-hover table-light ">
+			<tr>
+			<th>Datum i vreme</th>
+			<th>Trajanje</th>
+			<th>Tip pregleda</th>
+			<th>Lekar</th>
+			<th>Sala</th>
+			<th>Dijagnoza</th>
+			<th>Lekovi</th>
+			<th></th>
+			</tr>
+			
+			<tr v-for="(p, index) in istorijaPregleda">
+				<td>{{p.datumVreme | formatDate}}</td>
+				<td>{{p.trajanje}}</td>
+				<td>{{p.tipPregleda.naziv}}</td>
+				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
+				<td>{{p.sala.broj}}</td>
+				<td>{{p.izvestaj.dijagnoza.naziv}} </td>
+				<td> <p v-for="zz in p.izvestaj.recept.lek"> {{zz.naziv}} {{zz.sifra}}</p> </td>
+				<td>
+				<td><button class="btn btn-light" id="show-modal"  v-on:click="selectIzmenu(p)">Izmeni</button>
+						<modal v-if="showModal2 && funkcionalnost" @close="showModal2 = false">
+        
+        					<h3 slot="header">Izmena izvestaja</h3>
+        					<table slot="body" class="table table-hover table-light">
+								<tbody>
+										
+									<tr>
+										<td>Dijagnoza</td>
+										 <td>
+											<select class="form-control"  v-model="menjaDijagnozu">
+												<option v-for="t in dijagnoze" :value="t">{{t.naziv}} {{t.sifra}}</option>
+											</select>
+										 </td>
+									</tr>
+									<tr>
+								 		<td>Lekovi</td>
+										 <td>
+										 <div class="dropdown">
+											<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Odaberi lek
+											</button>
+											<form class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+													<label class="dropdown-item" v-for="l in lekovi" name="" value="l.naziv">
+														<input id="l" name="l.naziv" :value="l" type="checkbox" v-model="menjaLekove">{{l.naziv}}
+													</label>
+											</form>
+										</div>
+										 
+										 </td>
+									</tr>
+																		
+								</tbody>
+								</table>
+								<div slot="footer">
+									<button @click="showModal2=false" style="margin:5px;" class="btn btn-success" v-on:click="izmeniPoslednjiIzvestaj(p)"> Izmeni </button>       						
+									<button style="margin:5px;" class="btn btn-secondary" @click="showModal2=false" v-on:click="restoreIzvestaj(p)"> Odustani </button>								
+								</div>
+						</modal>
+						<modal v-if="showModal3 && !funkcionalnost" @close="showModal3 = false">
+        
+        					<h3 slot="header">Obavestenje</h3>
+        					<table slot="body" class="table table-hover table-light">
+								<tbody>
+
+									<tr>
+										<td>Rok za izmenu zdravstvenog kartona je prosao.</td>
+									</tr>									
+								</tbody>
+								</table>
+								<div slot="footer">
+									
+									<button style="margin:5px;" class="btn btn-secondary" @click="showModal3=false"> OK </button>								
+								</div>
+						</modal>
+				</td>
+			</tr>
+		</table>
+	
 	</div>
-	<div class="float-right" style="margin: 20px" v-if="pocinjanje">
+    <div class="float-right" style="margin: 20px" v-if="pocinjanje">
 		<h3> Unesi izvestaj </h3>
 		
 		<table class="table table-hover table-light ">		
@@ -218,7 +314,6 @@ Vue.component('nadjipacijenta', {
 			axios
 			.post('api/pregled/izmenikarton/'+ this.korisnik.id, objekat)
 			.then((response)=>{
-				
 				 alert("Uspesno ste izmenili");
 				
 			}).catch((response)=>{
@@ -316,7 +411,131 @@ Vue.component('nadjipacijenta', {
 			this.tipTerminaGreska= '';
 			this.trajanjeGreska= '';
 			this.tipTermina= '';
-	    }
+		},
+		selectIzmenu: function(pregled){
+			var zavrsenPregled = new Date(new Date(pregled.datumVreme).getTime()+ pregled.trajanje); 
+			var trenutnoVreme = new Date();
+			var diff = (trenutnoVreme - zavrsenPregled)/60000;// in milliseconds
+			
+			console.log(diff+" dasd");
+			if(diff<= 30 && pregled.lekar.id == this.korisnik.id){  // ako je proslo 30 min od pregleda ne moze da izmeni poy
+				this.showModal2 = true;
+				this.showModal3 = false;
+				this.funkcionalnost = true;
+				this.selectedBackupIzvestaj.datumVreme = pregled.datumVreme;
+				this.selectedBackupIzvestaj.trajanje = pregled.trajanje;
+				this.selectedBackupIzvestaj.tipPregleda = pregled.tipPregleda;
+				this.selectedBackupIzvestaj.lekar = pregled.lekar;
+				this.selectedBackupIzvestaj.sala = pregled.sala;
+				this.selectedBackupIzvestaj.izvestaj.id = pregled.izvestaj.id;
+				this.selectedBackupIzvestaj.izvestaj.dijagnoza = pregled.izvestaj.dijagnoza;
+				this.selectedBackupIzvestaj.izvestaj.recept.lek = pregled.izvestaj.recept.lek;
+				this.selectedIzvestaj = pregled;
+			}
+			else{
+				this.showModal3 = true;
+				this.showModal2 = false;
+				this.funkcionalnost = false;
+				
+			}
+		},
+
+		izmeniPoslednjiIzvestaj: function(pregled){
+			if(this.menjaDijagnozu && this.menjaLekove.length==0){
+				console.log("udje1");
+				    this.selectedIzvestaj.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
+					this.selectedIzvestaj.izvestaj.dijagnoza = this.menjaDijagnozu;
+					axios
+					.put('api/recept/izmeniDijagnozu/'+ pregled.id +'/'+ this.selectedBackupIzvestaj.izvestaj.id, this.selectedIzvestaj.izvestaj.dijagnoza)
+					.then((response)=>{
+						
+						alert("Uspesno ste izmenili dati pregled");
+						
+					}).catch((response)=>{
+						this.selectedIzvestaj.datumVreme = this.selectedBackupIzvestaj.datumVreme;
+						this.selectedIzvestaj.trajanje = this.selectedBackupIzvestaj.trajanje;
+						this.selectedIzvestaj.tipPregleda =this.selectedBackupIzvestaj.tipPregleda
+						this.selectedIzvestaj.lekar = this.selectedBackupIzvestaj.lekar;
+						this.selectedIzvestaj.sala =this.selectedBackupIzvestaj.sala;
+						this.selectedIzvestaj.izvestaj.id =this.selectedBackupIzvestaj.izvestaj.id;
+						this.selectedIzvestaj.izvestaj.dijagnoza = this.selectedBackupIzvestaj.izvestaj.dijagnoza;
+						this.selectedIzvestaj.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
+						alert("Pogresili ste sa izmenom");
+					});
+			}
+			else if(!this.menjaDijagnozu && this.menjaLekove){
+				console.log("udje2");
+				this.selectedIzvestaj.izvestaj.dijagnoza = this.selectedBackupIzvestaj.izvestaj.dijagnoza;
+				this.selectedIzvestaj.izvestaj.recept.lek =this.menjaLekove;
+				var objekat ={"dijagnozaDTO": this.selectedIzvestaj.izvestaj.dijagnoza, "lekoviDTO": this.selectedIzvestaj.izvestaj.recept.lek};
+				axios
+					.put('api/recept/izmeniLekove/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
+					.then((response)=>{
+						//var count = this.selectedBackupIzvestaj.izvestaj.recept.lek.length;
+						//var count1 = this.selectedIzvestaj.izvestaj.recept.lek.length;
+						//this.selectedIzvestaj.izvestaj.recept.lek= this.selectedIzvestaj.izvestaj.recept.lek.slice(count,count1);
+						///if(!this.selectedIzvestaj.izvestaj.recept.lek){
+						//	this.selectedIzvestaj.izvestaj.recept.lek =this.selectedBackupIzvestaj.izvestaj.recept.lek;
+						//}
+						alert("Uspesno ste izmenili dati pregled");
+						
+					}).catch((response)=>{
+						this.selectedIzvestaj.datumVreme = this.selectedBackupIzvestaj.datumVreme;
+						this.selectedIzvestaj.trajanje = this.selectedBackupIzvestaj.trajanje;
+						this.selectedIzvestaj.tipPregleda =this.selectedBackupIzvestaj.tipPregleda
+						this.selectedIzvestaj.lekar = this.selectedBackupIzvestaj.lekar;
+						this.selectedIzvestaj.sala =this.selectedBackupIzvestaj.sala;
+						this.selectedIzvestaj.izvestaj.id =this.selectedBackupIzvestaj.izvestaj.id;
+						this.selectedIzvestaj.izvestaj.dijagnoza = this.selectedBackupIzvestaj.izvestaj.dijagnoza;
+						this.selectedIzvestaj.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
+						alert("Pogresili ste sa izmenom");
+					});
+			}
+			else if(this.menjaDijagnozu && this.menjaLekove){
+				console.log("udje3");
+				this.selectedIzvestaj.izvestaj.dijagnoza = this.menjaDijagnozu;
+				this.selectedIzvestaj.izvestaj.recept.lek =this.menjaLekove;
+				var objekat ={"dijagnozaDTO": this.selectedIzvestaj.izvestaj.dijagnoza, "lekoviDTO": this.selectedIzvestaj.izvestaj.recept.lek};
+				axios
+					.put('api/recept/izmeniOba/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
+					.then((response)=>{
+						//var count = this.selectedBackupIzvestaj.izvestaj.recept.lek.length;
+						//	var count1 = this.selectedIzvestaj.izvestaj.recept.lek.length;
+						//this.selectedIzvestaj.izvestaj.recept.lek= this.selectedIzvestaj.izvestaj.recept.lek.slice(count,count1);
+						//if(!this.selectedIzvestaj.izvestaj.recept.lek){
+						//	this.selectedIzvestaj.izvestaj.recept.lek =this.selectedBackupIzvestaj.izvestaj.recept.lek;
+						//}
+						alert("Uspesno ste izmenili dati pregled");
+						
+					}).catch((response)=>{
+						this.selectedIzvestaj.datumVreme = this.selectedBackupIzvestaj.datumVreme;
+						this.selectedIzvestaj.trajanje = this.selectedBackupIzvestaj.trajanje;
+						this.selectedIzvestaj.tipPregleda =this.selectedBackupIzvestaj.tipPregleda
+						this.selectedIzvestaj.lekar = this.selectedBackupIzvestaj.lekar;
+						this.selectedIzvestaj.sala =this.selectedBackupIzvestaj.sala;
+						this.selectedIzvestaj.izvestaj.id =this.selectedBackupIzvestaj.izvestaj.id;
+						this.selectedIzvestaj.izvestaj.dijagnoza = this.selectedBackupIzvestaj.izvestaj.dijagnoza;
+						this.selectedIzvestaj.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
+						alert("Pogresili ste sa izmenom");
+					});
+			}
+			else{
+				console.log("udje4");
+				this.restoreIzvestaj(pregled);
+			}
+			
+		},
+		restoreIzvestaj:function(pregled){
+			pregled.datumVreme = this.selectedBackupIzvestaj.datumVreme;
+			pregled.trajanje = this.selectedBackupIzvestaj.trajanje;
+ 			pregled.tipPregleda =this.selectedBackupIzvestaj.tipPregleda
+			pregled.lekar = this.selectedBackupIzvestaj.lekar;
+			pregled.sala =this.selectedBackupIzvestaj.sala;
+			pregled.izvestaj.id = this.selectedBackupIzvestaj.izvestaj.id;
+			pregled.izvestaj.dijagnoza = this.selectedBackupIzvestaj.izvestaj.dijagnoza;
+			pregled.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
+			this.selectedIzvestaj.izvestaj.recept.lek =this.selectedBackupIzvestaj.izvestaj.recept.lek;
+		}
 	},
 	
 	mounted(){
@@ -337,25 +556,37 @@ Vue.component('nadjipacijenta', {
 	           	.get('api/pacijent/'+this.$route.params.lbo)
 	           	.then(response => {
 	           			this.pacijent = response.data; 
-	           			this.zKarton = this.pacijent.zKarton;
+						this.zKarton = this.pacijent.zKarton;
 	           			axios
 	    	           	.get('api/pregled/'+this.pacijent.id+'/'+ this.korisnik.id)
 	    	           	.then(response => {
-	    	           			this.pregled = response.data; 
+							this.pregled = response.data;
+							
 	    	           	}).catch((response)=>
-	    	           			{this.pregled = null; 
+	    	           			{this.pregled = {}; 
 	    	           			console.log("Pregled ne postoji");}
-	    	           	);
-	           	});
-	    		axios
-	           	.get('api/dijagnoze/all')
-	           	.then(response => {
-	           		this.dijagnoze = response.data; 
-	           	});
-	    		 axios
-	    	     	.get('api/lekovi/all')
-	    	     	.then(response => (this.lekovi = response.data));
-	    	
+						);
+						axios
+						.get('api/pregled/istorijaPregleda/'+this.pacijent.id)
+						.then(response => {
+							this.istorijaPregleda = response.data;
+						}).catch((response)=>
+	    	           			{console.log("IStorija nesto pravi problem");}
+						);
+					   
+							
+					   
+				   });
+				   	
+					axios
+					.get('api/dijagnoze/all')
+					.then(response => {
+						this.dijagnoze = response.data; 
+					});
+					axios
+						.get('api/lekovi/all')
+						.then(response => (this.lekovi = response.data));
+				
 	    	}
 	    })
 	    .catch(function (error) { console.log(error);});

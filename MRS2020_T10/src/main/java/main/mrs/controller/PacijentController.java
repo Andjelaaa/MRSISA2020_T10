@@ -76,7 +76,7 @@ public class PacijentController {
 
 		Pacijent Pacijents = pacijentService.findByLbo(lbo);
 		PacijentDTO PacijentsDTO = new PacijentDTO(Pacijents);
-
+		
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
 	}
 	

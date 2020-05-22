@@ -4,7 +4,6 @@ const StranicaZaRegistraciju = { template: '<strzareg></strzareg>' }
 const ProfilSuperAdmina = { template: '<superprofil></superprofil>' }
 const SifrarnikLekova = {template: '<sifrarnik1></sifrarnik1>'}
 const SifrarnikDijagnoza = {template: '<sifrarnik2></sifrarnik2>'}
-const KreirajZK = {template: '<kreirajzk></kreirajzk>'}
 const OdobravanjeReg = {template: '<odobri_zaht></odobri_zaht>'}
 const LekarPocetna = {template: '<lekar></lekar>'}
 const AdminPocetna = {template: '<admin></admin>'}
@@ -44,7 +43,6 @@ const router = new VueRouter({
 	    { path: '/sprofil', component: ProfilSuperAdmina},
 	    { path: '/sifrarnik1', component: SifrarnikLekova},
 	    { path: '/sifrarnik2', component: SifrarnikDijagnoza},
-	    { path: '/kreirajzk', component: KreirajZK},
 	    { path: '/odobri_zahtev', component: OdobravanjeReg},
 	    { path: '/lekar', component: LekarPocetna},
 	    { path: '/admin', component: AdminPocetna},

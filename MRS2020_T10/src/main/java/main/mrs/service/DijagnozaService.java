@@ -15,8 +15,8 @@ public class DijagnozaService {
 	@Autowired
 	private DijagnozaRepository DijagnozaRepository;
 
-	public Dijagnoza findOne(Long id) {
-		return DijagnozaRepository.findById(id).orElseGet(null);
+	public Dijagnoza findOne(Integer integer) {
+		return DijagnozaRepository.findById(integer).orElseGet(null);
 	}
 
 	public List<Dijagnoza> findAll() {

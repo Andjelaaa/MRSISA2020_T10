@@ -34,7 +34,7 @@ public interface ReceptRepository  extends JpaRepository<Recept, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Recept> findById(Long arg0);
+	  Optional<Recept> findById(Integer integer);
 
 	 
 	  <S extends Recept> S save(S arg0);

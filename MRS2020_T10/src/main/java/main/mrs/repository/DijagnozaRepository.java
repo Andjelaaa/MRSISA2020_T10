@@ -37,7 +37,7 @@ public interface DijagnozaRepository extends JpaRepository<Dijagnoza, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Dijagnoza> findById(Long arg0);
+	  Optional<Dijagnoza> findById(Integer integer);
 
 	 
 	  <S extends Dijagnoza> S save(S arg0);

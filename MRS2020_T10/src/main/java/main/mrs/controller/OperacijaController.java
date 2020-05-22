@@ -66,7 +66,8 @@ public class OperacijaController {
 		
 		List<OperacijaDTO> operacijeDTO = new ArrayList<>();
 		for (Operacija s : operacije) {
-			operacijeDTO.add(new OperacijaDTO(s));
+			if(s.getStatus() == Status.odobreno)
+				operacijeDTO.add(new OperacijaDTO(s));
 		}
 		
 		return new ResponseEntity<>(operacijeDTO, HttpStatus.OK);

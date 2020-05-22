@@ -73,15 +73,15 @@ public class Pregled {
    
    public Pacijent getPacijent() {
 	return pacijent;
-}
-
-public void setPacijent(Pacijent pacijent) {
-	this.pacijent = pacijent;
-}
-
-public void setLek(Set<Lek> newLek) {
-      this.lek = newLek;
-   }
+	}
+	
+	public void setPacijent(Pacijent pacijent) {
+		this.pacijent = pacijent;
+	}
+	
+	public void setLek(Set<Lek> newLek) {
+	      this.lek = newLek;
+	   }
    
    public void addLek(Lek newLek) {
       if (newLek == null)
@@ -136,68 +136,68 @@ public void setLek(Set<Lek> newLek) {
          dijagnoza.clear();
    }
 
-public Date getDatumVreme() {
-	return datumVreme;
-}
-
-public void setDatumVreme(Date datumVreme) {
-	this.datumVreme = datumVreme;
-}
-
-public int getTrajanje() {
-	return trajanje;
-}
-
-public void setTrajanje(int trajanje) {
-	this.trajanje = trajanje;
-}
-
-public Double getPopust() {
-	return popust;
-}
-
-public void setPopust(Double popust) {
-	this.popust = popust;
-}
-
-public Status getStatus() {
-	return status;
-}
-
-public void setStatus(Status status) {
-	this.status = status;
-}
-
-public Lekar getLekar() {
-	return lekar;
-}
-
-public void setLekar(Lekar lekar) {
-	this.lekar = lekar;
-}
-
-public Sala getSala() {
-	return sala;
-}
-
-public void setSala(Sala sala) {
-	this.sala = sala;
-}
-
-public TipPregleda getTipPregleda() {
-	return tipPregleda;
-}
-
-public void setTipPregleda(TipPregleda tipPregleda) {
-	this.tipPregleda = tipPregleda;
-}
-
-public Izvestaj getIzvestaj() {
-	return izvestaj;
-}
-
-public void setIzvestaj(Izvestaj izvestaj) {
-	this.izvestaj = izvestaj;
-}
+	public Date getDatumVreme() {
+		return datumVreme;
+	}
+	
+	public void setDatumVreme(Date datumVreme) {
+		this.datumVreme = datumVreme;
+	}
+	
+	public int getTrajanje() {
+		return trajanje;
+	}
+	
+	public void setTrajanje(int trajanje) {
+		this.trajanje = trajanje;
+	}
+	
+	public Double getPopust() {
+		return popust;
+	}
+	
+	public void setPopust(Double popust) {
+		this.popust = popust;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	public Lekar getLekar() {
+		return lekar;
+	}
+	
+	public void setLekar(Lekar lekar) {
+		this.lekar = lekar;
+	}
+	
+	public Sala getSala() {
+		return sala;
+	}
+	
+	public void setSala(Sala sala) {
+		this.sala = sala;
+	}
+	
+	public TipPregleda getTipPregleda() {
+		return tipPregleda;
+	}
+	
+	public void setTipPregleda(TipPregleda tipPregleda) {
+		this.tipPregleda = tipPregleda;
+	}
+	
+	public Izvestaj getIzvestaj() {
+		return izvestaj;
+	}
+	
+	public void setIzvestaj(Izvestaj izvestaj) {
+		this.izvestaj = izvestaj;
+	}
 
 }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.PregledDTO;
+import main.mrs.model.Dijagnoza;
+import main.mrs.model.Izvestaj;
 import main.mrs.model.Lekar;
 import main.mrs.model.OcenaKlinika;
 import main.mrs.model.OcenaLekar;
@@ -24,18 +26,22 @@ import main.mrs.model.Ocene;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa4;
 import main.mrs.model.Pregled;
+import main.mrs.model.Recept;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
 import main.mrs.model.TipPregleda;
 import main.mrs.model.ZKarton;
 import main.mrs.model.ZahtevPregled;
+import main.mrs.service.DijagnozaService;
 import main.mrs.service.EmailService;
+import main.mrs.service.IzvestajService;
 import main.mrs.service.KlinikaService;
 import main.mrs.service.LekarService;
 import main.mrs.service.OcenaKlinikaService;
 import main.mrs.service.OcenaLekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
+import main.mrs.service.ReceptService;
 import main.mrs.service.SalaService;
 import main.mrs.service.TipPregledaService;
 
@@ -46,9 +52,15 @@ public class PregledController {
 	@Autowired
 	private PregledService PregledService;
 	@Autowired
+	private DijagnozaService DijagnozaService;
+	@Autowired
+	private ReceptService ReceptService;
+	@Autowired
 	private LekarService LekarService;
 	@Autowired
 	private SalaService SalaService;
+	@Autowired
+	private IzvestajService IzvestajService;
 	@Autowired
 	private TipPregledaService TipPregledaService;
 	@Autowired
@@ -142,11 +154,10 @@ public class PregledController {
 
 	@GetMapping(value = "/{pacijent_id}/{lekar_id}")
 	public ResponseEntity<PregledDTO>dobaviPregledeZaDan( @PathVariable Integer pacijent_id, @PathVariable Integer lekar_id) {
-
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		List<Pregled> pregledi = PregledService.getPreglediByPL(pacijent_id, lekar_id);
-       
+	
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : pregledi) {
 			
@@ -172,7 +183,14 @@ public class PregledController {
 			PregledDTO pregled = new PregledDTO(s);
 			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
 			pregled.setPopust(s.getPopust());
+			Izvestaj izvestaj = IzvestajService.findOne(s.getIzvestaj().getId());
+			Dijagnoza dijagnoza = DijagnozaService.findOne(s.getIzvestaj().getDijagnoza().getId());
+			izvestaj.setDijagnoza(dijagnoza);
+			Recept recept = ReceptService.findOne(s.getIzvestaj().getRecept().getId());
+			izvestaj.setRecept(recept);
+			pregled.setIzvestaj(izvestaj);
 			PregledsDTO.add(pregled);
+
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
@@ -209,7 +227,8 @@ public class PregledController {
 
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : pregledi) {
-			preglediDTO.add(new PregledDTO(s));
+			if(s.getStatus() == Status.odobreno)
+				preglediDTO.add(new PregledDTO(s));
 		}
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}

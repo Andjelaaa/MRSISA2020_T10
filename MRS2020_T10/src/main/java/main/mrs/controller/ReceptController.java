@@ -2,12 +2,13 @@ package main.mrs.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,13 +16,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.MedSestraDTO;
-import main.mrs.dto.OdsustvoDTO;
+import main.mrs.dto.DijagnozaDTO;
+import main.mrs.dto.LekDTO;
 import main.mrs.dto.ReceptDTO;
+import main.mrs.model.Dijagnoza;
+import main.mrs.model.Izvestaj;
+import main.mrs.model.Lek;
 import main.mrs.model.MedSestra;
+import main.mrs.model.Pacijent;
+import main.mrs.model.PomocnaKlasa8;
+import main.mrs.model.Pregled;
 import main.mrs.model.Recept;
-import main.mrs.service.ReceptService;
+import main.mrs.service.DijagnozaService;
+import main.mrs.service.IzvestajService;
 import main.mrs.service.MedSestraService;
+import main.mrs.service.PacijentService;
+import main.mrs.service.PregledService;
+import main.mrs.service.ReceptService;
+import main.mrs.service.LekService;
 
 @RestController
 @RequestMapping(value="api/recept")
@@ -31,7 +43,18 @@ public class ReceptController {
 	
 	@Autowired
 	private MedSestraService MedSestraService;
+	@Autowired
+	private LekService LekService;
+	@Autowired
+	private PregledService PregledService;
+	@Autowired
+	private PacijentService PacijentService;
 	
+	@Autowired
+	private IzvestajService IzvestajService;
+	
+	@Autowired
+	private DijagnozaService DijagnozaService;
 	
 	@GetMapping(value = "/neovereni")
 	public ResponseEntity<List<ReceptDTO>> getAllRecepte() {
@@ -63,6 +86,94 @@ public class ReceptController {
 		}
 
 		return new ResponseEntity<>( HttpStatus.OK);
+		
+	}
+	@PutMapping(value = "/izmeniDijagnozu/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	public ResponseEntity<String> izmeniDijagnozuRecept(@RequestBody DijagnozaDTO DijagnozaDTO, @PathVariable Integer pregled_id,
+			@PathVariable Integer izvestaj_id) {
+		//samo dijagnoza se menja
+		Pregled pregled = PregledService.findById(pregled_id);
+		//pronadji pacijenta
+		Pacijent pacijent = PacijentService.findById(pregled.getPacijent().getId());
+		
+		//pa izvestaj njegov odgovarajuci 
+		
+		Izvestaj izvestaj = IzvestajService.findOne(pregled_id);
+		Dijagnoza dijagnoza = DijagnozaService.findByNaziv(DijagnozaDTO.getNaziv());
+		izvestaj.setDijagnoza(dijagnoza);
+
+		try {
+			izvestaj = IzvestajService.save(izvestaj);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>( HttpStatus.OK);
+		
+	}
+	@PutMapping(value = "/izmeniLekove/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	public ResponseEntity<String> izmeniLekoveRecept(@RequestBody PomocnaKlasa8 pom,
+			@PathVariable Integer pregled_id,@PathVariable Integer izvestaj_id) {
+		//samo lekovi
+		Pregled pregled = PregledService.findById(pregled_id);
+		//pronadji pacijenta
+		Pacijent pacijent = PacijentService.findById(pregled.getPacijent().getId());
+		
+		//pa izvestaj njegov odgovarajuci 
+		
+		Izvestaj izvestaj = IzvestajService.findOne(pregled_id);
+		
+		//Pa njegov recept
+		Recept recept = ReceptService.findOne(izvestaj.getRecept().getId());
+		
+		Set<Lek> lekovi = new HashSet<Lek>();
+		//prebaci lekove
+		for(LekDTO l: pom.lekoviDTO) {
+			Lek lek = LekService.findByNaziv(l.getNaziv());
+			lekovi.add(lek);	
+			
+		}
+		
+		recept.setLek(lekovi);
+		try {
+			recept = ReceptService.save(recept);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>( HttpStatus.OK);
+		
+		
+	}
+	@PutMapping(value = "/izmeniOba/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	public ResponseEntity<String> izmeniObaRecept(@RequestBody PomocnaKlasa8 pom,
+			@PathVariable Integer pregled_id,@PathVariable Integer izvestaj_id) {
+		//oba menjaj
+		Pregled pregled = PregledService.findById(pregled_id);
+		//pronadji pacijenta
+		Pacijent pacijent = PacijentService.findById(pregled.getPacijent().getId());
+				
+		//pa izvestaj njegov odgovarajuci 
+				
+		Izvestaj izvestaj = IzvestajService.findOne(pregled_id);
+		Dijagnoza dijagnoza = DijagnozaService.findByNaziv(pom.dijagnozaDTO.getNaziv());
+		izvestaj.setDijagnoza(dijagnoza);
+		//Pa njegov recept
+		Recept recept = ReceptService.findOne(izvestaj.getRecept().getId());
+				
+		Set<Lek> lekovi = new HashSet<Lek>();
+				//prebaci lekove
+		for(LekDTO l: pom.lekoviDTO) {
+			Lek lek = LekService.findByNaziv(l.getNaziv());
+			lekovi.add(lek);	
+					
+		}
+		recept.setLek(lekovi);
+		try {
+			izvestaj = IzvestajService.save(izvestaj);
+			recept = ReceptService.save(recept);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	    return new ResponseEntity<>( HttpStatus.OK);
 		
 	}
 
