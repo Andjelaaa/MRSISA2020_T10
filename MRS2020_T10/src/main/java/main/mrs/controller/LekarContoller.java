@@ -1,6 +1,9 @@
 package main.mrs.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +19,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
+import main.mrs.dto.PregledDTO;
 import main.mrs.dto.SearchLekar;
+import main.mrs.dto.ZauzeceDTO;
 import main.mrs.model.Lekar;
+import main.mrs.model.Operacija;
 import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.PomocnaKlasa6;
+import main.mrs.model.Pregled;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.AutoritetService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.TipPregledaService;
+import main.mrs.service.OperacijaService;
+import main.mrs.service.PregledService;
 
 @RestController
 @RequestMapping(value="api/lekar")
 public class LekarContoller {
+	private SimpleDateFormat sdf;
 	
 	@Autowired
 	private LekarService LekarService;
-	
+	@Autowired
+	private OperacijaService OperacijaService;
+	@Autowired
+	private PregledService PregledService;
 	@Autowired
 	private PacijentService PacijentService;
 	@Autowired
@@ -241,4 +254,124 @@ public class LekarContoller {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+
+	@PostMapping(value = "/dobaviSlobodneZaDatum/{id_operacije}")
+	public ResponseEntity<List<LekarDTO>> getAllLekareZaOperaciju(@PathVariable Integer id_operacije,@RequestBody String datum) {
+		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+		sdf = new SimpleDateFormat("yyyy-MM-dd'+'HH'%3A'mm'='");
+		try {
+			Date date =sdf.parse(datum);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		//dobavi mi operaciju 
+		Operacija operacija = OperacijaService.findOne(id_operacije);
+		
+		//moram da id_operacije iz operacije_lekar pronadji lekara koji je zakazao op
+		Integer idLekara = LekarService.findByIdOp(id_operacije);
+		Lekar lekar = LekarService.findOne(idLekara);
+
+		
+		// dobavi mi sve lekare
+		List<Lekar> lekari = LekarService.findAll();
+		
+		//izbaci onog koji je zakazao 
+		int index = lekari.indexOf(lekar);
+		lekari.remove(index);
+		
+		
+        
+		//Kroz preglede, ako je lekar u listi nadji njegov index i izbaci iz liste ako je zauzet 
+		//treba iz id odgovarajuce klinike da se filtriraa
+		List<Pregled> pregledi = PregledService.findAll(); //svi
+		
+		List<Lekar> ukloniZauzete = new ArrayList<>();
+		
+		for(Pregled p : pregledi) {
+			Date pocetakPregleda = p.getDatumVreme();
+		    Date krajPregleda = new Date(p.getDatumVreme().getTime() + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+		    Date pocetakOperacije = operacija.getDatumVreme();
+		    Date krajOperacije = new Date(operacija.getDatumVreme().getTime() + (operacija.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			
+		    if(lekari.contains(p.getLekar()) 	&&
+		    		(
+		    		((pocetakOperacije.before(pocetakPregleda) || pocetakOperacije.equals(pocetakPregleda)) 
+				    				&& pocetakPregleda.before(krajOperacije))
+						    		||
+						    		
+		    		((pocetakOperacije.after(pocetakPregleda) || pocetakOperacije.equals(pocetakPregleda)) 
+		    				&& pocetakOperacije.before(krajPregleda))
+		    				||
+		    				
+		    		((krajOperacije.before(krajPregleda) || krajOperacije.equals(krajPregleda)) 
+		    				&& krajOperacije.before(pocetakPregleda))
+		    				||
+		    		
+		    		
+		    		((pocetakOperacije.before(krajPregleda) || pocetakOperacije.equals(krajPregleda)) 
+				    				&& krajPregleda.before(krajOperacije)))
+		    		
+					) {
+					if(!ukloniZauzete.contains(p.getLekar())) {
+						ukloniZauzete.add(p.getLekar());
+					}
+			}
+			
+		}
+		
+		//Kroz operacije, ako je lekar u listi nadji njegov index i izbaci iz liste ako je zauzet 
+		//treba iz id odgovarajuce klinike da se filtriraa
+		List<Operacija> operacije = OperacijaService.findAll(); //svi
+		
+		for(Operacija p : operacije) {
+			Date pocetakPregleda = p.getDatumVreme();
+		    Date krajPregleda = new Date(p.getDatumVreme().getTime() + (p.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+		    Date pocetakOperacije = operacija.getDatumVreme();
+		    Date krajOperacije = new Date(operacija.getDatumVreme().getTime() + (operacija.getTrajanje() * ONE_MINUTE_IN_MILLIS));
+			for(Lekar l: p.getLekar()) {
+				
+			}
+		    if(((pocetakOperacije.before(pocetakPregleda) || pocetakOperacije.equals(pocetakPregleda)) 
+				    				&& pocetakPregleda.before(krajOperacije))
+						    		||
+						    		
+		    		((pocetakOperacije.after(pocetakPregleda) || pocetakOperacije.equals(pocetakPregleda)) 
+		    				&& pocetakOperacije.before(krajPregleda))
+		    				||
+		    				
+		    		((krajOperacije.before(krajPregleda) || krajOperacije.equals(krajPregleda)) 
+		    				&& krajOperacije.before(pocetakPregleda))
+		    				||
+		    		
+		    		
+		    		((pocetakOperacije.before(krajPregleda) || pocetakOperacije.equals(krajPregleda)) 
+				    				&& krajPregleda.before(krajOperacije))){
+		    	for(Lekar l: p.getLekar()) {
+					if(!ukloniZauzete.contains(l)) {
+						ukloniZauzete.add(l);
+					}
+		    	}
+			}
+			
+		}
+		
+        //ukloni sve 
+		
+		for(Lekar l: ukloniZauzete) {
+		    if(lekari.contains(l)) {
+		    	lekari.remove(l);
+		    }
+		}
+	
+		List<LekarDTO> lekariDTO = new ArrayList<>();
+		
+		for (Lekar s : lekari) {
+			lekariDTO.add(new LekarDTO(s));
+		}
+
+		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
+	}
+
 }

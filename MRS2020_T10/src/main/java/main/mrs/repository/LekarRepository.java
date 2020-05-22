@@ -92,4 +92,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	@Query(value = "SELECT * FROM LEKAR WHERE TIP_PREGLEDA_ID = ?1", nativeQuery = true)
 	List<Lekar> findByTipPregledaId(Integer id);
+
+	@Query(value = "SELECT LEKAR_ID FROM OPERACIJA_LEKAR WHERE OPERACIJA_ID = ?1", nativeQuery = true)
+	Integer findByIdOp(Integer id_operacije);
 }

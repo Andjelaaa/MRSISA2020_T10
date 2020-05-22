@@ -11,7 +11,10 @@ Vue.component('zakazisaluop', {
 			pretragaSale: [],
 			pretragaZauzeca: [],
 			pretragaPrviSlobodni: [],
-			searchparam:''
+			searchparam:'',
+			lekari:[],
+			odabraniLekari:[],
+			showModal: false
 		}
 	}, 
 	
@@ -72,7 +75,40 @@ Vue.component('zakazisaluop', {
 			   		<td>{{s.broj}}</td>
 			   		<td><p  v-for="z in pretragaZauzeca[i]">{{z.pocetak | formatDate}} - {{z.kraj | formatDate}}</p></td>
 			   		<td><p>{{pretragaPrviSlobodni[i] | formatDate}}</p></td>
-			   		<td><button class="btn btn-success my-2 my-sm-0" type="submit" v-on:click="rezervisi(s, pretragaPrviSlobodni[i])">Rezervisi</button></td>
+				    <td>
+					 <button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="dobaviLekare(pretragaPrviSlobodni[i])">Rezervisi</button>
+						<modal v-if="showModal" @close="showModal = false">
+	    
+	    					<h3 slot="header">Potvrdite salu i odaberite lekare</h3>
+	    					<table slot="body" class="table table-hover table-light">
+								<tbody>
+										
+									<tr>
+										<td>Obavezni lekari</td>
+										<td> 
+										<div class="dropdown">
+										<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Odaberite
+											</button>
+											<form class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+													<label class="dropdown-item" v-for="l in lekari" name="" value="l.email">
+														<input id="l" name="l.email" :value="l" type="checkbox" v-model="odabraniLekari">{{l.ime}} {{l.prezime}}
+													</label>
+											</form>
+										</div>
+										</td>
+									</tr>									
+								</tbody>
+								</table>
+	    					
+	    					<div slot="footer">
+	    						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="rezervisi(s, pretragaPrviSlobodni[i])"> Rezervisi salu </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
+							</div>
+						</modal>
+							
+					
+					</td>
 
 			   </tr>
 			   
@@ -84,14 +120,15 @@ Vue.component('zakazisaluop', {
 	
 	`, 
 	methods : {
+		
 		odjava : function(){
 				localStorage.removeItem("token");
 				this.$router.push('/');
 		},
 		rezervisi: function(s, prviSlobodan){
-			
+			var p = {'lekariDTO': this.odabraniLekari}
 			axios
-	      	.post('api/operacije/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan)
+	      	.post('api/operacije/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, p)
 	      	.then(response => {
 	      		alert('Uspesno rezervisana sala! Mejl poslat!');
 	      		this.$router.push('/zahtevipo');
@@ -142,9 +179,22 @@ Vue.component('zakazisaluop', {
 				}
 			}
 			
+		},
+		dobaviLekare:function(slobodanD){
+		    
+			axios
+			.post('api/lekar/dobaviSlobodneZaDatum/'+this.$route.params.id, moment(String(slobodanD)).format('YYYY-MM-DD HH:mm'))
+			.then(response => {
+				this.lekari = response.data;})
+			.catch((response)=> {
+				console.log("Nesto ne valja");
+			});
+
 		}
+
 		
 	},
+	
 	created(){
 		this.token = localStorage.getItem("token");
 		axios

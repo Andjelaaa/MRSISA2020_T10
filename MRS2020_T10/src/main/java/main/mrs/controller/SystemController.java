@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.LekarDTO;
 import main.mrs.dto.ZauzecaSlobodniDTO;
 import main.mrs.model.Operacija;
+import main.mrs.model.PomocnaKlasa7;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.service.OperacijaService;
@@ -74,8 +76,11 @@ public class SystemController {
 		//sve sale
 		for(Operacija op : operacije) {
 			List<Sala> sale =  dobaviSale(op);
+			List<LekarDTO> lekari = new ArrayList<>();
+			PomocnaKlasa7 p = new PomocnaKlasa7(lekari);
 			if(!sale.isEmpty()) {
-				controllerOp.rezervisiSaluZaOperaciju(op.getId(), sale.get(0).getId(), sdf.format(op.getDatumVreme()));
+				
+				controllerOp.rezervisiSaluZaOperaciju(op.getId(), sale.get(0).getId(), sdf.format(op.getDatumVreme()), p);
 				System.out.println(" odradio ");
 			}
 			else {
@@ -83,7 +88,7 @@ public class SystemController {
 				int datum = op.getDatumVreme().getDate() + 1;
 				op.getDatumVreme().setDate(datum);
 				ResponseEntity<ZauzecaSlobodniDTO>  slobodni=controllerSala.getZauzecaZaDatumOP(sdf1.format(op.getDatumVreme()), idSale, op.getId());
-				controllerOp.rezervisiSaluZaOperaciju(op.getId(), idSale, sdf.format(slobodni.getBody().getPrviSlobodan()));
+				controllerOp.rezervisiSaluZaOperaciju(op.getId(), idSale, sdf.format(slobodni.getBody().getPrviSlobodan()),p);
 				System.out.println(" odradio 222 ");
 			}
 			

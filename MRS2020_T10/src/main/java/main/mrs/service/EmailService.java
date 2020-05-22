@@ -261,17 +261,19 @@ public class EmailService {
 	public void posaljiLekaruOdobrenaOperacija(Operacija operacija) {
 		System.out.println("Slanje emaila...");
 		try {
-			SimpleMailMessage mail = new SimpleMailMessage();
-			mail.setTo((new ArrayList<Lekar>(operacija.getLekar()).get(0).getEmail()));
-			mail.setFrom(env.getProperty("spring.mail.username"));
-			mail.setSubject("Odobren zahtev za operaciju");
-			mail.setText("Postovani,\n\nZahtev za operaciju:\n\nDatum i vreme: "+ operacija.getDatumVreme()+
-					"\nTrajanje: "+operacija.getTrajanje() +
-					"\nLekar: " + (new ArrayList<Lekar>(operacija.getLekar()).get(0).getIme()) + " " +
-					(new ArrayList<Lekar>(operacija.getLekar()).get(0).getPrezime())+
-					"\nPacijent: " + operacija.getPacijent().getIme() + " " + operacija.getPacijent().getPrezime());
-			javaMailSender.send(mail);
-			System.out.println("Email poslat!");
+			for(Lekar l : operacija.getLekar()) {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(l.getEmail());
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odobren zahtev za operaciju");
+				mail.setText("Postovani,\n\nZahtev za operaciju:\n\nDatum i vreme: "+ operacija.getDatumVreme()+
+						"\nTrajanje: "+operacija.getTrajanje() +
+						"\nLekar: " + (new ArrayList<Lekar>(operacija.getLekar()).get(0).getIme()) + " " +
+						(new ArrayList<Lekar>(operacija.getLekar()).get(0).getPrezime())+
+						"\nPacijent: " + operacija.getPacijent().getIme() + " " + operacija.getPacijent().getPrezime());
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+			}
 		}
 		catch(Exception e) {
 			System.out.println("Doslo je do greske...");

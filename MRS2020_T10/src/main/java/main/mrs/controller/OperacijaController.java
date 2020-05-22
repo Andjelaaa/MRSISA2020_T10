@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import main.mrs.dto.PregledDTO;
 import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
+import main.mrs.model.PomocnaKlasa7;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
@@ -118,9 +120,10 @@ public class OperacijaController {
 	
 	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{operacijaId}/{salaId}/{prviSlobodan}")
-	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, @PathVariable String prviSlobodan){
-		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
+	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, 
+			@PathVariable String prviSlobodan, @RequestBody PomocnaKlasa7 pomkl7){
 		
+		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
 		Date datum = null;
 		try {
 			datum = sdf.parse(prviSlobodan);
@@ -134,6 +137,20 @@ public class OperacijaController {
 		operacija.setStatus(Status.odobreno);
 		datum.setHours(datum.getHours()+2);
 		operacija.setDatumVreme(datum);
+		Set<Lekar> lekari = new HashSet<>();
+		
+		//Lekar glavni = (Lekar) operacija.getLekar();
+		Iterator iter = operacija.getLekar().iterator();
+
+		Lekar glavni = (Lekar) iter.next();
+
+		lekari.add(glavni);
+		
+		for(LekarDTO ld : pomkl7.lekariDTO) {
+			Lekar lekar = LekarService.findByEmail(ld.getEmail());
+			lekari.add(lekar);
+		}
+		operacija.setLekar(lekari);
 		try {
 			operacija = OperacijaService.save(operacija);
 			EmailService.posaljiPacijentuOdobrenaOperacija(operacija);

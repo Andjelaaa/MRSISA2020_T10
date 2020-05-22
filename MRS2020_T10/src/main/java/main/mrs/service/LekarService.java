@@ -58,4 +58,8 @@ public class LekarService {
 		// TODO Auto-generated method stub
 		return LekarRepository.findByTipPregledaId(id);
 	}
+
+	public Integer findByIdOp(Integer id_operacije) {
+		return LekarRepository.findByIdOp(id_operacije);
+	}
 }
