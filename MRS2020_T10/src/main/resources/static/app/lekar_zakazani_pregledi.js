@@ -1,9 +1,11 @@
-Vue.component('lekar', {
+Vue.component('lekarzp', {
 
 	data: function(){
 		return{	
 			lekar:{},
-			uloga: ''
+			uloga: '',
+			pregledi: [],
+			showModal: false,
 		}
 	}, 
 	
@@ -28,7 +30,7 @@ Vue.component('lekar', {
 		        <a  class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
 		       </li>
 		       <li class="nav-item">
-		        <a  class="nav-link" href="#/lekar/pregledi">Zakazani pregledi</a>
+		        <a  class="nav-link active" href="#/lekar/pregledi">Zakazani pregledi</a>
 		       </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/profil">Profil: {{lekar.ime}} {{lekar.prezime}}</a>
@@ -42,12 +44,34 @@ Vue.component('lekar', {
 		</nav>
 		</br>
 		<div class="float-left" style="margin: 20px">
-			<h3> Radni kalendar </h3>
-		<table class="table">
-			<tbody>
-			<!-- ovde ubaciti radni kalendar -->
-			  
-		   </tbody>
+		<h3> Otkazivanje termina </h3>
+		<p> Otkazivanje je dozvoljeno ukoliko pregled nije zakazan za manje od 24h </p>
+		
+		<table class="table table-hover table-light ">
+			<tr>
+			<th>Datum i vreme</th>
+			<th>Trajanje</th>
+			<th>Tip pregleda</th>
+			<th>Lekar</th>
+			<th></th>
+			</tr>
+			
+			<tr v-for="(p, index) in pregledi">
+				<td>{{p.datumVreme | formatDate}}</td>
+				<td>{{p.trajanje}}</td>
+				<td>{{p.tipPregleda.naziv}}</td>
+				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
+				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
+						<modal v-if="showModal" @close="showModal = false">
+        
+        					<h3 slot="header">Potvrdi otkazivanje</h3>
+        					<p slot="body">Da li ste sigurni?</p>
+        					<div slot="footer">
+        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="otkazi(p, index)"> Potvrdi </button>       						
+								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
+							</div>
+						</modal></td>
+			</tr>
 		</table>
 		</div>
 	</div>
@@ -56,6 +80,20 @@ Vue.component('lekar', {
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
+	},
+	otkazi : function(p, i){
+		// upit da li je siguran - prozor sa informacijama
+		axios
+          .post('api/pregled/otkazi/'+p.id+'/'+p.pacijent.id)
+          .then(res => {
+        	this.pregledi.splice(i,1);
+        	console.log('uspesno');
+        	// poruka o uspesnom otkazivanju
+          })
+          .catch((res)=>{
+        	  alert("Ne mozete otkazati pregled!");
+        	  console.log('neuspesno');
+          })
 	}
 	
 },
@@ -71,6 +109,14 @@ mounted(){
 	    	this.uloga = response.data;
 	    	if (this.uloga != "ROLE_LEKAR") {
 	    		this.$router.push('/');
+	    	}else{
+	    		axios
+	    		.get('api/pregled/zakazaniZaLekara/'+this.lekar.id)
+	    		.then(res => {
+	    			this.pregledi = res.data;
+	    		})
+	    		
+	    		// dobavi zakazane preglede tog lekara 
 	    	}
 	    })
 	    .catch(function (error) { console.log(error);});

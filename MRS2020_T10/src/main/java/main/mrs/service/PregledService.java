@@ -95,6 +95,11 @@ public class PregledService {
 		return PregledRepository.getPreglediZaSate(danas, danas2, idKlinike);
 	}
 
+	public List<Pregled> getScheduledForDr(int lekarId) {
+		// TODO Auto-generated method stub
+		return PregledRepository.getScheduledForDr(lekarId);
+	}
+
 
 
 }

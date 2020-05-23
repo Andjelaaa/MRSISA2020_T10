@@ -37,6 +37,9 @@ Vue.component('odmoor', {
 		        <a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/kalendarr">Radni kalendar</a>
 		        <a  v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
 		      </li>
+		      <li class="nav-item" v-if="uloga=='ROLE_LEKAR'">
+		        <a  class="nav-link" href="#/lekar/pregledi">Zakazani pregledi</a>
+		       </li>
 		      <li class="nav-item">
 				<a  v-if="uloga=='ROLE_MED_SESTRA'" class="nav-link" href="#/medsestra">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
 		        <a v-if="uloga=='ROLE_LEKAR'" class="nav-link" href="#/profil">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>

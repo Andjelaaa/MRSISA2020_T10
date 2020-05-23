@@ -19,7 +19,7 @@ public class MedSestraService {
 	private MedSestraRepository MedSestraRepository;
 	
 	
-	public MedSestra findOne(Long id) {
+	public MedSestra findOne(Integer id) {
 		return MedSestraRepository.findById(id).orElseGet(null);
 	}
 
@@ -35,7 +35,7 @@ public class MedSestraService {
 		return MedSestraRepository.save(MedSestra);
 	}
 
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		MedSestraRepository.deleteById(id);
 	}
 
@@ -52,5 +52,9 @@ public class MedSestraService {
 		} else {
 			return (MedSestra) korisnik;
 		}
+	}
+
+	public List<MedSestra> findByImeAndPrezime(String upperCase, String upperCase2) {
+		return MedSestraRepository.findByImeAndPrezime(upperCase, upperCase2);
 	}
 }

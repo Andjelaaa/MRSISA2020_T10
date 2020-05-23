@@ -1,12 +1,10 @@
-Vue.component('lekari', {
+Vue.component('medsestre', {
 	data: function(){
 		return{
-			lekari: null,
+			medsestre: null,
 			pretraga: {ime:'', prezime:''},
 			
-			lekar: {tipPregleda: null},
-			tipPregleda: {},
-			tipoviPregleda: null,
+			sestra: {},
 			imeGreska: '',
 			prezimeGreska: '',
 			emailGreska: '',
@@ -17,7 +15,6 @@ Vue.component('lekari', {
 			kontaktGreska: '',
 			pocGreska: '',
 			krajGreska: '',
-			specijalizacijaGreska: '',
 			error: ''
 		}
 	}, 
@@ -32,10 +29,10 @@ Vue.component('lekari', {
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		      <li class="nav-item active">
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
-		      <li class="nav-item">
+		      <li class="nav-item active">
 		        <a class="nav-link" href="#/medsestre">Medicinske sestre</a>
 		      </li>
 		      <li class="nav-item">
@@ -76,21 +73,17 @@ Vue.component('lekari', {
 		   		<th>Ime i prezime</th>
 		   		<th>Email adresa</th>
 		   		<th>Kontakt</th>
-		   		<th>Specijalizacija</th>
 		   		<th>Adresa</th>
-		   		<th>Prosecna ocena</th>
 		   		<th>Radno vreme</th>
 		   		<th></th>
 		   </tr>
 		  <tbody>
-		   <tr v-for="s in lekari">
+		   <tr v-for="s in medsestre">
 		   		<td>{{s.ime}} {{s.prezime}}</td>
 		   		<td>{{s.email}}</td>
 		   		<td>{{s.kontakt}}</td>
-		   		<td>{{s.tipPregleda.naziv}}</td>
 		   		<td>{{s.adresa}}, {{s.grad}}</td>
-		   		<td>{{s.prosecnaOcena}}</td>		   		
-		   		<td>{{s.rvPocetak}} - {{s.rvKraj}}</td>
+		   		<td>{{s.radvr_pocetak}} - {{s.radvr_kraj}}</td>
 				<td><button class="btn btn-light" v-on:click="obrisi(s)">Obrisi</button></td>
 		   </tr>
 		   </tbody>
@@ -100,70 +93,62 @@ Vue.component('lekari', {
 		</div>
 		<br>
 		<div class="float-right" style="width:35%">
-		<h3> Registracija lekara </h3>
+		<h3> Registracija medicinske sestre </h3>
 		<p>{{error}}</p>
 		<table >
 			<tbody>
 				<tr>			   
 			   		<td>Email: </td>
-			   		<td><input class="form-control" id="email" type="text" v-model="lekar.email"></td>
+			   		<td><input class="form-control" id="email" type="text" v-model="sestra.email"></td>
 			   		<td style="color: red">{{emailGreska}}</td>
 			   </tr>
 			   <tr>
 			   		<td>Lozinka: </td>
-			   		<td><input class="form-control" id="lozinka" type="text" v-model="lekar.lozinka"></td>
+			   		<td><input class="form-control" id="lozinka" type="text" v-model="sestra.lozinka"></td>
 			   		<td style="color: red">{{lozinkaGreska}}</td>
 			   </tr>
 			   <tr>
 			   
 			   		<td>Ime: </td>
-			   		<td><input class="form-control" id="ime" type="text" v-model="lekar.ime"></td>
+			   		<td><input class="form-control" id="ime" type="text" v-model="sestra.ime"></td>
 			   		<td style="color: red">{{imeGreska}}</td>	
 			   </tr>
 			   <tr>
 			   		<td>Prezime: </td>
-			   		<td><input class="form-control" id="prezime" type="text" v-model="lekar.prezime"></td>
+			   		<td><input class="form-control" id="prezime" type="text" v-model="sestra.prezime"></td>
 			   		<td style="color: red">{{prezimeGreska}}</td>
 			   </tr>	
 			   <tr>			   
 			   		<td>Adresa: </td>
-			   		<td><input class="form-control" id="adresa" type="text" v-model="lekar.adresa"></td>
+			   		<td><input class="form-control" id="adresa" type="text" v-model="sestra.adresa"></td>
 			   		<td style="color: red">{{adresaGreska}}</td>
 			   </tr>
 			   <tr>
 			   		<td>Grad: </td>
-			   		<td><input class="form-control"  id="grad" type="text" v-model="lekar.grad"></td>
+			   		<td><input class="form-control"  id="grad" type="text" v-model="sestra.grad"></td>
 			   		<td style="color: red">{{gradGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Drzava: </td>
-			   		<td><input  class="form-control" id="drzava" type="text" v-model="lekar.drzava"></td>
+			   		<td><input  class="form-control" id="drzava" type="text" v-model="sestra.drzava"></td>
 			   		<td style="color: red">{{drzavaGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Kontakt telefon: </td>
-			   		<td><input class="form-control" id="kontakt" type="text" v-model="lekar.kontakt"></td>
+			   		<td><input class="form-control" id="kontakt" type="text" v-model="sestra.kontakt"></td>
 			   		<td style="color: red">{{kontaktGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Pocetak radnog vremena (format HH:MM): </td>
-			   		<td><input class="form-control" id="rvPocetak" type="text" v-model="lekar.rvPocetak"></td>
+			   		<td><input class="form-control" id="rvPocetak" type="text" v-model="sestra.radvr_pocetak"></td>
 			   		<td style="color: red">{{pocGreska}}</td>
 			   </tr>
 			   <tr>			   
 			   		<td>Kraj radnog vremena (format HH:MM): </td>
-			   		<td><input class="form-control" id="rvKraj" type="text" v-model="lekar.rvKraj"></td>
+			   		<td><input class="form-control" id="rvKraj" type="text" v-model="sestra.radvr_kraj"></td>
 			   		<td style="color: red">{{krajGreska}}</td>
 			   </tr>
-			   <tr>
-			   		<td>Specijalizacija: </td>
-			   		<td>
-						<select class="form-control"  id="selectTP" v-model="tipPregleda.naziv">
-							<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
-						</select>
-					</td>
-			   		<td style="color: red">{{specijalizacijaGreska}}</td>
-			   </tr>
+
 			   
 			    <tr>
 			   
@@ -190,19 +175,19 @@ Vue.component('lekari', {
 		},
 		pretrazi: function(){
 			axios
-	       	.post('api/lekar/search', this.pretraga)
-	       	.then(response => (this.lekari = response.data));
+	       	.post('api/medsestraa/search', this.pretraga)
+	       	.then(response => (this.medsestre = response.data));
 
 		},
 		obrisi: function(s){
 			console.log(s.id);
 			axios
-			.delete('api/lekar/'+s.id)
+			.delete('api/medsestraa/'+s.id)
 			.then((res)=>{
 				console.log('uspesno');
 				 axios
-			       	.get('api/lekar/all')
-			       	.then(response => (this.lekari = response.data));
+			       	.get('api/medsestraa/all')
+			       	.then(response => (this.medsestre = response.data));
 			}).catch((res)=>{
 				console.log('Neuspesno brisanje');
 			});
@@ -216,36 +201,34 @@ Vue.component('lekari', {
 			this.adresaGreska = '';
 			this.gradGreska = '';
 			this.drzavaGreska = '';
-			this.specijalizacijaGreska = '';
 			this.pocGreska = '';
 			this.krajGreska = '';
 			this.kontaktGreska = '';
 			
-			if(!this.lekar.email)
+			if(!this.sestra.email)
 				this.emailGreska = 'Email je obavezno polje!';
-			if(!this.lekar.kontakt)
+			if(!this.sestra.kontakt)
 				this.kontaktGreska = 'Kontakt je obavezno polje!';
-			if(!this.lekar.ime)
+			if(!this.sestra.ime)
 				this.imeGreska = 'Ime je obavezno polje!';
-			if(!this.lekar.prezime)
+			if(!this.sestra.prezime)
 				this.prezimeGreska = 'Prezime je obavezno polje!';
-			if(!this.lekar.lozinka)
+			if(!this.sestra.lozinka)
 				this.lozinkaGreska = 'Lozinka je obavezno polje!';
-			if(!this.lekar.adresa)
+			if(!this.sestra.adresa)
 				this.adresaGreska = 'Adresa je obavezno polje!';
-			if(!this.lekar.grad)
+			if(!this.sestra.grad)
 				this.gradGreska = 'Grad je obavezno polje!';
-			if(!this.lekar.drzava)
+			if(!this.sestra.drzava)
 				this.drzavaGreska = 'Drzava je obavezno polje!';
-			if(!this.lekar.rvPocetak)
+			if(!this.sestra.radvr_pocetak)
 				this.pocGreska = 'Ovo je obavezno polje!';
-			if(!this.lekar.rvKraj)
+			if(!this.sestra.radvr_kraj)
 				this.krajGreska = 'Ovo je obavezno polje!';
-			if(!this.lekar.tipPregleda)
-				this.specijalizacijaGreska = 'Specijalizacija je obavezno polje!';
+			
 
-			if(this.lekar.email && this.lekar.ime && this.lekar.prezime && this.lekar.lozinka && this.lekar.adresa && this.lekar.grad && this.lekar.drzava && this.lekar.tipPregleda
-					&& this.lekar.rvPocetak && this.lekar.rvKraj && this.lekar.kontakt){
+			if(this.sestra.email && this.sestra.ime && this.sestra.prezime && this.sestra.lozinka && this.sestra.adresa && this.sestra.grad && this.sestra.drzava
+					&& this.sestra.radvr_pocetak && this.sestra.radvr_kraj && this.sestra.kontakt){
 				return 0;
 			}
 			return 1;
@@ -253,24 +236,24 @@ Vue.component('lekari', {
 		},
 		dodaj : function(){	
 			this.error = '';
-			this.lekar.tipPregleda = this.tipPregleda;
 			if(this.validacija()==1)
 				return;
 			
 			axios
-			.post('api/lekar', this.lekar)
+			.post('api/medsestraa', this.sestra)
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/lekar/all')
-		       	.then(response => (this.lekari = response.data));
-				this.lekar = {};
+		       	.get('api/medsestraa/all')
+		       	.then(response => (this.medsestre = response.data));
+				this.sestra = {};
 				 
 				
 			}).catch((res)=>{
-				this.error = 'Vec postoji lekar sa istim email-om';
+				this.error = 'Vec postoji medicinska sestra sa istim email-om';
 				this.lekar = {};
 			}
+			
 				
 			)
 		}
@@ -289,15 +272,9 @@ Vue.component('lekari', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		    	       	.get('api/lekar/all')
-		    	       	.then(response => (this.lekari = response.data));
-		    			 
-		    			 axios
-		    	         .get('api/tippregleda/all')
-		    	         .then(res => {
-		    	       	  this.tipoviPregleda = res.data;
-
-		    	         })		    		
+		    	       	.get('api/medsestraa/all')
+		    	       	.then(response => (this.medsestre = response.data));
+		    			 	    		
 		    	}
 		    })
 		    .catch(function (error) { console.log(error); });

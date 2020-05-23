@@ -29,6 +29,9 @@ Vue.component('sale', {
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/medsestre">Medicinske sestre</a>
+		      </li>
 		      <li class="nav-item active">
 		        <a class="nav-link" href="#/sale">Sale</a>
 		      </li>

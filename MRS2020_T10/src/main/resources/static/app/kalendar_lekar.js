@@ -37,6 +37,9 @@ Vue.component('calendar_doc', {
 		         <a  class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
 		      </li>
 		      <li class="nav-item">
+		        <a  class="nav-link" href="#/lekar/pregledi">Zakazani pregledi</a>
+		       </li>
+		      <li class="nav-item">
 		        <a  class="nav-link" href="#/profil">Profil: {{korisnik.ime}} {{korisnik.prezime}}</a>
 		      </li>
 		    </ul>

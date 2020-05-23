@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import main.mrs.model.MedSestra;
 import main.mrs.model.MedSestra;
@@ -28,13 +29,13 @@ public interface MedSestraRepository extends JpaRepository<MedSestra, Long>{
 	  void deleteAll(Iterable<? extends MedSestra> arg0);
 
 	 
-	  void deleteById(Long arg0);
+	  void deleteById(Integer id);
 
 	 
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<MedSestra> findById(Long arg0);
+	  Optional<MedSestra> findById(Integer id);
 
 	 
 	  <S extends MedSestra> S save(S arg0);
@@ -86,5 +87,8 @@ public interface MedSestraRepository extends JpaRepository<MedSestra, Long>{
 
 
 	MedSestra findByEmail(String name);
+
+	@Query(value = "SELECT * FROM MEDICINSKA_SESTRA WHERE upper(IME) like %?%1 and upper(prezime) like %?%2", nativeQuery = true)
+	List<MedSestra> findByImeAndPrezime(String upperCase, String upperCase2);
 }
 

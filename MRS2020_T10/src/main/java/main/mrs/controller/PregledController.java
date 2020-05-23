@@ -450,4 +450,21 @@ public class PregledController {
 		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/zakazaniZaLekara/{lekarId}")
+	public ResponseEntity<List<PregledDTO>> dobaviZakazane(@PathVariable int lekarId) {
+
+		List<Pregled> Pregleds = PregledService.getScheduledForDr(lekarId);
+
+		// convert Pregleds to DTOs
+		List<PregledDTO> PregledsDTO = new ArrayList<>();
+		for (Pregled s : Pregleds) {
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			PregledsDTO.add(pregled);
+		}
+
+		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
+	}
+	
 }

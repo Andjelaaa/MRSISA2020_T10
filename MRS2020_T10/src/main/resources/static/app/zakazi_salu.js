@@ -32,6 +32,9 @@ Vue.component('zakazisalu', {
 		        <a class="nav-link" href="#/lekari">Lekari</a>
 		      </li>
 		      <li class="nav-item">
+		        <a class="nav-link" href="#/medsestre">Medicinske sestre</a>
+		      </li>
+		      <li class="nav-item">
 		        <a class="nav-link" href="#/sale">Sale</a>
 		      </li>
 		      <li class="nav-item">

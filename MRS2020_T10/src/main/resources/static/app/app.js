@@ -34,6 +34,8 @@ const ZakaziSalu = {template: '<zakazisalu></zakazisalu>'}
 const ZakaziSaluOP = {template: '<zakazisaluop></zakazisaluop>'}
 const Izvestaji = {template: '<izvestaji></izvestaji>'}
 const ZahteviOdmorOdsustvo = {template: '<zahtevioo></zahtevioo>'}
+const LekarZakazaniPregledi = {template: '<lekarzp></lekarzp>'}
+const MedicinskeSestre = {template: '<medsestre></medsestre>'}
 
 
 const router = new VueRouter({
@@ -75,6 +77,8 @@ const router = new VueRouter({
 	    { path: '/zakazisaluop/:id', component: ZakaziSaluOP},
 	    { path: '/izvestaji', component: Izvestaji},
 	    { path: '/zahtevioo', component: ZahteviOdmorOdsustvo},
+	    { path: '/lekar/pregledi', component: LekarZakazaniPregledi},
+	    { path: '/medsestre', component: MedicinskeSestre}
 	    ]
 });
 

@@ -78,8 +78,34 @@ public class MedSestraController {
 		}
 
 
-		return new ResponseEntity<>(new MedSestraDTO(m), HttpStatus.CREATED);
+		return new ResponseEntity<>(new MedSestraDTO(), HttpStatus.CREATED);
 	
 	 	}
+	 
+	 @PostMapping(value = "/search")
+		public ResponseEntity<List<MedSestraDTO>> getSearchMedSestras(@RequestBody SearchLekar sl) {
+			System.out.println(sl.getIme()+sl.getPrezime());
+			List<MedSestra> sestre = MedSestraService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
+
+			List<MedSestraDTO> sestreDTO = new ArrayList<>();
+			for (MedSestra s : sestre) {
+				sestreDTO.add(new MedSestraDTO(s));
+			}
+
+			return new ResponseEntity<>(sestreDTO, HttpStatus.OK);
+		}
+	 
+		@Transactional // obavezno ova anotacija, inace puca
+		@DeleteMapping(value = "/{id}")
+		public ResponseEntity<Void> deleteLekar(@PathVariable Integer id) {
+			MedSestra ms = MedSestraService.findOne(id);
+
+			if (ms != null) {
+				MedSestraService.remove(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
 		 
 }
