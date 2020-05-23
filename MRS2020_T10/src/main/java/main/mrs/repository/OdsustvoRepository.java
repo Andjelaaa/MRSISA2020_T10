@@ -37,7 +37,7 @@ public interface OdsustvoRepository  extends JpaRepository<Odsustvo, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<Odsustvo> findById(Long integer);
+	  Odsustvo findById(Integer id);
 
 	 
 	  <S extends Odsustvo> S save(S arg0);
@@ -91,6 +91,10 @@ public interface OdsustvoRepository  extends JpaRepository<Odsustvo, Long>{
 	  // vraca id lekara koji odsustvuje
 	@Query(value = "SELECT * FROM ODSUSTVO WHERE LEKAR_ID = ?1 AND ?2 >= POCETAK AND ?2 <= KRAJ", nativeQuery = true)
 	Odsustvo daLiOdsustvuje(Integer id, Date date1);
+
+	@Query(value = "SELECT * FROM ODSUSTVO WHERE STATUS=0", nativeQuery = true)
+	List<Odsustvo> findAllZahtevi();
+
 
 
 }

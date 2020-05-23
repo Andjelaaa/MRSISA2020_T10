@@ -38,6 +38,14 @@ public class OdsustvoService {
 		// TODO Auto-generated method stub
 		return OdsustvoRepository.daLiOdsustvuje(id, date1);
 	}
+
+	public Odsustvo findOne(Integer id) {
+		return OdsustvoRepository.findById(id);
+	}
+
+	public List<Odsustvo> findAllZahtevi() {
+		return OdsustvoRepository.findAllZahtevi();
+	}
 	
 
 	

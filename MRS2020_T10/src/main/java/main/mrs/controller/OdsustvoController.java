@@ -1,8 +1,12 @@
 package main.mrs.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
+import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.OdsustvoDTO;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
 import main.mrs.model.Odsustvo;
 import main.mrs.model.Status;
+import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
 import main.mrs.service.MedSestraService;
 import main.mrs.service.OdsustvoService;;
@@ -30,6 +36,50 @@ public class OdsustvoController {
 	
 	@Autowired
 	private LekarService LekarService;
+	
+	@Autowired
+	private EmailService EmailService;
+	
+	
+	@GetMapping(value = "/all")
+	public ResponseEntity<List<OdsustvoDTO>> getAllOdsustva() {
+
+		List<Odsustvo> odsustva = OdsustvoService.findAll();
+
+		List<OdsustvoDTO> odsustvaDTO = new ArrayList<>();
+		for (Odsustvo o : odsustva) {
+			OdsustvoDTO oDTO = new OdsustvoDTO(o);
+			if(o.getLekar().getIme() != null) {
+				oDTO.setLekar(new LekarDTO(o.getLekar()));
+			}
+			else {
+				oDTO.setSestra(new MedSestraDTO(o.getSestra()));
+			}
+			odsustvaDTO.add(oDTO);			
+		}
+
+		return new ResponseEntity<>(odsustvaDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/all/zahtevi")
+	public ResponseEntity<List<OdsustvoDTO>> getAllZahteviOdsustva() {
+
+		List<Odsustvo> odsustva = OdsustvoService.findAllZahtevi();
+
+		List<OdsustvoDTO> odsustvaDTO = new ArrayList<>();
+		for (Odsustvo o : odsustva) {
+			OdsustvoDTO oDTO = new OdsustvoDTO(o);
+			if(o.getLekar().getIme() != null) {
+				oDTO.setLekar(new LekarDTO(o.getLekar()));
+			}
+			else {
+				oDTO.setSestra(new MedSestraDTO(o.getSestra()));
+			}
+			odsustvaDTO.add(oDTO);			
+		}
+
+		return new ResponseEntity<>(odsustvaDTO, HttpStatus.OK);
+	}
 	
 	@PostMapping(consumes = "application/json", value= "/{email}")
 	public ResponseEntity<OdsustvoDTO> saveOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String email) {
@@ -63,6 +113,56 @@ public class OdsustvoController {
 		}
 
 		return new ResponseEntity<>(new OdsustvoDTO(zahtev), HttpStatus.CREATED);
+	}
+	
+	@PostMapping(consumes = "application/json", value= "/odobri")
+	public ResponseEntity<OdsustvoDTO> odobriOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO) {
+	
+		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
+		
+		o.setStatus(Status.odobreno);
+		
+		if(o.getLekar().getIme() == null) {
+			// mejl sestri
+			EmailService.posaljiOdobrenoOdsustvo(o.getSestra().getEmail(), o);
+		}
+		else {
+			// mejl lekaru
+			EmailService.posaljiOdobrenoOdsustvo(o.getLekar().getEmail(), o);
+		}
+				
+		try {
+			o = OdsustvoService.save(o);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new OdsustvoDTO(o), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(new OdsustvoDTO(o), HttpStatus.OK);
+	}
+	
+	@PostMapping(consumes = "application/json", value= "/odbij/{obrazlozenje}")
+	public ResponseEntity<OdsustvoDTO> odbijOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String obrazlozenje) {
+	
+		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
+		
+		o.setStatus(Status.odbijeno);
+		
+		if(o.getLekar().getIme() == null) {
+			// mejl sestri
+			EmailService.posaljiOdbijenoOdsustvo(o.getSestra().getEmail(), o, obrazlozenje);
+		}
+		else {
+			// mejl lekaru
+			EmailService.posaljiOdbijenoOdsustvo(o.getLekar().getEmail(), o, obrazlozenje);
+		}
+				
+		try {
+			o = OdsustvoService.save(o);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new OdsustvoDTO(o), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(new OdsustvoDTO(o), HttpStatus.OK);
 	}
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
+import main.mrs.model.Odsustvo;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
 import main.mrs.model.Pregled;
@@ -279,6 +280,42 @@ public class EmailService {
 			System.out.println("Doslo je do greske...");
 		}
 		
+		
+	}
+
+	public void posaljiOdobrenoOdsustvo(String email, Odsustvo o) {
+		System.out.println("Slanje emaila...");
+		try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(email);
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odobren zahtev za "+o.getTip().toLowerCase());
+				mail.setText("Postovani,\n\nZahtev za "+o.getTip().toLowerCase()+" je odobren:\n\nPocetak: "+ o.getPocetak()+
+						"\nKraj: "+o.getKraj());
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
+		
+	}
+
+	public void posaljiOdbijenoOdsustvo(String email, Odsustvo o, String obr) {
+		System.out.println("Slanje emaila...");
+		try {
+				SimpleMailMessage mail = new SimpleMailMessage();
+				mail.setTo(email);
+				mail.setFrom(env.getProperty("spring.mail.username"));
+				mail.setSubject("Odbijen zahtev za "+o.getTip().toLowerCase());
+				mail.setText("Postovani,\n\nZahtev za "+o.getTip().toLowerCase()+" je odbijen:\n\nObrazlozenje: "+obr+"\n\nPocetak: "+ o.getPocetak()+
+						"\nKraj: "+o.getKraj());
+				javaMailSender.send(mail);
+				System.out.println("Email poslat!");
+		}
+		catch(Exception e) {
+			System.out.println("Doslo je do greske...");
+		}
 		
 	}
 	
