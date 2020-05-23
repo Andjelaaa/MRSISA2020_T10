@@ -96,6 +96,8 @@ public class AdminKlinikeController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		l.setLozinka(PacijentService.encodePassword(novaLozinka));
+		l.setPromenioLozinku(true);
+
 		try {
 			l = AdminKlinikeService.save(l);
 			return new ResponseEntity<>(new AdminKlinikeDTO(), HttpStatus.OK);

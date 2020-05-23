@@ -96,6 +96,7 @@ public class LekarContoller {
 		TipPregleda tp= tps.findByNaziv(LekarDTO.getTipPregleda().getNaziv()); 
 		Lekar.setTipPregleda(tp);
 		Lekar.setAutoriteti(autoritetService.findByName("ROLE_LEKAR"));
+		Lekar.setPromenioLozinku(false);
 		
 		// ovo vraca anonymous user 
 //		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
@@ -421,6 +422,7 @@ public class LekarContoller {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		l.setLozinka(PacijentService.encodePassword(novaLozinka));
+		l.setPromenioLozinku(true);
 		try {
 			l = LekarService.save(l);
 			return new ResponseEntity<>(new LekarDTO(), HttpStatus.OK);

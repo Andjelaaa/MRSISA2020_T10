@@ -67,9 +67,9 @@ public class MedSestraController {
 		m.setDrzava(MedSestraDTO.getDrzava());
 		m.setKontakt(MedSestraDTO.getKontakt());
 		m.setRadvr_pocetak(MedSestraDTO.getRadvr_pocetak());
-		m.setRadvr_kraj(MedSestraDTO.getRadvr_kraj());		
-		
+		m.setRadvr_kraj(MedSestraDTO.getRadvr_kraj());				
 		m.setAutoriteti(autoritetService.findByName("ROLE_MED_SESTRA"));
+		m.setPromenioLozinku(false);
 		
 		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
 		//m.setKlinika();
@@ -144,6 +144,8 @@ public class MedSestraController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			ms.setLozinka(PacijentService.encodePassword(novaLozinka));
+			ms.setPromenioLozinku(true);
+
 			try {
 				ms = MedSestraService.save(ms);
 				return new ResponseEntity<>(new MedSestraDTO(), HttpStatus.OK);

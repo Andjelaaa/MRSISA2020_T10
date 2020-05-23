@@ -2,8 +2,8 @@ insert into klinicki_centar (naziv) values ('Klinicki centar Srbije');
 insert into klinika (naziv, adresa, opis, prosecna_ocena, email_klinike, kontakt_klinike, kc_id, broj_ocena) values ('Kardiologija', 'Bulevar Oslobodjenja 12, Novi Sad', 'kardiologija i kardiohirurgija', 7.6, 'kardio@klinika.com', '365/658',1, 5);
 insert into klinika (naziv, adresa, opis, prosecna_ocena, email_klinike, kontakt_klinike, kc_id, broj_ocena) values ('Ortopedija', 'Bulevar Oslobodjenja 16, Novi Sad', 'ortopedija i fizikalna medicina', 8.2, 'orto@klinika.com', '365/656',1, 7);
 
-insert into admin_klinike (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id) 
-values ('Cara Dusana 123', 'Srbija', 'nedicteodora1@gmail.com', 'Novi Sad', 'Aca', '065154513', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Peric', 1);
+insert into admin_klinike (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, promenio_lozinku) 
+values ('Cara Dusana 123', 'Srbija', 'nedicteodora1@gmail.com', 'Novi Sad', 'Aca', '065154513', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Peric', 1, true);
 
 insert into cenovnik (id) values (nextval('Cenovnik_id_SEQ'));
 
@@ -27,19 +27,19 @@ insert into dijagnoza (naziv, sifra) values ('Opis druge dijagnoze', 'D2');
 insert into sala (naziv, broj) values ('Sala A', '1');
 insert into sala (naziv, broj) values ('Sala B', '2');
 
-insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id) 
-values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1);
-insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id) 
-values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 1, 7, '21:00', '13:00', 2);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
+values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1, true);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
+values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 1, 7, '21:00', '13:00', 2, true);
 
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (180,80,null, 'm', 2.5,'AB');
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (170,70,null, 'z', 0.5,'B');
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (190,60,null, 'm', 1.5,'A');
 
-insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values ('Marko', 'Markovic', 'teosnedos@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22', true, 1);
-insert into adminkc (ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values ('Jovan', 'Jovanic', 'tt@gmail.com','$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
-insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values ('Ana', 'Markovic', 'anana@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 20', 'Novi Sad', 'Srbija', '0651045155', '123123', true, 2);
-insert into pacijent(ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values ('Rajko', 'Jovanovic', 'rajkoj@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 52', 'Novi Sad', 'Srbija', '0651256132', '123567', true, 3);
+insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Marko', 'Markovic', 'teosnedos@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22', true, 1);
+insert into adminkc (promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values (true, 'Jovan', 'Jovanic', 'tt@gmail.com','$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
+insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Ana', 'Markovic', 'anana@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 20', 'Novi Sad', 'Srbija', '0651045155', '123123', true, 2);
+insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Rajko', 'Jovanovic', 'rajkoj@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 52', 'Novi Sad', 'Srbija', '0651256132', '123567', true, 3);
 
 insert into recept (id) values (nextval('Recept_id_SEQ'));
 insert into recept (id) values (nextval('Recept_id_SEQ'));
@@ -89,10 +89,10 @@ insert into ocena_lekar (lekar_id, ocena, pacijent_id) values (2, 7, 1);
 --insert into lekar_pregled(lekar_id,pregled_id) values(1,2);
 --insert into lekar_pregled(lekar_id,pregled_id) values(1,3);
 
-insert into medicinska_sestra (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
-values ('Bul. Oslobodjenja 12', 'Srbija', 'meds1@gmail.com', 'Novi Sad', 'Manja', '064154123', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nekic', null, '15:00', '07:00');
-insert into medicinska_sestra (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
-values ('Bul. 222', 'Srbija', 'ms2@gmail.com', 'Novi Sad', 'Marija', '060345822', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Pekic', null, '21:00', '13:00');
+insert into medicinska_sestra (promenio_lozinku, adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
+values (true,'Bul. Oslobodjenja 12', 'Srbija', 'meds1@gmail.com', 'Novi Sad', 'Manja', '064154123', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nekic', null, '15:00', '07:00');
+insert into medicinska_sestra (promenio_lozinku, adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
+values (true, 'Bul. 222', 'Srbija', 'ms2@gmail.com', 'Novi Sad', 'Marija', '060345822', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Pekic', null, '21:00', '13:00');
 
 
 insert into autoritet (name) values ('ROLE_PACIJENT');

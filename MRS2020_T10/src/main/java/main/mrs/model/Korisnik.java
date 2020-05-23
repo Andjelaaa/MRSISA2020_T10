@@ -60,10 +60,18 @@ public class Korisnik {
 	@Column(name="kontakt", unique=false, nullable=true)
 	private String kontakt;
 	
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "autoriteti_korisnika")
-//	private List<Autoritet> autoriteti;
+	@Column(name="promenioLozinku", unique=false, nullable=true)
+	private boolean promenioLozinku;
+
 	
+	public boolean isPromenioLozinku() {
+		return promenioLozinku;
+	}
+
+	public void setPromenioLozinku(boolean promenioLozinku) {
+		this.promenioLozinku = promenioLozinku;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -141,55 +149,7 @@ public class Korisnik {
 		this.kontakt = kontakt;
 	}
 	
-//	public List<Autoritet> getAutoriteti() {
-//		return autoriteti;
-//	}
-//
-//	public void setAutoriteti(List<Autoritet> autoriteti) {
-//		this.autoriteti = autoriteti;
-//	}
-//
-//	@Override
-//	public Collection<? extends GrantedAuthority> getAuthorities() {
-//		// TODO Auto-generated method stub
-//		return this.autoriteti;
-//	}
-//
-//	@Override
-//	public String getPassword() {
-//		// TODO Auto-generated method stub
-//		return this.lozinka;
-//	}
-//
-//	@Override
-//	public String getUsername() {
-//		// TODO Auto-generated method stub
-//		return this.email;
-//	}
-//
-//	@Override
-//	public boolean isAccountNonExpired() {
-//		// TODO Auto-generated method stub
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean isAccountNonLocked() {
-//		// TODO Auto-generated method stub
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean isCredentialsNonExpired() {
-//		// TODO Auto-generated method stub
-//		return true;
-//	}
-//
-//	@Override
-//	public boolean isEnabled() {
-//		// TODO Auto-generated method stub
-//		return true;
-//	}
+
 
 
 }

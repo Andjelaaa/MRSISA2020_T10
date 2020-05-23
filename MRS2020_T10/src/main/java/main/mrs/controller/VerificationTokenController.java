@@ -65,6 +65,7 @@ public class VerificationTokenController {
 		registrovaniPacijent.setLozinka(pacijentService.encodePassword(zahtev.getLozinka()));
 		registrovaniPacijent.setDrzava(zahtev.getDrzava());
 		registrovaniPacijent.setLbo(zahtev.getLbo());
+		registrovaniPacijent.setPromenioLozinku(false);
 	
 		registrovaniPacijent.setAutoriteti(autoritetService.findByName("ROLE_PACIJENT"));
 		registrovaniPacijent.setzKarton(new ZKarton());

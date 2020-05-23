@@ -3,28 +3,26 @@ package main.mrs.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.AdminKCDTO;
-import main.mrs.dto.LekDTO;
+import main.mrs.dto.LekarDTO;
 import main.mrs.model.AdminKC;
 import main.mrs.model.PomocnaKlasa;
 import main.mrs.model.ZahtevReg;
 import main.mrs.service.AdminKCService;
-
 import main.mrs.service.EmailService;
+import main.mrs.service.LekarService;
+import main.mrs.service.PacijentService;
 import main.mrs.service.ZahtevRegService;
 
 
@@ -41,6 +39,9 @@ public class AdminKCController {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private PacijentService pacijentService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<AdminKCDTO>> getAllAdminKCs() {
@@ -97,6 +98,25 @@ public class AdminKCController {
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	public ResponseEntity<AdminKCDTO> updateAdminKCLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
+
+		AdminKC l = adminKCService.findOne(id);
+
+		if (l == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		l.setLozinka(pacijentService.encodePassword(novaLozinka));
+		l.setPromenioLozinku(true);
+		try {
+			l = adminKCService.save(l);
+			return new ResponseEntity<>(new AdminKCDTO(), HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 }

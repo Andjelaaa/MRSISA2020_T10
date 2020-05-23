@@ -32,13 +32,13 @@ public class LekarDTO extends KorisnikDTO {
    public LekarDTO(Lekar s) {
 		this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
 				s.getDrzava(), s.getRvPocetak(), s.getRvKraj(), s.getKontakt(), s.getProsecnaOcena(), s.getBrojOcena(),
-				s.getOdsustvo());
+				s.getOdsustvo(), s.isPromenioLozinku());
 		this.tipPregleda = new TipPregledaDTO(s.getTipPregleda());
 	}
 
 
 	public LekarDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
-			String drzava, String rvPoc, String rvKraj, String Kontakt, Double po, int bo, Set<Odsustvo> odsustv) {
+			String drzava, String rvPoc, String rvKraj, String Kontakt, Double po, int bo, Set<Odsustvo> odsustv, boolean promenio) {
 		this.id = id;
 		this.email = email;
 		this.lozinka = lozinka;
@@ -55,6 +55,7 @@ public class LekarDTO extends KorisnikDTO {
 		this.odsustvo = konvertuj(odsustv);
 		this.klinika = new KlinikaDTO();
 		this.kontakt = Kontakt;
+		this.promenioLozinku = promenio;
 	}
    
  

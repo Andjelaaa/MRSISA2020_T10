@@ -20,13 +20,13 @@ public class MedSestraDTO extends KorisnikDTO {
 	
    public MedSestraDTO(MedSestra s) {
 	   this(s.getOdsustvo(),s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
-				s.getDrzava(), s.getKontakt(), s.getRadvr_kraj(), s.getRadvr_pocetak());
+				s.getDrzava(), s.getKontakt(), s.getRadvr_kraj(), s.getRadvr_pocetak(), s.isPromenioLozinku());
 	}
 	
 	
 	
 	public MedSestraDTO(Set<Odsustvo> set, Integer integer, String email, String lozinka, String ime, String prezime, String adresa, 
-			String grad, String drzava, String kontakt, String kraj, String pocetak) {
+			String grad, String drzava, String kontakt, String kraj, String pocetak, boolean promenio) {
 		this.odsustvo = konvertuj(set);
 		this.id = integer;
 		this.email = email;
@@ -39,6 +39,7 @@ public class MedSestraDTO extends KorisnikDTO {
 		this.drzava = drzava;
 		this.radvr_kraj= kraj;
 		this.radvr_pocetak = pocetak;
+		this.promenioLozinku = promenio;
 	}
 
 

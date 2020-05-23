@@ -9,12 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.LekarDTO;
 import main.mrs.dto.PacijentDTO;
 import main.mrs.dto.SearchPacijent;
+import main.mrs.model.Lekar;
 import main.mrs.model.Pacijent;
 import main.mrs.service.PacijentService;
 
@@ -78,6 +81,25 @@ public class PacijentController {
 		PacijentDTO PacijentsDTO = new PacijentDTO(Pacijents);
 		
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	public ResponseEntity<PacijentDTO> updatePacijentLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
+
+		Pacijent l = pacijentService.findOne(id);
+
+		if (l == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		l.setLozinka(pacijentService.encodePassword(novaLozinka));
+		l.setPromenioLozinku(true);
+		try {
+			l = pacijentService.save(l);
+			return new ResponseEntity<>(new PacijentDTO(), HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 

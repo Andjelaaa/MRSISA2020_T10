@@ -27,6 +27,7 @@ public class PacijentDTO extends KorisnikDTO {
 		this.pregled = new java.util.HashSet<PregledDTO>();
 		this.lbo = p.getLbo();
 		this.aktivan = false;
+		this.promenioLozinku = p.isPromenioLozinku();
 		//this.zKarton = new ZKartonDTO(p.zKarton);
 		
 	}

@@ -18,7 +18,7 @@ public class AdminKCService {
 	@Autowired
 	private AdminKCRepository adminKCRepository;
 	
-	public AdminKC findOne(Long id) {
+	public AdminKC findOne(Integer id) {
 		return adminKCRepository.findById(id).orElseGet(null);
 	}
 

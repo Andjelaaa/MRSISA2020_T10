@@ -34,7 +34,7 @@ public interface AdminKCRepository extends JpaRepository<AdminKC, Long>{
 	  boolean existsById(Long arg0);
 
 	 
-	  Optional<AdminKC> findById(Long arg0);
+	  Optional<AdminKC> findById(Integer id);
 
 	 
 	  <S extends AdminKC> S save(S arg0);

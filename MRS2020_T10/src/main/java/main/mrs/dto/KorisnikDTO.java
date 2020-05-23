@@ -12,6 +12,7 @@ public class KorisnikDTO {
 	protected String grad;
 	protected String drzava;
 	protected String kontakt;
+	protected boolean promenioLozinku;
 
 	public KorisnikDTO() {}
 	public KorisnikDTO(Korisnik p) {
@@ -24,8 +25,15 @@ public class KorisnikDTO {
 		this.id = p.getId();
 		this.kontakt = p.getKontakt();
 		this.lozinka = p.getLozinka();
+		this.promenioLozinku = p.isPromenioLozinku();
 	}
 
+	public boolean isPromenioLozinku() {
+		return promenioLozinku;
+	}
+	public void setPromenioLozinku(boolean promenioLozinku) {
+		this.promenioLozinku = promenioLozinku;
+	}
 	public Integer getId() {
 		return id;
 	}
