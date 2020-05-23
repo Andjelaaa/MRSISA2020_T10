@@ -1,11 +1,14 @@
-Vue.component('zahtevipo', {
+Vue.component('izvestaji', {
 
 	data: function(){
 		return{	
 			admin:{},
 			klinika: {},
-			pregledi: [],
-			operacije:[]
+			datum: {pocetak:'', kraj:''},
+			prihodi: 0.0,
+			grafik: {},
+			nivo: 'nedeljni', 
+
 		}
 	}, 
 	
@@ -33,10 +36,10 @@ Vue.component('zahtevipo', {
 		        <a class="nav-link" href="#/dpregled">Novi termin za pregled</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link " href="#/izvestaji">Izvestaji</a>
+		        <a class="nav-link active" href="#/izvestaji">Izvestaji</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link active" href="#/zahtevipo">Zahtevi za pregled/operaciju</a>
+		        <a class="nav-link" href="#/zahtevipo">Zahtevi za pregled/operaciju</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/zahtevioo">Zahtevi za odmor/odsustvo</a>
@@ -50,61 +53,53 @@ Vue.component('zahtevipo', {
 		</nav>
 		</br>
 		<div class="float-left" style="margin-left: 20px">
-			<h3> Zahtevi za preglede </h3>
-		<table class="table table-hover table-light">
-			<thead>
-				<th>Pacijent</th>
-				<th>Lekar</th>
-				<th>Datum i vreme</th>
-				<th>Tip pregleda</th>
-				<th>Sala</th>
-				<th></th>
-			
-			</thead>
+			<h3> Prihodi klinike: </h3>
+		<table class="table">
 			<tbody>
 			
-			   <tr v-for="pregled in pregledi">			   		
-			   		<td>{{pregled.pacijent.ime}} {{pregled.pacijent.prezime}}</td>
-			   		<td>{{pregled.lekar.ime}} {{pregled.lekar.prezime}}</td>
-			   		<td>{{pregled.datumVreme | formatDate}}</td>
-			   		<td>{{pregled.tipPregleda.naziv}}</td>
-			   		<td v-if="pregled.sala == null"><button v-on:click="nadji(pregled)" class="btn btn-outline-success my-2 my-sm-0">Nadji salu</button></td>
-			   		<td v-else>pregled.sala</td>
+			   <tr>
+			   		
+			   		<td>Od: </td>
+			   		<td><input type="date" class="form-control" id="od" v-model="datum.pocetak"></td>
+			   </tr>
+			   <tr>
+			   
+			   		<td>Do: </td>
+			   		<td><input type="date" class="form-control" id="od" v-model="datum.kraj"></td>	
+			   </tr>
 
-
+			   <tr>			   		
+			   		<td></td>
+			   		<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="prikazi()">Prikazi</button></td>
 			   </tr>
 			   
+			   <tr>			   		
+			   		<td>Prihodi za period su: </td>
+			   		<td>{{prihodi}} RSD</td>
+			   </tr>
+
+			    
 		   </tbody>
 		</table>
 		</div>
-		
-		
-		<div class="float-right" style="margin-left: 20px">
-			<h3> Zahtevi za operacije </h3>
-		<table class="table table-hover table-light">
-			<thead>
-				<th>Pacijent</th>
-				<th>Datum i vreme</th>
-				<th>Lekar</th>
-				<th>Sala</th>
-				<th></th>
-			
-			</thead>
+		<div class="float-right" style="width:60%">
+			<h3> Grafik odrzanih pregleda: </h3>
+		<table class="table">
 			<tbody>
 			
-			   <tr v-for="op in operacije">			   		
-			   		<td>{{op.pacijent.ime}} {{op.pacijent.prezime}}</td>
-			   		<td>{{op.datumVreme | formatDate}}</td>
-			   		<td>{{op.lekar[0].ime}} {{op.lekar[0].prezime}}</td>
-			   		<td><button v-on:click="nadjiSaluZaOP(op)" class="btn btn-outline-success my-2 my-sm-0">Nadji salu</button></td>
+			   <tr>			   		
+			   		<td>Nivo pregleda grafika: </td>
+			   		<td><select v-model="nivo" class="form-control">
+			   				<option>dnevni</option>
+			   				<option>nedeljni</option>
+			   				<option>mesecni</option>
+			   			</select>
+			   		</td>
 			   </tr>
-			   
+			    
 		   </tbody>
 		</table>
-		
-		
-		
-		
+		<column-chart :data="grafik" :colors="['#ccffcc', '#666']"></column-chart>
 		</div>
 
 	</div>
@@ -115,13 +110,33 @@ Vue.component('zahtevipo', {
 				localStorage.removeItem("token");
 				this.$router.push('/');
 		},
-		nadji: function(pregled){
-			this.$router.push('/zakazisalu/'+pregled.id.toString());
+		prikazi: function(){
+			axios
+	      	.post('api/klinika/prihodi/'+this.klinika.id, this.datum)
+	      	.then(response => {
+	      		this.prihodi = response.data;
+	      		
+	      	})
+	        .catch(function (error) { console.log('greska'); });	
 			
-		},
-		nadjiSaluZaOP:function(operacija){
-			this.$router.push('/zakazisaluop/'+operacija.id.toString());
 		}
+		
+	},
+	watch: {
+		nivo: function(){
+			if (this.nivo != '') {
+				axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id)
+				.then(response => {
+					this.grafik = response.data;
+					
+				})
+				.catch(response => {
+					console.log('greska');
+				});	
+			}
+				
+		},
+
 	},
 	mounted(){
 		
@@ -137,18 +152,17 @@ Vue.component('zahtevipo', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/pregled/zahtevi')
+			      	.get('api/admini/klinika/'+this.admin.email )
 			      	.then(response => {
-			      		this.pregledi = response.data;			      		
+			      		this.klinika = response.data;
+			      		axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id)
+			    		.then(response => {
+			    			this.grafik = response.data;
+			    			
+			    		})
+			      		
 			      	})
-			        .catch(function (error) { console.log('Greska') });	
-		    		
-		    		axios
-			      	.get('api/operacije/zahtevi')
-			      	.then(response => {
-			      		this.operacije = response.data;			      		
-			      	})
-			        .catch(function (error) { console.log('Greska sa dobavljanjem zahteva') });	
+			        .catch(function (error) { this.$router.push('/'); });		    		
 		    	}
 		    })
 		    .catch(function (error) { console.log(error); });

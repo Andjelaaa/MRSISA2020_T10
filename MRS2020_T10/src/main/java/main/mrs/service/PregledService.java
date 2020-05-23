@@ -82,6 +82,19 @@ public class PregledService {
 		return  PregledRepository.getPreglediByPL(pacijent_id,lekar_id);
 	}
 
+	public List<Pregled> izvestaj(Date pocetak, Date kraj, Integer id) {
+		return PregledRepository.izvestaj(pocetak,kraj, id);
+	}
+
+	public Integer getPreglediZaDatum(Date danas, Integer id) {
+		return PregledRepository.getPreglediZaDatum(danas, id);
+		
+	}
+
+	public Integer getPreglediZaSate(Date danas, Date danas2, Integer idKlinike) {
+		return PregledRepository.getPreglediZaSate(danas, danas2, idKlinike);
+	}
+
 
 
 }

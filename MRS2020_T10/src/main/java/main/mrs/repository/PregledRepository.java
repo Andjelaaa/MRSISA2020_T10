@@ -117,5 +117,15 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID=?1 AND LEKAR_ID = ?2 AND STATUS = 1 ", nativeQuery = true)
 	  List<Pregled> getPreglediByPL(Integer pacijent_id, Integer lekar_id);
 
+	  // dobavi sve zavrsene preglede odredjene klinike u odredjenom periodu
+	  @Query(value = "SELECT * FROM PREGLED WHERE STATUS=4 AND DATUM_VREME >= ?1 AND DATUM_VREME <= ?2 AND KLINIKA_ID = ?3", nativeQuery = true)
+	  List<Pregled> izvestaj(Date pocetak, Date kraj, Integer id);
+
+	  @Query(value = "SELECT COUNT(*) FROM PREGLED WHERE CAST(DATUM_VREME AS varchar(10)) = CAST(?1 AS varchar(10)) AND KLINIKA_ID = ?2", nativeQuery = true)
+	  Integer getPreglediZaDatum(Date danas, Integer idKlinike);
+
+	  @Query(value = "SELECT COUNT(*) FROM PREGLED WHERE DATUM_VREME >= ?1 AND DATUM_VREME <= ?2 AND KLINIKA_ID = ?3", nativeQuery = true)
+	  Integer getPreglediZaSate(Date danas, Date danas2, Integer idKlinike);
+
 }
 

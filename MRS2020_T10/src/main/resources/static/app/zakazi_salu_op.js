@@ -42,7 +42,13 @@ Vue.component('zakazisaluop', {
 		        <a class="nav-link" href="#/dpregled">Novi termin za pregled</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/zahtevipo">Zahtevi za pregled/operaciju</a>
+		        <a class="nav-link" href="#/izvestaji">Izvestaji</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link active" href="#/zahtevipo">Zahtevi za pregled/operaciju</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#/zahtevioo">Zahtevi za odmor/odsustvo</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">

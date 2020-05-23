@@ -3,8 +3,13 @@ package main.mrs.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
+import main.mrs.dto.SearchIzvestaj;
 import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
@@ -360,6 +366,74 @@ public class KlinikaController {
 
 		Klinika = KlinikaService.save(Klinika);
 		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
+	}
+	
+	@PostMapping(consumes = "application/json", value = "/prihodi/{id}")
+	public ResponseEntity<Double> prihodiKlinike(@RequestBody SearchIzvestaj searchIzvestaj, @PathVariable Integer id) {
+
+		// a Klinika must exist
+		Klinika Klinika = KlinikaService.findOne(id);
+
+		if (Klinika == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		double prihodi = 0.0;
+		
+		// naci sve preglede, njihove stavke, cenu
+		List<Pregled> pregledi = PregledService.izvestaj(searchIzvestaj.getPocetak(), searchIzvestaj.getKraj(), id);
+		for (Pregled p : pregledi) {
+			if(p.getPopust() != 0)
+				prihodi += p.getTipPregleda().getStavka().getCena() * (100 - p.getPopust())/100;
+			else
+				prihodi += p.getTipPregleda().getStavka().getCena();
+		}
+		
+		return new ResponseEntity<>(prihodi, HttpStatus.OK);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@GetMapping(value = "/grafik/{nivo}/{idKlinike}")
+	public ResponseEntity<Map<String,Integer>> grafik(@PathVariable String nivo, @PathVariable Integer idKlinike) {
+
+		Map<String, Integer> podaci = new HashMap<String, Integer>(); // kljuc je dan, vrednost je broj pregleda za taj dan
+		Date danas = new Date();
+		Date danas2 = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+		GregorianCalendar gc = new GregorianCalendar();	
+		gc.setTime(danas);
+		
+		
+		if(nivo.equals("dnevni")) {
+			for(int i=0; i <=20; i+=4) {
+				danas.setHours(i);
+				danas.setMinutes(0);
+				danas2.setHours(i+4);
+				danas2.setMinutes(0);
+				Integer broj = PregledService.getPreglediZaSate(danas, danas2, idKlinike);
+				podaci.put(sdf2.format(danas), broj);
+			}
+			
+			
+		}else if(nivo.equals("nedeljni")) {
+			for(int i = -7; i<0; i++) {
+				gc.add(Calendar.DAY_OF_MONTH, i);
+				Integer broj = PregledService.getPreglediZaDatum(gc.getTime(), idKlinike);
+				podaci.put(sdf.format(gc.getTime()), broj);
+				gc.setTime(danas);
+			}			
+		}else if(nivo.equals("mesecni")) {
+			for(int i = -30; i<0; i++) {
+				gc.add(Calendar.DATE, i);
+				Integer broj = PregledService.getPreglediZaDatum(gc.getTime(), idKlinike);
+				podaci.put(sdf.format(gc.getTime()), broj);
+				gc.setTime(danas);
+			}
+		}
+		// sortira po datumu
+		Map<String, Integer> treeMap = new TreeMap<String, Integer>(podaci);		
+		return new ResponseEntity<>(treeMap, HttpStatus.OK);
+
 	}
 
 }
