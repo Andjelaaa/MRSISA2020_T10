@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.SearchLekar;
+import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
 import main.mrs.service.AutoritetService;
@@ -97,7 +100,7 @@ public class MedSestraController {
 	 
 		@Transactional // obavezno ova anotacija, inace puca
 		@DeleteMapping(value = "/{id}")
-		public ResponseEntity<Void> deleteLekar(@PathVariable Integer id) {
+		public ResponseEntity<Void> deleteMedSestra(@PathVariable Integer id) {
 			MedSestra ms = MedSestraService.findOne(id);
 
 			if (ms != null) {
@@ -106,6 +109,48 @@ public class MedSestraController {
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
+		}
+		
+		@PutMapping(consumes = "application/json", value = "/{id}")
+		public ResponseEntity<MedSestraDTO> updateMedSestra(@RequestBody MedSestraDTO msDTO, @PathVariable Integer id) {
+
+			MedSestra ms = MedSestraService.findOne(id);
+
+			if (ms == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+
+			ms.setIme(msDTO.getIme());
+			ms.setPrezime(msDTO.getPrezime());
+			ms.setEmail(msDTO.getEmail());
+			ms.setAdresa(msDTO.getAdresa());
+			ms.setGrad(msDTO.getGrad());
+			ms.setDrzava(msDTO.getDrzava());
+			ms.setKontakt(msDTO.getKontakt());
+			try {
+				ms = MedSestraService.save(ms);
+				return new ResponseEntity<>(new MedSestraDTO(), HttpStatus.OK);
+			}catch(Exception e) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
+		}
+		@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+		public ResponseEntity<MedSestraDTO> updateMedSestraLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
+
+			MedSestra ms = MedSestraService.findOne(id);
+
+			if (ms == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			ms.setLozinka(PacijentService.encodePassword(novaLozinka));
+			try {
+				ms = MedSestraService.save(ms);
+				return new ResponseEntity<>(new MedSestraDTO(), HttpStatus.OK);
+			}catch(Exception e) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
 		}
 		 
 }

@@ -9,31 +9,36 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
-import main.mrs.dto.PregledDTO;
+import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.SearchLekar;
-import main.mrs.dto.ZauzeceDTO;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
 import main.mrs.model.Operacija;
 import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.PomocnaKlasa6;
 import main.mrs.model.Pregled;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.AutoritetService;
 import main.mrs.service.LekarService;
-import main.mrs.service.PacijentService;
-import main.mrs.service.TipPregledaService;
 import main.mrs.service.OperacijaService;
+import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
+import main.mrs.service.TipPregledaService;
 
 @RestController
 @RequestMapping(value="api/lekar")
@@ -50,6 +55,9 @@ public class LekarContoller {
 	private PacijentService PacijentService;
 	@Autowired
 	private AutoritetService autoritetService;
+	
+	@Autowired
+	private AdminKlinikeService adminKlinikeService;
 	
 	@Autowired
 	TipPregledaService tps = new TipPregledaService();	
@@ -89,6 +97,12 @@ public class LekarContoller {
 		Lekar.setTipPregleda(tp);
 		Lekar.setAutoriteti(autoritetService.findByName("ROLE_LEKAR"));
 		
+		// ovo vraca anonymous user 
+//		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+//		AdminKlinike ak = adminKlinikeService.findByEmail(trenutniKorisnik.getName());
+//		System.out.println(trenutniKorisnik.getName());
+//		
+//		Lekar.setKlinika(ak.getKlinika());
 		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
 		//Lekar.setKlinika();
 		
@@ -372,6 +386,48 @@ public class LekarContoller {
 		}
 
 		return new ResponseEntity<>(lekariDTO, HttpStatus.OK);
+	}
+	
+	@PutMapping(consumes = "application/json", value = "/{id}")
+	public ResponseEntity<LekarDTO> updateLekar(@RequestBody LekarDTO lDTO, @PathVariable Integer id) {
+
+		Lekar l = LekarService.findOne(id);
+
+		if (l == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		l.setIme(lDTO.getIme());
+		l.setPrezime(lDTO.getPrezime());
+		l.setEmail(lDTO.getEmail());
+		l.setAdresa(lDTO.getAdresa());
+		l.setGrad(lDTO.getGrad());
+		l.setDrzava(lDTO.getDrzava());
+		l.setKontakt(lDTO.getKontakt());
+		try {
+			l = LekarService.save(l);
+			return new ResponseEntity<>(new LekarDTO(), HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	public ResponseEntity<LekarDTO> updateLekarLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
+
+		Lekar l = LekarService.findOne(id);
+
+		if (l == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		l.setLozinka(PacijentService.encodePassword(novaLozinka));
+		try {
+			l = LekarService.save(l);
+			return new ResponseEntity<>(new LekarDTO(), HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 
 }

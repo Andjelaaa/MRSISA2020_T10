@@ -123,6 +123,13 @@ public class VerificationTokenController {
 		System.out.println("odje1232132312312");
 		return null;
 	}
+	
+	@GetMapping(value = "/enkodujLozinku/{lozinka}")
+	public ResponseEntity<String> enkodujLozinku(@PathVariable String lozinka) {
+		
+		String enkodovana = pacijentService.encodePassword(lozinka);
+		return new ResponseEntity<>(enkodovana, HttpStatus.OK);
+	}
 
 	
 }

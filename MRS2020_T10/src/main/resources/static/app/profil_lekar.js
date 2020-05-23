@@ -1,8 +1,8 @@
-Vue.component('medsestra', {
+Vue.component('profillekar', {
 
 	data: function(){
 		return{	
-			medicinska_sestra:{},
+			lekar:{},
 			uloga: '',
 			token: '',
 			showModal:false,
@@ -20,7 +20,7 @@ Vue.component('medsestra', {
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
-		  <a class="navbar-brand" href="#/med_sestra_pocetna">Pocetna</a>
+		  <a class="navbar-brand" href="#/lekar_pocetna">Pocetna</a>
 		
 		  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -31,14 +31,14 @@ Vue.component('medsestra', {
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/odmor">Zahtev za godisnji odmor/odsustvo</a>
 		      </li>
+		      <li class="nav-item">
+		        <a  class="nav-link" href="#/kalendarlekar">Radni kalendar</a>
+		       </li>
 		       <li class="nav-item">
-		        <a class="nav-link" href="#/overa">Overa recepata</a>
-		      </li>
+		        <a  class="nav-link" href="#/lekar/pregledi">Zakazani pregledi</a>
+		       </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/kalendarr">Radni kalendar</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#/medsestra">Profil: {{medicinska_sestra.ime}} {{medicinska_sestra.prezime}}</a>
+		        <a class="nav-link" href="#/profil">Profil: {{lekar.ime}} {{lekar.prezime}}</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
@@ -54,32 +54,32 @@ Vue.component('medsestra', {
 			<tbody>
 			   <tr>		   		
 			   		<td>Ime</td>
-			   		<td>{{medicinska_sestra.ime}}</td>
+			   		<td>{{lekar.ime}}</td>
 			   </tr>
 			  
 			   <tr>
 			   		<td>Prezime</td>
-			   		<td>{{medicinska_sestra.prezime}}</td>
+			   		<td>{{lekar.prezime}}</td>
 			   </tr>
 			    <tr>
 			   		<td>Email</td>
-			   		<td>{{medicinska_sestra.email}}</td>	  
+			   		<td>{{lekar.email}}</td>	  
 			   	</tr>
 			   	<tr>
 			   		<td>Adresa</td>
-			   		<td>{{medicinska_sestra.adresa}}</td>
+			   		<td>{{lekar.adresa}}</td>
 			   	</tr>
 			   	<tr>
 			   		<td>Grad</td>
-			   		<td>{{medicinska_sestra.grad}}</td>	   
+			   		<td>{{lekar.grad}}</td>	   
 			   	</tr>
 				<tr>
 			   		<td>Drzava</td>
-			   		<td>{{medicinska_sestra.drzava}}</td>	  
+			   		<td>{{lekar.drzava}}</td>	  
 			   	</tr>
 			   	<tr>
 			   		<td>Kontakt</td>
-			   		<td>{{medicinska_sestra.kontakt}}</td>
+			   		<td>{{lekar.kontakt}}</td>
 			   	</tr>
 			   	<tr>
 			   		<td><button class="btn btn-light float-right" id="show-modal2" @click="showModal2 = true">Promena lozinke</button>
@@ -176,31 +176,31 @@ Vue.component('medsestra', {
 			this.$router.push('/');
 		},
 		select : function(s){
-			this.selectedBackup.ime = this.medicinska_sestra.ime;
-			this.selectedBackup.prezime = this.medicinska_sestra.prezime;
-			this.selectedBackup.email = this.medicinska_sestra.email;
-			this.selectedBackup.adresa = this.medicinska_sestra.adresa;
-			this.selectedBackup.grad = this.medicinska_sestra.grad;
-			this.selectedBackup.drzava = this.medicinska_sestra.drzava;
-			this.selectedBackup.kontakt = this.medicinska_sestra.kontakt;
-			this.selected = this.medicinska_sestra;
+			this.selectedBackup.ime = this.lekar.ime;
+			this.selectedBackup.prezime = this.lekar.prezime;
+			this.selectedBackup.email = this.lekar.email;
+			this.selectedBackup.adresa = this.lekar.adresa;
+			this.selectedBackup.grad = this.lekar.grad;
+			this.selectedBackup.drzava = this.lekar.drzava;
+			this.selectedBackup.kontakt = this.lekar.kontakt;
+			this.selected = this.lekar;
 
 		},
 		restore: function(){
-			this.medicinska_sestra.ime = this.selectedBackup.ime;
-			this.medicinska_sestra.prezime = this.selectedBackup.prezime;
-			this.medicinska_sestra.email = this.selectedBackup.email;
-			this.medicinska_sestra.adresa = this.selectedBackup.adresa;
-			this.medicinska_sestra.grad = this.selectedBackup.grad;
-			this.medicinska_sestra.drzava = this.selectedBackup.drzava;
-			this.medicinska_sestra.kontakt = this.selectedBackup.kontakt;
+			this.lekar.ime = this.selectedBackup.ime;
+			this.lekar.prezime = this.selectedBackup.prezime;
+			this.lekar.email = this.selectedBackup.email;
+			this.lekar.adresa = this.selectedBackup.adresa;
+			this.lekar.grad = this.selectedBackup.grad;
+			this.lekar.drzava = this.selectedBackup.drzava;
+			this.lekar.kontakt = this.selectedBackup.kontakt;
 		},
 		sacuvaj: function(){
-			if(this.medicinska_sestra.ime != '' && this.medicinska_sestra.prezime != '' && this.medicinska_sestra.email != '' 
-				&& this.medicinska_sestra.adresa != '' && this.medicinska_sestra.grad != ''
-					&& this.medicinska_sestra.drzava !='' && this.medicinska_sestra.kontakt != ''){
+			if(this.lekar.ime != '' && this.lekar.prezime != '' && this.lekar.email != '' 
+				&& this.lekar.adresa != '' && this.lekar.grad != ''
+					&& this.lekar.drzava !='' && this.lekar.kontakt != ''){
 				axios
-				.put('api/medsestraa/'+this.medicinska_sestra.id, this.medicinska_sestra)
+				.put('api/lekar/'+this.lekar.id, this.lekar)
 				.then((res)=>{
 					console.log('Uspesna izmena');
 				}).catch((res)=>{
@@ -233,7 +233,7 @@ Vue.component('medsestra', {
 					console.log(this.lozinka);
 					
 					axios
-					.put('api/medsestraa/promenaLozinke/'+this.medicinska_sestra.id+'/'+this.novaLozinka)
+					.put('api/lekar/promenaLozinke/'+this.lekar.id+'/'+this.novaLozinka)
 					.then((res)=>{
 						console.log('Uspesna izmena');
 						alert('Uspesna izmena lozinke');
@@ -261,12 +261,12 @@ Vue.component('medsestra', {
 		this.token = localStorage.getItem("token");
 		axios
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
-	    .then(response => { this.medicinska_sestra = response.data;
+	    .then(response => { this.lekar = response.data;
 		    axios
-			.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+			.put('/auth/dobaviulogu', this.lekar, { headers: { Authorization: 'Bearer ' + this.token }} )
 		    .then(response => {
 		    	this.uloga = response.data;
-		    	if (this.uloga != "ROLE_MED_SESTRA") {
+		    	if (this.uloga != "ROLE_LEKAR") {
 		    		router.push('/');
 		    	}
 		    })

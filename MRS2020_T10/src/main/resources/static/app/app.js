@@ -36,6 +36,8 @@ const Izvestaji = {template: '<izvestaji></izvestaji>'}
 const ZahteviOdmorOdsustvo = {template: '<zahtevioo></zahtevioo>'}
 const LekarZakazaniPregledi = {template: '<lekarzp></lekarzp>'}
 const MedicinskeSestre = {template: '<medsestre></medsestre>'}
+const ProfilLekar = {template: '<profillekar></profillekar>'}
+const ProfilAdmin = {template: '<profiladmin></profiladmin>'}
 
 
 const router = new VueRouter({
@@ -78,7 +80,9 @@ const router = new VueRouter({
 	    { path: '/izvestaji', component: Izvestaji},
 	    { path: '/zahtevioo', component: ZahteviOdmorOdsustvo},
 	    { path: '/lekar/pregledi', component: LekarZakazaniPregledi},
-	    { path: '/medsestre', component: MedicinskeSestre}
+	    { path: '/medsestre', component: MedicinskeSestre},
+	    { path: '/profil', component: ProfilLekar},
+	    { path: '/profiladmin', component: ProfilAdmin},
 	    ]
 });
 

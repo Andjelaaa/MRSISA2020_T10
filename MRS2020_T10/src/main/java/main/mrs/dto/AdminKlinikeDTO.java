@@ -12,12 +12,12 @@ public class AdminKlinikeDTO extends KorisnikDTO {
    
    public AdminKlinikeDTO(AdminKlinike s) {
 	   this(s.getId(), s.getEmail(), s.getLozinka(), s.getIme(), s.getPrezime(), s.getAdresa(), s.getGrad(),
-				s.getDrzava());
+				s.getDrzava(), s.getKontakt());
    }
    
       
    public AdminKlinikeDTO(Integer id, String email, String lozinka, String ime, String prezime, String adresa, String grad,
-		String drzava) {
+		String drzava, String kontakt) {
 	this.id = id;
 	this.email = email;
 	this.lozinka = lozinka;
@@ -26,6 +26,7 @@ public class AdminKlinikeDTO extends KorisnikDTO {
 	this.adresa = adresa;
 	this.grad = grad;
 	this.drzava = drzava;
+	this.kontakt = kontakt;
 }
 
 public Set<OdsustvoDTO> getOdsustvo() {
