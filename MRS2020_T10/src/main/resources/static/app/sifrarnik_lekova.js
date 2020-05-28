@@ -31,25 +31,17 @@ Vue.component('sifrarnik1', {
 		        <a class="nav-link" href="#/odobri_zahtev">Zahtevi za registraciju</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/kreirajzk">Kreiraj zdravstveni karton</a>
-		      </li>
-		      <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik1">Sifrarnik lekova</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
 		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Profil</a>
-		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/">Odjavi se</a>
-		      </li>
-		    </ul>
-		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</ul>
+			 <form class="form-inline my-2 my-lg-0">
+		      
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
+		
 		  </div>
 		</nav>
 		</br>
@@ -122,6 +114,10 @@ Vue.component('sifrarnik1', {
 	
 	`, 
 	methods : {
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 		validacija : function(){
 			this.greska1 = '';
 			this.greska2 = '';

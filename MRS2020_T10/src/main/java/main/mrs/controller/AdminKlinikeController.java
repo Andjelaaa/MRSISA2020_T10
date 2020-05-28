@@ -11,15 +11,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.AdminKCDTO;
 import main.mrs.dto.AdminKlinikeDTO;
 import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
+import main.mrs.dto.MedSestraDTO;
+import main.mrs.dto.PacijentDTO;
+import main.mrs.model.AdminKC;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Klinika;
+import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
+import main.mrs.model.Pacijent;
 import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.KlinikaService;
+import main.mrs.service.AdminKCService;
+import main.mrs.service.MedSestraService;
 
 @RestController
 @RequestMapping(value="api/admini")
@@ -33,8 +42,35 @@ public class AdminKlinikeController {
 	@Autowired
 	private KlinikaService KlinikaService;
 	
+	@Autowired
+	private AdminKCService AdminKCService;
+	
+	@Autowired
+	private LekarService LekarService;
+	@Autowired
+	private MedSestraService MedSestraService;
+	
 	@PostMapping(consumes = "application/json", value = "/{id}")
-	public ResponseEntity<AdminKlinikeDTO> saveKlinika(@PathVariable Integer id,@RequestBody AdminKlinikeDTO AdminKlinikeDTO) {
+	public ResponseEntity<AdminKlinikeDTO> saveKlinikaAdmin(@PathVariable Integer id,@RequestBody AdminKlinikeDTO AdminKlinikeDTO) {
+		
+		Pacijent pacijent = PacijentService.findByEmail(AdminKlinikeDTO.getEmail());
+		if(pacijent != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+
+		AdminKC akc = AdminKCService.findByEmail(AdminKlinikeDTO.getEmail());
+		if(akc != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+		Lekar l = LekarService.findByEmail(AdminKlinikeDTO.getEmail());
+		if(l != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra ms = MedSestraService.findByEmail(AdminKlinikeDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+		
 		
 		AdminKlinike admin = new AdminKlinike();
 		admin.setIme(AdminKlinikeDTO.getIme());

@@ -29,10 +29,12 @@ Vue.component('superprofil', {
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
 		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/">Odjavi se</a>
-		      </li>
-		    </ul>
+
+			</ul>
+			 <form class="form-inline my-2 my-lg-0">
+		      
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
+		    </form>
 		  </div>
 		</nav>
 		</br>
@@ -63,6 +65,10 @@ Vue.component('superprofil', {
 	
 	`,
 	methods: {
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 		metoda:function(id){
 			this.$router.push('/dadmin/' + id);
 		}

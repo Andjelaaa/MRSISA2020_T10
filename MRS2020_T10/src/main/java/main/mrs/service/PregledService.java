@@ -103,6 +103,10 @@ public class PregledService {
 		return PregledRepository.getScheduledForDr(lekarId);
 	}
 
+	public List<Pregled> findZavrsene(Integer id) {
+		return PregledRepository.getZavrsenePregledeZaRecept(id);
+	}
+
 
 
 }

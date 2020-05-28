@@ -270,7 +270,7 @@ Vue.component('lekari', {
 				 
 				
 			}).catch((res)=>{
-				this.error = 'Vec postoji lekar sa istim email-om';
+				this.error = 'Vec postoji korisnik sa istim email-om';
 				this.lekar = {};
 			}
 				

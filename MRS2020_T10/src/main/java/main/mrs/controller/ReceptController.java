@@ -29,11 +29,11 @@ import main.mrs.model.Pregled;
 import main.mrs.model.Recept;
 import main.mrs.service.DijagnozaService;
 import main.mrs.service.IzvestajService;
+import main.mrs.service.LekService;
 import main.mrs.service.MedSestraService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
 import main.mrs.service.ReceptService;
-import main.mrs.service.LekService;
 
 @RestController
 @RequestMapping(value="api/recept")
@@ -56,23 +56,27 @@ public class ReceptController {
 	@Autowired
 	private DijagnozaService DijagnozaService;
 	
-	@GetMapping(value = "/neovereni")
-	public ResponseEntity<List<ReceptDTO>> getAllRecepte() {
+	@GetMapping(value = "/neovereni/{email}")
+	public ResponseEntity<List<ReceptDTO>> getAllRecepte(@PathVariable String email) {
+		MedSestra meds = MedSestraService.findByEmail(email);
+		List<Pregled> pregledi = PregledService.findZavrsene(meds.getKlinika().getId()); //zavrseni i id klinike
 		
-		List<Recept> recepti = ReceptService.findAll();
+	//	List<Recept> recepti = ReceptService.findAll();
 
 		List<ReceptDTO> receptiDTO = new ArrayList<>();
-		for (Recept r : recepti) {
-			if(r.getMedSestra() == null) {
-				
+		
+		for(Pregled p : pregledi) {
+			if(p.getIzvestaj().getRecept().getMedSestra() == null) {
+				Recept r = p.getIzvestaj().getRecept(); // ako ne radi dobavi iz baze
 				ReceptDTO recept = new ReceptDTO(r);
 				recept.setImePacijenta(r.getImePacijenta());
 				recept.setPrezimePacijenta(r.getPrezimePacijenta());
 				receptiDTO.add(recept);
-				
 			}
-				
+			
 		}
+		
+		
 		return new ResponseEntity<>(receptiDTO, HttpStatus.OK);
 	}
 	@PutMapping(value = "/izmeni/{email}", consumes = "application/json")

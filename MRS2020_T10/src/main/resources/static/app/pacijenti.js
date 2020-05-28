@@ -93,7 +93,7 @@ Vue.component('pacijenti', {
 		},
 		pretrazi: function(){
 			axios
-	       	.post('api/pacijent/search', this.pretraga)
+	       	.post('api/pacijent/search/' + this.korisnik.email, this.pretraga)
 	       	.then(response => (this.pacijenti = response.data));
 
 		},
@@ -132,7 +132,7 @@ mounted(){
 	    	}else{
 	    		// dobavi pacijente
 	    		axios
-	           	.get('api/pacijent/all')
+	           	.get('api/pacijent/all/'+this.korisnik.email)
 	           	.then(response => (this.pacijenti = response.data));
 	    	
 	    	}

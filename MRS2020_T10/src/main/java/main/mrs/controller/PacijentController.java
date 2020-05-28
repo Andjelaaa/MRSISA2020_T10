@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.LekarDTO;
 import main.mrs.dto.PacijentDTO;
 import main.mrs.dto.SearchPacijent;
+import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
 import main.mrs.model.Pacijent;
+import main.mrs.service.KlinikaService;
+import main.mrs.service.LekarService;
+import main.mrs.service.MedSestraService;
 import main.mrs.service.PacijentService;
 
 @RestController
@@ -27,16 +31,42 @@ public class PacijentController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	@Autowired
+	private LekarService lekarService;
 
+	@Autowired
+	private KlinikaService klinikaService;
+	@Autowired
+	private MedSestraService medSestraService;
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PacijentDTO>> getAllPacijents() {
-
+		
 		List<Pacijent> Pacijents = pacijentService.findAll();
 
 		// convert Pacijents to DTOs
 		List<PacijentDTO> PacijentsDTO = new ArrayList<>();
 		for (Pacijent s : Pacijents) {
 			PacijentsDTO.add(new PacijentDTO(s));
+		}
+
+		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
+	}
+	@GetMapping(value = "/all/{email}")
+	public ResponseEntity<List<PacijentDTO>> getAllPacijentii(@PathVariable String email) {
+		//korisnik moze biti med sestra ili korisnik
+		Lekar lekar = lekarService.findByEmail(email);
+		MedSestra meds =  medSestraService.findByEmail(email);
+	
+		
+		List<Pacijent> Pacijents = pacijentService.findAll();
+		
+		// convert Pacijents to DTOs
+		List<PacijentDTO> PacijentsDTO = new ArrayList<>();
+		for (Pacijent s : Pacijents) {
+			   if((lekar != null && lekar.getKlinika().getPacijent().contains(s))
+					   ||( meds != null && meds.getKlinika().getPacijent().contains(s))) {
+				   PacijentsDTO.add(new PacijentDTO(s));
+			   }
 		}
 
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
@@ -60,15 +90,21 @@ public class PacijentController {
 		return new ResponseEntity<>(new PacijentDTO(Pacijent), HttpStatus.CREATED);
 	}
 	
-	@PostMapping(value = "/search")
-	public ResponseEntity<List<PacijentDTO>> getSearchLekars(@RequestBody SearchPacijent sp) {
-		System.out.println(sp.getIme()+sp.getPrezime());
+	@PostMapping(value = "/search/{email}")
+	public ResponseEntity<List<PacijentDTO>> getSearchLekars(@RequestBody SearchPacijent sp, @PathVariable String email) {
+		Lekar lekar = lekarService.findByEmail(email);
+		MedSestra meds = medSestraService.findByEmail(email);
+		
+		//System.out.println(sp.getIme()+sp.getPrezime());
 		List<Pacijent> pacijenti = pacijentService.findByImeAndPrezimeAndLbo(sp.getIme().toUpperCase(), sp.getPrezime().toUpperCase(), sp.getLbo().toUpperCase());
 
 		// convert Lekars to DTOs
 		List<PacijentDTO> pacijentiDTO = new ArrayList<>();
 		for (Pacijent s : pacijenti) {
-			pacijentiDTO.add(new PacijentDTO(s));
+			 if((lekar != null && lekar.getKlinika().getPacijent().contains(s))
+					   ||( meds != null && meds.getKlinika().getPacijent().contains(s))) {
+				 	pacijentiDTO.add(new PacijentDTO(s));
+			 }
 		}
 
 		return new ResponseEntity<>(pacijentiDTO, HttpStatus.OK);

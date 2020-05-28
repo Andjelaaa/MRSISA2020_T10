@@ -21,20 +21,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.AdminKlinikeDTO;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.SearchLekar;
+import main.mrs.model.AdminKC;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
 import main.mrs.model.Operacija;
+import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.PomocnaKlasa6;
 import main.mrs.model.Pregled;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.AdminKCService;
 import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.AutoritetService;
 import main.mrs.service.LekarService;
+import main.mrs.service.MedSestraService;
 import main.mrs.service.OperacijaService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.PregledService;
@@ -58,6 +63,15 @@ public class LekarContoller {
 	
 	@Autowired
 	private AdminKlinikeService adminKlinikeService;
+	
+
+	@Autowired
+	private AdminKlinikeService AdminKlinikeService;
+
+	@Autowired
+	private AdminKCService AdminKCService;
+	@Autowired
+	private MedSestraService MedSestraService;
 	
 	@Autowired
 	TipPregledaService tps = new TipPregledaService();	
@@ -94,6 +108,25 @@ public class LekarContoller {
 	 @Transactional
 	@PostMapping(consumes = "application/json", value="/{IdAdmina}")
 	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO LekarDTO, @PathVariable Integer IdAdmina) {
+
+		 Pacijent pacijent = PacijentService.findByEmail(LekarDTO.getEmail());
+		 if(pacijent != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		 }
+
+		 AdminKC akc = AdminKCService.findByEmail(LekarDTO.getEmail());
+		 if(akc != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 AdminKlinike l = AdminKlinikeService.findByEmail(LekarDTO.getEmail());
+		if(l != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra ms = MedSestraService.findByEmail(LekarDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 
 
 		Lekar Lekar = new Lekar();
 		Lekar.setIme(LekarDTO.getIme());
@@ -301,7 +334,7 @@ public class LekarContoller {
 
 		
 		// dobavi mi sve lekare
-		List<Lekar> lekari = LekarService.findAll();
+		List<Lekar> lekari = LekarService.findAllByIdKlinike(lekar.getKlinika().getId());
 		
 		//izbaci onog koji je zakazao 
 		int index = lekari.indexOf(lekar);

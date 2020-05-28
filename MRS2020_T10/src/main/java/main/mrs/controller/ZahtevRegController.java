@@ -12,14 +12,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.LekarDTO;
+import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.ZahtevRegDTO;
+import main.mrs.model.AdminKC;
+import main.mrs.model.AdminKlinike;
+import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
+import main.mrs.model.Pacijent;
 import main.mrs.model.ZahtevReg;
+import main.mrs.service.AdminKCService;
+import main.mrs.service.AdminKlinikeService;
+import main.mrs.service.LekarService;
+import main.mrs.service.MedSestraService;
+import main.mrs.service.PacijentService;
 import main.mrs.service.ZahtevRegService;
 
 @RestController
 @RequestMapping(value="api/zahtevreg")
 public class ZahtevRegController {
+	@Autowired
+	private AdminKCService AdminKCService;
+	@Autowired
+	private PacijentService PacijentService;
 
+
+	@Autowired
+	private AdminKlinikeService AdminKlinikeService;
+	@Autowired
+	private LekarService LekarService;
+	@Autowired
+	private MedSestraService MedSestraService;
 	@Autowired
 	private ZahtevRegService ZahtevRegService;
 
@@ -39,6 +62,30 @@ public class ZahtevRegController {
 
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ZahtevRegDTO> saveZahtevReg(@RequestBody ZahtevRegDTO ZahtevRegDTO) {
+		
+		Pacijent pacijent = PacijentService.findByEmail(ZahtevRegDTO.getEmail());
+		if(pacijent != null) {
+			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+	    }
+
+		AdminKC akc = AdminKCService.findByEmail(ZahtevRegDTO.getEmail());
+		if(akc != null) {
+			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 AdminKlinike l = AdminKlinikeService.findByEmail(ZahtevRegDTO.getEmail());
+		if(l != null) {
+			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+		}
+		Lekar ms = LekarService.findByEmail(ZahtevRegDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra n = MedSestraService.findByEmail(ZahtevRegDTO.getEmail());
+		if(n != null) {
+			return new ResponseEntity<>(new ZahtevRegDTO(),HttpStatus.BAD_REQUEST);
+		}
+		
+		
 		ZahtevReg zahtevReg = new ZahtevReg();
 		zahtevReg.setAdresa(ZahtevRegDTO.getAdresa());
 		zahtevReg.setDrzava(ZahtevRegDTO.getDrzava());

@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.SearchLekar;
+import main.mrs.model.AdminKC;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
+import main.mrs.model.Pacijent;
+import main.mrs.service.AdminKCService;
 import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.AutoritetService;
 import main.mrs.service.LekarService;
@@ -41,6 +45,14 @@ public class MedSestraController {
 	@Autowired
 	private AdminKlinikeService adminKlinikeService;
 	
+
+	@Autowired
+	private AdminKlinikeService AdminKlinikeService;
+
+	@Autowired
+	private AdminKCService AdminKCService;
+	@Autowired
+	private LekarService LekarService;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<MedSestraDTO>> getAllMedSestrs() {
@@ -72,6 +84,25 @@ public class MedSestraController {
 	@PostMapping(consumes = "application/json", value="/{idAdmina}")
 	public ResponseEntity<MedSestraDTO> saveSestra(@RequestBody MedSestraDTO MedSestraDTO, @PathVariable Integer idAdmina) {
 
+		
+		Pacijent pacijent = PacijentService.findByEmail(MedSestraDTO.getEmail());
+		 if(pacijent != null) {
+			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+	     }
+
+		AdminKC akc = AdminKCService.findByEmail(MedSestraDTO.getEmail());
+		if(akc != null) {
+			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 AdminKlinike l = AdminKlinikeService.findByEmail(MedSestraDTO.getEmail());
+		if(l != null) {
+			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+		}
+		Lekar ms = LekarService.findByEmail(MedSestraDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 
 		MedSestra m = new MedSestra();
 		m.setIme(MedSestraDTO.getIme());
 		m.setPrezime(MedSestraDTO.getPrezime());

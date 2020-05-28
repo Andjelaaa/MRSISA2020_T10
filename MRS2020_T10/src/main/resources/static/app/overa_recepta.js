@@ -106,18 +106,21 @@ Vue.component('overa', {
 		    	this.uloga = response.data;
 		    	if (this.uloga != "ROLE_MED_SESTRA") {
 		    		this.$router.push('/');
-		    	}
+				}
+				else{
+					axios
+					.get('api/recept/neovereni/' + this.medicinska_sestra.email)
+					.then((response) => {
+					this.recepti = response.data;
+					}).catch(response=>{alert("Doslo je do greske");});
+				}
 		    })
 		    .catch((response)=> { console.log(error);});
 		    
 	    })
 	    .catch((response)=>{ this.$router.push('/'); });	 
 		
-		axios
-        .get('api/recept/neovereni')
-        .then((response) => {
-      	  this.recepti = response.data;
-        }).catch(response=>{alert("Doslo je do greske");});
+		
 	}
 	
 	

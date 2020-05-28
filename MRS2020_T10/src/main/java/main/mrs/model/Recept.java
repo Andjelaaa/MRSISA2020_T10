@@ -36,6 +36,7 @@ public class Recept {
 	@Column(name="prezimePacijenta", unique=false, nullable=false)
 	public String prezimePacijenta;
    
+	
 	public String getImePacijenta() {
 		return imePacijenta;
 	}

@@ -252,7 +252,7 @@ Vue.component('medsestre', {
 				 
 				
 			}).catch((res)=>{
-				this.error = 'Vec postoji medicinska sestra sa istim email-om';
+				this.error = 'Vec postoji korisnik sa istim email-om';
 				this.sestra = {};
 			}
 			

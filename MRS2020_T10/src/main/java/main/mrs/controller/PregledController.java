@@ -349,6 +349,7 @@ public class PregledController {
 		PregledNovi.setTrajanje(PregledDTO.getTrajanje());
 		PregledNovi.setStatus(Status.odobreno);
 		PregledNovi.setPopust(PregledDTO.getPopust());
+	
 		TipPregleda tp = TipPregledaService.findByNaziv(PregledDTO.getTipPregleda().getNaziv());
 		PregledNovi.setTipPregleda(tp);
 		Sala s = SalaService.findByNaziv(PregledDTO.getSala().getNaziv());
@@ -359,7 +360,7 @@ public class PregledController {
 		}
 		Lekar l = LekarService.findByEmail(PregledDTO.getLekar().getEmail());
 		PregledNovi.setLekar(l);
-
+		l.getKlinika().addpacijent(PregledNovi.getPacijent());
 		try {
 			PregledNovi = PregledService.save(PregledNovi);
 		} catch (Exception e) {
@@ -472,6 +473,7 @@ public class PregledController {
 		Sala s = SalaService.findOne(salaId);
 		p.setSala(s);
 		p.setStatus(Status.odobreno);
+		p.getLekar().getKlinika().addpacijent(p.getPacijent());
 		datum.setHours(datum.getHours() + 2);
 		p.setDatumVreme(datum);
 		try {

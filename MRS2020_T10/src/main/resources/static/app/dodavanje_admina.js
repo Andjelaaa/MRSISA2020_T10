@@ -217,7 +217,7 @@ Vue.component('dodajadmina', {
 				 this.greska5= '';
 				 this.greska6= '';
 				 this.greska7='';
-				 this.dbError = 'Admin vec postoji';
+				 this.dbError = 'Korisnik vec postoji';
 			});
 		}		
 	},
