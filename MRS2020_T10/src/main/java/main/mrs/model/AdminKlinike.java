@@ -27,7 +27,11 @@ public class AdminKlinike extends Korisnik implements UserDetails{
    
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Autoritet> autoriteti;
-   
+
+	public void setKlinika(Klinika klinika) {
+		this.klinika = klinika;
+	}
+
    public Set<Odsustvo> getOdsustvo() {
       if (odsustvo == null)
          odsustvo = new HashSet<Odsustvo>();

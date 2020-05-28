@@ -8,7 +8,7 @@ Vue.component('overa', {
 			opis:'',
 			datPocetka:'',
 			datKraja:'',
-			recepti:{id:'', lek:{id:'',naziv:'',sifra:''}}
+			recepti:{id:'', lek:{id:'',naziv:'',sifra:''}, imePacijenta:'', prezimePacijenta:''}
 		}
 	}, 
 	
@@ -53,7 +53,8 @@ Vue.component('overa', {
 				<table class="table table-sm table-hover table-light " >
 				   <tr>		   		
 				   		<th>Id recepta</th>
-				   		<th>Lekovi</th>
+						<th>Lekovi</th>
+						<th>Pacijent</th>
 				   		<th></th>
 				   </tr>
 				  
@@ -61,7 +62,8 @@ Vue.component('overa', {
 				   		<td>{{r.id}}</td>
 				   		<td>
 				   			<p v-for="l in r.lek">{{l.naziv}}</p>
-				   		</td>
+						</td>
+						<td>{{r.imePacijenta}} {{r.prezimePacijenta}}</td>   
 				   		<td><button v-on:click = "overa(r, ind)" class="btn btn-success">Overi</button></td>
 				   </tr>
 				 

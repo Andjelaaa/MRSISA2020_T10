@@ -12,7 +12,6 @@ const TipoviPregleda = {template: '<tipovipregleda></tipovipregleda>'}
 const PredefPregledi = {template: '<predefpregledi></predefpregledi>'}
 const DodavanjeAdmina = {template: '<dodajadmina></dodajadmina>'}
 const ProfilMedSestre = {template: '<medsestra></medsestra>'}
-const ProfilKlinike = {template: '<klinika></klinika>'}
 const Sale = {template: '<sale></sale>'}
 const Lekari = {template: '<lekari></lekari>'}
 const PacijentPocetna = {template: '<pacijent></pacijent>'}
@@ -55,9 +54,8 @@ const router = new VueRouter({
 	    { path: '/dpregled', component: DodavanjePregleda},
 	    { path: '/tipovipregleda', component: TipoviPregleda},
 	    { path: '/predefinisanipregledi/:name', component: PredefPregledi},
-	    { path: '/dadmin', component: DodavanjeAdmina},
+	    { path: '/dadmin/:id', component: DodavanjeAdmina},
 	    { path: '/medsestra', component: ProfilMedSestre},
-	    { path: '/profilklinike', component: ProfilKlinike},
 	    { path: '/sale', component: Sale},
 	    { path: '/lekari', component: Lekari},
 	    { path: '/pacijent', component: PacijentPocetna},

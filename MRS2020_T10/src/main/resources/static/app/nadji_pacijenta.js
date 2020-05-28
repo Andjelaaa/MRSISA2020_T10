@@ -471,12 +471,7 @@ Vue.component('nadjipacijenta', {
 				axios
 					.put('api/recept/izmeniLekove/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
 					.then((response)=>{
-						//var count = this.selectedBackupIzvestaj.izvestaj.recept.lek.length;
-						//var count1 = this.selectedIzvestaj.izvestaj.recept.lek.length;
-						//this.selectedIzvestaj.izvestaj.recept.lek= this.selectedIzvestaj.izvestaj.recept.lek.slice(count,count1);
-						///if(!this.selectedIzvestaj.izvestaj.recept.lek){
-						//	this.selectedIzvestaj.izvestaj.recept.lek =this.selectedBackupIzvestaj.izvestaj.recept.lek;
-						//}
+					
 						alert("Uspesno ste izmenili dati pregled");
 						
 					}).catch((response)=>{
@@ -499,12 +494,7 @@ Vue.component('nadjipacijenta', {
 				axios
 					.put('api/recept/izmeniOba/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
 					.then((response)=>{
-						//var count = this.selectedBackupIzvestaj.izvestaj.recept.lek.length;
-						//	var count1 = this.selectedIzvestaj.izvestaj.recept.lek.length;
-						//this.selectedIzvestaj.izvestaj.recept.lek= this.selectedIzvestaj.izvestaj.recept.lek.slice(count,count1);
-						//if(!this.selectedIzvestaj.izvestaj.recept.lek){
-						//	this.selectedIzvestaj.izvestaj.recept.lek =this.selectedBackupIzvestaj.izvestaj.recept.lek;
-						//}
+						
 						alert("Uspesno ste izmenili dati pregled");
 						
 					}).catch((response)=>{

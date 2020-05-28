@@ -63,6 +63,7 @@ public class IzvestajController {
 		Izvestaj izvestaj = new Izvestaj();
 		
 		try {
+			Pregled pregled = PregledService.findById(id_pregleda);
 			Recept recept = new Recept();
 			recept.setMedSestra(null);
 			
@@ -77,7 +78,8 @@ public class IzvestajController {
 				}
 				recept.setLek(lekovi);
 			}
-			
+			recept.setImePacijenta(pregled.getPacijent().getIme());
+			recept.setPrezimePacijenta(pregled.getPacijent().getPrezime());
 			recept = ReceptService.save(recept);
 			
 			if(IzvestajDTO.getDijagnoza().getNaziv().isEmpty()) {
@@ -93,7 +95,7 @@ public class IzvestajController {
 	
 			izvestaj = IzvestajService.save(izvestaj);
 		
-			Pregled pregled = PregledService.findById(id_pregleda);
+			
 			
 			
 			pregled.setIzvestaj(izvestaj);

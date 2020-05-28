@@ -37,13 +37,13 @@ insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa)
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (190,60,null, 'm', 1.5,'A');
 
 insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Marko', 'Markovic', 'teosnedos@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22', true, 1);
-insert into adminkc (promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values (true, 'Jovan', 'Jovanic', 'tt@gmail.com','$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
+insert into adminkc (promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values (false, 'Jovan', 'Jovanic', 'tt@gmail.com','$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
 insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Ana', 'Markovic', 'anana@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 20', 'Novi Sad', 'Srbija', '0651045155', '123123', true, 2);
 insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Rajko', 'Jovanovic', 'rajkoj@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 52', 'Novi Sad', 'Srbija', '0651256132', '123567', true, 3);
 
-insert into recept (id) values (nextval('Recept_id_SEQ'));
-insert into recept (id) values (nextval('Recept_id_SEQ'));
-insert into recept (id) values (nextval('Recept_id_SEQ'));
+insert into recept (ime_pacijenta,prezime_pacijenta) values ('Jova', 'Sanjic');
+insert into recept (ime_pacijenta,prezime_pacijenta) values ('Ana', 'Majic');
+insert into recept (ime_pacijenta,prezime_pacijenta) values ('Pera', 'Zikic');
 
 insert into recept_lek (recept_id, lek_id) values(1,1);
 

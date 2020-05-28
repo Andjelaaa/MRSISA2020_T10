@@ -1,6 +1,8 @@
 package main.mrs.dto;
 import java.util.*;
 
+import javax.persistence.Column;
+
 import main.mrs.model.Lek;
 import main.mrs.model.MedSestra;
 import main.mrs.model.Recept;
@@ -9,6 +11,20 @@ public class ReceptDTO {
 	private Integer id;
    public MedSestraDTO medSestra;
    public Set<LekDTO> lek;
+   public String imePacijenta;
+	public String prezimePacijenta;
+   public String getImePacijenta() {
+		return imePacijenta;
+	}
+	public void setImePacijenta(String imePacijenta) {
+		this.imePacijenta = imePacijenta;
+	}
+	public String getPrezimePacijenta() {
+		return prezimePacijenta;
+	}
+	public void setPrezimePacijenta(String prezimePacijenta) {
+		this.prezimePacijenta = prezimePacijenta;
+	}
    public ReceptDTO() {
 		
 	}
@@ -20,6 +36,9 @@ public class ReceptDTO {
 		this.id = id2;
 		this.lek = konvertuj(lek2);
 		this.medSestra = null;//OdsustvoDTO.setujSestra(medSestra2);
+		this.imePacijenta = null;
+		this.prezimePacijenta = null;
+		
 	}
 	
 	private Set<LekDTO> konvertuj(Set<Lek> lek2) {

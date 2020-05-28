@@ -19,6 +19,7 @@ import main.mrs.model.Klinika;
 import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.LekarService;
 import main.mrs.service.PacijentService;
+import main.mrs.service.KlinikaService;
 
 @RestController
 @RequestMapping(value="api/admini")
@@ -29,8 +30,11 @@ public class AdminKlinikeController {
 	@Autowired
 	private PacijentService PacijentService;
 	
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<AdminKlinikeDTO> saveKlinika(@RequestBody AdminKlinikeDTO AdminKlinikeDTO) {
+	@Autowired
+	private KlinikaService KlinikaService;
+	
+	@PostMapping(consumes = "application/json", value = "/{id}")
+	public ResponseEntity<AdminKlinikeDTO> saveKlinika(@PathVariable Integer id,@RequestBody AdminKlinikeDTO AdminKlinikeDTO) {
 		
 		AdminKlinike admin = new AdminKlinike();
 		admin.setIme(AdminKlinikeDTO.getIme());
@@ -39,8 +43,10 @@ public class AdminKlinikeController {
 		admin.setKontakt(AdminKlinikeDTO.getKontakt());
 		admin.setAdresa(AdminKlinikeDTO.getAdresa());
 		admin.setGrad(AdminKlinikeDTO.getGrad());
-		admin.setLozinka(AdminKlinikeDTO.getLozinka());
+		admin.setLozinka(PacijentService.encodePassword(AdminKlinikeDTO.getLozinka()));
 		admin.setDrzava(AdminKlinikeDTO.getDrzava());
+		Klinika kl = KlinikaService.findOne(id);
+		admin.setKlinika(kl);
 		
 		try {
 			admin = AdminKlinikeService.save(admin);

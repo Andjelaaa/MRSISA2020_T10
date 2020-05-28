@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,25 @@ public class Recept {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Lek> lek;
+	
+	@Column(name="imePacijenta", unique=false, nullable=false)
+	public String imePacijenta;
+
+	@Column(name="prezimePacijenta", unique=false, nullable=false)
+	public String prezimePacijenta;
    
+	public String getImePacijenta() {
+		return imePacijenta;
+	}
+	public void setImePacijenta(String imePacijenta) {
+		this.imePacijenta = imePacijenta;
+	}
+	public String getPrezimePacijenta() {
+		return prezimePacijenta;
+	}
+	public void setPrezimePacijenta(String prezimePacijenta) {
+		this.prezimePacijenta = prezimePacijenta;
+	}
 	public MedSestra getMedSestra() {
 		return medSestra;
 	}

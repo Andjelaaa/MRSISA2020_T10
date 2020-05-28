@@ -1,7 +1,9 @@
 Vue.component('superprofil', {
 
 	data: function(){
-		return{	}
+		return{
+			klinike:[],
+			}
 	}, 
 	
 	template: `
@@ -22,31 +24,75 @@ Vue.component('superprofil', {
 		        <a class="nav-link" href="#/odobri_zahtev">Zahtevi za registraciju</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/kreirajzk">Kreiraj zdravstveni karton</a>
-		      </li>
-		      <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik1">Sifrarnik lekova</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
 		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Profil</a>
-		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/">Odjavi se</a>
 		      </li>
 		    </ul>
-		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		    </form>
 		  </div>
 		</nav>
 		</br>
 		
+		<table  class="table  table-light ">
+			<thead>
+				<th>Naziv</th>
+				<th>Adresa</th>
+				<th>Opis</th>
+				<th>Email</th>
+				<th>Kontakt</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr v-for="k in klinike">
+				<td>{{k.naziv}}</td>
+				<td>{{k.adresa}}</td>
+				<td>{{k.opis}}</td>
+				<td>{{k.emailKlinike}}</td>
+				<td>{{k.kontaktKlinike}}</td>
+				<td><button  v-on:click= "metoda(k.id)"  class="btn btn-light"> Dodaj admina </button></td>	
+				</tr>			
+
+			</tbody>	
+		</table>
+
 		</div>
 	
-	`, 
+	`,
+	methods: {
+		metoda:function(id){
+			this.$router.push('/dadmin/' + id);
+		}
+	}
+	, mounted(){
+		
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+	    .then(response => { this.medicinska_sestra = response.data;
+		    axios
+			.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINICKOG_CENTRA") {
+		    		router.push('/');
+				}
+				else{
+					axios
+			      	.get('api/klinika/all')
+			      	.then(response => {
+			      		this.klinike = response.data;			      		
+			      	})
+			        .catch(function (error) { console.log('Greska sa dobavljanjem') });	
+				}
+		    })
+		    .catch(function (error) { console.log(error);});
+		    
+	    })
+	    .catch(function (error) { router.push('/'); });	 
+	}
 
 });

@@ -42,16 +42,10 @@ Vue.component('dodajadmina', {
 		        <a class="nav-link" href="#/odobri_zahtev">Zahtevi za registraciju</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/kreirajzk">Kreiraj zdravstveni karton</a>
-		      </li>
-		      <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik1">Sifrarnik lekova</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Profil</a>
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/">Odjavi se</a>
@@ -69,69 +63,69 @@ Vue.component('dodajadmina', {
 		<table>
 			<tr>
 		   		<td>Email: </td>
-		   		<td><input id="email" type="text" v-model="email"></td>
+		   		<td><input class="form-control" id="email" type="text" v-model="email"></td>
 		   		<td style="color: red">{{greska0}}</td>
 
 		   </tr>
 		   <tr>
 		   		<td>Ime: </td>
-		   		<td><input id="ime" type="text" v-model="ime"></td>
+		   		<td><input class="form-control" id="ime" type="text" v-model="ime"></td>
 		   		<td style="color: red">{{greska1}}</td>
 
 		   </tr>
 		   <tr>
 		   		
 		   		<td>Prezime: </td>
-		   		<td><input id="prezime" type="text" v-model="prezime"></td>
+		   		<td><input class="form-control" id="prezime" type="text" v-model="prezime"></td>
 		   		<td style="color: red">{{greska2}}</td>
 		   		
 		   </tr>
 		   <tr>
 		   
 		   		<td>Adresa prebivalista: </td>
-		   		<td><input id="adresa" type="text" v-model="adresa"></td>
+		   		<td><input class="form-control" id="adresa" type="text" v-model="adresa"></td>
 		   		<td style="color: red">{{greska3}}</td>
 		   		
 		   </tr>
 		   <tr>
 		   	
 		   		<td>Grad: </td>
-		   		<td><input id="grad" type="text" v-model="grad"></td>
+		   		<td><input class="form-control" id="grad" type="text" v-model="grad"></td>
 		   		<td style="color: red">{{greska4}}</td>
 		  
 		   </tr>
 		   <tr>
 		   
 		   		<td>Drzava: </td>
-		   		<td><input id="drzava" type="text" v-model="drzava"></td>
+		   		<td><input class="form-control" id="drzava" type="text" v-model="drzava"></td>
 		   		<td style="color: red">{{greska5}}</td>
 		   
 		   </tr>
 		    <tr>
 		   
 		   		<td>Broj telefona: </td>
-		   		<td><input id="kontakt" type="text" v-model="kontakt"></td>
+		   		<td><input class="form-control" id="kontakt" type="text" v-model="kontakt"></td>
 		   		<td style="color: red">{{greska6}}</td>
 		   
 		   </tr>
 		    <tr>
 		   
 		   		<td>Lozinka: </td>
-		   		<td><input id="lozinka" type="password" v-model="lozinka"></td>
+		   		<td><input  class="form-control" id="lozinka" type="password" v-model="lozinka"></td>
 		   		<td style="color: red"></td>
 		   
 		   </tr>
 		    <tr>
 		   
 		   		<td>Ponovi lozinku: </td>
-		   		<td><input id="lozinka1" type="password" v-model="lozinka1"></td>
+		   		<td><input class="form-control" id="lozinka1" type="password" v-model="lozinka1"></td>
 		   		<td style="color: red">{{greska7}}</td>
 		   
 		   </tr>
 		    <tr>
 		   
-		   		<td><button v-on:click = "nazad()">Nazad</button></td>
-		   		<td><button v-on:click = "regAdmina()">Registruj admina</button></td>	   
+		   		<td><button v-on:click = "nazad()" class="btn btn-light">Nazad</button></td>
+		   		<td><button v-on:click = "regAdmina()" class="btn btn-success">Registruj admina</button></td>	   
 		   </tr>
 		   
 		</table>
@@ -139,10 +133,10 @@ Vue.component('dodajadmina', {
 		</div>
 	
 	`, 
-	//kad se uvede autorizacija, dodam kliniku samo
+
 	methods : {
 		nazad : function(){
-			this.$router.push('/profilklinike');
+			this.$router.push('/sprofil');
 			return;
 		},
 		validacija : function(){
@@ -187,12 +181,13 @@ Vue.component('dodajadmina', {
 
 			if(this.validacija()==1)
 				return;
-			var newAdmin ={ "ime": this.ime, "email": this.email,
+			var newAdmin ={"ime": this.ime, "email": this.email,
 					"prezime": this.prezime,"grad": this.grad,
 					"drzava": this.drzava,"kontakt": this.kontakt,
 					"lozinka": this.lozinka,"adresa": this.adresa};
+			console.log(this.$route.params.id+" dasdasd");
 			axios
-			.post('api/admini', newAdmin)
+			.post('api/admini/' + this.$route.params.id, newAdmin)
 			.then((response)=>{
 				 this.greska0= '';
 				 this.greska1= '';

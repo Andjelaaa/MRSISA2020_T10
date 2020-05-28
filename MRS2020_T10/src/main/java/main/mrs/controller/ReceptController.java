@@ -63,15 +63,21 @@ public class ReceptController {
 
 		List<ReceptDTO> receptiDTO = new ArrayList<>();
 		for (Recept r : recepti) {
-			//if(r.getMedSestra() == null)
-			receptiDTO.add(new ReceptDTO(r));
+			if(r.getMedSestra() == null) {
+				
+				ReceptDTO recept = new ReceptDTO(r);
+				recept.setImePacijenta(r.getImePacijenta());
+				recept.setPrezimePacijenta(r.getPrezimePacijenta());
+				receptiDTO.add(recept);
+				
+			}
+				
 		}
 		return new ResponseEntity<>(receptiDTO, HttpStatus.OK);
 	}
 	@PutMapping(value = "/izmeni/{email}", consumes = "application/json")
 	public ResponseEntity<String> overiRecept(@RequestBody ReceptDTO ReceptDTO, @PathVariable String email) {
 		
-		System.out.println("///////////////////////////////////////////////////////////////////////");
 		Recept recept = new Recept();
 		
 		recept.setId(ReceptDTO.getId());
