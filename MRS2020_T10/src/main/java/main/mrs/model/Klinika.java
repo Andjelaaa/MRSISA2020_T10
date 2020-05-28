@@ -164,28 +164,6 @@ public class Klinika {
       this.adminKlinike = newAdminKlinike;
    }
    
-//   public void addAdminKlinike(AdminKlinike newAdminKlinike) {
-//      if (newAdminKlinike == null)
-//         return;
-//      if (this.adminKlinike == null)
-//         this.adminKlinike = new java.util.HashSet<AdminKlinike>();
-//      if (!this.adminKlinike.contains(newAdminKlinike))
-//      {
-//         this.adminKlinike.add(newAdminKlinike);
-//         newAdminKlinike.setKlinika(this);      
-//      }
-//   }
-//   
-//   public void removeAdminKlinike(AdminKlinike oldAdminKlinike) {
-//      if (oldAdminKlinike == null)
-//         return;
-//      if (this.adminKlinike != null)
-//         if (this.adminKlinike.contains(oldAdminKlinike))
-//         {
-//            this.adminKlinike.remove(oldAdminKlinike);
-//            oldAdminKlinike.setKlinika((Klinika)null);
-//         }
-//   }
 
    public Set<Operacija> getOperacija() {
       if (operacija == null)

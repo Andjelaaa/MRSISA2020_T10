@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,7 @@ public class VerificationTokenController {
 	
 	@Transactional
 	@PostMapping(value= "/accepted")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity acceptedRegAsync(@RequestBody ZahtevRegDTO zahtev, HttpServletRequest request){
 		
 		Pacijent registrovaniPacijent = new Pacijent();

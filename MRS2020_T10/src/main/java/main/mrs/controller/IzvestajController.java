@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,7 @@ public class IzvestajController {
 	@Autowired
 	private PregledService PregledService;
 	@GetMapping(value = "/all")
+	//dodati role
 	public ResponseEntity<List<IzvestajDTO>> getAllIzvestaje() {
 
 		List<Izvestaj> izvestaji = IzvestajService.findAll();
@@ -58,6 +60,7 @@ public class IzvestajController {
 	}
 
 	@PostMapping(consumes = "application/json", value= "/{id_pregleda}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<String> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
 		
 		Izvestaj izvestaj = new Izvestaj();

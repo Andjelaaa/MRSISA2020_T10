@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,6 +59,7 @@ public class AdminKCController {
 	}
 
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<AdminKCDTO> saveAdminKC(@RequestBody AdminKCDTO AdminKCDTO) {
 
 		AdminKC AdminKC = new AdminKC();
@@ -75,6 +77,7 @@ public class AdminKCController {
 	}
 	
 	@PostMapping(value= "/denied",  consumes="application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
    	public ResponseEntity deniedRegAsync(@RequestBody PomocnaKlasa data){
 		ZahtevReg user = new ZahtevReg();
 		
@@ -101,6 +104,7 @@ public class AdminKCController {
 	}
 	
 	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<AdminKCDTO> updateAdminKCLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
 		AdminKC l = adminKCService.findOne(id);

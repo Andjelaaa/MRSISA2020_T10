@@ -3,6 +3,7 @@ package main.mrs.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +52,7 @@ public class AdminKlinikeController {
 	private MedSestraService MedSestraService;
 	
 	@PostMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<AdminKlinikeDTO> saveKlinikaAdmin(@PathVariable Integer id,@RequestBody AdminKlinikeDTO AdminKlinikeDTO) {
 		
 		Pacijent pacijent = PacijentService.findByEmail(AdminKlinikeDTO.getEmail());
@@ -95,6 +97,7 @@ public class AdminKlinikeController {
 	
 	private String email = "";
 	@GetMapping(value="/klinika/{emailAdmina}")
+	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
 	public ResponseEntity<KlinikaDTO> dobaviKlinikuAdmina(@PathVariable String emailAdmina){
 		if(!emailAdmina.equals("a"))
 			this.email = emailAdmina;
@@ -106,7 +109,8 @@ public class AdminKlinikeController {
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
-	public ResponseEntity<AdminKlinikeDTO> updateLekar(@RequestBody AdminKlinikeDTO lDTO, @PathVariable Integer id) {
+	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
+	public ResponseEntity<AdminKlinikeDTO> updateAdminKlinikeProfil(@RequestBody AdminKlinikeDTO lDTO, @PathVariable Integer id) {
 
 		AdminKlinike l = AdminKlinikeService.findOne(id);
 
@@ -130,7 +134,8 @@ public class AdminKlinikeController {
 		
 	}
 	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
-	public ResponseEntity<AdminKlinikeDTO> updateLekarLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	public ResponseEntity<AdminKlinikeDTO> updatePotvrdiLozinku(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
 		AdminKlinike l = AdminKlinikeService.findOne(id);
 

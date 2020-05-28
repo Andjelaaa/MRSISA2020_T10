@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -316,6 +317,7 @@ public class LekarContoller {
 	
 
 	@PostMapping(value = "/dobaviSlobodneZaDatum/{id_operacije}")
+	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
 	public ResponseEntity<List<LekarDTO>> getAllLekareZaOperaciju(@PathVariable Integer id_operacije,@RequestBody String datum) {
 		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
 		sdf = new SimpleDateFormat("yyyy-MM-dd'+'HH'%3A'mm'='");
@@ -458,6 +460,7 @@ public class LekarContoller {
 		
 	}
 	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<LekarDTO> updateLekarLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
 		Lekar l = LekarService.findOne(id);

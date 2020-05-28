@@ -12,6 +12,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,7 @@ public class OperacijaController {
 	}
 	
 	@PostMapping(consumes = "application/json;charset=UTF-8", value="/lekarzahtev")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
 	public ResponseEntity<OperacijaDTO> saveZahtevLekar(@RequestBody OperacijaDTO OperacijaDTO) {
 		Operacija Operacija = new Operacija();
 		Operacija.setDatumVreme(OperacijaDTO.getDatumVreme());
@@ -107,6 +109,7 @@ public class OperacijaController {
 		return new ResponseEntity<>(new OperacijaDTO(), HttpStatus.CREATED);
 	}
 	@GetMapping(value = "/zahtevi/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<OperacijaDTO>> getZahtevi(@PathVariable Integer idAdmina) {
 		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
 		List<Operacija> operacije = OperacijaService.findAllZahteviKlinike(ak.getKlinika().getId());
@@ -124,6 +127,7 @@ public class OperacijaController {
 	
 	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{operacijaId}/{salaId}/{prviSlobodan}")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
 	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, 
 			@PathVariable String prviSlobodan, @RequestBody PomocnaKlasa7 pomkl7){
 		

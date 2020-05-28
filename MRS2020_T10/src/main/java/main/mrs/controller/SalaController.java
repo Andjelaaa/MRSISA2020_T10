@@ -52,6 +52,7 @@ public class SalaController {
 	private SimpleDateFormat sdf;
 
 	@GetMapping(value = "/all")
+	
 	public ResponseEntity<List<SalaDTO>> getAllSalas() {
 
 		List<Sala> Salas = SalaService.findAll();

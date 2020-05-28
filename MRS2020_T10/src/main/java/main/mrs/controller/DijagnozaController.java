@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ public class DijagnozaController {
 	
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINICKOG_CENTRA', 'LEKAR')")
 	public ResponseEntity<List<DijagnozaDTO>> getAllDijagnoze() {
 
 		List<Dijagnoza> dijagnoze = DijagnozaService.findAll();
@@ -42,6 +44,7 @@ public class DijagnozaController {
 	}
 
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<DijagnozaDTO> saveLekove(@RequestBody DijagnozaDTO DijagnozaDTO) {
 
 		Dijagnoza dijagnoza = new Dijagnoza();
@@ -69,6 +72,7 @@ public class DijagnozaController {
 		return new ResponseEntity<>(new DijagnozaDTO(dijagnoza), HttpStatus.CREATED);
 	}
 	@PostMapping(value="/izmena",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<DijagnozaDTO> changeDijagnoza(@RequestBody PomocnaKlasa3 data) {
         DijagnozaDTO izmenjen = data.dijagnoza;
 		try {

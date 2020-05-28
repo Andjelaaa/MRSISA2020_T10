@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ public class PacijentController {
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
 	}
 	@GetMapping(value = "/all/{email}")
+	@PreAuthorize("hasAnyRole( 'LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<List<PacijentDTO>> getAllPacijentii(@PathVariable String email) {
 		//korisnik moze biti med sestra ili korisnik
 		Lekar lekar = lekarService.findByEmail(email);
@@ -73,6 +75,7 @@ public class PacijentController {
 	}
 
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINICKOG_CENTRA', 'PACIJENT')")
 	public ResponseEntity<PacijentDTO> savePacijent(@RequestBody PacijentDTO PacijentDTO) {
 
 		Pacijent Pacijent = new Pacijent();
@@ -91,6 +94,7 @@ public class PacijentController {
 	}
 	
 	@PostMapping(value = "/search/{email}")
+	@PreAuthorize("hasAnyRole( 'ADMIN_KLINIKE')")
 	public ResponseEntity<List<PacijentDTO>> getSearchLekars(@RequestBody SearchPacijent sp, @PathVariable String email) {
 		Lekar lekar = lekarService.findByEmail(email);
 		MedSestra meds = medSestraService.findByEmail(email);
@@ -120,6 +124,7 @@ public class PacijentController {
 	}
 	
 	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@PreAuthorize("hasAnyRole('PACIJENT')")
 	public ResponseEntity<PacijentDTO> updatePacijentLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
 		Pacijent l = pacijentService.findOne(id);

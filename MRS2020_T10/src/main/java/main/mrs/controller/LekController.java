@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ public class LekController {
 	
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<List<LekDTO>> getAllLekove() {
 
 		List<Lek> lekovi = LekService.findAll();
@@ -39,6 +41,7 @@ public class LekController {
 	}
 
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<LekDTO> saveLekove(@RequestBody LekDTO LekDTO) {
 
 		Lek lek = new Lek();
@@ -66,6 +69,7 @@ public class LekController {
 		return new ResponseEntity<>(new LekDTO(lek), HttpStatus.CREATED);
 	}
 	@PostMapping(value="/izmena",consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<LekDTO> changeLek(@RequestBody PomocnaKlasa2 data) {
         LekDTO izmenjen = data.lek;
 		try {

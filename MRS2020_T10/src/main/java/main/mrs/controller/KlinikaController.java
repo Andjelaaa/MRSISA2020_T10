@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -325,6 +326,7 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<KlinikaDTO> saveKlinika(@RequestBody KlinikaDTO KlinikaDTO) {
 
 		

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -57,6 +58,7 @@ public class ReceptController {
 	private DijagnozaService DijagnozaService;
 	
 	@GetMapping(value = "/neovereni/{email}")
+	@PreAuthorize("hasRole( 'MED_SESTRA')")
 	public ResponseEntity<List<ReceptDTO>> getAllRecepte(@PathVariable String email) {
 		MedSestra meds = MedSestraService.findByEmail(email);
 		List<Pregled> pregledi = PregledService.findZavrsene(meds.getKlinika().getId()); //zavrseni i id klinike
@@ -80,6 +82,7 @@ public class ReceptController {
 		return new ResponseEntity<>(receptiDTO, HttpStatus.OK);
 	}
 	@PutMapping(value = "/izmeni/{email}", consumes = "application/json")
+	@PreAuthorize("hasRole('MED_SESTRA')")
 	public ResponseEntity<String> overiRecept(@RequestBody ReceptDTO ReceptDTO, @PathVariable String email) {
 		
 		Recept recept = new Recept();
@@ -99,6 +102,7 @@ public class ReceptController {
 		
 	}
 	@PutMapping(value = "/izmeniDijagnozu/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	@PreAuthorize("hasAnyRole('LEKAR')")
 	public ResponseEntity<String> izmeniDijagnozuRecept(@RequestBody DijagnozaDTO DijagnozaDTO, @PathVariable Integer pregled_id,
 			@PathVariable Integer izvestaj_id) {
 		//samo dijagnoza se menja
@@ -121,6 +125,7 @@ public class ReceptController {
 		
 	}
 	@PutMapping(value = "/izmeniLekove/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<String> izmeniLekoveRecept(@RequestBody PomocnaKlasa8 pom,
 			@PathVariable Integer pregled_id,@PathVariable Integer izvestaj_id) {
 		//samo lekovi
@@ -154,6 +159,7 @@ public class ReceptController {
 		
 	}
 	@PutMapping(value = "/izmeniOba/{pregled_id}/{izvestaj_id}", consumes = "application/json")
+	@PreAuthorize("hasAnyRole('LEKAR')")
 	public ResponseEntity<String> izmeniObaRecept(@RequestBody PomocnaKlasa8 pom,
 			@PathVariable Integer pregled_id,@PathVariable Integer izvestaj_id) {
 		//oba menjaj

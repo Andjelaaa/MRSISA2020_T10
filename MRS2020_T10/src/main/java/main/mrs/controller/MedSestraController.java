@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,7 @@ public class MedSestraController {
 	private LekarService LekarService;
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<MedSestraDTO>> getAllMedSestrs() {
 
 		List<MedSestra> sestre =  MedSestraService.findAll();
@@ -68,6 +70,7 @@ public class MedSestraController {
 	}
 
 	@GetMapping(value = "/all/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<MedSestraDTO>> getAllMedSestrs(@PathVariable Integer idAdmina) {
 		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
 		List<MedSestra> sestre = MedSestraService.findAllByIdKlinike(ak.getKlinika().getId());
@@ -82,6 +85,7 @@ public class MedSestraController {
 	
 	 @Transactional
 	@PostMapping(consumes = "application/json", value="/{idAdmina}")
+	 @PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<MedSestraDTO> saveSestra(@RequestBody MedSestraDTO MedSestraDTO, @PathVariable Integer idAdmina) {
 
 		
@@ -132,6 +136,7 @@ public class MedSestraController {
 	 	}
 	 
 	 @PostMapping(value = "/search/{idAdmina}")
+	 @PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
 		public ResponseEntity<List<MedSestraDTO>> getSearchMedSestras(@RequestBody SearchLekar sl, @PathVariable Integer idAdmina) {
 		 	AdminKlinike ak = adminKlinikeService.findOne(idAdmina);		 	
 			List<MedSestra> sestre = MedSestraService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
@@ -180,9 +185,9 @@ public class MedSestraController {
 			}catch(Exception e) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			
 		}
 		@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+		@PreAuthorize("hasAnyRole('MED_SESTRA')")
 		public ResponseEntity<MedSestraDTO> updateMedSestraLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
 			MedSestra ms = MedSestraService.findOne(id);

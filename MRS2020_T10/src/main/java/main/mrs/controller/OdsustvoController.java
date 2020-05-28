@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,7 @@ public class OdsustvoController {
 	
 	
 	@GetMapping(value = "/all")
+	
 	public ResponseEntity<List<OdsustvoDTO>> getAllOdsustva() {
 
 		List<Odsustvo> odsustva = OdsustvoService.findAll();
@@ -67,6 +69,7 @@ public class OdsustvoController {
 	}
 	
 	@GetMapping(value = "/all/zahtevi/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<OdsustvoDTO>> getAllZahteviOdsustva(@PathVariable Integer idAdmina) {
 
 		List<Odsustvo> odsustva = OdsustvoService.findAllZahtevi();
@@ -90,6 +93,7 @@ public class OdsustvoController {
 	}
 	
 	@PostMapping(consumes = "application/json", value= "/{email}")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<OdsustvoDTO> saveOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String email) {
 	
 		Odsustvo zahtev = new Odsustvo();
@@ -124,6 +128,7 @@ public class OdsustvoController {
 	}
 	
 	@PostMapping(consumes = "application/json", value= "/odobri")
+	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
 	public ResponseEntity<OdsustvoDTO> odobriOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
@@ -149,6 +154,7 @@ public class OdsustvoController {
 	}
 	
 	@PostMapping(consumes = "application/json", value= "/odbij/{obrazlozenje}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<OdsustvoDTO> odbijOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String obrazlozenje) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
