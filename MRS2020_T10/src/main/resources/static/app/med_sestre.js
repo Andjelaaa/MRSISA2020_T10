@@ -1,6 +1,8 @@
 Vue.component('medsestre', {
 	data: function(){
 		return{
+			admin: {},
+			uloga: '',
 			medsestre: null,
 			pretraga: {ime:'', prezime:''},
 			
@@ -175,7 +177,7 @@ Vue.component('medsestre', {
 		},
 		pretrazi: function(){
 			axios
-	       	.post('api/medsestraa/search', this.pretraga)
+	       	.post('api/medsestraa/search/'+this.admin.id, this.pretraga)
 	       	.then(response => (this.medsestre = response.data));
 
 		},
@@ -240,18 +242,18 @@ Vue.component('medsestre', {
 				return;
 			
 			axios
-			.post('api/medsestraa', this.sestra)
+			.post('api/medsestraa/'+this.admin.id, this.sestra)
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/medsestraa/all')
+		       	.get('api/medsestraa/all/'+this.admin.id)
 		       	.then(response => (this.medsestre = response.data));
 				this.sestra = {};
 				 
 				
 			}).catch((res)=>{
 				this.error = 'Vec postoji medicinska sestra sa istim email-om';
-				this.lekar = {};
+				this.sestra = {};
 			}
 			
 				
@@ -272,7 +274,7 @@ Vue.component('medsestre', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		    	       	.get('api/medsestraa/all')
+		    	       	.get('api/medsestraa/all/'+this.admin.id)
 		    	       	.then(response => (this.medsestre = response.data));
 		    			 	    		
 		    	}

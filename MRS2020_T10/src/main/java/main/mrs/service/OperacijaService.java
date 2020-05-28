@@ -43,6 +43,10 @@ public class OperacijaService {
 		return OperacijaRepository.findAllByIdIn(idOperacija);
 	}
 
+	public List<Operacija> findAllZahteviKlinike(Integer integer) {
+		return OperacijaRepository.findAllZahteviKlinike(integer);
+	}
+	
 	public List<Operacija> findAllZahtevi() {
 		return OperacijaRepository.findAllZahtevi();
 	}

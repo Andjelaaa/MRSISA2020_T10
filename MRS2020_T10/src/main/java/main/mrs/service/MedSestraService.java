@@ -57,4 +57,8 @@ public class MedSestraService {
 	public List<MedSestra> findByImeAndPrezime(String upperCase, String upperCase2) {
 		return MedSestraRepository.findByImeAndPrezime(upperCase, upperCase2);
 	}
+
+	public List<MedSestra> findAllByIdKlinike(Integer id) {
+		return MedSestraRepository.findAllByIdKlinike(id);
+	}
 }

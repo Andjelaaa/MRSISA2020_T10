@@ -140,14 +140,14 @@ Vue.component('zahtevipo', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/pregled/zahtevi')
+			      	.get('api/pregled/zahtevi/'+this.admin.id)
 			      	.then(response => {
 			      		this.pregledi = response.data;			      		
 			      	})
 			        .catch(function (error) { console.log('Greska') });	
 		    		
 		    		axios
-			      	.get('api/operacije/zahtevi')
+			      	.get('api/operacije/zahtevi/'+this.admin.id)
 			      	.then(response => {
 			      		this.operacije = response.data;			      		
 			      	})

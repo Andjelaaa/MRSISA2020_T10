@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.OperacijaDTO;
-import main.mrs.dto.PregledDTO;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa7;
-import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
 import main.mrs.service.OperacijaService;
@@ -53,6 +53,9 @@ public class OperacijaController {
 
 	@Autowired 
 	private SalaService SalaService;
+	
+	@Autowired 
+	private AdminKlinikeService AdminKlinikeService;
 	
 	@Transactional // obavezno ova anotacija, inace puca
 	@GetMapping(value="/lekarop/{id}")
@@ -103,10 +106,10 @@ public class OperacijaController {
 
 		return new ResponseEntity<>(new OperacijaDTO(), HttpStatus.CREATED);
 	}
-	@GetMapping(value = "/zahtevi")
-	public ResponseEntity<List<OperacijaDTO>> getZahtevi() {
-
-		List<Operacija> operacije = OperacijaService.findAllZahtevi();
+	@GetMapping(value = "/zahtevi/{idAdmina}")
+	public ResponseEntity<List<OperacijaDTO>> getZahtevi(@PathVariable Integer idAdmina) {
+		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
+		List<Operacija> operacije = OperacijaService.findAllZahteviKlinike(ak.getKlinika().getId());
 
 		List<OperacijaDTO> OperacijeDTO = new ArrayList<>();
 		for (Operacija s : operacije) {

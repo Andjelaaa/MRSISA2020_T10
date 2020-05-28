@@ -90,5 +90,8 @@ public interface MedSestraRepository extends JpaRepository<MedSestra, Long>{
 
 	@Query(value = "SELECT * FROM MEDICINSKA_SESTRA WHERE upper(IME) like %?%1 and upper(prezime) like %?%2", nativeQuery = true)
 	List<MedSestra> findByImeAndPrezime(String upperCase, String upperCase2);
+
+	@Query(value = "SELECT * FROM MEDICINSKA_SESTRA WHERE KLINIKA_ID = ?1", nativeQuery = true)
+	List<MedSestra> findAllByIdKlinike(Integer id);
 }
 

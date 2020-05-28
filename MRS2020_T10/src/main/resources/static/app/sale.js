@@ -1,6 +1,8 @@
 Vue.component('sale', {
 	data: function(){
 		return{
+			admin: {},
+			uloga: '',
 			sale: null,
 			pretraga: '',
 			selected: {naziv:'', broj: 0},
@@ -152,7 +154,7 @@ Vue.component('sale', {
 			console.log(this.pretraga);
 			if(this.pretraga){
 				axios
-		       	.get('api/sala/search/'+ this.pretraga)
+		       	.get('api/sala/search/'+ this.pretraga+'/'+this.admin.id)
 		       	.then(response => (this.sale = response.data));
 				
 			}
@@ -189,6 +191,7 @@ Vue.component('sale', {
 			.then((res)=>{
 				console.log('Uspesna izmena');
 			}).catch((res)=>{
+				this.restore(s);
 				console.log('Neuspesna izmena');
 			});
 			
@@ -214,14 +217,14 @@ Vue.component('sale', {
 				return;
 			
 			axios
-			.post('api/sala', this.sala)
+			.post('api/sala/'+this.admin.id, this.sala)
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/sala/all')
+		       	.get('api/sala/all/'+this.admin.id)
 		       	.then(response => (this.sale = response.data));
 			}).catch((res)=>{
-				this.error = 'Vec postoji sala sa istim brojem';
+				this.error = 'Vec postoji sala sa istim brojem ili nazivom';
 			}
 				
 			)
@@ -229,9 +232,28 @@ Vue.component('sale', {
 		
 	},
 	mounted(){
-		 axios
-       	.get('api/sala/all')
-       	.then(response => (this.sale = response.data));
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    		this.$router.push('/');
+		    	}else{
+		    		axios
+		           	.get('api/sala/all/'+this.admin.id)
+		           	.then(response => (this.sale = response.data));		    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
+        })
+        .catch(function (error) { router.push('/'); });
+		
+		 
 	}
 
 });

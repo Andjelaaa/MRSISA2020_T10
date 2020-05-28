@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.StavkaCenovnikaDTO;
 import main.mrs.dto.TipPregledaDTO;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.TipPregledaService;
 
 @RestController
@@ -30,6 +32,8 @@ public class TipPregledaController {
 	
 	@Autowired
 	private TipPregledaService TipPregledaService;
+	@Autowired
+	private AdminKlinikeService adminKlinikeService;
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<TipPregledaDTO>> getAllTipPregledas() {
@@ -80,24 +84,32 @@ public class TipPregledaController {
 		return new ResponseEntity<>(TipPregledaDTO, HttpStatus.CREATED);
 	}
 	
-	@GetMapping(value = "/{tipPregledaNaziv}/lekari")
-	public ResponseEntity<List<LekarDTO>> getTipPregledaLekari(@PathVariable String tipPregledaNaziv) {
+	@GetMapping(value = "/{tipPregledaNaziv}/lekari/{idAdmina}")
+	public ResponseEntity<List<LekarDTO>> getTipPregledaLekari(@PathVariable String tipPregledaNaziv, @PathVariable Integer idAdmina) {
+		System.out.println("tipppp"+tipPregledaNaziv);
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregledaNaziv);
 		Set<Lekar> Lekari = tp.getLekar();
+		
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
 		List<LekarDTO> LekariDTO = new ArrayList<>();
 		for (Lekar l : Lekari) {
-			LekarDTO LekarDTO = new LekarDTO();
-			LekarDTO.setIme(l.getIme());
-			LekarDTO.setPrezime(l.getPrezime());
-			LekarDTO.setEmail(l.getEmail());
-			LekarDTO.setLozinka(l.getLozinka());
-			LekarDTO.setGrad(l.getGrad());
-			LekarDTO.setAdresa(l.getAdresa());
-			LekarDTO.setDrzava(l.getDrzava());
-			LekarDTO.setRvPocetak(l.getRvPocetak());
-			LekarDTO.setRvKraj(l.getRvKraj());	
-
-			LekariDTO.add(LekarDTO);
+			System.out.println(l.getKlinika().getId()+"id llll");
+			System.out.println(ak.getKlinika().getId()+"id aaaaa");
+			if(l.getKlinika().getId() == ak.getKlinika().getId()) {
+				System.out.println("tu sam");
+				LekarDTO LekarDTO = new LekarDTO();
+				LekarDTO.setIme(l.getIme());
+				LekarDTO.setPrezime(l.getPrezime());
+				LekarDTO.setEmail(l.getEmail());
+				LekarDTO.setLozinka(l.getLozinka());
+				LekarDTO.setGrad(l.getGrad());
+				LekarDTO.setAdresa(l.getAdresa());
+				LekarDTO.setDrzava(l.getDrzava());
+				LekarDTO.setRvPocetak(l.getRvPocetak());
+				LekarDTO.setRvKraj(l.getRvKraj());	
+	
+				LekariDTO.add(LekarDTO);
+			}
 		}
 		return new ResponseEntity<>(LekariDTO, HttpStatus.OK);
 	}

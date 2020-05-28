@@ -19,10 +19,10 @@ public class Sala {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="broj", unique=false, nullable=false)
+	@Column(name="broj", unique=true, nullable=false)
 	private int broj;
 	
-	@Column(name="naziv", unique=false, nullable=false)
+	@Column(name="naziv", unique=true, nullable=false)
 	private String naziv;
 
 	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.ALL)

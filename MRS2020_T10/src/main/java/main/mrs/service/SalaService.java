@@ -45,4 +45,8 @@ public class SalaService {
 	public List<Sala> findSearchNaziv(String searchParam) {
 		return SalaRepository.findSearchNaziv(searchParam);
 	}
+
+	public List<Sala> findAllByIdKlinike(Integer id) {
+		return SalaRepository.findAllByIdKlinike(id);
+	}
 }

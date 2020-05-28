@@ -62,4 +62,8 @@ public class LekarService {
 	public Integer findByIdOp(Integer id_operacije) {
 		return LekarRepository.findByIdOp(id_operacije);
 	}
+
+	public List<Lekar> findAllByIdKlinike(Integer id) {
+		return LekarRepository.findAllByIdKlinike(id);
+	}
 }

@@ -123,7 +123,7 @@ Vue.component('zahtevioo', {
 	      	.then(response => {
 	      		alert('Uspesno odobren zahtev! Mejl poslat!');
 	      		axios
-		      	.get('api/zahteviodsustvo/all/zahtevi')
+		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
 		      	.then(response => {
 		      		this.zahtevi = response.data;			      		
 		      	})
@@ -146,7 +146,7 @@ Vue.component('zahtevioo', {
 	      	.then(response => {
 	      		alert('Zahtev odbijen! Mejl poslat!');
 	      		axios
-		      	.get('api/zahteviodsustvo/all/zahtevi')
+		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
 		      	.then(response => {
 		      		this.zahtevi = response.data;			      		
 		      	})
@@ -169,7 +169,7 @@ Vue.component('zahtevioo', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/zahteviodsustvo/all/zahtevi')
+			      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
 			      	.then(response => {
 			      		this.zahtevi = response.data;			      		
 			      	})

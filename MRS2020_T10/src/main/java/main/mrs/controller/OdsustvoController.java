@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.OdsustvoDTO;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
 import main.mrs.model.Odsustvo;
 import main.mrs.model.Status;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
 import main.mrs.service.MedSestraService;
@@ -39,6 +41,9 @@ public class OdsustvoController {
 	
 	@Autowired
 	private EmailService EmailService;
+	
+	@Autowired
+	private AdminKlinikeService AdminKlinikeService;
 	
 	
 	@GetMapping(value = "/all")
@@ -61,21 +66,24 @@ public class OdsustvoController {
 		return new ResponseEntity<>(odsustvaDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/all/zahtevi")
-	public ResponseEntity<List<OdsustvoDTO>> getAllZahteviOdsustva() {
+	@GetMapping(value = "/all/zahtevi/{idAdmina}")
+	public ResponseEntity<List<OdsustvoDTO>> getAllZahteviOdsustva(@PathVariable Integer idAdmina) {
 
 		List<Odsustvo> odsustva = OdsustvoService.findAllZahtevi();
-
+		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
 		List<OdsustvoDTO> odsustvaDTO = new ArrayList<>();
 		for (Odsustvo o : odsustva) {
-			OdsustvoDTO oDTO = new OdsustvoDTO(o);
-			if(o.getLekar().getIme() != null) {
-				oDTO.setLekar(new LekarDTO(o.getLekar()));
+			if((o.getLekar() != null && o.getLekar().getKlinika().getId() == ak.getKlinika().getId()) || 
+					(o.getSestra() != null && o.getSestra().getKlinika().getId() == ak.getKlinika().getId())) {
+				OdsustvoDTO oDTO = new OdsustvoDTO(o);
+				if(o.getLekar() != null) {
+					oDTO.setLekar(new LekarDTO(o.getLekar()));
+				}
+				else {
+					oDTO.setSestra(new MedSestraDTO(o.getSestra()));
+				}
+				odsustvaDTO.add(oDTO);	
 			}
-			else {
-				oDTO.setSestra(new MedSestraDTO(o.getSestra()));
-			}
-			odsustvaDTO.add(oDTO);			
 		}
 
 		return new ResponseEntity<>(odsustvaDTO, HttpStatus.OK);

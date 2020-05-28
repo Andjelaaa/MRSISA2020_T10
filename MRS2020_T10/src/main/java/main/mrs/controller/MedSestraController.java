@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.KlinikaDTO;
-import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.SearchLekar;
-import main.mrs.model.Klinika;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.AutoritetService;
+import main.mrs.service.LekarService;
 import main.mrs.service.MedSestraService;
 import main.mrs.service.PacijentService;
 
@@ -38,6 +38,8 @@ public class MedSestraController {
 	private PacijentService PacijentService;
 	@Autowired
 	private AutoritetService autoritetService;
+	@Autowired
+	private AdminKlinikeService adminKlinikeService;
 	
 
 	@GetMapping(value = "/all")
@@ -53,9 +55,22 @@ public class MedSestraController {
 		return new ResponseEntity<>(medsDTO, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/all/{idAdmina}")
+	public ResponseEntity<List<MedSestraDTO>> getAllMedSestrs(@PathVariable Integer idAdmina) {
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		List<MedSestra> sestre = MedSestraService.findAllByIdKlinike(ak.getKlinika().getId());
+
+		List<MedSestraDTO> medsDTO = new ArrayList<>();
+		for (MedSestra s : sestre) {
+			medsDTO.add(new MedSestraDTO(s));
+		}
+
+		return new ResponseEntity<>(medsDTO, HttpStatus.OK);
+	}
+	
 	 @Transactional
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<MedSestraDTO> saveLekar(@RequestBody MedSestraDTO MedSestraDTO) {
+	@PostMapping(consumes = "application/json", value="/{idAdmina}")
+	public ResponseEntity<MedSestraDTO> saveSestra(@RequestBody MedSestraDTO MedSestraDTO, @PathVariable Integer idAdmina) {
 
 		MedSestra m = new MedSestra();
 		m.setIme(MedSestraDTO.getIme());
@@ -71,8 +86,8 @@ public class MedSestraController {
 		m.setAutoriteti(autoritetService.findByName("ROLE_MED_SESTRA"));
 		m.setPromenioLozinku(false);
 		
-		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
-		//m.setKlinika();
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		m.setKlinika(ak.getKlinika());
 		
 		try {
 			m = MedSestraService.save(m);
@@ -85,14 +100,15 @@ public class MedSestraController {
 	
 	 	}
 	 
-	 @PostMapping(value = "/search")
-		public ResponseEntity<List<MedSestraDTO>> getSearchMedSestras(@RequestBody SearchLekar sl) {
-			System.out.println(sl.getIme()+sl.getPrezime());
+	 @PostMapping(value = "/search/{idAdmina}")
+		public ResponseEntity<List<MedSestraDTO>> getSearchMedSestras(@RequestBody SearchLekar sl, @PathVariable Integer idAdmina) {
+		 	AdminKlinike ak = adminKlinikeService.findOne(idAdmina);		 	
 			List<MedSestra> sestre = MedSestraService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
 
 			List<MedSestraDTO> sestreDTO = new ArrayList<>();
 			for (MedSestra s : sestre) {
-				sestreDTO.add(new MedSestraDTO(s));
+				if(s.getKlinika().getId() == ak.getKlinika().getId())
+					sestreDTO.add(new MedSestraDTO(s));
 			}
 
 			return new ResponseEntity<>(sestreDTO, HttpStatus.OK);

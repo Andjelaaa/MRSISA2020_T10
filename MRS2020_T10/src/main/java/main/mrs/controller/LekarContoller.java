@@ -75,10 +75,25 @@ public class LekarContoller {
 
 		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/all/{idAdmina}")
+	public ResponseEntity<List<LekarDTO>> getAllLekariKlinike(@PathVariable Integer idAdmina) {
+
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		List<Lekar> Lekars = LekarService.findAllByIdKlinike(ak.getKlinika().getId());
+		
+		// convert Lekars to DTOs
+		List<LekarDTO> LekarsDTO = new ArrayList<>();
+		for (Lekar s : Lekars) {
+			LekarsDTO.add(new LekarDTO(s));
+		}
+
+		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
+	}
 
 	 @Transactional
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO LekarDTO) {
+	@PostMapping(consumes = "application/json", value="/{IdAdmina}")
+	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO LekarDTO, @PathVariable Integer IdAdmina) {
 
 		Lekar Lekar = new Lekar();
 		Lekar.setIme(LekarDTO.getIme());
@@ -98,14 +113,8 @@ public class LekarContoller {
 		Lekar.setAutoriteti(autoritetService.findByName("ROLE_LEKAR"));
 		Lekar.setPromenioLozinku(false);
 		
-		// ovo vraca anonymous user 
-//		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
-//		AdminKlinike ak = adminKlinikeService.findByEmail(trenutniKorisnik.getName());
-//		System.out.println(trenutniKorisnik.getName());
-//		
-//		Lekar.setKlinika(ak.getKlinika());
-		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
-		//Lekar.setKlinika();
+		AdminKlinike ak = adminKlinikeService.findOne(IdAdmina);
+		Lekar.setKlinika(ak.getKlinika());
 		
 		try {
 			Lekar = LekarService.save(Lekar);
@@ -117,15 +126,17 @@ public class LekarContoller {
 		return new ResponseEntity<>(new LekarDTO(Lekar), HttpStatus.CREATED);
 	}
 	
-	@PostMapping(value = "/search")
-	public ResponseEntity<List<LekarDTO>> getSearchLekars(@RequestBody SearchLekar sl) {
+	@PostMapping(value = "/search/{idAdmina}")
+	public ResponseEntity<List<LekarDTO>> getSearchLekars(@RequestBody SearchLekar sl, @PathVariable Integer idAdmina) {
 		System.out.println(sl.getIme()+sl.getPrezime());
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
 		List<Lekar> Lekars = LekarService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
 
 		// convert Lekars to DTOs
 		List<LekarDTO> LekarsDTO = new ArrayList<>();
 		for (Lekar s : Lekars) {
-			LekarsDTO.add(new LekarDTO(s));
+			if(s.getKlinika().getId() == ak.getKlinika().getId())
+				LekarsDTO.add(new LekarDTO(s));
 		}
 
 		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);

@@ -92,4 +92,7 @@ public interface SalaRepository extends JpaRepository<Sala, Long>{
 
 	 @Query(value = "SELECT * FROM SALA WHERE upper(NAZIV) like %?%1", nativeQuery = true)
 	List<Sala> findSearchNaziv(String searchParam);
+
+	 @Query(value = "SELECT * FROM SALA WHERE KLINIKA_ID = ?1", nativeQuery = true)
+	List<Sala> findAllByIdKlinike(Integer id);
 }

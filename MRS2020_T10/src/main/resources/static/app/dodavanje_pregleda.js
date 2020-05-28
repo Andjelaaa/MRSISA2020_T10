@@ -1,6 +1,8 @@
 Vue.component('dpregled', {
 	data: function(){
 		return{
+			admin: {},
+			uloga: '',
 			pregled: {tipPregleda: null, lekar: null, sala: null, popust: 0},
 			lekari: null,
 			sale: null, 
@@ -171,13 +173,15 @@ Vue.component('dpregled', {
 			this.pregled.sala = this.sala;
 			this.pregled.lekar = this.lekar;
 			
+			
 			axios
 			.post('api/pregled', this.pregled)
 			.then((res)=>{
 				console.log('uspesno');
-				this.$router.push('/');
+				alert('Uspesno!');
+				//this.$router.push('/');
 			}).catch((res)=>{
-				this.error = 'Greska pri dodavanju';
+				this.error = 'Greska pri dodavanju, sala je zauzeta za uneti termin!';
 			}
 				
 			)
@@ -189,37 +193,54 @@ Vue.component('dpregled', {
 	    tipPregleda: function() {
 	    	console.log(this.tipPregleda.naziv);
 	    	 axios
-	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari')
+	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari/'+this.admin.id)
 	          .then(res => {
 	        	  this.lekari = res.data;
 
 	          })
 	    }
 	
-		// dodati fju koja uzima slobodne sale za odabrani datum i vreme
-		// (proci kroz sve preglede i videti 
 	},
 	mounted () {
-           axios
-          .get('api/tippregleda/all')
-          .then(res => {
-        	  this.tipoviPregleda = res.data;
+		
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    		this.$router.push('/');
+		    	}else{
+		    		 axios
+		             .get('api/tippregleda/all')
+		             .then(res => {
+		           	  this.tipoviPregleda = res.data;
 
-          })
+		             })
+		             
+		              axios
+		             .get('api/lekar/all/'+this.admin.id)
+		             .then(res => {
+		           	  this.lekari = res.data;
+
+		             })
+		             
+		              axios
+		             .get('api/sala/all/'+this.admin.id)
+		             .then(res => {
+		           	  this.sale = res.data;
+
+		             })		    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
+        })
+        .catch(function (error) { router.push('/'); });
           
-           axios
-          .get('api/lekar/all')
-          .then(res => {
-        	  this.lekari = res.data;
-
-          })
-          
-           axios
-          .get('api/sala/all')
-          .then(res => {
-        	  this.sale = res.data;
-
-          })
     },
 
 });

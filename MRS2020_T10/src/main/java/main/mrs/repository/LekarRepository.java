@@ -87,7 +87,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 	@Query(value = "SELECT * FROM LEKAR WHERE EMAIL = ?1", nativeQuery = true)
 	Lekar findByEmail(String email);
 
-	@Query(value = "SELECT * FROM LEKAR WHERE upper(IME) like %?%1 and upper(prezime) like %?%2", nativeQuery = true)
+	@Query(value = "SELECT * FROM LEKAR WHERE (upper(IME) like %?%1 and upper(prezime) like %?%2)", nativeQuery = true)
 	List<Lekar> findByImeAndPrezime(String ime, String prezime);
 
 	@Query(value = "SELECT * FROM LEKAR WHERE TIP_PREGLEDA_ID = ?1", nativeQuery = true)
@@ -95,4 +95,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	@Query(value = "SELECT LEKAR_ID FROM OPERACIJA_LEKAR WHERE OPERACIJA_ID = ?1", nativeQuery = true)
 	Integer findByIdOp(Integer id_operacije);
+
+	@Query(value = "SELECT * FROM LEKAR WHERE KLINIKA_ID = ?1", nativeQuery = true)
+	List<Lekar> findAllByIdKlinike(Integer id);
 }

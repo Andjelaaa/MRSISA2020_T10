@@ -1,6 +1,8 @@
 Vue.component('lekari', {
 	data: function(){
 		return{
+			admin: {},
+			uloga: '',
 			lekari: null,
 			pretraga: {ime:'', prezime:''},
 			
@@ -190,7 +192,7 @@ Vue.component('lekari', {
 		},
 		pretrazi: function(){
 			axios
-	       	.post('api/lekar/search', this.pretraga)
+	       	.post('api/lekar/search/'+this.admin.id, this.pretraga)
 	       	.then(response => (this.lekari = response.data));
 
 		},
@@ -258,11 +260,11 @@ Vue.component('lekari', {
 				return;
 			
 			axios
-			.post('api/lekar', this.lekar)
+			.post('api/lekar/'+this.admin.id, this.lekar)
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/lekar/all')
+		       	.get('api/lekar/all/'+this.admin.id)
 		       	.then(response => (this.lekari = response.data));
 				this.lekar = {};
 				 
@@ -289,7 +291,7 @@ Vue.component('lekari', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		    	       	.get('api/lekar/all')
+		    	       	.get('api/lekar/all/'+this.admin.id)
 		    	       	.then(response => (this.lekari = response.data));
 		    			 
 		    			 axios

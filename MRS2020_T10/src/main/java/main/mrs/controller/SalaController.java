@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.SalaDTO;
 import main.mrs.dto.ZauzecaSlobodniDTO;
 import main.mrs.dto.ZauzeceDTO;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
+import main.mrs.service.AdminKlinikeService;
+import main.mrs.service.OperacijaService;
 import main.mrs.service.PregledService;
 import main.mrs.service.SalaService;
-import main.mrs.service.OperacijaService;
 
 @RestController
 @RequestMapping(value="api/sala")
@@ -44,6 +46,8 @@ public class SalaController {
 	
 	@Autowired
 	private OperacijaService OperacijaService;
+	@Autowired
+	private AdminKlinikeService adminKlinikeService;
 	
 	private SimpleDateFormat sdf;
 
@@ -60,15 +64,32 @@ public class SalaController {
 
 		return new ResponseEntity<>(SalasDTO, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value = "/all/{idAdmina}")
+	public ResponseEntity<List<SalaDTO>> getAllSalasByKlinika(@PathVariable Integer idAdmina) {
+		
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		List<Sala> Salas = SalaService.findAllByIdKlinike(ak.getKlinika().getId());
+		
 
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO SalaDTO) {
+		// convert Salas to DTOs
+		List<SalaDTO> SalasDTO = new ArrayList<>();
+		for (Sala s : Salas) {
+			SalasDTO.add(new SalaDTO(s));
+		}
+
+		return new ResponseEntity<>(SalasDTO, HttpStatus.OK);
+	}
+
+	@PostMapping(consumes = "application/json", value="/{idAdmina}")
+	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO SalaDTO, @PathVariable Integer idAdmina) {
 
 		Sala Sala = new Sala();
 		Sala.setNaziv(SalaDTO.getNaziv());
 		Sala.setBroj(SalaDTO.getBroj());
-		// TODO: za kliniku staviti kliniku od ulogovanog administratora klinike
-		//Sala.setKlinika();
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		Sala.setKlinika(ak.getKlinika());
 		
 		try {
 			Sala = SalaService.save(Sala);
@@ -80,15 +101,17 @@ public class SalaController {
 		return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.CREATED);
 	}
 	
-	@GetMapping(value = "/search/{searchParam}")
-	public ResponseEntity<List<SalaDTO>> getSearchSala(@PathVariable String searchParam) {
+	@GetMapping(value = "/search/{searchParam}/{idAdmina}")
+	public ResponseEntity<List<SalaDTO>> getSearchSala(@PathVariable String searchParam, @PathVariable Integer idAdmina) {
 		System.out.println(searchParam);
 		List<Sala> Salas = SalaService.findSearchNaziv(searchParam.toUpperCase());
+		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
 
 		// convert Salas to DTOs
 		List<SalaDTO> SalasDTO = new ArrayList<>();
 		for (Sala s : Salas) {
-			SalasDTO.add(new SalaDTO(s));
+			if(s.getKlinika().getId() == ak.getKlinika().getId())
+				SalasDTO.add(new SalaDTO(s));
 		}
 
 		return new ResponseEntity<>(SalasDTO, HttpStatus.OK);
@@ -128,9 +151,12 @@ public class SalaController {
 
 		Sala.setNaziv(SalaDTO.getNaziv());
 		Sala.setBroj(SalaDTO.getBroj());
-
+		try {
 		Sala = SalaService.save(Sala);
-		return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.OK);
+		return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.OK);}
+		catch(Exception e) {
+			return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping(value = "/zauzece/{idPregleda}/{idSale}")

@@ -70,6 +70,9 @@ public class PregledService {
 		return PregledRepository.dobaviIstoriju(pacijentId);
 	}
 
+	public List<Pregled> findAllZahteviKlinike(Integer integer) {
+		return PregledRepository.findAllZahteviKlinike(integer);
+	}
 	public List<Pregled> findAllZahtevi() {
 		return PregledRepository.findAllZahtevi();
 	}
