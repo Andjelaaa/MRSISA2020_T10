@@ -88,7 +88,7 @@ Vue.component('overa', {
 	          this.recepti.splice(index, 1);
 	      	  alert("Uspesno ste overili recept");
 	        })
-	        .catch((response)=> {alert("Desila se greska sa serverom!");});
+	        .catch((response)=> {alert("Recept je vec overen!");});
 			
 		}
 		

@@ -45,13 +45,13 @@ insert into klinika_pacijent(klinika_id, pacijent_id) values (1,1);
 insert into klinika_pacijent(klinika_id, pacijent_id) values (1,2);
 insert into klinika_pacijent(klinika_id, pacijent_id) values (2,3);
 
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('Jova', 'Sanjic');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('Ana', 'Majic');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('Pera', 'Zikic');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('aaa', 'bbb');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('nnn', 'ccc');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('jj', 'Zijjjjkic');
-insert into recept (ime_pacijenta,prezime_pacijenta) values ('jjj', 'Zikic');
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('Jova', 'Sanjic', 1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('Ana', 'Majic',1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('Pera', 'Zikic',1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('aaa', 'bbb',1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('nnn', 'ccc',1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('jj', 'Zijjjjkic',1);
+insert into recept (ime_pacijenta,prezime_pacijenta,version) values ('jjj', 'Zikic',1);
 
 insert into recept_lek (recept_id, lek_id) values(1,1);
 
@@ -114,6 +114,8 @@ insert into medicinska_sestra (promenio_lozinku, adresa, drzava, email, grad, im
 values (true,'Bul. Oslobodjenja 12', 'Srbija', 'meds1@gmail.com', 'Novi Sad', 'Manja', '064154123', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nekic', 1, '15:00', '07:00');
 insert into medicinska_sestra (promenio_lozinku, adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
 values (true, 'Bul. 222', 'Srbija', 'ms2@gmail.com', 'Novi Sad', 'Marija', '060345822', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Pekic', 2, '21:00', '13:00');
+insert into medicinska_sestra (promenio_lozinku, adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, klinika_id, radvr_kraj, radvr_pocetak) 
+values (true, 'Bul. 221232', 'Srbija', 'm3@gmail.com', 'Novi Sad', 'Ana', '060565656565', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Jokic', 1, '21:00', '13:00');
 
 
 insert into autoritet (name) values ('ROLE_PACIJENT');
@@ -128,6 +130,7 @@ insert into lekar_autoriteti (lekar_id, autoriteti_id) values (1, 2);
 insert into lekar_autoriteti (lekar_id, autoriteti_id) values (2, 2);
 insert into medicinska_sestra_autoriteti (med_sestra_id, autoriteti_id) values (1, 5);
 insert into medicinska_sestra_autoriteti (med_sestra_id, autoriteti_id) values (2, 5);
+insert into medicinska_sestra_autoriteti (med_sestra_id, autoriteti_id) values (3, 5);
 insert into adminkc_autoriteti (adminkc_id, autoriteti_id) values (1, 4);
 
 

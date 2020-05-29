@@ -8,13 +8,21 @@ import main.mrs.model.MedSestra;
 import main.mrs.model.Recept;
 
 public class ReceptDTO {
-	private Integer id;
+   private Integer id;
    public MedSestraDTO medSestra;
    public Set<LekDTO> lek;
    public String imePacijenta;
-	public String prezimePacijenta;
-   public String getImePacijenta() {
-		return imePacijenta;
+   public String prezimePacijenta;
+   private Long version;
+
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	public String getImePacijenta() {
+			return imePacijenta;
 	}
 	public void setImePacijenta(String imePacijenta) {
 		this.imePacijenta = imePacijenta;
@@ -35,7 +43,7 @@ public class ReceptDTO {
 	public ReceptDTO(Integer id2, Set<Lek> lek2) {
 		this.id = id2;
 		this.lek = konvertuj(lek2);
-		this.medSestra = null;//OdsustvoDTO.setujSestra(medSestra2);
+		this.medSestra = null;
 		this.imePacijenta = null;
 		this.prezimePacijenta = null;
 		

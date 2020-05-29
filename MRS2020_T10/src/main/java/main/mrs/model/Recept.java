@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 import main.mrs.dto.LekDTO;
 @Entity
@@ -36,7 +37,15 @@ public class Recept {
 	@Column(name="prezimePacijenta", unique=false, nullable=false)
 	public String prezimePacijenta;
    
+	@Version
+	private Long version;
 	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	public String getImePacijenta() {
 		return imePacijenta;
 	}

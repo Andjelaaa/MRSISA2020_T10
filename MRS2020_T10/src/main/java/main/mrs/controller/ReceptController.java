@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +41,7 @@ import main.mrs.service.ReceptService;
 
 @RestController
 @RequestMapping(value="api/recept")
+@Transactional(readOnly= true)
 public class ReceptController {
 	@Autowired
 	private ReceptService ReceptService;
@@ -59,6 +63,7 @@ public class ReceptController {
 	
 	@GetMapping(value = "/neovereni/{email}")
 	@PreAuthorize("hasRole( 'MED_SESTRA')")
+	@Transactional(readOnly= true,isolation = Isolation.REPEATABLE_READ)
 	public ResponseEntity<List<ReceptDTO>> getAllRecepte(@PathVariable String email) {
 		MedSestra meds = MedSestraService.findByEmail(email);
 		List<Pregled> pregledi = PregledService.findZavrsene(meds.getKlinika().getId()); //zavrseni i id klinike
@@ -83,12 +88,15 @@ public class ReceptController {
 	}
 	@PutMapping(value = "/izmeni/{email}", consumes = "application/json")
 	@PreAuthorize("hasRole('MED_SESTRA')")
+	@Transactional(readOnly= false)
 	public ResponseEntity<String> overiRecept(@RequestBody ReceptDTO ReceptDTO, @PathVariable String email) {
 		
-		Recept recept = new Recept();
+		Recept recept = ReceptService.findOne(ReceptDTO.getId());
 		
-		recept.setId(ReceptDTO.getId());
 		recept.setLek(Recept.changeDTO(ReceptDTO.getLek()));
+		if(recept.getMedSestra() !=null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		MedSestra m = MedSestraService.findByEmail(email);
 		recept.setMedSestra(m);
 		
