@@ -83,9 +83,9 @@ public class MedSestraController {
 		return new ResponseEntity<>(medsDTO, HttpStatus.OK);
 	}
 	
-	 @Transactional
+	@Transactional
 	@PostMapping(consumes = "application/json", value="/{idAdmina}")
-	 @PreAuthorize("hasRole('ADMIN_KLINIKE')")
+    //@PreAuthorize("hasRole('ADMIN_KLINIKE')") 
 	public ResponseEntity<MedSestraDTO> saveSestra(@RequestBody MedSestraDTO MedSestraDTO, @PathVariable Integer idAdmina) {
 
 		

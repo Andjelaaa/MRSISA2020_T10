@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,7 @@ public class SalaController {
 	private SimpleDateFormat sdf;
 
 	@GetMapping(value = "/all")
-	
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getAllSalas() {
 
 		List<Sala> Salas = SalaService.findAll();
@@ -256,6 +257,7 @@ public class SalaController {
 	
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/prvislobodan/{datumStr}/{idSale}/{idPregleda}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaZaDatum(@PathVariable String datumStr, @PathVariable Integer idSale, @PathVariable Integer idPregleda) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Pregled pregled = PregledService.findById(idPregleda);
@@ -325,6 +327,7 @@ public class SalaController {
 	
 	
 	@GetMapping(value = "/zauzeceop/{idOperacije}/{idSale}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaOP(@PathVariable Integer idOperacije, @PathVariable int idSale) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -366,6 +369,7 @@ public class SalaController {
 	}
 	
 	@GetMapping(value = "/slobodnesaleop/{idOperacije}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getSlobodneOP(@PathVariable Integer idOperacije) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Operacija operacija = OperacijaService.findOne(idOperacije);

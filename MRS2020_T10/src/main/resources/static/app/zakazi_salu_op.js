@@ -14,7 +14,9 @@ Vue.component('zakazisaluop', {
 			searchparam:'',
 			lekari:[],
 			odabraniLekari:[],
-			showModal: false
+			showModal: false,
+			token:'',
+			uloga:''
 		}
 	}, 
 	
@@ -137,7 +139,7 @@ Vue.component('zakazisaluop', {
 		rezervisi: function(s, prviSlobodan){
 			var p = {'lekariDTO': this.odabraniLekari}
 			axios
-	      	.post('api/operacije/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, p)
+	      	.post('api/operacije/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, p,{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Uspesno rezervisana sala! Mejl poslat!');
 	      		this.$router.push('/zahtevipo');
@@ -147,7 +149,7 @@ Vue.component('zakazisaluop', {
 		},
 		nadjiZaDatum: function(){
 			axios
-	      	.get('api/sala/all')
+	      	.get('api/sala/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		this.sale = response.data;
 	      		this.pretragaSale = response.data;
@@ -158,7 +160,7 @@ Vue.component('zakazisaluop', {
 	      		for(var s of this.sale){
 	      			console.log(s.id);
 	      			axios
-			      	.get('api/sala/prvislobodanop/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id)
+			      	.get('api/sala/prvislobodanop/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {			      		
 			      		this.retVal = response.data;
 			      		this.zauzeca.push(this.retVal.zauzeca);
@@ -192,7 +194,7 @@ Vue.component('zakazisaluop', {
 		dobaviLekare:function(slobodanD){
 		    
 			axios
-			.post('api/lekar/dobaviSlobodneZaDatum/'+this.$route.params.id, moment(String(slobodanD)).format('YYYY-MM-DD HH:mm'))
+			.post('api/lekar/dobaviSlobodneZaDatum/'+this.$route.params.id, moment(String(slobodanD)).format('YYYY-MM-DD HH:mm'),{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then(response => {
 				this.lekari = response.data;})
 			.catch((response)=> {
@@ -217,14 +219,14 @@ Vue.component('zakazisaluop', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/sala/slobodnesaleop/'+this.$route.params.id)
+			      	.get('api/sala/slobodnesaleop/'+this.$route.params.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.sale = response.data;
 			      		this.pretragaSale = response.data;
 			      		for(var s of this.sale){
 			      			console.log(s.id);
 			      			axios
-					      	.get('api/sala/zauzeceop/'+this.$route.params.id+'/'+s.id)
+					      	.get('api/sala/zauzeceop/'+this.$route.params.id+'/'+s.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 					      	.then(response => {
 					      		this.retVal = response.data;
 					      		this.zauzeca.push(this.retVal.zauzeca);
@@ -244,7 +246,9 @@ Vue.component('zakazisaluop', {
         })
         .catch(function (error) { router.push('/'); });
 		
-	}		      		
+	}	
+	 
+	      		
 	 
 
 });

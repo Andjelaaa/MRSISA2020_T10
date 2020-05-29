@@ -5,7 +5,9 @@ Vue.component('zahtevipo', {
 			admin:{},
 			klinika: {},
 			pregledi: [],
-			operacije:[]
+			operacije:[],
+			uloga:'',
+			token:''
 		}
 	}, 
 	
@@ -140,14 +142,14 @@ Vue.component('zahtevipo', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/pregled/zahtevi/'+this.admin.id)
+			      	.get('api/pregled/zahtevi/'+this.admin.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.pregledi = response.data;			      		
 			      	})
 			        .catch(function (error) { console.log('Greska') });	
 		    		
 		    		axios
-			      	.get('api/operacije/zahtevi/'+this.admin.id)
+			      	.get('api/operacije/zahtevi/'+this.admin.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.operacije = response.data;			      		
 			      	})

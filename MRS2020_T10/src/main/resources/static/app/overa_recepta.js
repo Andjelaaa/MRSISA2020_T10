@@ -83,7 +83,7 @@ Vue.component('overa', {
 		overa: function(recept, index){
 			console.log(recept.lek.length);
 			axios
-	        .put('api/recept/izmeni/'+this.medicinska_sestra.email, recept)
+	        .put('api/recept/izmeni/'+this.medicinska_sestra.email, recept,{ headers: { Authorization: 'Bearer ' + this.token }})
 	        .then((response) => {
 	          this.recepti.splice(index, 1);
 	      	  alert("Uspesno ste overili recept");
@@ -109,7 +109,7 @@ Vue.component('overa', {
 				}
 				else{
 					axios
-					.get('api/recept/neovereni/' + this.medicinska_sestra.email)
+					.get('api/recept/neovereni/' + this.medicinska_sestra.email,{ headers: { Authorization: 'Bearer ' + this.token }})
 					.then((response) => {
 					this.recepti = response.data;
 					}).catch(response=>{alert("Doslo je do greske");});

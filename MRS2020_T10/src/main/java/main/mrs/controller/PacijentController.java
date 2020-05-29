@@ -53,7 +53,7 @@ public class PacijentController {
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
 	}
 	@GetMapping(value = "/all/{email}")
-	@PreAuthorize("hasAnyRole( 'LEKAR', 'MED_SESTRA')")
+	@PreAuthorize("hasAnyRole('LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<List<PacijentDTO>> getAllPacijentii(@PathVariable String email) {
 		//korisnik moze biti med sestra ili korisnik
 		Lekar lekar = lekarService.findByEmail(email);
@@ -115,6 +115,7 @@ public class PacijentController {
 	}
 	
 	@GetMapping(value = "/{lbo}")
+	@PreAuthorize("hasAnyRole( 'LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<PacijentDTO> getPacijentByLbo(@PathVariable String lbo) {
 
 		Pacijent Pacijents = pacijentService.findByLbo(lbo);

@@ -32,6 +32,9 @@ Vue.component('odobri_zaht', {
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
+			  </li>
+			   <li class="nav-item">
+		        <a class="nav-link" href="#/dodajsa">Dodaj super admina </a>
 		      </li>
 		    </ul>
 		     <form class="form-inline my-2 my-lg-0">
@@ -106,7 +109,7 @@ Vue.component('odobri_zaht', {
 		prihvati:function(ind, zahtev){
 			
 			axios
-			.post('api/verification/accepted', zahtev)
+			.post('api/verification/accepted', zahtev, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				this.greska='';
 				this.zahtevi.splice(ind, 1);
@@ -121,7 +124,7 @@ Vue.component('odobri_zaht', {
 		},
 		odbij:function(ind, zahtevBrisi){
 			axios
-			.post('api/adminkc/denied/', {user: zahtevBrisi, opis: this.opis})
+			.post('api/adminkc/denied/', {user: zahtevBrisi, opis: this.opis},{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				this.greska='';
 				this.zahtevi.splice(ind, 1);
@@ -151,10 +154,33 @@ Vue.component('odobri_zaht', {
 			
 		}
 		
-	},
-	mounted(){
-		 axios
-      	.get('api/zahtevreg/all')
-      	.then(response => (this.zahtevi = response.data));
 	}
+	,
+	mounted(){
+		
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINICKOG_CENTRA") {
+		    		this.$router.push('/');
+		    	}else{
+		    		 axios
+     				.get('api/zahtevreg/all',{ headers: { Authorization: 'Bearer ' + this.token }})
+      				.then(response => (this.zahtevi = response.data));
+		    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
+        })
+        .catch(function (error) { router.push('/'); });
+		
+	}		      		
+	 
+
 });

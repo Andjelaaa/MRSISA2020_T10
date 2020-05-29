@@ -107,6 +107,10 @@ Vue.component('calendar', {
   </div>`,
 
 	  methods: {
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 	    previousMonth: function() {
 	      var tmpDate = this.selectedMonth;
 	      var tmpMonth = tmpDate.getMonth() - 1;
@@ -134,15 +138,7 @@ Vue.component('calendar', {
 	      this.selectedMonth = new Date(tmpDate.setMonth(tmpMonth));
 	      this.currentMonthAndYear = moment(this.selectedMonth).format('MMM YYYY');
 	    },
-	    setDate: function(date) {
-	      if (date == this.filterDate) {
-	        console.log('setting undefined');
-	        this.filterDate = undefined;
-	        //unselected
-	      } else {
-	        this.filterDate = date;
-	      }
-	    },
+	   
 	    isActive: function(date) {
 	      return date === this.filterDate;
 	    },
@@ -213,7 +209,17 @@ Vue.component('calendar', {
 			.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
 		    .then(response => { 
 		    	this.medicinska_sestra = response.data;	
-		    	
+				axios
+				.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+		   		.then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_MED_SESTRA") {
+		    		this.$router.push('/');
+				}
+				else{	
+				
+
+
 		    	this.pocetak = this.medicinska_sestra.radvr_pocetak;
 		    	this.kraj=this.medicinska_sestra.radvr_kraj;
 		    	
@@ -245,7 +251,10 @@ Vue.component('calendar', {
 		    		
 		    	}
 		 
-		});
+		   	
+				}
+		    })	
+		 });
 			
 		}
 		

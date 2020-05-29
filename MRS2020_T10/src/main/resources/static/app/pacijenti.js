@@ -132,7 +132,7 @@ mounted(){
 	    	}else{
 	    		// dobavi pacijente
 	    		axios
-	           	.get('api/pacijent/all/'+this.korisnik.email)
+	           	.get('api/pacijent/all/'+this.korisnik.email, { headers: { Authorization: 'Bearer ' + this.token }})
 	           	.then(response => (this.pacijenti = response.data));
 	    	
 	    	}

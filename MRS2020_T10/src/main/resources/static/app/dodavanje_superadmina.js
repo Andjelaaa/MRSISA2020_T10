@@ -1,6 +1,8 @@
-Vue.component('dodajadmina', {
+Vue.component('dodajsa', {
+
 	data: function(){
 		return{
+			admin: '',
 			adresa: '',
 			drzava: '',
 			email: '',
@@ -22,14 +24,13 @@ Vue.component('dodajadmina', {
 			dbError: '',
 			uloga:'',
 			token:''
-			
-		   
-		}
+			}
 	}, 
-	template: `
-	<div>
 	
-	<nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+	template: `
+	
+		<div>
+		<nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
@@ -48,19 +49,20 @@ Vue.component('dodajadmina', {
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
-		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/">Odjavi se</a>
-		      </li>
-		    </ul>
-		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			  </li>
+			   <li class="nav-item">
+		        <a class="nav-link" href="#/dodajsa">Dodaj super admina </a>
+			  </li>
+			</ul>
+			 <form class="form-inline my-2 my-lg-0">
+		      
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
 		  </div>
 		</nav>
 		</br>
-		<h3> Registracija admina klinike: </h3>
+		
+			<h3> Registracija super admina (admina klinickog centra): </h3>
 		{{dbError}}
 		<table>
 			<tr>
@@ -127,23 +129,22 @@ Vue.component('dodajadmina', {
 		    <tr>
 		   
 		   		<td><button v-on:click = "nazad()" class="btn btn-light">Nazad</button></td>
-		   		<td><button v-on:click = "regAdmina()" class="btn btn-success">Registruj admina</button></td>	   
+		   		<td><button v-on:click = "regAdmina()" class="btn btn-success">Registruj</button></td>	   
 		   </tr>
 		   
 		</table>
-		
+
+
 		</div>
 	
-	`, 
-
-	methods : {
+	`,
+	methods: {
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		nazad : function(){
+		nazad: function(){
 			this.$router.push('/sprofil');
-			return;
 		},
 		validacija : function(){
 			this.greska0= '';
@@ -182,7 +183,7 @@ Vue.component('dodajadmina', {
 			}
 			return 1;			
 		},
-		regAdmina: function(){
+		regAdmina:function(){
 			this.dbError = '';
 
 			if(this.validacija()==1)
@@ -191,9 +192,8 @@ Vue.component('dodajadmina', {
 					"prezime": this.prezime,"grad": this.grad,
 					"drzava": this.drzava,"kontakt": this.kontakt,
 					"lozinka": this.lozinka,"adresa": this.adresa};
-			console.log(this.$route.params.id+" dasdasd");
 			axios
-			.post('api/admini/' + this.$route.params.id, newAdmin, { headers: { Authorization: 'Bearer ' + this.token }})
+			.post('api/adminkc', newAdmin, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.greska0= '';
 				 this.greska1= '';
@@ -213,7 +213,7 @@ Vue.component('dodajadmina', {
 				 this.lozinka1='';
 				 this.kontakt='';
 				 this.dbError= '';
-				 alert("Uspesno dodat novi admin");
+				 alert("Uspesno dodat novi super admin");
 			}).catch((response)=>{
 				 this.greska0= '';
 				 this.greska1= '';
@@ -225,15 +225,16 @@ Vue.component('dodajadmina', {
 				 this.greska7='';
 				 this.dbError = 'Korisnik vec postoji';
 			});
-		}		
-	},
-	mounted(){
+		}
+	}
+	, mounted(){
+		
 		this.token = localStorage.getItem("token");
 		axios
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
-	    .then(response => { this.medicinska_sestra = response.data;
+	    .then(response => { this.admin = response.data;
 		    axios
-			.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
 		    .then(response => {
 		    	this.uloga = response.data;
 		    	if (this.uloga != "ROLE_ADMIN_KLINICKOG_CENTRA") {
@@ -243,8 +244,7 @@ Vue.component('dodajadmina', {
 		    .catch(function (error) { console.log(error);});
 		    
 	    })
-	    .catch(function (error) { router.push('/'); });	
-		
+	    .catch(function (error) { router.push('/'); });	 
 	}
 
 });

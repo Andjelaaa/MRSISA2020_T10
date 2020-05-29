@@ -9,7 +9,10 @@ Vue.component('sifrarnik1', {
 			greska2:'',
 			showModal: false,
 			selected: {naziv:'', sifra:''},
-			selectedBackup: {naziv:'', sifra:''}
+			selectedBackup: {naziv:'', sifra:''},
+			token:'',
+			uloga:'',
+			admin :{}
 		}
 	}, 
 	
@@ -35,6 +38,9 @@ Vue.component('sifrarnik1', {
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
+			  </li>
+			   <li class="nav-item">
+		        <a class="nav-link" href="#/dodajsa">Dodaj super admina </a>
 		      </li>
 			</ul>
 			 <form class="form-inline my-2 my-lg-0">
@@ -143,7 +149,7 @@ Vue.component('sifrarnik1', {
 			this.greska2 = '';
 			var newLek ={ "naziv": this.naziv, "sifra": this.sifra};
 			axios
-			.post('api/lekovi', newLek)
+			.post('api/lekovi', newLek,{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.lekovi.push(newLek);
 				 this.naziv ='';
@@ -165,7 +171,7 @@ Vue.component('sifrarnik1', {
 		},
 		save: function(){
 			axios
-			.post('api/lekovi/izmena', {lek:this.selected, naziv:this.selectedBackup.naziv})
+			.post('api/lekovi/izmena', {lek:this.selected, naziv:this.selectedBackup.naziv},{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.naziv ='';
 				 this.sifra='';
@@ -181,9 +187,29 @@ Vue.component('sifrarnik1', {
 		
 	},
 	mounted(){
-		 axios
-       	.get('api/lekovi/all')
-       	.then(response => (this.lekovi = response.data));
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+	    .then(response => { this.admin = response.data;
+		    axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINICKOG_CENTRA") {
+		    		router.push('/');
+				}
+				else{
+					axios
+       				.get('api/lekovi/all', { headers: { Authorization: 'Bearer ' + this.token }})
+       				.then(response => (this.lekovi = response.data)			      		
+			      	);
+				}
+		    })
+		    .catch(function (error) { console.log(error);});
+		    
+	    })
+	    .catch(function (error) { router.push('/'); });	 
+	
 	}
 
 });

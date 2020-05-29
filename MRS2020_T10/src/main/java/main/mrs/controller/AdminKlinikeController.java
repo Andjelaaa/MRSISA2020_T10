@@ -97,7 +97,7 @@ public class AdminKlinikeController {
 	
 	private String email = "";
 	@GetMapping(value="/klinika/{emailAdmina}")
-	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<KlinikaDTO> dobaviKlinikuAdmina(@PathVariable String emailAdmina){
 		if(!emailAdmina.equals("a"))
 			this.email = emailAdmina;
@@ -109,7 +109,7 @@ public class AdminKlinikeController {
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
-	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<AdminKlinikeDTO> updateAdminKlinikeProfil(@RequestBody AdminKlinikeDTO lDTO, @PathVariable Integer id) {
 
 		AdminKlinike l = AdminKlinikeService.findOne(id);

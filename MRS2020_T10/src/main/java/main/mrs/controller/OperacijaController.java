@@ -60,6 +60,7 @@ public class OperacijaController {
 	
 	@Transactional // obavezno ova anotacija, inace puca
 	@GetMapping(value="/lekarop/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<List<OperacijaDTO>> dobaviLekaroveOperacije(@PathVariable Integer id){
 		//lekar_id
 		

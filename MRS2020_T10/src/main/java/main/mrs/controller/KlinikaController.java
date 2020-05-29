@@ -55,6 +55,7 @@ public class KlinikaController {
 	private PregledService PregledService;
 	
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<List<KlinikaDTO>> getAllKlinike() {
 
 		List<Klinika> Klinike = KlinikaService.findAll();

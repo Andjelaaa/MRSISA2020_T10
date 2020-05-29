@@ -119,7 +119,7 @@ Vue.component('zahtevioo', {
 		},
 		odobri: function(zahtev){
 			axios
-	      	.post('api/zahteviodsustvo/odobri', zahtev)
+	      	.post('api/zahteviodsustvo/odobri', zahtev,{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Uspesno odobren zahtev! Mejl poslat!');
 	      		axios
@@ -142,11 +142,11 @@ Vue.component('zahtevioo', {
 			}
 			this.showModal = false;
 			axios
-	      	.post('api/zahteviodsustvo/odbij/'+this.obrazlozenje, z)
+	      	.post('api/zahteviodsustvo/odbij/'+this.obrazlozenje, z,{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Zahtev odbijen! Mejl poslat!');
 	      		axios
-		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
+		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 		      	.then(response => {
 		      		this.zahtevi = response.data;			      		
 		      	})
@@ -169,7 +169,7 @@ Vue.component('zahtevioo', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
+			      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.zahtevi = response.data;			      		
 			      	})

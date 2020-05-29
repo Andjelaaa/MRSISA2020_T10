@@ -312,7 +312,7 @@ Vue.component('nadjipacijenta', {
 		},
 		save: function(objekat){
 			axios
-			.post('api/pregled/izmenikarton/'+ this.korisnik.id, objekat)
+			.post('api/pregled/izmenikarton/'+ this.korisnik.id, objekat,{ headers: { Authorization: 'Bearer ' + this.token }} )
 			.then((response)=>{
 				 alert("Uspesno ste izmenili");
 				
@@ -367,7 +367,7 @@ Vue.component('nadjipacijenta', {
 
 			if(this.tipTermina == 'pregled'){
 				axios
-				.post('api/pregled/lekarzahtev', this.noviTermin)
+				.post('api/pregled/lekarzahtev', this.noviTermin, { headers: { Authorization: 'Bearer ' + this.token }} )
 				.then((res)=>{
 					alert('Uspesno poslat zahtev za pregled!');
 				}).catch((res)=>{
@@ -378,7 +378,7 @@ Vue.component('nadjipacijenta', {
 				this.noviTermin.lekar = [];
 				this.noviTermin.lekar.push(this.korisnik);
 				axios
-				.post('api/operacije/lekarzahtev', this.noviTermin)
+				.post('api/operacije/lekarzahtev', this.noviTermin, { headers: { Authorization: 'Bearer ' + this.token }} )
 				.then((res)=>{
 					alert('Uspesno poslat zahtev za operaciju!');
 				}).catch((res)=>{
@@ -397,7 +397,7 @@ Vue.component('nadjipacijenta', {
 	    		this.pocinjanje = false;
 		    	this.izvestaj.recept.lek = this.odabraniLekovi;
 		    	axios
-	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj)
+	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj, { headers: { Authorization: 'Bearer ' + this.token }} )
 	           	.then(response => {
 	           		alert("Uspesno je zavrsen izvestaj");
 	           	});
@@ -446,7 +446,7 @@ Vue.component('nadjipacijenta', {
 				    this.selectedIzvestaj.izvestaj.recept.lek = this.selectedBackupIzvestaj.izvestaj.recept.lek;
 					this.selectedIzvestaj.izvestaj.dijagnoza = this.menjaDijagnozu;
 					axios
-					.put('api/recept/izmeniDijagnozu/'+ pregled.id +'/'+ this.selectedBackupIzvestaj.izvestaj.id, this.selectedIzvestaj.izvestaj.dijagnoza)
+					.put('api/recept/izmeniDijagnozu/'+ pregled.id +'/'+ this.selectedBackupIzvestaj.izvestaj.id, this.selectedIzvestaj.izvestaj.dijagnoza, { headers: { Authorization: 'Bearer ' + this.token }} )
 					.then((response)=>{
 						
 						alert("Uspesno ste izmenili dati pregled");
@@ -469,7 +469,7 @@ Vue.component('nadjipacijenta', {
 				this.selectedIzvestaj.izvestaj.recept.lek =this.menjaLekove;
 				var objekat ={"dijagnozaDTO": this.selectedIzvestaj.izvestaj.dijagnoza, "lekoviDTO": this.selectedIzvestaj.izvestaj.recept.lek};
 				axios
-					.put('api/recept/izmeniLekove/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
+					.put('api/recept/izmeniLekove/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat, { headers: { Authorization: 'Bearer ' + this.token }} )
 					.then((response)=>{
 					
 						alert("Uspesno ste izmenili dati pregled");
@@ -492,7 +492,7 @@ Vue.component('nadjipacijenta', {
 				this.selectedIzvestaj.izvestaj.recept.lek =this.menjaLekove;
 				var objekat ={"dijagnozaDTO": this.selectedIzvestaj.izvestaj.dijagnoza, "lekoviDTO": this.selectedIzvestaj.izvestaj.recept.lek};
 				axios
-					.put('api/recept/izmeniOba/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat)
+					.put('api/recept/izmeniOba/'+ pregled.id+'/'+ this.selectedBackupIzvestaj.izvestaj.id, objekat, { headers: { Authorization: 'Bearer ' + this.token }} )
 					.then((response)=>{
 						
 						alert("Uspesno ste izmenili dati pregled");
@@ -543,12 +543,12 @@ Vue.component('nadjipacijenta', {
 	    	}else{
 	    	
 	    		axios
-	           	.get('api/pacijent/'+this.$route.params.lbo)
+	           	.get('api/pacijent/'+this.$route.params.lbo, { headers: { Authorization: 'Bearer ' + this.token }} )
 	           	.then(response => {
 	           			this.pacijent = response.data; 
 						this.zKarton = this.pacijent.zKarton;
 	           			axios
-	    	           	.get('api/pregled/'+this.pacijent.id+'/'+ this.korisnik.id)
+	    	           	.get('api/pregled/'+this.pacijent.id+'/'+ this.korisnik.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 	    	           	.then(response => {
 							this.pregled = response.data;
 							
@@ -557,7 +557,7 @@ Vue.component('nadjipacijenta', {
 	    	           			console.log("Pregled ne postoji");}
 						);
 						axios
-						.get('api/pregled/istorijaPregleda/'+this.pacijent.id)
+						.get('api/pregled/istorijaPregleda/'+this.pacijent.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 						.then(response => {
 							this.istorijaPregleda = response.data;
 						}).catch((response)=>
@@ -569,12 +569,12 @@ Vue.component('nadjipacijenta', {
 				   });
 				   	
 					axios
-					.get('api/dijagnoze/all')
+					.get('api/dijagnoze/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 					.then(response => {
 						this.dijagnoze = response.data; 
 					});
 					axios
-						.get('api/lekovi/all')
+						.get('api/lekovi/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 						.then(response => (this.lekovi = response.data));
 				
 	    	}

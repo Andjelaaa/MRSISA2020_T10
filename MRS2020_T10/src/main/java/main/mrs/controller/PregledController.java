@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -159,6 +160,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/{pacijent_id}/{lekar_id}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<PregledDTO> dobaviPregledeZaDan(@PathVariable Integer pacijent_id,
 			@PathVariable Integer lekar_id) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,6 +183,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/istorijaPregleda/{pacijentId}")
+	@PreAuthorize("hasAnyRole('LEKAR','MED_SESTRA' )")
 	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
 
 		List<Pregled> Pregleds = PregledService.dobaviIstoriju(pacijentId);
@@ -227,6 +230,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/lekarpre/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<List<PregledDTO>> getAllPregledeLekara(@PathVariable Integer id) {
 		List<Pregled> pregledi = PregledService.findByLekarId(id);
 
@@ -257,6 +261,7 @@ public class PregledController {
 	}
 
 	@PostMapping(value = "izmenikarton/{pacijentId}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<String> izmeniKarton(@RequestBody PomocnaKlasa4 klasa, @PathVariable Integer pacijentId) {
 		Pacijent pacijent = PacijentService.findById(pacijentId);
 		ZKarton karton = pacijent.getzKarton();
@@ -371,6 +376,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/zahtevi/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<PregledDTO>> getZahtevi(@PathVariable Integer idAdmina) {
 		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
 		List<Pregled> Pregleds = PregledService.findAllZahteviKlinike(ak.getKlinika().getId());
@@ -389,6 +395,7 @@ public class PregledController {
 	}
 
 	@PostMapping(consumes = "application/json;charset=UTF-8", value = "/lekarzahtev")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<PregledDTO> saveZahtevLekar(@RequestBody PregledDTO PregledDTO) {
 		Pregled Pregled = new Pregled();
 

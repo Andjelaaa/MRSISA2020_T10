@@ -9,7 +9,9 @@ Vue.component('sifrarnik2', {
 			greska2:'',
 			showModal: false,
 			selected: {naziv:'', sifra:''},
-			selectedBackup: {naziv:'', sifra:''}
+			selectedBackup: {naziv:'', sifra:''},
+			token:'',
+			uloga:''
 		}
 	}, 
 	
@@ -34,6 +36,9 @@ Vue.component('sifrarnik2', {
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
+			  </li>
+			   <li class="nav-item">
+		        <a class="nav-link" href="#/dodajsa">Dodaj super admina </a>
 		      </li>
 		    </ul>
 		     <form class="form-inline my-2 my-lg-0">     
@@ -139,7 +144,7 @@ Vue.component('sifrarnik2', {
 			this.greska2 = '';
 			var newDijagn ={ "naziv": this.naziv, "sifra": this.sifra};
 			axios
-			.post('api/dijagnoze', newDijagn)
+			.post('api/dijagnoze', newDijagn,{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				this.dijagnoze.push(newDijagn);
 				this.naziv ='';
@@ -161,7 +166,7 @@ Vue.component('sifrarnik2', {
 		},
 		save: function(){
 			axios
-			.post('api/dijagnoze/izmena', {dijagnoza:this.selected, naziv:this.selectedBackup.naziv})
+			.post('api/dijagnoze/izmena', {dijagnoza:this.selected, naziv:this.selectedBackup.naziv},{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.naziv ='';
 				 this.sifra='';
@@ -178,9 +183,28 @@ Vue.component('sifrarnik2', {
 		
 	},
 	mounted(){
-		 axios
-       	.get('api/dijagnoze/all')
-       	.then(response => (this.dijagnoze = response.data));
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+	    .then(response => { this.medicinska_sestra = response.data;
+		    axios
+			.put('/auth/dobaviulogu', this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINICKOG_CENTRA") {
+		    		router.push('/');
+				}
+				else{
+					 axios
+      			 	.get('api/dijagnoze/all', { headers: { Authorization: 'Bearer ' + this.token }},{ headers: { Authorization: 'Bearer ' + this.token }})
+       				.then(response => (this.dijagnoze = response.data));	      		
+				}
+		    })
+		    .catch(function (error) { console.log(error);});
+		    
+	    })
+	    .catch(function (error) { router.push('/'); });	
+		
 	}
 
 });

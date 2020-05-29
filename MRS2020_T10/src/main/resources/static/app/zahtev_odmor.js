@@ -124,15 +124,14 @@ Vue.component('odmoor', {
 		},
 		salji: function(){
 			this.greska = '';
-            console.log("usao123");
+    
 			if(this.validacija()==1)
 				return;
-			console.log("usao222");
 			var zahtev ={ "tip": this.tipZahteva,"opis": this.opis, "pocetak": this.datPocetka, "kraj": this.datKraja};
-			//proveravace se role, ako je role lekar onda ce se setovati lekar  a med sestra na ne znam
+			
 			
 			axios
-			.post('api/zahteviodsustvo/'+this.korisnik.email, zahtev)
+			.post('api/zahteviodsustvo/'+this.korisnik.email, zahtev,{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				this.greska ='';
 				console.log("usao");

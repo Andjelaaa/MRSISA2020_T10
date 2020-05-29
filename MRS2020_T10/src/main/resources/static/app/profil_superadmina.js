@@ -3,6 +3,8 @@ Vue.component('superprofil', {
 	data: function(){
 		return{
 			klinike:[],
+			token:'',
+		    uloga:''
 			}
 	}, 
 	
@@ -28,8 +30,11 @@ Vue.component('superprofil', {
 		      </li>
 		       <li class="nav-item">
 		        <a class="nav-link" href="#/sifrarnik2">Sifrarnik dijagnoza</a>
+			  </li>
+			   <li class="nav-item">
+		        <a class="nav-link" href="#/dodajsa">Dodaj super admina </a>
 		      </li>
-
+                
 			</ul>
 			 <form class="form-inline my-2 my-lg-0">
 		      
@@ -88,7 +93,7 @@ Vue.component('superprofil', {
 				}
 				else{
 					axios
-			      	.get('api/klinika/all')
+			      	.get('api/klinika/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.klinike = response.data;			      		
 			      	})

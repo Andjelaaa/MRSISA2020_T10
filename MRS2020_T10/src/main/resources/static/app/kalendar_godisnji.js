@@ -147,15 +147,10 @@ Vue.component('calendar_god', {
 
 	  methods: {
 	   
-	    setDate: function(date) {
-	      if (date == this.filterDate) {
-	        console.log('setting undefined');
-	        this.filterDate = undefined;
-	        //unselected
-	      } else {
-	        this.filterDate = date;
-	      }
-	    },
+	    odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 	    dFormatSati: function(date) {
 	        var d = new Date(date),
 	            hours = '' + d.getHours() ,
@@ -366,8 +361,17 @@ Vue.component('calendar_god', {
 		  this.token = localStorage.getItem("token");
 			axios
 			.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
-		    .then(response => { 
-		    	this.korisnik = response.data;	
+			.then(response => { this.korisnik = response.data;
+				
+				axios
+				.put('/auth/dobaviulogu', this.korisnik, { headers: { Authorization: 'Bearer ' + this.token }} )
+		   		.then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_LEKAR") {
+		    		this.$router.push('/');
+				}
+				else{
+						    		
 		    	
 		    	this.pocetak = this.korisnik.rvPocetak;
 		    	this.kraj=this.korisnik.rvKraj;
@@ -399,22 +403,22 @@ Vue.component('calendar_god', {
 		    		
 		    	}
 		    	axios
-					.get('api/pregled/lekarpre/'+this.korisnik.id)
+					.get('api/pregled/lekarpre/'+this.korisnik.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 				    .then(response => {
 				    	this.pregledi = response.data;
 				    })
 				.catch((response)=> { console.log("Doslo je do greske sa dobavljanjem preglega");});
 		    	
 		    	axios
-				.get('api/operacije/lekarop/'+this.korisnik.id)
+				.get('api/operacije/lekarop/'+this.korisnik.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 			    .then(response => {
 			    	this.operacije = response.data;			    	
 			    })
 			    .catch((response)=> { console.log("Doslo je do greske sa dobavljanjem operacija");});
 		    	
-		    	
-		    	
-			    });
+				}
+		    })	
+		 });
 			
 		}
 		

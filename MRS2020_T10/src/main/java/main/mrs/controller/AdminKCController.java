@@ -16,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.AdminKCDTO;
-import main.mrs.dto.LekarDTO;
 import main.mrs.model.AdminKC;
+import main.mrs.model.AdminKlinike;
+import main.mrs.model.Lekar;
+import main.mrs.model.MedSestra;
+import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa;
 import main.mrs.model.ZahtevReg;
 import main.mrs.service.AdminKCService;
+import main.mrs.service.AdminKlinikeService;
 import main.mrs.service.EmailService;
 import main.mrs.service.LekarService;
+import main.mrs.service.MedSestraService;
 import main.mrs.service.PacijentService;
 import main.mrs.service.ZahtevRegService;
 
@@ -37,6 +42,16 @@ public class AdminKCController {
 	@Autowired
 	private ZahtevRegService zahtevService;
 
+
+	@Autowired
+	private AdminKlinikeService AdminKlinikeService;
+
+	@Autowired
+	private LekarService LekarService;
+
+	@Autowired
+	private MedSestraService MedSestraService;
+	
 
 	@Autowired
 	private EmailService emailService;
@@ -61,7 +76,28 @@ public class AdminKCController {
 	@PostMapping(consumes = "application/json")
 	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<AdminKCDTO> saveAdminKC(@RequestBody AdminKCDTO AdminKCDTO) {
+ 
+		
+		Pacijent pacijent = pacijentService.findByEmail(AdminKCDTO.getEmail());
+		if(pacijent != null) {
+			return new ResponseEntity<>(new AdminKCDTO(),HttpStatus.BAD_REQUEST);
+		}
 
+		AdminKlinike akc = AdminKlinikeService.findByEmail(AdminKCDTO.getEmail());
+		if(akc != null) {
+			return new ResponseEntity<>(new AdminKCDTO(),HttpStatus.BAD_REQUEST);
+		}
+		Lekar l = LekarService.findByEmail(AdminKCDTO.getEmail());
+		if(l != null) {
+			return new ResponseEntity<>(new AdminKCDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra ms = MedSestraService.findByEmail(AdminKCDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new AdminKCDTO(),HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		
 		AdminKC AdminKC = new AdminKC();
 		AdminKC.setIme(AdminKCDTO.getIme());
 		AdminKC.setPrezime(AdminKCDTO.getPrezime());
@@ -71,8 +107,12 @@ public class AdminKCController {
 		AdminKC.setAdresa(AdminKCDTO.getAdresa());
 		AdminKC.setDrzava(AdminKCDTO.getDrzava());
 		
-
-		AdminKC = adminKCService.save(AdminKC);
+        try {
+        	AdminKC = adminKCService.save(AdminKC);
+        }catch(Exception e) {
+        	return new ResponseEntity<>(new AdminKCDTO(), HttpStatus.CREATED);
+        }
+		
 		return new ResponseEntity<>(new AdminKCDTO(AdminKC), HttpStatus.CREATED);
 	}
 	

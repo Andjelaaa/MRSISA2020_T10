@@ -37,6 +37,7 @@ const LekarZakazaniPregledi = {template: '<lekarzp></lekarzp>'}
 const MedicinskeSestre = {template: '<medsestre></medsestre>'}
 const ProfilLekar = {template: '<profillekar></profillekar>'}
 const ProfilAdmin = {template: '<profiladmin></profiladmin>'}
+const DodajSAdmin = {template: '<dodajsa></dodajsa>'}
 
 
 const router = new VueRouter({
@@ -80,7 +81,8 @@ const router = new VueRouter({
 	    { path: '/lekar/pregledi', component: LekarZakazaniPregledi},
 	    { path: '/medsestre', component: MedicinskeSestre},
 	    { path: '/profil', component: ProfilLekar},
-	    { path: '/profiladmin', component: ProfilAdmin},
+		{ path: '/profiladmin', component: ProfilAdmin},
+		{ path: '/dodajsa', component: DodajSAdmin}
 	    ]
 });
 

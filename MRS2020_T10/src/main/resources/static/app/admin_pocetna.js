@@ -166,7 +166,7 @@ Vue.component('admin', {
 		sacuvaj: function(){
 			if(this.klinika.naziv != '' && this.klinika.opis != '' && this.klinika.adresa != '' && this.klinika.kontaktKlinike != '' && this.klinika.emailKlinike!= ''){
 				axios
-				.put('api/klinika/'+this.klinika.id, this.klinika)
+				.put('api/klinika/'+this.klinika.id, this.klinika , { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesna izmena');
 				}).catch((res)=>{
@@ -180,7 +180,7 @@ Vue.component('admin', {
 		mapa: function(){
 			ymaps.ready(function () {
 				axios
-		      	.get('api/admini/klinika/a')
+		      	.get('api/admini/klinika/a' , { headers: { Authorization: 'Bearer ' + this.token }})
 		      	.then(response => {
 		      		this.klinika = response.data;		      		
 		      	
@@ -203,7 +203,7 @@ Vue.component('admin', {
 					
 					
 				axios 
-			      .get('http://www.mapquestapi.com/geocoding/v1/address?key=eCqaQpFzyG7CUIGfq2QAGmPYOYpZs3vt&street='.concat(this.ulica,'&city=',this.grad))
+			      .get('http://www.mapquestapi.com/geocoding/v1/address?key=eCqaQpFzyG7CUIGfq2QAGmPYOYpZs3vt&street='.concat(this.ulica,'&city=',this.grad) , { headers: { Authorization: 'Bearer ' + this.token }})
 			      .then(res => {
 			    	  console.log(res.data.results[0].locations[0].displayLatLng.lat, res.data.results[0].locations[0].displayLatLng.lng);
 					    	var myMap = new ymaps.Map('map', {
@@ -253,7 +253,7 @@ Vue.component('admin', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/admini/klinika/'+this.admin.email )
+			      	.get('api/admini/klinika/'+this.admin.email , { headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.klinika = response.data;
 			      		this.mapa();
