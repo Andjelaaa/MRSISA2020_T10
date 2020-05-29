@@ -102,12 +102,13 @@ Vue.component('zakazisalu', {
 		rezervisi: function(s, prviSlobodan){
 			console.log(this.token);
 			axios
-	      	.post('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, { headers: { Authorization: 'Bearer ' + this.token }})
+	      	.get('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Uspesno rezervisana sala! Mejl poslat!');
 	      		this.$router.push('/zahtevipo');
 	      	})
-	        .catch(function (error) { console.log('GrJAJFHJFHJDHA') });	
+	        .catch(function (error) { console.log('Greska') });	
+
 			
 		},
 		nadjiZaDatum: function(){

@@ -466,8 +466,8 @@ public class PregledController {
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
-	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	@GetMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
