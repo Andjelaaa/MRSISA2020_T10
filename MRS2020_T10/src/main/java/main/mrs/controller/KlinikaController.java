@@ -352,6 +352,7 @@ public class KlinikaController {
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO KlinikaDTO, @PathVariable Integer id) {
 
 		// a Klinika must exist
@@ -372,6 +373,7 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(consumes = "application/json", value = "/prihodi/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<Double> prihodiKlinike(@RequestBody SearchIzvestaj searchIzvestaj, @PathVariable Integer id) {
 
 		// a Klinika must exist
@@ -396,6 +398,7 @@ public class KlinikaController {
 	
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/grafik/{nivo}/{idKlinike}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<Map<String,Integer>> grafik(@PathVariable String nivo, @PathVariable Integer idKlinike) {
 
 		Map<String, Integer> podaci = new HashMap<String, Integer>(); // kljuc je dan, vrednost je broj pregleda za taj dan

@@ -25,7 +25,7 @@ public class Sala {
 	@Column(name="naziv", unique=true, nullable=false)
 	private String naziv;
 
-	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="sala",fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	public Set<Pregled> pregled;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

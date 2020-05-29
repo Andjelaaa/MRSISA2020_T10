@@ -154,15 +154,12 @@ Vue.component('tipovipregleda', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 	},
-		nazad : function(){
-			this.$router.push('/admin');
-			return;
-		},
+
 		pretrazi: function(){
 			console.log(this.pretraga);
 			if(this.pretraga){
 				axios
-		       	.get('api/tippregleda/search/'+ this.pretraga)
+		       	.get('api/tippregleda/search/'+ this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(response => (this.tipoviPregleda = response.data));	
 			}	
 		},
@@ -180,29 +177,31 @@ Vue.component('tipovipregleda', {
 		},
 		obrisi: function(s){
 			axios
-			.delete('api/tippregleda/'+s.id)
+			.delete('api/tippregleda/'+s.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				 axios
-			       	.get('api/tippregleda/all')
+			       	.get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
 			       	.then(response => (this.tipoviPregleda = response.data));
 			}).catch((res)=>{
+				
 				console.log('Neuspesno brisanje');
+				alert('Ne mozete obrisati ovaj tip pregleda.');
 			});
 			
 		},
 		sacuvaj: function(s){
 			axios
-			.put('api/tippregleda/'+s.id, s)
+			.put('api/tippregleda/'+s.id, s, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('Uspesna izmena');
 				if(s.stavka.cena != this.selectedBackup.cena){
 					axios
-					.post('api/stavkacenovnika/'+s.naziv, {cena: s.stavka.cena})
+					.post('api/stavkacenovnika/'+s.naziv, {cena: s.stavka.cena}, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesno');
 						axios
-				       	.get('api/tippregleda/all')
+				       	.get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
 				       	.then(response => (this.tipoviPregleda = response.data));
 					}).catch((res)=>{
 						console.log('Neuspesna izmena');
@@ -238,15 +237,15 @@ Vue.component('tipovipregleda', {
 				return;
 			
 			axios
-			.post('api/tippregleda', this.tipPregleda)
+			.post('api/tippregleda', this.tipPregleda, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-				.post('api/stavkacenovnika/'+this.tipPregleda.naziv, this.stavkaCenovnika)
+				.post('api/stavkacenovnika/'+this.tipPregleda.naziv, this.stavkaCenovnika, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesno');
 					axios
-			       	.get('api/tippregleda/all')
+			       	.get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
 			       	.then(response => (this.tipoviPregleda = response.data));
 				}).catch((res)=>{
 					this.error = 'Neuspesno dodavanje';
@@ -259,9 +258,27 @@ Vue.component('tipovipregleda', {
 		
 	},
 	mounted(){
-		 axios
-       	.get('api/tippregleda/all')
-       	.then(response => (this.tipoviPregleda = response.data));
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+        .then(response => { this.admin = response.data; 
+	        axios
+			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    		this.$router.push('/');
+		    	}else{
+		    		axios
+		           	.get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
+		           	.then(response => (this.tipoviPregleda = response.data));	    		
+		    	}
+		    })
+		    .catch(function (error) { console.log(error); });
+   
+        })
+        .catch(function (error) { router.push('/'); });
+		 
 	}
 
 });

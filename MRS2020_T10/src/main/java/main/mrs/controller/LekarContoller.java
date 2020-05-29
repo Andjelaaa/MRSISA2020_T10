@@ -78,6 +78,7 @@ public class LekarContoller {
 	TipPregledaService tps = new TipPregledaService();	
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<LekarDTO>> getAllLekars() {
 
 		List<Lekar> Lekars = LekarService.findAll();
@@ -92,6 +93,7 @@ public class LekarContoller {
 	}
 	
 	@GetMapping(value = "/all/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<LekarDTO>> getAllLekariKlinike(@PathVariable Integer idAdmina) {
 
 		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
@@ -108,6 +110,7 @@ public class LekarContoller {
 
 	 @Transactional
 	@PostMapping(consumes = "application/json", value="/{IdAdmina}")
+	 @PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<LekarDTO> saveLekar(@RequestBody LekarDTO LekarDTO, @PathVariable Integer IdAdmina) {
 
 		 Pacijent pacijent = PacijentService.findByEmail(LekarDTO.getEmail());
@@ -161,6 +164,7 @@ public class LekarContoller {
 	}
 	
 	@PostMapping(value = "/search/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<LekarDTO>> getSearchLekars(@RequestBody SearchLekar sl, @PathVariable Integer idAdmina) {
 		System.out.println(sl.getIme()+sl.getPrezime());
 		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
@@ -300,19 +304,29 @@ public class LekarContoller {
 	
 	@Transactional // obavezno ova anotacija, inace puca
 	@DeleteMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<Void> deleteLekar(@PathVariable Integer id) {
 		Lekar Lekar = LekarService.findOne(id);
-
-		if (Lekar != null) {
-			// Provera da li je lekar ima zakazane preglede
-//			if(!Lekar.getPregled().isEmpty()) {                                        ////DOVRSIITIIII
-//				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//			}
+		List<Pregled> preglediLekara = PregledService.findByLekarIdNotFinished(id);
+		List<Integer> idOperacijeLekara = OperacijaService.findByLekarId(id);
+		List<Operacija> operacijeLekara = new ArrayList<Operacija>();
+		for (Integer i : idOperacijeLekara) {
+			Operacija o = OperacijaService.findOneIfNotFinished(i);
+			operacijeLekara.add(o);
+		}
+		
+		try
+		{		
+			if (Lekar != null && preglediLekara.isEmpty() && operacijeLekara.isEmpty()) {			
 			LekarService.remove(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 
@@ -436,6 +450,7 @@ public class LekarContoller {
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<LekarDTO> updateLekar(@RequestBody LekarDTO lDTO, @PathVariable Integer id) {
 
 		Lekar l = LekarService.findOne(id);

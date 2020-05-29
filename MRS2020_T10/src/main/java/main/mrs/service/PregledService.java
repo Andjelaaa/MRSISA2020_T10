@@ -107,6 +107,14 @@ public class PregledService {
 		return PregledRepository.getZavrsenePregledeZaRecept(id);
 	}
 
+	public List<Pregled> findByLekarIdNotFinished(Integer id) {
+		return  PregledRepository.findAllByLekarIdNotFinished(id);
+	}
+
+	public List<Pregled> findAllByType(Integer id) {
+		return  PregledRepository.findAllByType(id);
+	}
+
 
 
 }

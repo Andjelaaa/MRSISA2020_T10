@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public class StavkaCenovnikaController {
 	private CenovnikService CenovnikService;
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<StavkaCenovnikaDTO>> getAllStavkaCenovnikas() {
 
 		List<StavkaCenovnika> StavkaCenovnikas = StavkaCenovnikaService.findAll();
@@ -48,6 +50,7 @@ public class StavkaCenovnikaController {
 	
 	
 	@PostMapping(consumes = "application/json", value = "/{nazivTipaPregleda}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<StavkaCenovnikaDTO> saveStavkaCenovnika(@RequestBody StavkaCenovnikaDTO StavkaCenovnikaDTO, @PathVariable String nazivTipaPregleda) {
 
 		

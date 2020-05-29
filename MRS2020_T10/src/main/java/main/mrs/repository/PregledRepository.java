@@ -135,5 +135,24 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 
 	  @Query(value = "SELECT * FROM PREGLED WHERE STATUS = 4 AND KLINIKA_ID = ?1" , nativeQuery = true)
 	  List<Pregled> getZavrsenePregledeZaRecept(Integer id);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE LEKAR_ID = ?1 AND (STATUS != 4 AND STATUS != 2)", nativeQuery = true)
+	  List<Pregled> findAllByLekarIdNotFinished(Integer id);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE TIP_PREGLEDA_ID = ?1", nativeQuery = true)
+	  List<Pregled> findAllByType(Integer id);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

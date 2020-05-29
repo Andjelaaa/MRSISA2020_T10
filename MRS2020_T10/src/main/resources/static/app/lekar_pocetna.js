@@ -45,7 +45,7 @@ Vue.component('lekar', {
 			<h3> Radni kalendar </h3>
 		<table class="table">
 			<tbody>
-			<!-- ovde ubaciti radni kalendar -->
+			<!-- ovde ubaciti NEKU SLIKU -->
 			  
 		   </tbody>
 		</table>

@@ -179,8 +179,9 @@ Vue.component('admin', {
 		},
 		mapa: function(){
 			ymaps.ready(function () {
+				token = localStorage.getItem("token");
 				axios
-		      	.get('api/admini/klinika/a' , { headers: { Authorization: 'Bearer ' + this.token }})
+		      	.get('api/admini/klinika' , { headers: { Authorization: 'Bearer ' + this.token }})
 		      	.then(response => {
 		      		this.klinika = response.data;		      		
 		      	
@@ -253,7 +254,7 @@ Vue.component('admin', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/admini/klinika/'+this.admin.email , { headers: { Authorization: 'Bearer ' + this.token }})
+			      	.get('api/admini/klinika' , { headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.klinika = response.data;
 			      		this.mapa();

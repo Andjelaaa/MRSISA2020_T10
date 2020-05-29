@@ -208,6 +208,7 @@ public class PregledController {
 	}
 
 	@PostMapping(value = "/otkazi/{pregledId}/{pacijentId}")
+	@PreAuthorize("hasAnyRole('LEKAR', 'PACIJENT')")
 	public ResponseEntity<PregledDTO> otkaziPregled(@PathVariable long pregledId, @PathVariable int pacijentId) {
 		Pregled p = PregledService.findById(pregledId);
 		try {
@@ -316,6 +317,7 @@ public class PregledController {
 	}
 
 	@PostMapping(consumes = "application/json;charset=UTF-8")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<PregledDTO> savePregled(@RequestBody PregledDTO PregledDTO) {
 		Pregled PregledNovi = new Pregled();
 		Date datum = PregledDTO.getDatumVreme();
@@ -464,8 +466,8 @@ public class PregledController {
 		return new ResponseEntity<>(new PregledDTO(Pregled), HttpStatus.CREATED);
 	}
 
-	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
@@ -495,6 +497,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/zakazaniZaLekara/{lekarId}")
+	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<List<PregledDTO>> dobaviZakazane(@PathVariable int lekarId) {
 
 		List<Pregled> Pregleds = PregledService.getScheduledForDr(lekarId);

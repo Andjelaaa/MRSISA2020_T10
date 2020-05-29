@@ -171,24 +171,21 @@ Vue.component('medsestre', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		nazad : function(){
-			this.$router.push('/admin');
-			return;
-		},
+
 		pretrazi: function(){
 			axios
-	       	.post('api/medsestraa/search/'+this.admin.id, this.pretraga)
+	       	.post('api/medsestraa/search/'+this.admin.id, this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
 	       	.then(response => (this.medsestre = response.data));
 
 		},
 		obrisi: function(s){
 			console.log(s.id);
 			axios
-			.delete('api/medsestraa/'+s.id)
+			.delete('api/medsestraa/'+s.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				 axios
-			       	.get('api/medsestraa/all')
+			       	.get('api/medsestraa/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			       	.then(response => (this.medsestre = response.data));
 			}).catch((res)=>{
 				console.log('Neuspesno brisanje');
@@ -242,11 +239,11 @@ Vue.component('medsestre', {
 				return;
 			
 			axios
-			.post('api/medsestraa/'+this.admin.id, this.sestra)
+			.post('api/medsestraa/'+this.admin.id, this.sestra, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/medsestraa/all/'+this.admin.id)
+		       	.get('api/medsestraa/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(response => (this.medsestre = response.data));
 				this.sestra = {};
 				 
@@ -274,7 +271,7 @@ Vue.component('medsestre', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		    	       	.get('api/medsestraa/all/'+this.admin.id)
+		    	       	.get('api/medsestraa/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		    	       	.then(response => (this.medsestre = response.data));
 		    			 	    		
 		    	}

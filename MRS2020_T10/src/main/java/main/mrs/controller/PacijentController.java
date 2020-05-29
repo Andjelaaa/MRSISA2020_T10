@@ -40,6 +40,7 @@ public class PacijentController {
 	@Autowired
 	private MedSestraService medSestraService;
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasAnyRole('LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<List<PacijentDTO>> getAllPacijents() {
 		
 		List<Pacijent> Pacijents = pacijentService.findAll();
@@ -94,7 +95,7 @@ public class PacijentController {
 	}
 	
 	@PostMapping(value = "/search/{email}")
-	@PreAuthorize("hasAnyRole( 'ADMIN_KLINIKE')")
+	@PreAuthorize("hasAnyRole( 'ADMIN_KLINIKE', 'LEKAR', 'MED_SESTRA')")
 	public ResponseEntity<List<PacijentDTO>> getSearchLekars(@RequestBody SearchPacijent sp, @PathVariable String email) {
 		Lekar lekar = lekarService.findByEmail(email);
 		MedSestra meds = medSestraService.findByEmail(email);

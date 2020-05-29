@@ -175,11 +175,13 @@ Vue.component('dpregled', {
 			
 			
 			axios
-			.post('api/pregled', this.pregled)
+			.post('api/pregled', this.pregled, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				alert('Uspesno!');
-				//this.$router.push('/');
+				this.pregled = {};
+				this.lekar = {};
+
 			}).catch((res)=>{
 				this.error = 'Greska pri dodavanju, sala je zauzeta za uneti termin!';
 			}
@@ -193,7 +195,7 @@ Vue.component('dpregled', {
 	    tipPregleda: function() {
 	    	console.log(this.tipPregleda.naziv);
 	    	 axios
-	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari/'+this.admin.id)
+	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 	          .then(res => {
 	        	  this.lekari = res.data;
 
@@ -215,21 +217,21 @@ Vue.component('dpregled', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		             .get('api/tippregleda/all')
+		             .get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
 		             .then(res => {
 		           	  this.tipoviPregleda = res.data;
 
 		             })
 		             
 		              axios
-		             .get('api/lekar/all/'+this.admin.id)
+		             .get('api/lekar/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		             .then(res => {
 		           	  this.lekari = res.data;
 
 		             })
 		             
 		              axios
-		             .get('api/sala/all/'+this.admin.id)
+		             .get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		             .then(res => {
 		           	  this.sale = res.data;
 

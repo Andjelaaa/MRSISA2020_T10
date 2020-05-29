@@ -25,7 +25,7 @@ Vue.component('potvrdareg', {
 	
 	mounted () {
 		axios
-		.get('api/verification/potvrdiRegistraciju/'+this.$route.params.token)
+		.get('api/verification/potvrdiRegistraciju/'+this.$route.params.token,)
 		.then(res => {
 			alert("Dobrodosao u klub");
 		})

@@ -85,7 +85,7 @@ public class MedSestraController {
 	
 	@Transactional
 	@PostMapping(consumes = "application/json", value="/{idAdmina}")
-    //@PreAuthorize("hasRole('ADMIN_KLINIKE')") 
+    @PreAuthorize("hasRole('ADMIN_KLINIKE')") 
 	public ResponseEntity<MedSestraDTO> saveSestra(@RequestBody MedSestraDTO MedSestraDTO, @PathVariable Integer idAdmina) {
 
 		
@@ -136,7 +136,7 @@ public class MedSestraController {
 	 	}
 	 
 	 @PostMapping(value = "/search/{idAdmina}")
-	 @PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
+	 @PreAuthorize("hasRole('ADMIN_KLINIKE')")
 		public ResponseEntity<List<MedSestraDTO>> getSearchMedSestras(@RequestBody SearchLekar sl, @PathVariable Integer idAdmina) {
 		 	AdminKlinike ak = adminKlinikeService.findOne(idAdmina);		 	
 			List<MedSestra> sestre = MedSestraService.findByImeAndPrezime(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase());
@@ -152,6 +152,7 @@ public class MedSestraController {
 	 
 		@Transactional // obavezno ova anotacija, inace puca
 		@DeleteMapping(value = "/{id}")
+		@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 		public ResponseEntity<Void> deleteMedSestra(@PathVariable Integer id) {
 			MedSestra ms = MedSestraService.findOne(id);
 
@@ -164,6 +165,7 @@ public class MedSestraController {
 		}
 		
 		@PutMapping(consumes = "application/json", value = "/{id}")
+		@PreAuthorize("hasRole('MED_SESTRA')")
 		public ResponseEntity<MedSestraDTO> updateMedSestra(@RequestBody MedSestraDTO msDTO, @PathVariable Integer id) {
 
 			MedSestra ms = MedSestraService.findOne(id);

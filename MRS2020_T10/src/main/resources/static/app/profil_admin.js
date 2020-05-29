@@ -212,7 +212,7 @@ Vue.component('profiladmin', {
 				&& this.admin.adresa != '' && this.admin.grad != ''
 					&& this.admin.drzava !='' && this.admin.kontakt != ''){
 				axios
-				.put('api/admini/'+this.admin.id, this.admin)
+				.put('api/admini/'+this.admin.id, this.admin, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesna izmena');
 				}).catch((res)=>{
@@ -236,7 +236,7 @@ Vue.component('profiladmin', {
 			}
 			
 			axios
-			.get('api/verification/enkodujLozinku/'+this.lozinka)
+			.get('api/verification/enkodujLozinku/'+this.lozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				this.lozinka = res.data;
 				console.log(res.data +" kcslakf");
@@ -245,7 +245,7 @@ Vue.component('profiladmin', {
 					console.log(this.lozinka);
 					
 					axios
-					.put('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka)
+					.put('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 						alert('Uspesna izmena lozinke');

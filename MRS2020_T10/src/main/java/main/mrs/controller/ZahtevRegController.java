@@ -48,6 +48,7 @@ public class ZahtevRegController {
 	private ZahtevRegService ZahtevRegService;
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')") 
 	public ResponseEntity<List<ZahtevRegDTO>> getAllZahtevRegs() {
 
 		List<ZahtevReg> ZahtevRegs = ZahtevRegService.findAll();
@@ -62,7 +63,7 @@ public class ZahtevRegController {
 	}
 
 	@PostMapping(consumes = "application/json")
-	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')") 
+	
 	public ResponseEntity<ZahtevRegDTO> saveZahtevReg(@RequestBody ZahtevRegDTO ZahtevRegDTO) {
 		
 		Pacijent pacijent = PacijentService.findByEmail(ZahtevRegDTO.getEmail());

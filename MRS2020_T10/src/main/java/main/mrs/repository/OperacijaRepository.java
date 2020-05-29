@@ -90,9 +90,15 @@ public interface OperacijaRepository  extends JpaRepository<Operacija, Long>{
 	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3 AND KLINIKA_ID=?1", nativeQuery = true)
 	List<Operacija> findAllZahteviKlinike(Integer integer);
 	
-	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS", nativeQuery = true)
+	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3 OR STATUS = 1", nativeQuery = true)
 	List<Operacija> findAllZahtevi();
 
-	
+	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS != 4 AND STATUS != 2 AND ID = ?1", nativeQuery = true)
+	Operacija findOneIfNotFinished(Integer i);
+
+	@Query(value = "SELECT * FROM OPERACIJA WHERE SALA_ID = ?1", nativeQuery = true)
+	List<Operacija> findAllBySalaId(Integer id);
+
+
 
 }

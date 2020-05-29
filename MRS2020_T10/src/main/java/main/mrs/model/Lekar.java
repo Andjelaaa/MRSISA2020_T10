@@ -41,13 +41,13 @@ public class Lekar extends Korisnik implements UserDetails {
   // @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    //public Set<Operacija> operacija;
    
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    @JoinColumn(name="lekar_id", nullable=true)
    public Set<Odsustvo> odsustvo;
    
   // @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
  //  public Set<Pregled> pregled;
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    public Klinika klinika;
    
    @ManyToMany(fetch = FetchType.EAGER)

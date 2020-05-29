@@ -100,18 +100,19 @@ Vue.component('zakazisalu', {
 				this.$router.push('/');
 		},
 		rezervisi: function(s, prviSlobodan){
+			console.log(this.token);
 			axios
-	      	.post('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan)
+	      	.post('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Uspesno rezervisana sala! Mejl poslat!');
 	      		this.$router.push('/zahtevipo');
 	      	})
-	        .catch(function (error) { console.log('Greska11') });	
+	        .catch(function (error) { console.log('GrJAJFHJFHJDHA') });	
 			
 		},
 		nadjiZaDatum: function(){
 			axios
-	      	.get('api/sala/all')
+	      	.get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		this.sale = response.data;
 	      		this.pretragaSale = response.data;
@@ -122,7 +123,7 @@ Vue.component('zakazisalu', {
 	      		for(var s of this.sale){
 	      			console.log(s.id);
 	      			axios
-			      	.get('api/sala/prvislobodan/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id)
+			      	.get('api/sala/prvislobodan/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {			      		
 			      		this.retVal = response.data;
 			      		this.zauzeca.push(this.retVal.zauzeca);
@@ -168,14 +169,14 @@ Vue.component('zakazisalu', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/sala/slobodnesale/'+this.$route.params.id)
+			      	.get('api/sala/slobodnesale/'+this.$route.params.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			      	.then(response => {
 			      		this.sale = response.data;
 			      		this.pretragaSale = response.data;
 			      		for(var s of this.sale){
 			      			console.log(s.id);
 			      			axios
-					      	.get('api/sala/zauzece/'+this.$route.params.id+'/'+s.id)
+					      	.get('api/sala/zauzece/'+this.$route.params.id+'/'+s.id, { headers: { Authorization: 'Bearer ' + this.token }})
 					      	.then(response => {
 					      		this.retVal = response.data;
 					      		this.zauzeca.push(this.retVal.zauzeca);

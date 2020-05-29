@@ -85,7 +85,7 @@ Vue.component('lekari', {
 		   		<th></th>
 		   </tr>
 		  <tbody>
-		   <tr v-for="s in lekari">
+		   <tr v-for="s, i in lekari">
 		   		<td>{{s.ime}} {{s.prezime}}</td>
 		   		<td>{{s.email}}</td>
 		   		<td>{{s.kontakt}}</td>
@@ -93,7 +93,7 @@ Vue.component('lekari', {
 		   		<td>{{s.adresa}}, {{s.grad}}</td>
 		   		<td>{{s.prosecnaOcena}}</td>		   		
 		   		<td>{{s.rvPocetak}} - {{s.rvKraj}}</td>
-				<td><button class="btn btn-light" v-on:click="obrisi(s)">Obrisi</button></td>
+				<td><button class="btn btn-light" v-on:click="obrisi(s, i)">Obrisi</button></td>
 		   </tr>
 		   </tbody>
 		    
@@ -186,25 +186,24 @@ Vue.component('lekari', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-		nazad : function(){
-			this.$router.push('/admin');
-			return;
-		},
+
 		pretrazi: function(){
 			axios
-	       	.post('api/lekar/search/'+this.admin.id, this.pretraga)
+	       	.post('api/lekar/search/'+this.admin.id, this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
 	       	.then(response => (this.lekari = response.data));
 
 		},
-		obrisi: function(s){
+		obrisi: function(s, i){
 			console.log(s.id);
 			axios
-			.delete('api/lekar/'+s.id)
+			.delete('api/lekar/'+s.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
-				 axios
-			       	.get('api/lekar/all')
-			       	.then(response => (this.lekari = response.data));
+				this.lekari.splice(i,1);
+//				console.log(this.token+ '  skfjfkfj');
+//				axios
+//    	       	.get('api/lekar/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
+//    	       	.then(response => (this.lekari = response.data));
 			}).catch((res)=>{
 				console.log('Neuspesno brisanje');
 			});
@@ -260,11 +259,12 @@ Vue.component('lekari', {
 				return;
 			
 			axios
-			.post('api/lekar/'+this.admin.id, this.lekar)
+			.post('api/lekar/'+this.admin.id, this.lekar, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
+				console.log('ajskf  '+this.token)
 				axios
-		       	.get('api/lekar/all/'+this.admin.id)
+		       	.get('api/lekar/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(response => (this.lekari = response.data));
 				this.lekar = {};
 				 
@@ -291,11 +291,11 @@ Vue.component('lekari', {
 		    		this.$router.push('/');
 		    	}else{
 		    		 axios
-		    	       	.get('api/lekar/all/'+this.admin.id)
+		    	       	.get('api/lekar/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		    	       	.then(response => (this.lekari = response.data));
 		    			 
 		    			 axios
-		    	         .get('api/tippregleda/all')
+		    	         .get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
 		    	         .then(res => {
 		    	       	  this.tipoviPregleda = res.data;
 

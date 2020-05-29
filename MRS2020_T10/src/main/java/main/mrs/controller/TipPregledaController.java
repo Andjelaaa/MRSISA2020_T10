@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,10 @@ import main.mrs.dto.StavkaCenovnikaDTO;
 import main.mrs.dto.TipPregledaDTO;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
+import main.mrs.model.Pregled;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.AdminKlinikeService;
+import main.mrs.service.PregledService;
 import main.mrs.service.TipPregledaService;
 
 @RestController
@@ -34,8 +37,12 @@ public class TipPregledaController {
 	private TipPregledaService TipPregledaService;
 	@Autowired
 	private AdminKlinikeService adminKlinikeService;
+	
+	@Autowired
+	private PregledService pregledService;
 
 	@GetMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<TipPregledaDTO>> getAllTipPregledas() {
 
 		List<TipPregleda> TipPregledas = TipPregledaService.findAll();
@@ -52,6 +59,7 @@ public class TipPregledaController {
 	}
 	
 	@GetMapping(value = "/search/{searchParam}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<TipPregledaDTO>> getSearchTipPregleda(@PathVariable String searchParam) {
 		System.out.println(searchParam);
 		List<TipPregleda> TipPregledas = TipPregledaService.findSearchNaziv(searchParam.toUpperCase());
@@ -66,6 +74,7 @@ public class TipPregledaController {
 	}
 
 	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<TipPregledaDTO> saveTipPregleda(@RequestBody TipPregledaDTO TipPregledaDTO) {
 
 		TipPregleda tipPregleda = new TipPregleda();
@@ -85,6 +94,7 @@ public class TipPregledaController {
 	}
 	
 	@GetMapping(value = "/{tipPregledaNaziv}/lekari/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<LekarDTO>> getTipPregledaLekari(@PathVariable String tipPregledaNaziv, @PathVariable Integer idAdmina) {
 		System.out.println("tipppp"+tipPregledaNaziv);
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregledaNaziv);
@@ -116,24 +126,30 @@ public class TipPregledaController {
 	
 	@Transactional // obavezno ova anotacija, inace puca
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> deleteTipPregleda(@PathVariable Integer id) {
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	public ResponseEntity<String> deleteTipPregleda(@PathVariable Integer id) {
 		TipPregleda TipPregleda = TipPregledaService.findOne(id);
+		List<Pregled> pregledi = pregledService.findAllByType(TipPregleda.getId());
 
-		if (TipPregleda != null) {
-			try {
-				TipPregledaService.remove(id);
-				return new ResponseEntity<>(HttpStatus.OK);
-			} catch (Exception e) {
-				// postoji pregled tog tipa
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		try {
+			if (TipPregleda != null) {
+				if(pregledi.isEmpty()) {
+					TipPregledaService.remove(id);
+					return new ResponseEntity<>(HttpStatus.OK);
+				}
 			}
-			
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			// postoji pregled tog tipa
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+			
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<TipPregledaDTO> updateSTipPregleda(@RequestBody TipPregledaDTO TipPregledaDTO, @PathVariable Integer id) {
 
 		// a TipPregleda must exist

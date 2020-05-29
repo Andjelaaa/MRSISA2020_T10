@@ -93,7 +93,7 @@ Vue.component('pacijenti', {
 		},
 		pretrazi: function(){
 			axios
-	       	.post('api/pacijent/search/' + this.korisnik.email, this.pretraga)
+	       	.post('api/pacijent/search/' + this.korisnik.email, this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
 	       	.then(response => (this.pacijenti = response.data));
 
 		},

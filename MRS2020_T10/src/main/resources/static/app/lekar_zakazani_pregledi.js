@@ -84,7 +84,7 @@ Vue.component('lekarzp', {
 	otkazi : function(p, i){
 		// upit da li je siguran - prozor sa informacijama
 		axios
-          .post('api/pregled/otkazi/'+p.id+'/'+p.pacijent.id)
+          .post('api/pregled/otkazi/'+p.id+'/'+p.pacijent.id, { headers: { Authorization: 'Bearer ' + this.token }})
           .then(res => {
         	this.pregledi.splice(i,1);
         	console.log('uspesno');
@@ -111,12 +111,11 @@ mounted(){
 	    		this.$router.push('/');
 	    	}else{
 	    		axios
-	    		.get('api/pregled/zakazaniZaLekara/'+this.lekar.id)
+	    		.get('api/pregled/zakazaniZaLekara/'+this.lekar.id, { headers: { Authorization: 'Bearer ' + this.token }})
 	    		.then(res => {
 	    			this.pregledi = res.data;
 	    		})
 	    		
-	    		// dobavi zakazane preglede tog lekara 
 	    	}
 	    })
 	    .catch(function (error) { console.log(error);});

@@ -24,7 +24,7 @@ public class StavkaCenovnika {
 	@Column(name="cena", unique=false, nullable=false)
 	private double cena;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	public TipPregleda tipPregleda;
 
 	

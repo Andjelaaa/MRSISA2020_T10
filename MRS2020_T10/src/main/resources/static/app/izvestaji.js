@@ -112,7 +112,7 @@ Vue.component('izvestaji', {
 		},
 		prikazi: function(){
 			axios
-	      	.post('api/klinika/prihodi/'+this.klinika.id, this.datum)
+	      	.post('api/klinika/prihodi/'+this.klinika.id, this.datum, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		this.prihodi = response.data;
 	      		
@@ -125,7 +125,7 @@ Vue.component('izvestaji', {
 	watch: {
 		nivo: function(){
 			if (this.nivo != '') {
-				axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id)
+				axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then(response => {
 					this.grafik = response.data;
 					
@@ -152,10 +152,10 @@ Vue.component('izvestaji', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-			      	.get('api/admini/klinika/'+this.admin.email )
+			      	.get('api/admini/klinika', { headers: { Authorization: 'Bearer ' + this.token }} )
 			      	.then(response => {
 			      		this.klinika = response.data;
-			      		axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id)
+			      		axios.get('api/klinika/grafik/' + this.nivo +'/'+this.klinika.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			    		.then(response => {
 			    			this.grafik = response.data;
 			    			

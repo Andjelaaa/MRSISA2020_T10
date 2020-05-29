@@ -48,7 +48,7 @@ public class OdsustvoController {
 	
 	
 	@GetMapping(value = "/all")
-	
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR','MED_SESTRA')")
 	public ResponseEntity<List<OdsustvoDTO>> getAllOdsustva() {
 
 		List<Odsustvo> odsustva = OdsustvoService.findAll();

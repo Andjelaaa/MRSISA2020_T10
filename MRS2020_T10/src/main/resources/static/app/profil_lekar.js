@@ -200,7 +200,7 @@ Vue.component('profillekar', {
 				&& this.lekar.adresa != '' && this.lekar.grad != ''
 					&& this.lekar.drzava !='' && this.lekar.kontakt != ''){
 				axios
-				.put('api/lekar/'+this.lekar.id, this.lekar)
+				.put('api/lekar/'+this.lekar.id, this.lekar, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesna izmena');
 				}).catch((res)=>{
@@ -224,7 +224,7 @@ Vue.component('profillekar', {
 			}
 			
 			axios
-			.get('api/verification/enkodujLozinku/'+this.lozinka)
+			.get('api/verification/enkodujLozinku/'+this.lozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				this.lozinka = res.data;
 				console.log(res.data +" kcslakf");
@@ -233,7 +233,7 @@ Vue.component('profillekar', {
 					console.log(this.lozinka);
 					
 					axios
-					.put('api/lekar/promenaLozinke/'+this.lekar.id+'/'+this.novaLozinka)
+					.put('api/lekar/promenaLozinke/'+this.lekar.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 						alert('Uspesna izmena lozinke');

@@ -23,7 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name="MedicinskaSestra")
 public class MedSestra extends Korisnik implements UserDetails {
 	
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	public Klinika klinika;
    
    @Column(name="radvr_pocetak", unique=false, nullable=false)
@@ -32,7 +32,7 @@ public class MedSestra extends Korisnik implements UserDetails {
    @Column(name="radvr_kraj", unique=false, nullable=false)
    private String radvr_kraj;
    
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    @JoinColumn(name="med_sestra_id", nullable=true)
    public Set<Odsustvo> odsustvo;
    

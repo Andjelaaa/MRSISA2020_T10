@@ -69,6 +69,7 @@ public class SalaController {
 	
 	
 	@GetMapping(value = "/all/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getAllSalasByKlinika(@PathVariable Integer idAdmina) {
 		
 		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
@@ -85,6 +86,7 @@ public class SalaController {
 	}
 
 	@PostMapping(consumes = "application/json", value="/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<SalaDTO> saveSala(@RequestBody SalaDTO SalaDTO, @PathVariable Integer idAdmina) {
 
 		Sala Sala = new Sala();
@@ -104,6 +106,7 @@ public class SalaController {
 	}
 	
 	@GetMapping(value = "/search/{searchParam}/{idAdmina}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getSearchSala(@PathVariable String searchParam, @PathVariable Integer idAdmina) {
 		System.out.println(searchParam);
 		List<Sala> Salas = SalaService.findSearchNaziv(searchParam.toUpperCase());
@@ -121,22 +124,28 @@ public class SalaController {
 	
 	@Transactional // obavezno ova anotacija, inace puca
 	@DeleteMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<Void> deleteSala(@PathVariable Integer id) {
 		Sala Sala = SalaService.findOne(id);
-
-		if (Sala != null) {
-			// Provera da li je sala zauzeta ili rezervisana (postoje pregledi vezani za tu salu
-			if(!Sala.getPregled().isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		List<Operacija> Operacija = OperacijaService.findAllBySalaId(Sala.getId());
+		try {
+			if (Sala != null) {
+				// Provera da li je sala zauzeta ili rezervisana (postoje pregledi vezani za tu salu
+				if(!Sala.getPregled().isEmpty() || !Operacija.isEmpty()) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				SalaService.remove(id);	
 			}
-			SalaService.remove(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
 		}
+		catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<SalaDTO> updateSala(@RequestBody SalaDTO SalaDTO, @PathVariable Integer id) {
 
 		// a Sala must exist
@@ -162,6 +171,7 @@ public class SalaController {
 	}
 	
 	@GetMapping(value = "/zauzece/{idPregleda}/{idSale}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzeca(@PathVariable int idPregleda, @PathVariable int idSale) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -204,6 +214,7 @@ public class SalaController {
 	}
 	
 	@GetMapping(value = "/slobodnesale/{idPregleda}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getSlobodne(@PathVariable int idPregleda) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Pregled pregled = PregledService.findById(idPregleda);
@@ -421,6 +432,7 @@ public class SalaController {
 	
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/prvislobodanop/{datumStr}/{idSale}/{idOperacije}")
+	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaZaDatumOP(@PathVariable String datumStr, @PathVariable Integer idSale,
 			@PathVariable Integer idOperacije) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");

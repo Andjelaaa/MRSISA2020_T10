@@ -128,6 +128,7 @@ public class VerificationTokenController {
 	}
 	
 	@GetMapping(value = "/enkodujLozinku/{lozinka}")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINICKOG_CENTRA', 'ADMIN_KLINIKE', 'LEKAR','MED_SESTRA', 'PACIJENT')")
 	public ResponseEntity<String> enkodujLozinku(@PathVariable String lozinka) {
 		
 		String enkodovana = pacijentService.encodePassword(lozinka);

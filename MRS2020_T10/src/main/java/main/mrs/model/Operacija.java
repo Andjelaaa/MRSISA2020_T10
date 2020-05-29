@@ -26,16 +26,16 @@ public class Operacija {
 	@Column(name="status", unique=false, nullable=false)
     private Status status;
    
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     public StavkaCenovnika stavkaCenovnika;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     public Sala sala;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	//@JoinColumn(name="operacija_id", nullable=false)
     public Set<Lekar> lekar;
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name="pacijent_id", nullable=true)
 	public Pacijent pacijent;
    

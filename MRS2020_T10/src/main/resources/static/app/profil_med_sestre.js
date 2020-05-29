@@ -200,7 +200,7 @@ Vue.component('medsestra', {
 				&& this.medicinska_sestra.adresa != '' && this.medicinska_sestra.grad != ''
 					&& this.medicinska_sestra.drzava !='' && this.medicinska_sestra.kontakt != ''){
 				axios
-				.put('api/medsestraa/'+this.medicinska_sestra.id, this.medicinska_sestra)
+				.put('api/medsestraa/'+this.medicinska_sestra.id, this.medicinska_sestra, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesna izmena');
 				}).catch((res)=>{
@@ -224,7 +224,7 @@ Vue.component('medsestra', {
 			}
 			
 			axios
-			.get('api/verification/enkodujLozinku/'+this.lozinka)
+			.get('api/verification/enkodujLozinku/'+this.lozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				this.lozinka = res.data;
 				console.log(res.data +" kcslakf");
@@ -233,7 +233,7 @@ Vue.component('medsestra', {
 					console.log(this.lozinka);
 					
 					axios
-					.put('api/medsestraa/promenaLozinke/'+this.medicinska_sestra.id+'/'+this.novaLozinka)
+					.put('api/medsestraa/promenaLozinke/'+this.medicinska_sestra.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 						alert('Uspesna izmena lozinke');

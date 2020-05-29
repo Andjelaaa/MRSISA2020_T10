@@ -51,6 +51,16 @@ public class OperacijaService {
 		return OperacijaRepository.findAllZahtevi();
 	}
 
+	public Operacija findOneIfNotFinished(Integer i) {
+		return OperacijaRepository.findOneIfNotFinished(i);
+	}
+
+	public List<Operacija> findAllBySalaId(Integer id) {
+		return OperacijaRepository.findAllBySalaId(id);
+	}
+
+
+
 
 
 }

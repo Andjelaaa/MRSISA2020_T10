@@ -146,15 +146,12 @@ Vue.component('sale', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 	},
-		nazad : function(){
-			this.$router.push('/admin');
-			return;
-		},
+
 		pretrazi: function(){
 			console.log(this.pretraga);
 			if(this.pretraga){
 				axios
-		       	.get('api/sala/search/'+ this.pretraga+'/'+this.admin.id)
+		       	.get('api/sala/search/'+ this.pretraga+'/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(response => (this.sale = response.data));
 				
 			}
@@ -174,20 +171,22 @@ Vue.component('sale', {
 		obrisi: function(s){
 			console.log(s.id);
 			axios
-			.delete('api/sala/'+s.id)
+			.delete('api/sala/'+s.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				 axios
-			       	.get('api/sala/all')
+			       	.get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 			       	.then(response => (this.sale = response.data));
 			}).catch((res)=>{
+				
 				console.log('Neuspesno brisanje');
+				alert('Ne mozete obrisati ovu salu.');
 			});
 			
 		},
 		sacuvaj: function(s){
 			axios
-			.put('api/sala/'+s.id, s)
+			.put('api/sala/'+s.id, s, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('Uspesna izmena');
 			}).catch((res)=>{
@@ -217,11 +216,11 @@ Vue.component('sale', {
 				return;
 			
 			axios
-			.post('api/sala/'+this.admin.id, this.sala)
+			.post('api/sala/'+this.admin.id, this.sala, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
 				console.log('uspesno');
 				axios
-		       	.get('api/sala/all/'+this.admin.id)
+		       	.get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(response => (this.sale = response.data));
 			}).catch((res)=>{
 				this.error = 'Vec postoji sala sa istim brojem ili nazivom';
@@ -244,7 +243,7 @@ Vue.component('sale', {
 		    		this.$router.push('/');
 		    	}else{
 		    		axios
-		           	.get('api/sala/all/'+this.admin.id)
+		           	.get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		           	.then(response => (this.sale = response.data));		    		
 		    	}
 		    })

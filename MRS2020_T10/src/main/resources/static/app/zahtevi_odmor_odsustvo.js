@@ -123,7 +123,7 @@ Vue.component('zahtevioo', {
 	      	.then(response => {
 	      		alert('Uspesno odobren zahtev! Mejl poslat!');
 	      		axios
-		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id)
+		      	.get('api/zahteviodsustvo/all/zahtevi/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 		      	.then(response => {
 		      		this.zahtevi = response.data;			      		
 		      	})
