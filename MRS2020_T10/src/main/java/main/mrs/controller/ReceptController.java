@@ -63,7 +63,7 @@ public class ReceptController {
 	
 	@GetMapping(value = "/neovereni/{email}")
 	@PreAuthorize("hasRole( 'MED_SESTRA')")
-	@Transactional(readOnly= true,isolation = Isolation.REPEATABLE_READ)
+	@Transactional(readOnly= true)
 	public ResponseEntity<List<ReceptDTO>> getAllRecepte(@PathVariable String email) {
 		MedSestra meds = MedSestraService.findByEmail(email);
 		List<Pregled> pregledi = PregledService.findZavrsene(meds.getKlinika().getId()); //zavrseni i id klinike
