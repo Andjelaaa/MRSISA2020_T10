@@ -17,6 +17,7 @@ Vue.component('nadjipacijenta', {
 			showModal2: false,
 			showModal3: false,
 			noviTermin: {},
+			novaDijagnoza:{naziv:'', sifra:''},
 			datumVremeGreska: '',
 			tipTerminaGreska: '',
 			trajanjeGreska: '',
@@ -227,7 +228,7 @@ Vue.component('nadjipacijenta', {
 		    <tr>
 		   		<td>Dijagnoza</td>
 		   		<td>
-		   			<select class="form-control"  v-model="izvestaj.dijagnoza">
+		   			<select class="form-control"  v-model="novaDijagnoza">
 						<option v-for="t in dijagnoze" :value="t">{{t.naziv}} {{t.sifra}}</option>
 					</select>
 		   		</td>   		
@@ -395,11 +396,21 @@ Vue.component('nadjipacijenta', {
 	    		alert("Niste uneli informacije o pregledu!");
 	    	else{
 	    		this.pocinjanje = false;
-		    	this.izvestaj.recept.lek = this.odabraniLekovi;
+				this.izvestaj.recept.lek = this.odabraniLekovi;
+				if(!this.novaDijagnoza)
+				   this.izvestaj.dijagnoza = null;
+				else
+				   this.izvestaj.dijagnoza = this.novaDijagnoza;
 		    	axios
 	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj, { headers: { Authorization: 'Bearer ' + this.token }} )
 	           	.then(response => {
-	           		alert("Uspesno je zavrsen izvestaj");
+					   alert("Uspesno je zavrsen izvestaj");
+					   axios
+						.get('api/pregled/istorijaPregleda/'+this.pacijent.id, { headers: { Authorization: 'Bearer ' + this.token }} )
+						.then(response => {
+							this.istorijaPregleda = response.data;
+						});
+
 	           	});
 		    	this.izvestaj= {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}};
 		    	this.pregled= null;

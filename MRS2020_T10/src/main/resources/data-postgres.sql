@@ -76,11 +76,11 @@ insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Pacijen he hej je 
 insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Pacijent okej', 1, 7);
 
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-06-08 19:00:00', 5, 1, 30, null, 2, 1, 1, 1, 1, 1);
+('2020-06-07 19:00:00', 5, 1, 30, null, 2, 1, 1, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 10:29:00', 5, 3, 30, 1, 1, 1, 2, 1, 1, 2);
-insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-23 11:29:00', 5, 4, 30, 2, 1, 1, 2, 1, 1, 2);
+insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version) values
+('2020-06-08 19:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 1,1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 16:29:00', 5, 4, 30, 3, 1, 1, 2, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
@@ -144,11 +144,11 @@ insert into adminkc_autoriteti (adminkc_id, autoriteti_id) values (1, 4);
 --values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 1, 'Odmor' , null, 1, null);
 
 
-insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
-values('2020-05-25 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 0, 'Odsustvo' , 1, null, null);
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
+values('2020-06-01 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 0, 'Odsustvo' , 2, null, null,1);
 
-insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id)
-values('2020-06-5 12:00:00', 'nema opisa', '2020-05-27 11:00:00', 0, 'Odmor' , 2, null, null);
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
+values('2020-06-5 12:00:00', 'nema opisa', '2020-06-02 11:00:00', 0, 'Odmor' , 2, null, null,1);
 
 
 insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 

@@ -64,7 +64,7 @@ public class IzvestajController {
 	public ResponseEntity<String> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
 		
 		Izvestaj izvestaj = new Izvestaj();
-		
+		Dijagnoza dijagnoza = null;
 		try {
 			Pregled pregled = PregledService.findById(id_pregleda);
 			Recept recept = new Recept();
@@ -84,23 +84,17 @@ public class IzvestajController {
 			recept.setImePacijenta(pregled.getPacijent().getIme());
 			recept.setPrezimePacijenta(pregled.getPacijent().getPrezime());
 			recept = ReceptService.save(recept);
-			
-			if(IzvestajDTO.getDijagnoza().getNaziv().isEmpty()) {
-				izvestaj.setDijagnoza(null);
-			}else {
-				
-				Dijagnoza dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
-				izvestaj.setDijagnoza(dijagnoza);
+			if(!IzvestajDTO.getDijagnoza().getNaziv().isEmpty()) {
+			    dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
+		        System.out.println("DSA SAM PAUAk");
 			}
+			izvestaj.setDijagnoza(dijagnoza);
 			izvestaj.setOpis(IzvestajDTO.getOpis());
 
 			izvestaj.setRecept(recept);
 	
 			izvestaj = IzvestajService.save(izvestaj);
 		
-			
-			
-			
 			pregled.setIzvestaj(izvestaj);
 			pregled.setStatus(Status.zavrseno);
 			

@@ -189,7 +189,7 @@ public class PregledController {
 	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
 
 		List<Pregled> Pregleds = PregledService.dobaviIstoriju(pacijentId);
-
+		Dijagnoza dijagnoza = null;
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();
 		for (Pregled s : Pregleds) {
@@ -197,7 +197,8 @@ public class PregledController {
 			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
 			pregled.setPopust(s.getPopust());
 			Izvestaj izvestaj = IzvestajService.findOne(s.getIzvestaj().getId());
-			Dijagnoza dijagnoza = DijagnozaService.findOne(s.getIzvestaj().getDijagnoza().getId());
+			if(s.getIzvestaj().getDijagnoza() != null)
+				dijagnoza = DijagnozaService.findOne(s.getIzvestaj().getDijagnoza().getId());
 			izvestaj.setDijagnoza(dijagnoza);
 			Recept recept = ReceptService.findOne(s.getIzvestaj().getRecept().getId());
 			izvestaj.setRecept(recept);
@@ -470,7 +471,7 @@ public class PregledController {
 
 	@GetMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional(readOnly= false)
+	@Transactional
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
@@ -493,10 +494,10 @@ public class PregledController {
 			EmailService.posaljiPacijentuOdobrenPregled(p);
 			EmailService.posaljiLekaruOdobrenPregled(p);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new PregledDTO(p), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<>(new PregledDTO(p), HttpStatus.OK);
+		return new ResponseEntity<>(new PregledDTO(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/zakazaniZaLekara/{lekarId}")
