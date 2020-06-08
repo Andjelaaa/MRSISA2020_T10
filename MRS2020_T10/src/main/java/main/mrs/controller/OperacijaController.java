@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.OperacijaDTO;
+import main.mrs.dto.PregledDTO;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
@@ -40,7 +41,7 @@ import main.mrs.service.SalaService;
 
 @RestController
 @RequestMapping(value="api/operacije")
-@Transactional(readOnly= true)
+@Transactional
 public class OperacijaController {
 
 	private SimpleDateFormat sdf;
@@ -86,12 +87,29 @@ public class OperacijaController {
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
 	public ResponseEntity<OperacijaDTO> saveZahtevLekar(@RequestBody OperacijaDTO OperacijaDTO) {
 		Operacija Operacija = new Operacija();
+		// ne sme zakazivati za proslost
+		if(OperacijaDTO.getDatumVreme().before(new Date()))
+			return new ResponseEntity<>(new OperacijaDTO(), HttpStatus.BAD_REQUEST);
+		
 		Operacija.setDatumVreme(OperacijaDTO.getDatumVreme());
 		Operacija.setTrajanje(OperacijaDTO.getTrajanje());
 		Operacija.setStatus(Status.zahtev_lekar);	
 		Operacija.setSala(null);
 		
 		Lekar l = LekarService.findByEmail((new ArrayList<LekarDTO>(OperacijaDTO.getLekar())).get(0).getEmail());
+		// provera da li je u radnom vremenu
+		SimpleDateFormat sdform = new SimpleDateFormat("HH:mm");
+		String dd = sdform.format(OperacijaDTO.getDatumVreme());
+		try {
+			if(sdform.parse(dd).after(sdform.parse(l.getRvPocetak()))  && sdform.parse(dd).before(sdform.parse(l.getRvKraj())))
+				System.out.println("Radno vreme!!!");
+			else {
+				return new ResponseEntity<>(new OperacijaDTO(), HttpStatus.BAD_REQUEST);	
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
 		Set<Lekar> lekari = new HashSet<Lekar>();
 		lekari.add(l);
 		Operacija.setLekar(lekari);

@@ -88,11 +88,7 @@ Vue.component('profillekar', {
         					<h3 slot="header">Izmena profila</h3>
         					<table slot="body" >
 								<tbody>
-										
-									<tr>
-										<td>Stara lozinka:</td>
-										<td><input class="form-control" type="password"  v-model="lozinka"/></td>
-									</tr>
+
 									<tr>
 										<td>Nova lozinka:</td>
 										<td><input  class="form-control" type="password" v-model = "novaLozinka"/></td>
@@ -219,40 +215,21 @@ Vue.component('profillekar', {
 			this.novaLozinka = ''
 		},
 		sacuvajLozinku: function(){
-			if(this.lozinka == '' && this.novaLozinka == ''){
+			if(this.novaLozinka == ''){
 				return;
 			}
 			
 			axios
-			.get('api/verification/enkodujLozinku/'+this.lozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+			.get('api/lekar/promenaLozinke/'+this.lekar.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
-				this.lozinka = res.data;
-				console.log(res.data +" kcslakf");
-				
-				//if(this.lozinka == this.medicinska_sestra.lozinka){
-					console.log(this.lozinka);
-					
-					axios
-					.put('api/lekar/promenaLozinke/'+this.lekar.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
-					.then((res)=>{
-						console.log('Uspesna izmena');
-						alert('Uspesna izmena lozinke');
-					}).catch((res)=>{
-						this.isprazni();
-						console.log('Neuspesna izmenaaaa');
-						alert('Neuspesna izmena');
-					});
-//				}else{				
-//					this.isprazni();
-//					alert('Neuspesna izmena');
-//				}
-				
-				
+				console.log('Uspesna izmena');
+				alert('Uspesna izmena lozinke');
 			}).catch((res)=>{
-				console.log(err);
+				this.isprazni();
+				console.log('Neuspesna izmenaaaa');
+				alert('Neuspesna izmena');
 			});
-			
-			
+	
 		}
 		
 	},

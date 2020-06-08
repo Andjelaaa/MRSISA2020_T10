@@ -372,6 +372,7 @@ Vue.component('nadjipacijenta', {
 				.then((res)=>{
 					alert('Uspesno poslat zahtev za pregled!');
 				}).catch((res)=>{
+					alert('Neuspesno!');
 					this.error = 'Greska pri dodavanju';
 				});
 				
@@ -383,6 +384,7 @@ Vue.component('nadjipacijenta', {
 				.then((res)=>{
 					alert('Uspesno poslat zahtev za operaciju!');
 				}).catch((res)=>{
+					alert('Neuspesno!');
 					this.error = 'Greska pri dodavanju';
 				});				
 			}

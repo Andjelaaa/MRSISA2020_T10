@@ -173,6 +173,24 @@ public class MedSestraController {
 			if (ms == null) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
+			
+			Pacijent pacijent = PacijentService.findByEmail(msDTO.getEmail());
+			 if(pacijent != null) {
+				return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+		     }
+
+			AdminKC akc = AdminKCService.findByEmail(msDTO.getEmail());
+			if(akc != null) {
+				return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+			}
+			 AdminKlinike l = AdminKlinikeService.findByEmail(msDTO.getEmail());
+			if(l != null) {
+				return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+			}
+			Lekar mss = LekarService.findByEmail(msDTO.getEmail());
+			if(mss != null) {
+				return new ResponseEntity<>(new MedSestraDTO(),HttpStatus.BAD_REQUEST);
+			}
 
 			ms.setIme(msDTO.getIme());
 			ms.setPrezime(msDTO.getPrezime());
@@ -188,7 +206,7 @@ public class MedSestraController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		}
-		@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+		@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")
 		@PreAuthorize("hasAnyRole('MED_SESTRA')")
 		public ResponseEntity<MedSestraDTO> updateMedSestraLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 

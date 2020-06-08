@@ -458,6 +458,24 @@ public class LekarContoller {
 		if (l == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
+		Pacijent pacijent = PacijentService.findByEmail(lDTO.getEmail());
+		 if(pacijent != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		 }
+
+		 AdminKC akc = AdminKCService.findByEmail(lDTO.getEmail());
+		 if(akc != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
+		 AdminKlinike ll = AdminKlinikeService.findByEmail(lDTO.getEmail());
+		if(ll != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra ms = MedSestraService.findByEmail(lDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new LekarDTO(),HttpStatus.BAD_REQUEST);
+		}
 
 		l.setIme(lDTO.getIme());
 		l.setPrezime(lDTO.getPrezime());
@@ -474,7 +492,7 @@ public class LekarContoller {
 		}
 		
 	}
-	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")
 	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<LekarDTO> updateLekarLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 

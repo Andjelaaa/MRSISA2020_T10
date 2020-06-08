@@ -125,7 +125,7 @@ public class PacijentController {
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")
 	@PreAuthorize("hasAnyRole('PACIJENT')")
 	public ResponseEntity<PacijentDTO> updatePacijentLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 

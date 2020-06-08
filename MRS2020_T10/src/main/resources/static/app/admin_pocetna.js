@@ -169,8 +169,12 @@ Vue.component('admin', {
 				.put('api/klinika/'+this.klinika.id, this.klinika , { headers: { Authorization: 'Bearer ' + this.token }})
 				.then((res)=>{
 					console.log('Uspesna izmena');
+					
 				}).catch((res)=>{
+					this.restore();
+					alert('Neuspesna izmena!');
 					console.log('Neuspesna izmena');
+					
 				});
 			}else{
 				this.restore();

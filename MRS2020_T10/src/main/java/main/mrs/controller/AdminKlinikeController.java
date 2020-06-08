@@ -118,6 +118,24 @@ public class AdminKlinikeController {
 		if (l == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		
+		Pacijent pacijent = PacijentService.findByEmail(lDTO.getEmail());
+		if(pacijent != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+
+		AdminKC akc = AdminKCService.findByEmail(lDTO.getEmail());
+		if(akc != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+		Lekar le = LekarService.findByEmail(lDTO.getEmail());
+		if(le != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
+		MedSestra ms = MedSestraService.findByEmail(lDTO.getEmail());
+		if(ms != null) {
+			return new ResponseEntity<>(new AdminKlinikeDTO(),HttpStatus.BAD_REQUEST);
+		}
 
 		l.setIme(lDTO.getIme());
 		l.setPrezime(lDTO.getPrezime());

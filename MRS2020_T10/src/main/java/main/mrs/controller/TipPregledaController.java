@@ -26,6 +26,7 @@ import main.mrs.model.Lekar;
 import main.mrs.model.Pregled;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.AdminKlinikeService;
+import main.mrs.service.LekarService;
 import main.mrs.service.PregledService;
 import main.mrs.service.TipPregledaService;
 
@@ -40,6 +41,9 @@ public class TipPregledaController {
 	
 	@Autowired
 	private PregledService pregledService;
+	
+	@Autowired
+	private LekarService lekarService;
 
 	@GetMapping(value = "/all")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
@@ -130,11 +134,12 @@ public class TipPregledaController {
 	public ResponseEntity<String> deleteTipPregleda(@PathVariable Integer id) {
 		TipPregleda TipPregleda = TipPregledaService.findOne(id);
 		List<Pregled> pregledi = pregledService.findAllByType(TipPregleda.getId());
+		List<Lekar> lekari = lekarService.findByTipPregledaId(id);
 
 		
 		try {
 			if (TipPregleda != null) {
-				if(pregledi.isEmpty()) {
+				if(pregledi.isEmpty() && lekari.isEmpty()) {
 					TipPregledaService.remove(id);
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
@@ -156,16 +161,27 @@ public class TipPregledaController {
 		// a TipPregleda must exist
 		TipPregleda TipPregleda = TipPregledaService.findOne(id);
 		
+		List<Pregled> pregledi = pregledService.findAllByType(TipPregleda.getId());
+		List<Lekar> lekari = lekarService.findByTipPregledaId(id);
 
-		if (TipPregleda == null) {
+		
+		try {
+			if (TipPregleda != null) {
+				if(pregledi.isEmpty() && lekari.isEmpty()) {
+					TipPregleda.setNaziv(TipPregledaDTO.getNaziv());
+					TipPregleda.setOpis(TipPregledaDTO.getOpis());
+
+					TipPregleda = TipPregledaService.save(TipPregleda);
+					return new ResponseEntity<>(new TipPregledaDTO(TipPregleda), HttpStatus.OK);
+				}
+			    
+			}
+		} catch (Exception e) {
+			// postoji pregled tog tipa
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		TipPregleda.setNaziv(TipPregledaDTO.getNaziv());
-		TipPregleda.setOpis(TipPregledaDTO.getOpis());
-
-		TipPregleda = TipPregledaService.save(TipPregleda);
-		return new ResponseEntity<>(new TipPregledaDTO(TipPregleda), HttpStatus.OK);
+			
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 }

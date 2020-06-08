@@ -209,6 +209,8 @@ Vue.component('tipovipregleda', {
 				}
 				
 			}).catch((res)=>{
+				this.restore(s);
+				alert('Ne mozete menjati ovaj tip pregleda!');
 				console.log('Neuspesna izmena');
 			});
 

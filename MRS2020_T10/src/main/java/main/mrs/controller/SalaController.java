@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.PregledDTO;
 import main.mrs.dto.SalaDTO;
 import main.mrs.dto.ZauzecaSlobodniDTO;
 import main.mrs.dto.ZauzeceDTO;
@@ -99,7 +100,7 @@ public class SalaController {
 		try {
 			Sala = SalaService.save(Sala);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new SalaDTO(Sala), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new SalaDTO(), HttpStatus.BAD_REQUEST);
 		}
 
 
@@ -152,13 +153,14 @@ public class SalaController {
 
 		// a Sala must exist
 		Sala Sala = SalaService.findOne(id);
-
+		List<Operacija> Operacija = OperacijaService.findAllBySalaId(Sala.getId());
+		
 		if (Sala == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		// Provera da li je sala zauzeta ili rezervisana (postoje pregledi vezani za tu salu
-		if(!Sala.getPregled().isEmpty()) {
+		if(!Sala.getPregled().isEmpty() || !Operacija.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -273,6 +275,7 @@ public class SalaController {
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<ZauzecaSlobodniDTO> getZauzecaZaDatum(@PathVariable String datumStr, @PathVariable Integer idSale, @PathVariable Integer idPregleda) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		Pregled pregled = PregledService.findById(idPregleda);
 		Sala sala = SalaService.findOne(idSale);
 		List<Pregled> Pregleds = PregledService.findAll();
@@ -284,6 +287,10 @@ public class SalaController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// ne sme rezervisati za proslost
+		if(datum.before(new Date()))
+			return new ResponseEntity<>(new ZauzecaSlobodniDTO(), HttpStatus.BAD_REQUEST);
 		
 		List<ZauzeceDTO> zauzecaDTO = new ArrayList<ZauzeceDTO>();
 		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs

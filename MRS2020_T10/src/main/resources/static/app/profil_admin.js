@@ -9,7 +9,7 @@ Vue.component('profiladmin', {
 			showModal2:false,
 			selected:{},
 			selectedBackup:{},
-			lozinka: '',
+			lozinka: 'asdf',
 			novaLozinka: ''
 		}
 	}, 
@@ -100,11 +100,6 @@ Vue.component('profiladmin', {
         					<h3 slot="header">Izmena profila</h3>
         					<table slot="body" >
 								<tbody>
-										
-									<tr>
-										<td>Stara lozinka:</td>
-										<td><input class="form-control" type="password"  v-model="lozinka"/></td>
-									</tr>
 									<tr>
 										<td>Nova lozinka:</td>
 										<td><input  class="form-control" type="password" v-model = "novaLozinka"/></td>
@@ -231,38 +226,21 @@ Vue.component('profiladmin', {
 			this.novaLozinka = ''
 		},
 		sacuvajLozinku: function(){
-			if(this.lozinka == '' && this.novaLozinka == ''){
+			if(this.novaLozinka == ''){
 				return;
 			}
-			
+
 			axios
-			.get('api/verification/enkodujLozinku/'+this.lozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+			.get('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then((res)=>{
-				this.lozinka = res.data;
-				console.log(res.data +" kcslakf");
-				
-				//if(this.lozinka == this.medicinska_sestra.lozinka){
-					console.log(this.lozinka);
-					
-					axios
-					.get('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
-					.then((res)=>{
-						console.log('Uspesna izmena');
-						alert('Uspesna izmena lozinke');
-					}).catch((res)=>{
-						this.isprazni();
-						console.log('Neuspesna izmenaaaa');
-						alert('Neuspesna izmena');
-					});
-//				}else{				
-//					this.isprazni();
-//					alert('Neuspesna izmena');
-//				}
-				
-				
+				console.log('Uspesna izmena');
+				alert('Uspesna izmena lozinke');
 			}).catch((res)=>{
-				console.log("Dobar dan");
+				this.isprazni();
+				console.log('Neuspesna izmenaaaa');
+				alert('Neuspesna izmena');
 			});
+
 			
 			
 		}

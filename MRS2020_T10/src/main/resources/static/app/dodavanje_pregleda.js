@@ -155,6 +155,10 @@ Vue.component('dpregled', {
 				this.salaGreska = 'Sala je obavezno polje!';
 			if(!this.pregled.popust)
 				this.popustGreska = 'Popust je obavezno polje!';
+			if(this.pregled.trajanje < 0 || this.pregled.trajanje > 60){
+				this.trajanjeGreska = 'Trajanje mora biti izmedju 0 i 60 minuta!';
+				return 1;
+			}
 
 
 			if(this.tipPregleda.naziv && this.pregled.trajanje && this.pregled.datumVreme && this.lekar.email && this.sala.naziv && this.pregled.popust){
@@ -192,17 +196,12 @@ Vue.component('dpregled', {
 				this.lekar = {};
 
 			}).catch((res)=>{
-				this.error = 'Greska pri dodavanju, sala je zauzeta za uneti termin!';
+				this.error = 'Greska pri dodavanju, proverite unete podatke!';
 			}
 				
 			)
 		}
 		
-	},
-	watch: {
-		// dobavlja lekare za odabrani tip pregleda, kada se on promeni
-	   
-	
 	},
 	mounted () {
 		

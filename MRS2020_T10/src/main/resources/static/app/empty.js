@@ -134,7 +134,7 @@ Vue.component('empty', {
             	if (this.uloga == "ROLE_PACIJENT") {
             		console.log("PACIJENT JE");
             		axios
-					.put('api/pacijent/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/pacijent/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 					}).catch((res)=>{
@@ -145,7 +145,7 @@ Vue.component('empty', {
             		console.log("LEKAR JE");
             		console.log(this.novaLozinka);
             		axios
-					.put('api/lekar/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/lekar/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 					}).catch((res)=>{
@@ -155,7 +155,7 @@ Vue.component('empty', {
             	} else if (this.uloga == "ROLE_MED_SESTRA") {
             		console.log("MED SESTRA JE");
             		axios
-					.put('api/medsestraa/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/medsestraa/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 					}).catch((res)=>{
@@ -165,7 +165,7 @@ Vue.component('empty', {
             	} else if (this.uloga == "ROLE_ADMIN_KLINICKOG_CENTRA") {
             		console.log("ADMIN KC JE");
             		axios
-					.put('api/adminkc/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/adminkc/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 					}).catch((res)=>{

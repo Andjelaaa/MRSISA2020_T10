@@ -367,8 +367,12 @@ public class KlinikaController {
 		Klinika.setAdresa(KlinikaDTO.getAdresa());
 		Klinika.setEmailKlinike(KlinikaDTO.getEmailKlinike());
 		Klinika.setKontaktKlinike(KlinikaDTO.getKontaktKlinike());
-
-		Klinika = KlinikaService.save(Klinika);
+		
+		try {
+			Klinika = KlinikaService.save(Klinika);
+		}catch(Exception e) {
+			return new ResponseEntity<>(new KlinikaDTO(), HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
 	}
 	

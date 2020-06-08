@@ -100,18 +100,21 @@ Vue.component('zakazisalu', {
 				this.$router.push('/');
 		},
 		rezervisi: function(s, prviSlobodan){
-			console.log(this.token);
 			axios
 	      	.get('api/pregled/rezervisi/'+this.$route.params.id+'/'+s.id +'/'+prviSlobodan, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
 	      		alert('Uspesno rezervisana sala! Mejl poslat!');
 	      		this.$router.push('/zahtevipo');
 	      	})
-	        .catch(function (error) { console.log('Greska') });	
+	        .catch(function (error) { console.log('Greska');  });	
 
 			
 		},
 		nadjiZaDatum: function(){
+			if(!this.noviDatum){
+				return;
+			}
+				
 			axios
 	      	.get('api/sala/all/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
@@ -133,7 +136,7 @@ Vue.component('zakazisalu', {
 			      		this.pretragaPrviSlobodni.push(this.retVal.prviSlobodan);
 			      		
 			      	})
-			        .catch(function (error) { console.log('Greska11') });	
+			        .catch(function (error) { console.log('Greska11'); alert('Datum je u proslosti!'); });	
 	      			
 	      		}
 	      	})

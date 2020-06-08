@@ -325,6 +325,10 @@ public class PregledController {
 		Pregled PregledNovi = new Pregled();
 		Date datum = PregledDTO.getDatumVreme();
 		datum.setHours(datum.getHours() - 2);
+		
+		// provera da li je proslost
+		if(datum.before(new Date()))
+			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
 
 		final long ONE_MINUTE_IN_MILLIS = 60000;// millisecs
 		long curTimeInMs = datum.getTime();
@@ -368,7 +372,19 @@ public class PregledController {
 		} else {
 			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
 		}
-		Lekar l = LekarService.findByEmail(PregledDTO.getLekar().getEmail());
+		Lekar l = LekarService.findByEmail(PregledDTO.getLekar().getEmail());		
+		// provera da li je lekar validan
+		SimpleDateFormat sdform = new SimpleDateFormat("HH:mm");
+		String dd = sdform.format(datum);
+		try {
+			if(sdform.parse(dd).after(sdform.parse(l.getRvPocetak()))  && sdform.parse(dd).before(sdform.parse(l.getRvKraj())))
+				System.out.println("Radno vreme!!!");
+			else
+				return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);		
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+				
 		PregledNovi.setLekar(l);
 		l.getKlinika().addpacijent(PregledNovi.getPacijent());
 		try {
@@ -403,6 +419,10 @@ public class PregledController {
 	@PreAuthorize("hasRole('LEKAR')")
 	public ResponseEntity<PregledDTO> saveZahtevLekar(@RequestBody PregledDTO PregledDTO) {
 		Pregled Pregled = new Pregled();
+		
+		// ne sme zakazivati za proslost
+		if(PregledDTO.getDatumVreme().before(new Date()))
+			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
 
 		Pregled.setDatumVreme(PregledDTO.getDatumVreme());
 		Pregled.setTrajanje(PregledDTO.getTrajanje());
@@ -412,7 +432,22 @@ public class PregledController {
 		Pregled.setTipPregleda(tp);
 		Pregled.setSala(null);
 		Lekar l = LekarService.findByEmail(PregledDTO.getLekar().getEmail());
+		
+		// provera da li je u radnom vremenu
+		SimpleDateFormat sdform = new SimpleDateFormat("HH:mm");
+		String dd = sdform.format(PregledDTO.getDatumVreme());
+		try {
+			if(sdform.parse(dd).after(sdform.parse(l.getRvPocetak()))  && sdform.parse(dd).before(sdform.parse(l.getRvKraj())))
+				System.out.println("Radno vreme!!!");
+			else {
+				return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);	
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		
 		Pregled.setLekar(l);
+		l.getKlinika().addPregled(Pregled);
 		Pacijent p = PacijentService.findByEmail(PregledDTO.getPacijent().getEmail());
 		Pregled.setPacijent(p);
 

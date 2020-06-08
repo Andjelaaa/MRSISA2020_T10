@@ -143,7 +143,7 @@ public class AdminKCController {
 		}
 	}
 	
-	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")
 	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<AdminKCDTO> updateAdminKCLozinka(@PathVariable Integer id, @PathVariable String novaLozinka) {
 
