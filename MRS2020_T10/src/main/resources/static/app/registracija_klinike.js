@@ -51,7 +51,8 @@ Vue.component('regklinike', {
 		</br>
 		<h3 style="margin:20px"> Registracija klinike: </h3>
 		{{dbError}}
-		<table class="table table-sm">
+		<div class="float-left">
+		<table class="table table-sm ">
 		   <tr>
 		   
 		   		<td>Naziv klinike: </td>
@@ -88,12 +89,11 @@ Vue.component('regklinike', {
 		   
 		   </tr>
 		    <tr>
-		   
-		   		<td><button v-on:click = "nazad()" class="btn btn-light"> Nazad </button></td>
-		   		<td><button v-on:click = "napraviKliniku()" class="btn btn-light"> Napavi kliniku </button></td>	   
+		    	<td><button v-on:click = "napraviKliniku()" class="btn btn-light"> Napravi kliniku </button></td>	   
 		   </tr>
 		   
 		</table>
+		</div>
 	    
 		</div>
 	
@@ -136,15 +136,13 @@ Vue.component('regklinike', {
 			axios
 			.post('api/klinika', newKlinika,{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
-				this.$router.push('/');
+				alert("Uspesno dodata klinika!");
+				this.$router.push('/sprofil');
 			}).catch((response)=>{
 				this.dbError = 'Klinika vec postoji';
 			}
 				
 			);
-		},
-		nazad: function(){
-				return;
 		}
 	},
 

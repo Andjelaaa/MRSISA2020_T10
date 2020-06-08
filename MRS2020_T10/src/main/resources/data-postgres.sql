@@ -32,9 +32,9 @@ values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '0651549
 insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
 values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 1, 7, '21:00', '13:00', 2, true);
 
-insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (180,80,null, 'm', 2.5,'AB');
-insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (170,70,null, 'z', 0.5,'B');
-insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (190,60,null, 'm', 1.5,'A');
+insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (180,80,'1965-05-25 01:29:00', 'm', 2.5,'AB');
+insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (170,70,'1998-05-25 01:29:00', 'z', 0.5,'B');
+insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (190,60,'1990-05-25 01:29:00', 'm', 1.5,'A');
 
 insert into pacijent(promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt, lbo, enabled, z_karton_id) values (true, 'Marko', 'Markovic', 'teosnedos@gmail.com', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Adresa 18', 'Novi Sad', 'Srbija', '065123456', '123lbo22', true, 1);
 insert into adminkc (promenio_lozinku, ime, prezime, email, lozinka, adresa, grad, drzava, kontakt) values (true, 'Jovan', 'Jovanic', 'tt@gmail.com','$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Topolska 18', 'Beograd', 'Srbija', '0652458615');
@@ -76,7 +76,7 @@ insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Pacijen he hej je 
 insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Pacijent okej', 1, 7);
 
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
-('2020-05-25 01:29:00', 5, 0, 30, null, 1, 1, null, 1, 1, 1);
+('2020-06-08 19:00:00', 5, 1, 30, null, 2, 1, 1, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 10:29:00', 5, 3, 30, 1, 1, 1, 2, 1, 1, 2);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values

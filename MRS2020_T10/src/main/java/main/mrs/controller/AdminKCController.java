@@ -110,7 +110,7 @@ public class AdminKCController {
         try {
         	AdminKC = adminKCService.save(AdminKC);
         }catch(Exception e) {
-        	return new ResponseEntity<>(new AdminKCDTO(), HttpStatus.CREATED);
+        	return new ResponseEntity<>(new AdminKCDTO(), HttpStatus.BAD_REQUEST);
         }
 		
 		return new ResponseEntity<>(new AdminKCDTO(AdminKC), HttpStatus.CREATED);

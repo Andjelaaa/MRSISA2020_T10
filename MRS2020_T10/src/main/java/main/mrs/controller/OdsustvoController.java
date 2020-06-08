@@ -30,7 +30,7 @@ import main.mrs.service.MedSestraService;
 import main.mrs.service.OdsustvoService;;
 @RestController
 @RequestMapping(value="api/zahteviodsustvo")
-@Transactional(readOnly= true)
+@Transactional()
 public class OdsustvoController {
 	
 	@Autowired
@@ -96,6 +96,7 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/{email}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR', 'MED_SESTRA')")
+	@Transactional
 	public ResponseEntity<OdsustvoDTO> saveOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String email) {
 	
 		Odsustvo zahtev = new Odsustvo();
@@ -131,7 +132,7 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odobri")
 	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
-	@Transactional(readOnly= true)
+	@Transactional(readOnly= false)
 	public ResponseEntity<OdsustvoDTO> odobriOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
@@ -158,7 +159,7 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odbij/{obrazlozenje}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
-	@Transactional(readOnly= true)
+	@Transactional(readOnly= false)
 	public ResponseEntity<OdsustvoDTO> odbijOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String obrazlozenje) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());

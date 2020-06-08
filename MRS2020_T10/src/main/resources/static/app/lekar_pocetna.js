@@ -40,15 +40,8 @@ Vue.component('lekar', {
 		    </form>
 		  </div>
 		</nav>
-		</br>
-		<div class="float-left" style="margin: 20px">
-			<h3> Radni kalendar </h3>
-		<table class="table">
-			<tbody>
-			<!-- ovde ubaciti NEKU SLIKU -->
-			  
-		   </tbody>
-		</table>
+		<div style="overflow:hidden;">
+			<img style="width:100%;height:790px" src="https://wallpaperplay.com/walls/full/1/2/9/13978.jpg">
 		</div>
 	</div>
 	

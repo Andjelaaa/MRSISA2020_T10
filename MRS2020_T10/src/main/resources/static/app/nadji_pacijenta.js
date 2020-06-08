@@ -6,7 +6,7 @@ Vue.component('nadjipacijenta', {
 			uloga: '',
 			pacijent: {},
 			zKarton: {},
-			pregled:{},
+			pregled: {},
 			pocinjanje:false,
 			izvestaj: {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}},
 			dijagnoze:[],
@@ -93,7 +93,7 @@ Vue.component('nadjipacijenta', {
 		   		<td>{{zKarton.tezina}}</td>
 		   		<td>{{zKarton.dioptrija}}</td>
 		   		<td>{{zKarton.pol}}</td>
-		   		<td>{{zKarton.datumRodjenja}}</td>
+		   		<td>{{zKarton.datumRodjenja | formatDate}}</td>
 		   		<td>
 		   		<button v-if="pocinjanje"  class="btn btn-light" id="show-modal" @click="showModal1 = true" v-on:click="izmeniKarton(zKarton)">Izmeni karton</button>
 				<modal v-if="showModal1" @close="showModal1 = false">
@@ -547,13 +547,15 @@ Vue.component('nadjipacijenta', {
 	           	.then(response => {
 	           			this.pacijent = response.data; 
 						this.zKarton = this.pacijent.zKarton;
+						
+						
 	           			axios
 	    	           	.get('api/pregled/'+this.pacijent.id+'/'+ this.korisnik.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 	    	           	.then(response => {
 							this.pregled = response.data;
 							
 	    	           	}).catch((response)=>
-	    	           			{this.pregled = {}; 
+	    	           			{this.pregled = null; 
 	    	           			console.log("Pregled ne postoji");}
 						);
 						axios

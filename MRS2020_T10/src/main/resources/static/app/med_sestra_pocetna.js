@@ -42,15 +42,9 @@ Vue.component('med_sestra_pocetna', {
 		    </form>
 		  </div>
 		</nav>
-		</br>
-		<div class="float-left" style="margin: 20px">
-			<h3> Ovde ce biti nesto za medicinu  </h3>
-		<table class="table">
-			<tbody>
-			<!-- ovde ubaciti radni kalendar -->
-			  
-		   </tbody>
-		</table>
+		<div style="overflow:hidden;">
+			<img style="width:100%;height:790px" src="https://wallpaperplay.com/walls/full/1/2/9/13978.jpg">
+		</div>
 		</div>
 	</div>
 	

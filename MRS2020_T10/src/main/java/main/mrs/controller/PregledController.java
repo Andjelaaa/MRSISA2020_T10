@@ -168,7 +168,7 @@ public class PregledController {
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		List<Pregled> pregledi = PregledService.getPreglediByPL(pacijent_id, lekar_id);
-
+		System.out.println(pregledi.size()+"SIZEEEEEEEEEEEE");
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : pregledi) {
 
@@ -470,7 +470,7 @@ public class PregledController {
 
 	@GetMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional(readOnly= true)
+	@Transactional(readOnly= false)
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
