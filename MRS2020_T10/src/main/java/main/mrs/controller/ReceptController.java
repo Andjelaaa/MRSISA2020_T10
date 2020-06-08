@@ -63,12 +63,9 @@ public class ReceptController {
 	
 	@GetMapping(value = "/neovereni/{email}")
 	@PreAuthorize("hasRole( 'MED_SESTRA')")
-	@Transactional(readOnly= true)
 	public ResponseEntity<List<ReceptDTO>> getAllRecepte(@PathVariable String email) {
 		MedSestra meds = MedSestraService.findByEmail(email);
 		List<Pregled> pregledi = PregledService.findZavrsene(meds.getKlinika().getId()); //zavrseni i id klinike
-		
-	//	List<Recept> recepti = ReceptService.findAll();
 
 		List<ReceptDTO> receptiDTO = new ArrayList<>();
 		

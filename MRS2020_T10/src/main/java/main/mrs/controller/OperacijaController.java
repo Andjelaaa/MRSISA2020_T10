@@ -131,7 +131,7 @@ public class OperacijaController {
 	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{operacijaId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional(readOnly= true)
+	@Transactional(readOnly= true) //Rezervaciji dodata transakcija
 	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, 
 			@PathVariable String prviSlobodan, @RequestBody PomocnaKlasa7 pomkl7){
 		
