@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ import main.mrs.service.TipPregledaService;
 
 @RestController
 @RequestMapping(value = "api/pregled")
+@Transactional(readOnly= true)
 public class PregledController {
 	private SimpleDateFormat sdf;
 	@Autowired
@@ -468,6 +470,7 @@ public class PregledController {
 
 	@GetMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
+	@Transactional(readOnly= true)
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import main.mrs.service.MedSestraService;
 import main.mrs.service.OdsustvoService;;
 @RestController
 @RequestMapping(value="api/zahteviodsustvo")
+@Transactional(readOnly= true)
 public class OdsustvoController {
 	
 	@Autowired
@@ -129,6 +131,7 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odobri")
 	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
+	@Transactional(readOnly= true)
 	public ResponseEntity<OdsustvoDTO> odobriOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
@@ -155,6 +158,7 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odbij/{obrazlozenje}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	@Transactional(readOnly= true)
 	public ResponseEntity<OdsustvoDTO> odbijOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String obrazlozenje) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
@@ -41,6 +42,16 @@ public class Odsustvo {
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Lekar lekar;
+	
+	@Version
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	
 	public String getTip() {
 		return tip;

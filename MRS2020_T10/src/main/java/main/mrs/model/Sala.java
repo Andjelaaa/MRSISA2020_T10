@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 @Entity
 public class Sala {
 	
@@ -30,6 +31,16 @@ public class Sala {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	public Klinika klinika;
+	
+	@Version
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 
 	public Klinika getKlinika() {
 		return klinika;

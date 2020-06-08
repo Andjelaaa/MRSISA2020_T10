@@ -36,6 +36,7 @@ import main.mrs.service.SalaService;
 
 @RestController
 @RequestMapping(value="api/sala")
+@Transactional(readOnly= true)
 public class SalaController {
 
 	@Autowired
@@ -146,6 +147,7 @@ public class SalaController {
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	@Transactional(readOnly= true)
 	public ResponseEntity<SalaDTO> updateSala(@RequestBody SalaDTO SalaDTO, @PathVariable Integer id) {
 
 		// a Sala must exist

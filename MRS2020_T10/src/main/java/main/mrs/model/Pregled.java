@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 @Entity
 public class Pregled {
 	
@@ -57,6 +58,16 @@ public class Pregled {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name="pacijent_id", nullable=true)
     public Pacijent pacijent;
+    
+    @Version
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
     
     public Integer getId() {
     	return id;
