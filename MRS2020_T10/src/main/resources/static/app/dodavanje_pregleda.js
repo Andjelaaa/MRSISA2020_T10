@@ -76,7 +76,7 @@ Vue.component('dpregled', {
 			   <tr>			   
 			   		<td>Tip pregleda: </td>
 					<td>
-						<select class="form-control" id="selectTP" v-model="tipPregleda.naziv">
+						<select class="form-control" id="selectTP" v-model="tipPregleda.naziv" v-on:change="tipPregledaa">
 							<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
 						</select>
 					</td>			   		
@@ -130,7 +130,7 @@ Vue.component('dpregled', {
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
-	},
+	    },
 		nazad : function(){
 			this.$router.push('/admin')
 			return;
@@ -163,6 +163,15 @@ Vue.component('dpregled', {
 			return 1;
 			
 		},
+		 tipPregledaa: function() {
+	    	console.log(this.tipPregleda.naziv);
+	    	 axios
+	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
+	          .then(res => {
+	        	  this.lekari = res.data;
+
+	          })
+	    },
 		dodaj : function(){	
 			
 			if(this.validacija()==1)
@@ -192,15 +201,7 @@ Vue.component('dpregled', {
 	},
 	watch: {
 		// dobavlja lekare za odabrani tip pregleda, kada se on promeni
-	    tipPregleda: function() {
-	    	console.log(this.tipPregleda.naziv);
-	    	 axios
-	          .get('api/tippregleda/'+this.tipPregleda.naziv+'/lekari/'+this.admin.id, { headers: { Authorization: 'Bearer ' + this.token }})
-	          .then(res => {
-	        	  this.lekari = res.data;
-
-	          })
-	    }
+	   
 	
 	},
 	mounted () {

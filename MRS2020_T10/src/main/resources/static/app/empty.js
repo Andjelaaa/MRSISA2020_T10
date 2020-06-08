@@ -175,7 +175,7 @@ Vue.component('empty', {
             	} else if (this.uloga == "ROLE_ADMIN_KLINIKE") {
             		console.log("ADMIN JE");
             		axios
-					.put('api/admini/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/admini/promenaLozinke/'+this.kor.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 					}).catch((res)=>{

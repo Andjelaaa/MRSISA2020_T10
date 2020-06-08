@@ -138,6 +138,7 @@ public class TipPregledaController {
 					TipPregledaService.remove(id);
 					return new ResponseEntity<>(HttpStatus.OK);
 				}
+			    
 			}
 		} catch (Exception e) {
 			// postoji pregled tog tipa

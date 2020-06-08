@@ -53,7 +53,7 @@ import main.mrs.service.TipPregledaService;
 
 @RestController
 @RequestMapping(value = "api/pregled")
-@Transactional(readOnly= true)
+@Transactional
 public class PregledController {
 	private SimpleDateFormat sdf;
 	@Autowired

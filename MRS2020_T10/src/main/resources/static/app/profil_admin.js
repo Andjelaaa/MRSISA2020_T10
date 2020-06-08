@@ -245,7 +245,7 @@ Vue.component('profiladmin', {
 					console.log(this.lozinka);
 					
 					axios
-					.put('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
+					.get('api/admini/promenaLozinke/'+this.admin.id+'/'+this.novaLozinka, { headers: { Authorization: 'Bearer ' + this.token }})
 					.then((res)=>{
 						console.log('Uspesna izmena');
 						alert('Uspesna izmena lozinke');
@@ -261,7 +261,7 @@ Vue.component('profiladmin', {
 				
 				
 			}).catch((res)=>{
-				console.log(err);
+				console.log("Dobar dan");
 			});
 			
 			

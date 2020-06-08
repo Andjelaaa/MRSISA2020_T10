@@ -134,10 +134,10 @@ public class AdminKlinikeController {
 		}
 		
 	}
-	@PutMapping(value = "promenaLozinke/{id}/{novaLozinka}")
+	@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<AdminKlinikeDTO> updatePotvrdiLozinku(@PathVariable Integer id, @PathVariable String novaLozinka) {
-
+      
 		AdminKlinike l = AdminKlinikeService.findOne(id);
 
 		if (l == null) {
