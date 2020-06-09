@@ -13,8 +13,7 @@ addons:
 
 script:
  - cd MRS2020_T10
- - mvn clean install
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+ - ./mvnw clean install -DskipTests=false -B
  - ./mvnw sonar:sonar -Dsonar.projectKey=isamrstim10 -Dsonar.organization=Andjelaaa -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=aa28177b1bff136d562806ce41abb1da1d578413
 
 dist: trusty
