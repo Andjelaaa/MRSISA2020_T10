@@ -9,11 +9,7 @@ services:
  
 before_install:
   - chmod +x MRS2020_T10/mvn
-
-    
-install:
-  - mvn -N io.takari:maven:wrapper
-
+  
 addons:
   sonarcloud:
     organization: isamrstim10
