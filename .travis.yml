@@ -5,9 +5,11 @@ jdk: oraclejdk8
 
 services:
  - postgresql
+
  
 before_install:
-  - chmod +x ./mvnw
+  - cd MRS2020_T10
+  - chmod +x mvnw
 
     
 install:
