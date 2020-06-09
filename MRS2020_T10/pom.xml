@@ -11,7 +11,7 @@
 	<groupId>main</groupId>
 	<artifactId>MRS2020_T10</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
- 
+    <packaging>jar</packaging>
 	<name>MRS2020_T10</name>
 	<description>Project for Spring Boot</description>
 
