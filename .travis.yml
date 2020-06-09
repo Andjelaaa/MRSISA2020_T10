@@ -2,15 +2,10 @@ sudo: required
 language: java
 jdk: oraclejdk8
 
-services:
-  - postgresql
-
-before_install:
-  - chmod +x mvnw
-
 script:
-  - ./mvnw clean install -DskipTests=false -B
-  - cd MRS2020_T10
+ - cd MRS2020_T10
+ - mvn clean install
+
 dist: trusty
 
 deploy:
