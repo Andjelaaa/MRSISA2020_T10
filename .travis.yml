@@ -6,9 +6,16 @@ jdk: oraclejdk8
 services:
  - postgresql
  
+addons:
+  sonarcloud:
+    organization: "isamrstim10"
+    token:
+      secure: "**************************" # encrypted value of your token
 script:
  - cd MRS2020_T10
  - mvn clean install
+ - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+
 
 dist: trusty
 
