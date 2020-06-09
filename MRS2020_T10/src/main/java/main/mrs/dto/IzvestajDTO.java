@@ -17,13 +17,23 @@ public class IzvestajDTO {
 	
 	public IzvestajDTO(Izvestaj s) {
 		this(s.getDijagnoza(), s.getId(),s.getOpis(), s.getRecept());
+		
 	}
 
 	public IzvestajDTO(Dijagnoza dijagnoza2, Integer id2, String opis2, Recept recept2) {
 		this.id = id2;
 		this.opis = opis2;
-		this.dijagnoza = new DijagnozaDTO(dijagnoza2);
-		this.recept = new ReceptDTO(recept2);
+		
+		if(dijagnoza2 != null)
+		    this.dijagnoza = new DijagnozaDTO(dijagnoza2);
+		else
+		    this.dijagnoza = null;
+		
+		if(recept2 != null)
+			this.recept = new ReceptDTO(recept2);
+		else
+		    this.recept = null;
+		
 	}
 
 	public Integer getId() {

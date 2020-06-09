@@ -189,24 +189,40 @@ public class PregledController {
 	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
 
 		List<Pregled> Pregleds = PregledService.dobaviIstoriju(pacijentId);
-		Dijagnoza dijagnoza = null;
-		// convert Pregleds to DTOs
-		List<PregledDTO> PregledsDTO = new ArrayList<>();
-		for (Pregled s : Pregleds) {
-			PregledDTO pregled = new PregledDTO(s);
-			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
-			pregled.setPopust(s.getPopust());
-			Izvestaj izvestaj = IzvestajService.findOne(s.getIzvestaj().getId());
-			if(s.getIzvestaj().getDijagnoza() != null)
-				dijagnoza = DijagnozaService.findOne(s.getIzvestaj().getDijagnoza().getId());
-			izvestaj.setDijagnoza(dijagnoza);
-			Recept recept = ReceptService.findOne(s.getIzvestaj().getRecept().getId());
-			izvestaj.setRecept(recept);
-			pregled.setIzvestaj(izvestaj);
-			PregledsDTO.add(pregled);
+		
+		
+        List<PregledDTO> PregledsDTO = new ArrayList<>();
+		try {
+		       
+		        for (Pregled s : Pregleds) {
+		        	Dijagnoza dijagnoza = null;
+		    		Recept recept = null;
+		    		Izvestaj izvestaj = null;
+			        PregledDTO pregled = new PregledDTO(s);
+			        
+			        pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			        pregled.setPopust(s.getPopust());
+			        izvestaj = IzvestajService.findOne(s.getIzvestaj().getId());
+			        
+			        if(s.getIzvestaj().getDijagnoza() != null) {
+				        dijagnoza = DijagnozaService.findOne(s.getIzvestaj().getDijagnoza().getId());
+				        izvestaj.setDijagnoza(dijagnoza);
+			        }
 
+			        if(s.getIzvestaj().getRecept() != null) {
+			        	recept = ReceptService.findOne(s.getIzvestaj().getRecept().getId());
+			        	izvestaj.setRecept(recept);
+			        }
+
+			        pregled.setIzvestaj(izvestaj);
+			        PregledsDTO.add(pregled);
+			        
+		        }
+		}catch(Exception e) {
+		
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
 		}
-
+		
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 

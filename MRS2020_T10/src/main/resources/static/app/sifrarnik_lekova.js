@@ -170,12 +170,14 @@ Vue.component('sifrarnik1', {
 			l.sifra = this.selectedBackup.sifra;
 		},
 		save: function(){
+		
 			axios
-			.post('api/lekovi/izmena', {lek:this.selected, naziv:this.selectedBackup.naziv},{ headers: { Authorization: 'Bearer ' + this.token }})
+			.post('api/lekovi/izmena', {novi:this.selected, stari:this.selectedBackup},{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.naziv ='';
 				 this.sifra='';
 				 this.greska = '';
+				 
 			}).catch((response)=>{
 				 this.naziv ='';
 				 this.sifra='';

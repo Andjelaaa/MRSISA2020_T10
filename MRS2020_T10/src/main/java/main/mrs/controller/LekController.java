@@ -78,28 +78,32 @@ public class LekController {
 	@PostMapping(value="/izmena",consumes = "application/json")
 	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<LekDTO> changeLek(@RequestBody PomocnaKlasa2 data) {
-        LekDTO izmenjen = data.lek;
+        LekDTO izmenjen = data.novi;
+        LekDTO stariPodaci = data.stari;
+
 		try {
-			List<Lek> lekovi = LekService.findAll();
-			Lek nadjiLek = LekService.findByNaziv(data.naziv);
-			LekService.delete(nadjiLek);
-			 nadjiLek.setNaziv(izmenjen.getNaziv());
-		     nadjiLek.setSifra(izmenjen.getSifra());
-			for (Lek s : lekovi) {
-				if(s.getNaziv().equalsIgnoreCase(nadjiLek.getNaziv())) {
+			List<Lek> lekovii = LekService.findAll();
+		    Lek stariNadji = LekService.findByNaziv(stariPodaci.getNaziv());
+			for (Lek s : lekovii) {
+				//System.out.println(s.getNaziv().equalsIgnoreCase(stariPodaci.getNaziv())+"DSAD");
+				//System.out.println(s.getNaziv().equalsIgnoreCase(izmenjen.getNaziv())+"DSAD");
+				if(!s.getNaziv().equalsIgnoreCase(stariPodaci.getNaziv()) && 
+						s.getNaziv().equalsIgnoreCase(izmenjen.getNaziv())) {
 					throw new Exception();
 					
 				}
-				if(s.getSifra().equalsIgnoreCase(nadjiLek.getSifra())) {
+				if(!s.getSifra().equalsIgnoreCase(stariPodaci.getSifra()) && 
+						s.getSifra().equalsIgnoreCase(izmenjen.getSifra())) {
 					throw new Exception();
 				}
 			}
-		    
-			 nadjiLek = LekService.save(nadjiLek);
+			stariNadji.setNaziv(izmenjen.getNaziv());
+			stariNadji.setSifra(izmenjen.getSifra());
+			stariNadji = LekService.save(stariNadji);
 		} catch (Exception e) {
 			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<>( HttpStatus.CREATED);
+		return new ResponseEntity<>( HttpStatus.OK);
 	}
 }

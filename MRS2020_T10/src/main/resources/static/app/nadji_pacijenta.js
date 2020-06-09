@@ -153,8 +153,10 @@ Vue.component('nadjipacijenta', {
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
 				<td>{{p.sala.broj}}</td>
-				<td>{{p.izvestaj.dijagnoza.naziv}} </td>
-				<td> <p v-for="zz in p.izvestaj.recept.lek"> {{zz.naziv}} {{zz.sifra}}</p> </td>
+				<td v-if="p.izvestaj.dijagnoza!=null">{{p.izvestaj.dijagnoza.naziv}} </td>
+				<td v-else></td>
+				<td v-if="p.izvestaj.recept!=null"> <p v-for="zz in p.izvestaj.recept.lek"> {{zz.naziv}} {{zz.sifra}}</p> </td>
+				<td v-else></td>
 				<td>
 				<td><button class="btn btn-light" id="show-modal"  v-on:click="selectIzmenu(p)">Izmeni</button>
 						<modal v-if="showModal2 && funkcionalnost" @close="showModal2 = false">
@@ -399,26 +401,29 @@ Vue.component('nadjipacijenta', {
 	    	else{
 	    		this.pocinjanje = false;
 				this.izvestaj.recept.lek = this.odabraniLekovi;
-				if(!this.novaDijagnoza)
-				   this.izvestaj.dijagnoza = null;
-				else
-				   this.izvestaj.dijagnoza = this.novaDijagnoza;
+
+			    this.izvestaj.dijagnoza.naziv = this.novaDijagnoza.naziv;
+				this.izvestaj.dijagnoza.sifra = this.novaDijagnoza.sifra;
+				
 		    	axios
 	           	.post('api/izvestaj/'+ this.pregled.id, this.izvestaj, { headers: { Authorization: 'Bearer ' + this.token }} )
-	           	.then(response => {
-					   alert("Uspesno je zavrsen izvestaj");
-					   axios
+	           	.then((response) => {
+					
+                       axios
 						.get('api/pregled/istorijaPregleda/'+this.pacijent.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 						.then(response => {
 							this.istorijaPregleda = response.data;
-						});
+							alert("Uspesno je zavrsen izvestaj");
+						}).catch((response)=>
+	    	           			{console.log("IStorija nesto pravi problemdd");}
+						);
 
 	           	});
 		    	this.izvestaj= {opis:'', recept:{}, dijagnoza:{naziv:'', sifra:''}};
 		    	this.pregled= null;
 	    	}
 	    },
-	    isprazniPolja: function(){
+	    isprazniPolja : function() {
 	    	this.noviTermin= {};
 			this.datumVremeGreska= '';
 			this.tipTerminaGreska= '';
@@ -575,6 +580,7 @@ Vue.component('nadjipacijenta', {
 						.get('api/pregled/istorijaPregleda/'+this.pacijent.id, { headers: { Authorization: 'Bearer ' + this.token }} )
 						.then(response => {
 							this.istorijaPregleda = response.data;
+							console.log(this.istorijaPregleda.length +" nece zadnje da ucita");
 						}).catch((response)=>
 	    	           			{console.log("IStorija nesto pravi problem");}
 						);
@@ -586,7 +592,8 @@ Vue.component('nadjipacijenta', {
 					axios
 					.get('api/dijagnoze/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 					.then(response => {
-						this.dijagnoze = response.data; 
+						this.dijagnoze = response.data;
+						
 					});
 					axios
 						.get('api/lekovi/all',{ headers: { Authorization: 'Bearer ' + this.token }})

@@ -9,7 +9,7 @@ public class DijagnozaDTO {
 	
 
     public DijagnozaDTO() {
-		// TODO Auto-generated constructor stub
+	
 	}
     public DijagnozaDTO(Dijagnoza z) {
     	this(z.getNaziv(), z.getSifra());

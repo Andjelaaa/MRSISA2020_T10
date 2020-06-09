@@ -88,8 +88,8 @@ Vue.component('odmoor', {
 			   		
 			   </tr>
 		   </tbody>
-		   {{greska}}
 		</table>
+		{{greska}}
 		</div>
 	</div>
 	
@@ -141,7 +141,7 @@ Vue.component('odmoor', {
 				else
 					this.$router.push('/lekar');
 			}).catch((response)=>{
-				this.greska = "Sva polja su obavezna!";
+				this.greska = "Uneti podaci nisu validni!";
 			});
 			
 		}

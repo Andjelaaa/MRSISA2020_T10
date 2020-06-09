@@ -39,7 +39,7 @@ public class DijagnozaController {
 		for (Dijagnoza s : dijagnoze) {
 			DijagnozeeDTO.add(new DijagnozaDTO(s));
 		}
-
+        
 		return new ResponseEntity<>(DijagnozeeDTO, HttpStatus.OK);
 	}
 
@@ -74,30 +74,34 @@ public class DijagnozaController {
 	@PostMapping(value="/izmena",consumes = "application/json")
 	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<DijagnozaDTO> changeDijagnoza(@RequestBody PomocnaKlasa3 data) {
-        DijagnozaDTO izmenjen = data.dijagnoza;
+		
+        DijagnozaDTO novaDijagnoza = data.nova;
+        DijagnozaDTO staraDijagnoza = data.stara;
 		try {
-		     Dijagnoza nadjiDijagnozu = DijagnozaService.findByNaziv(data.naziv);
-		     DijagnozaService.delete(nadjiDijagnozu);
-		     nadjiDijagnozu.setNaziv(izmenjen.getNaziv());
-		     nadjiDijagnozu.setSifra(izmenjen.getSifra());
-		     List<Dijagnoza> dijagnoze = DijagnozaService.findAll();
-
+			    List<Dijagnoza> dijagnoze = DijagnozaService.findAll();
+			    
+		        Dijagnoza stariNadji = DijagnozaService.findByNaziv(staraDijagnoza.getNaziv());
 				for (Dijagnoza s : dijagnoze) {
-					if(s.getNaziv().equalsIgnoreCase(nadjiDijagnozu.getNaziv())) {
+					if(!s.getNaziv().equalsIgnoreCase(staraDijagnoza.getNaziv()) && 
+							s.getNaziv().equalsIgnoreCase(novaDijagnoza.getNaziv())) {
+						
 						throw new Exception();
 						
 					}
-					if(s.getSifra().equalsIgnoreCase(nadjiDijagnozu.getSifra())) {
+					if(!s.getSifra().equalsIgnoreCase(staraDijagnoza.getSifra()) && 
+							s.getSifra().equalsIgnoreCase(novaDijagnoza.getSifra())) {
+						
 						throw new Exception();
 					}
 									
 				}
-		   
-		     nadjiDijagnozu = DijagnozaService.save(nadjiDijagnozu);
+				stariNadji.setNaziv(novaDijagnoza.getNaziv());
+		        stariNadji.setSifra(novaDijagnoza.getSifra());
+		        stariNadji = DijagnozaService.save(stariNadji);
 		} catch (Exception e) {
 			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<>( HttpStatus.CREATED);
+		return new ResponseEntity<>( HttpStatus.OK);
 	}
 }

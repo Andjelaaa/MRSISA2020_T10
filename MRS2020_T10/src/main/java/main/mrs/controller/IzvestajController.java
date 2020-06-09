@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.IzvestajDTO;
 import main.mrs.dto.LekDTO;
+import main.mrs.dto.PregledDTO;
 import main.mrs.model.Dijagnoza;
 import main.mrs.model.Izvestaj;
 import main.mrs.model.Lek;
@@ -27,8 +28,8 @@ import main.mrs.model.Status;
 import main.mrs.service.DijagnozaService;
 import main.mrs.service.IzvestajService;
 import main.mrs.service.LekService;
-import main.mrs.service.ReceptService;
 import main.mrs.service.PregledService;
+import main.mrs.service.ReceptService;
 
 @RestController
 @RequestMapping(value="api/izvestaj")
@@ -61,12 +62,12 @@ public class IzvestajController {
 
 	@PostMapping(consumes = "application/json", value= "/{id_pregleda}")
 	@PreAuthorize("hasRole('LEKAR')")
-	public ResponseEntity<String> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
+	public ResponseEntity<PregledDTO> sacuvajIzvestaj(@RequestBody IzvestajDTO IzvestajDTO, @PathVariable Integer id_pregleda) {
 		
 		Izvestaj izvestaj = new Izvestaj();
-		Dijagnoza dijagnoza = null;
+		Pregled pregled = null;
 		try {
-			Pregled pregled = PregledService.findById(id_pregleda);
+			pregled = PregledService.findById(id_pregleda);
 			Recept recept = new Recept();
 			recept.setMedSestra(null);
 			
@@ -84,11 +85,15 @@ public class IzvestajController {
 			recept.setImePacijenta(pregled.getPacijent().getIme());
 			recept.setPrezimePacijenta(pregled.getPacijent().getPrezime());
 			recept = ReceptService.save(recept);
+	
 			if(!IzvestajDTO.getDijagnoza().getNaziv().isEmpty()) {
-			    dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
-		        System.out.println("DSA SAM PAUAk");
+				Dijagnoza dijagnoza = DijagnozaService.findByNaziv(IzvestajDTO.getDijagnoza().getNaziv());
+				izvestaj.setDijagnoza(dijagnoza);
+			}else
+			{
+				izvestaj.setDijagnoza(null);
 			}
-			izvestaj.setDijagnoza(dijagnoza);
+			
 			izvestaj.setOpis(IzvestajDTO.getOpis());
 
 			izvestaj.setRecept(recept);
@@ -101,9 +106,9 @@ public class IzvestajController {
 			pregled = PregledService.save(pregled);
 		}
 		catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new PregledDTO(), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(new PregledDTO(pregled), HttpStatus.CREATED);
 	}
 
 }

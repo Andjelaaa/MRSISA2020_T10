@@ -131,6 +131,7 @@ public class OperacijaController {
 	}
 	@GetMapping(value = "/zahtevi/{idAdmina}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	@Transactional
 	public ResponseEntity<List<OperacijaDTO>> getZahtevi(@PathVariable Integer idAdmina) {
 		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
 		List<Operacija> operacije = OperacijaService.findAllZahteviKlinike(ak.getKlinika().getId());
@@ -141,7 +142,6 @@ public class OperacijaController {
 			OperacijeDTO.add(operacija);
 			
 		}
-
 		return new ResponseEntity<>(OperacijeDTO, HttpStatus.OK);
 	}
 	
@@ -149,7 +149,7 @@ public class OperacijaController {
 	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{operacijaId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional(readOnly= true) //Rezervaciji dodata transakcija
+	@Transactional
 	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, 
 			@PathVariable String prviSlobodan, @RequestBody PomocnaKlasa7 pomkl7){
 		
@@ -165,6 +165,7 @@ public class OperacijaController {
 		
 		operacija.setSala(s);
 		operacija.setStatus(Status.odobreno);
+		
 		datum.setHours(datum.getHours()+2);
 		operacija.setDatumVreme(datum);
 		Set<Lekar> lekari = new HashSet<>();
@@ -181,6 +182,7 @@ public class OperacijaController {
 			lekari.add(lekar);
 		}
 		operacija.setLekar(lekari);
+		
 		try {
 			operacija = OperacijaService.save(operacija);
 			EmailService.posaljiPacijentuOdobrenaOperacija(operacija);

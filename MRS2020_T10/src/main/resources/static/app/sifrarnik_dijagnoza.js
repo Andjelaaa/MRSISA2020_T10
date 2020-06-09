@@ -166,7 +166,7 @@ Vue.component('sifrarnik2', {
 		},
 		save: function(){
 			axios
-			.post('api/dijagnoze/izmena', {dijagnoza:this.selected, naziv:this.selectedBackup.naziv},{ headers: { Authorization: 'Bearer ' + this.token }})
+			.post('api/dijagnoze/izmena', {nova:this.selected, stara:this.selectedBackup},{ headers: { Authorization: 'Bearer ' + this.token }})
 			.then((response)=>{
 				 this.naziv ='';
 				 this.sifra='';

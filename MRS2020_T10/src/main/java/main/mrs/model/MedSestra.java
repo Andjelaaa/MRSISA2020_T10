@@ -32,7 +32,7 @@ public class MedSestra extends Korisnik implements UserDetails {
    @Column(name="radvr_kraj", unique=false, nullable=false)
    private String radvr_kraj;
    
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="med_sestra_id", nullable=true)
    public Set<Odsustvo> odsustvo;
    

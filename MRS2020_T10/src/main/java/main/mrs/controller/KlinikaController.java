@@ -27,6 +27,7 @@ import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.SearchIzvestaj;
 import main.mrs.model.Klinika;
+import main.mrs.model.Lek;
 import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
 import main.mrs.model.PomocnaKlasa5;
@@ -342,6 +343,12 @@ public class KlinikaController {
 		
 
 		try {
+			List<Klinika> klinike = KlinikaService.findAll();
+			for(Klinika k :klinike) {
+				if(k.getNaziv().equalsIgnoreCase(klinika.getNaziv())) {
+					return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.BAD_REQUEST);
+				}
+			}
 			klinika = KlinikaService.save(klinika);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.BAD_REQUEST);

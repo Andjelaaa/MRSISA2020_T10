@@ -24,10 +24,18 @@ public class OperacijaDTO {
 	public OperacijaDTO() {
 			
 		}
-   public OperacijaDTO(Operacija o) {
-	
-	   this(o.getDatumVreme(), o.getId(), o.getLekar(), o.getSala(), o.getStatus(),
-			   o.getStavkaCenovnika(), o.getTrajanje(), o.getPacijent());
+   public OperacijaDTO(Operacija s) {
+	    this.id = s.getId();
+		this.trajanje = s.getTrajanje();
+		this.datumVreme = s.getDatumVreme();
+		this.lekar = konvertujLekare(s.getLekar());
+		if (s.getSala() != null)
+			this.sala = new SalaDTO(s.getSala());
+		if(s.getPacijent() != null)
+			this.pacijent = new PacijentDTO(s.getPacijent());
+		this.status = StatusDTO.valueOf(s.getStatus().toString());
+		
+		  
 	}
 	
 	public OperacijaDTO(Date datumVreme2, Integer id2, Set<Lekar> lekar2, Sala sala2, Status status2,
@@ -42,6 +50,7 @@ public class OperacijaDTO {
 		this.pacijent = konvertujPacijenta(p);
 
 	}
+	
 
 	private PacijentDTO konvertujPacijenta(Pacijent p) {
 		PacijentDTO dto = new PacijentDTO();

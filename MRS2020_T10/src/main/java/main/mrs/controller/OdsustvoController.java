@@ -1,6 +1,7 @@
 package main.mrs.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.MedSestraDTO;
 import main.mrs.dto.OdsustvoDTO;
+import main.mrs.dto.OperacijaDTO;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
@@ -99,6 +101,13 @@ public class OdsustvoController {
 	@Transactional
 	public ResponseEntity<OdsustvoDTO> saveOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String email) {
 	
+		//ne moze u proslosti da bude pcoetak
+		if(OdsustvoDTO.getPocetak().before(new Date()))
+			return new ResponseEntity<>(new OdsustvoDTO(), HttpStatus.BAD_REQUEST);
+		//ne moze kraj pre pocetka ostalo ne mora
+		else if(OdsustvoDTO.getKraj().before(OdsustvoDTO.getPocetak()))
+			return new ResponseEntity<>(new OdsustvoDTO(), HttpStatus.BAD_REQUEST);
+		
 		Odsustvo zahtev = new Odsustvo();
 		zahtev.setTip(OdsustvoDTO.getTip());
 		zahtev.setStatus(Status.zahtev);
