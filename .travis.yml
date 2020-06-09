@@ -6,6 +6,9 @@ jdk: oraclejdk8
 services:
  - postgresql
  
+before_install:
+  - chmod +x mvnw
+
 addons:
   sonarcloud:
     organization: isamrstim10
