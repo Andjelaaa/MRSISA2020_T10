@@ -7,7 +7,11 @@ services:
  - postgresql
  
 before_install:
-  - chmod +x mvnw
+  - chmod +x ./mvnw
+
+    
+install:
+  - mvn -N io.takari:maven:wrapper
 
 addons:
   sonarcloud:
