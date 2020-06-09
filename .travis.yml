@@ -2,6 +2,9 @@ sudo: required
 language: java 
 jdk: oraclejdk8
 
+services:
+ - postgresql
+ 
 script:
  - cd MRS2020_T10
  - mvn clean install
@@ -12,4 +15,3 @@ deploy:
   provider: heroku
   api_key: c4db25e0-39fb-4775-8582-d6780d5f52dd
   app: app-klinikatim10
-  skip_cleanup: true
