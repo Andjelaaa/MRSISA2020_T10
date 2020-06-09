@@ -8,7 +8,7 @@ services:
  
 addons:
   sonarcloud:
-    organization: "Andjelaaa"
+    organization: Andjelaaa
     token: aa28177b1bff136d562806ce41abb1da1d578413
 
 script:
