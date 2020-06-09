@@ -14,7 +14,7 @@ addons:
 script:
  - cd MRS2020_T10
  -  mvn clean install
- -  mvn sonar:sonar -Dsonar.projectKey=isamrstim10 -Dsonar.organization=isamrstim10 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=aa28177b1bff136d562806ce41abb1da1d578413
+ -  mvn sonar:sonar -Dsonar.projectKey=KljucTim10 -Dsonar.organization=isamrstim10 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=aa28177b1bff136d562806ce41abb1da1d578413
 
 dist: trusty
 
