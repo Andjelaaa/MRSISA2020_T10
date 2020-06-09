@@ -15,7 +15,7 @@ import main.mrs.model.Korisnik;
 
 @Component
 public class TokenUtils {
-
+     
 	@Value("klinika")
 	private String APP_NAME;
 
