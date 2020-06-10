@@ -39,7 +39,6 @@ import main.mrs.service.SalaService;
 
 @RestController
 @RequestMapping(value="api/sala")
-@Transactional
 public class SalaController {
 
 	@Autowired
@@ -98,6 +97,7 @@ public class SalaController {
 		Sala.setBroj(SalaDTO.getBroj());
 		AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
 		Sala.setKlinika(ak.getKlinika());
+		Sala.setIzmena(1);
 		
 		try {
 			Sala = SalaService.save(Sala);
@@ -150,7 +150,6 @@ public class SalaController {
 	
 	@PutMapping(consumes = "application/json", value = "/{id}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
-	@Transactional(readOnly= false)
 	public ResponseEntity<SalaDTO> updateSala(@RequestBody SalaDTO SalaDTO, @PathVariable Integer id) {
 
 		// a Sala must exist

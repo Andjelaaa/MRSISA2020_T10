@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync //ukljucena podrska za izvrsavanje asinhronih zadataka 
 public class Mrs2020T10Application {
-    //just pull the trigger
 	public static void main(String[] args) {
 		SpringApplication.run(Mrs2020T10Application.class, args);
 	}

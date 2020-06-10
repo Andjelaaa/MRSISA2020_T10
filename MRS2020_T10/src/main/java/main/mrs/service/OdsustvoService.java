@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
 import main.mrs.repository.OdsustvoRepository;
 
 @Service
+@Transactional
 public class OdsustvoService {
 	@Autowired
 	private OdsustvoRepository OdsustvoRepository;
@@ -26,6 +28,7 @@ public class OdsustvoService {
 		return OdsustvoRepository.findAll(page);
 	}
 
+	@Transactional(readOnly= false)
 	public Odsustvo save(Odsustvo Odsustvo) {
 		return OdsustvoRepository.save(Odsustvo);
 	}

@@ -35,6 +35,15 @@ public class Sala {
 	@Version
 	private Long version;
 	
+	@Column(name="izmena", unique=false, nullable=true)
+	private int izmena;
+	
+	public int getIzmena() {
+		return izmena;
+	}
+	public void setIzmena(int izmena) {
+		this.izmena = izmena;
+	}
 	public Long getVersion() {
 		return version;
 	}

@@ -53,7 +53,6 @@ import main.mrs.service.TipPregledaService;
 
 @RestController
 @RequestMapping(value = "api/pregled")
-@Transactional
 public class PregledController {
 	private SimpleDateFormat sdf;
 	@Autowired
@@ -522,7 +521,6 @@ public class PregledController {
 
 	@GetMapping(value = "/rezervisi/{pregledId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional
 	public ResponseEntity<PregledDTO> rezervisiSaluZaPregled(@PathVariable Integer pregledId,
 			@PathVariable Integer salaId, @PathVariable String prviSlobodan) {
 		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
@@ -534,14 +532,16 @@ public class PregledController {
 			e1.printStackTrace();
 		}
 		Pregled p = PregledService.findById(pregledId);
-		Sala s = SalaService.findOne(salaId);
+		Sala s = SalaService.findOne(salaId);		
+		s.setIzmena(s.getIzmena()+1);
 		p.setSala(s);
 		p.setStatus(Status.odobreno);
 		p.getLekar().getKlinika().addpacijent(p.getPacijent());
 		datum.setHours(datum.getHours() + 2);
 		p.setDatumVreme(datum);
 		try {
-			PregledService.save(p);
+			SalaService.save(s);
+			PregledService.save(p);	
 			EmailService.posaljiPacijentuOdobrenPregled(p);
 			EmailService.posaljiLekaruOdobrenPregled(p);
 		} catch (Exception e) {

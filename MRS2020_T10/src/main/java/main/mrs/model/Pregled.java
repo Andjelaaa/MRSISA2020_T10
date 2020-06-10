@@ -59,16 +59,6 @@ public class Pregled {
     @JoinColumn(name="pacijent_id", nullable=true)
     public Pacijent pacijent;
     
-    @Version
-	private Long version;
-	
-	public Long getVersion() {
-		return version;
-	}
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-    
     public Integer getId() {
     	return id;
     }

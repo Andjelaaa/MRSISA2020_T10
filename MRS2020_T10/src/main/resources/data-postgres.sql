@@ -24,8 +24,8 @@ insert into lek (naziv, sifra) values ('Panklav', 'P1');
 insert into dijagnoza (naziv,sifra) values ('Opis prve dijagnoze', 'D1');
 insert into dijagnoza (naziv, sifra) values ('Opis druge dijagnoze', 'D2');
 
-insert into sala (naziv, broj, klinika_id) values ('Sala A', '1', 1);
-insert into sala (naziv, broj, klinika_id) values ('Sala B', '2', 2);
+insert into sala (naziv, broj, klinika_id, izmena, version) values ('Sala A', '1', 1,  1, 1);
+insert into sala (naziv, broj, klinika_id, izmena, version) values ('Sala B', '2', 2, 1, 1);
 
 insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
 values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1, true);
@@ -81,8 +81,8 @@ insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id
 ('2020-06-07 19:00:00', 5, 1, 30, null, 2, 1, 1, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 10:29:00', 5, 3, 30, 2, 1, 1, 2, 1, 1, 2);
-insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version) values
-('2020-06-10 19:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 1,1);
+insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
+('2020-06-10 19:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 16:29:00', 5, 4, 30, 3, 1, 1, 2, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
@@ -94,8 +94,8 @@ insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-17 01:29:00', 5, 4, 30, 7, 1, 1, 2, 1, 1, 1);
 
-insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version) values
-('2020-06-22 15:30:00', 5, 3, 60, null, 1, 1, null, 1, 1, 1,1);
+insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
+('2020-06-22 15:30:00', 5, 3, 60, null, 1, 1, null, 1, 1, 1);
 --insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 --('2020-05-20 17:00:00', 5, 1, 60, null, 1, 1, 2, 1, 1, 1);
 --insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
@@ -147,10 +147,10 @@ insert into adminkc_autoriteti (adminkc_id, autoriteti_id) values (1, 4);
 
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
-values('2020-06-01 12:00:00', 'neki opis tamo', '2020-05-23 11:00:00', 0, 'Odsustvo' , 2, null, null,1);
+values('2020-06-15 12:00:00', 'neki opis tamo', '2020-06-12 11:00:00', 0, 'Odsustvo' , 1, null, null,1);
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
-values('2020-06-5 12:00:00', 'nema opisa', '2020-06-02 11:00:00', 0, 'Odmor' , 2, null, null,1);
+values('2020-06-22 12:00:00', 'nema opisa', '2020-06-15 11:00:00', 0, 'Odmor' , 2, null, null,1);
 
 
 insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 

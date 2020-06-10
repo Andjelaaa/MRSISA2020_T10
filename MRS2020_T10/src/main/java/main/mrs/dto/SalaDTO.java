@@ -11,6 +11,15 @@ public class SalaDTO {
 	private int broj;
 	private String naziv;
 	public KlinikaDTO klinika;
+	public int izmena;
+
+	public int getIzmena() {
+		return izmena;
+	}
+
+	public void setIzmena(int izmena) {
+		this.izmena = izmena;
+	}
 
 	public SalaDTO(Sala s) {
 		this.id = s.getId();

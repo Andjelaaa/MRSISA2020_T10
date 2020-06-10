@@ -32,7 +32,6 @@ import main.mrs.service.MedSestraService;
 import main.mrs.service.OdsustvoService;;
 @RestController
 @RequestMapping(value="api/zahteviodsustvo")
-@Transactional()
 public class OdsustvoController {
 	
 	@Autowired
@@ -141,7 +140,6 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odobri")
 	@PreAuthorize("hasRole( 'ADMIN_KLINIKE')")
-	@Transactional(readOnly= false)
 	public ResponseEntity<OdsustvoDTO> odobriOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
@@ -168,7 +166,6 @@ public class OdsustvoController {
 	
 	@PostMapping(consumes = "application/json", value= "/odbij/{obrazlozenje}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
-	@Transactional(readOnly= false)
 	public ResponseEntity<OdsustvoDTO> odbijOdsustvo(@RequestBody OdsustvoDTO OdsustvoDTO, @PathVariable String obrazlozenje) {
 	
 		Odsustvo o = OdsustvoService.findOne(OdsustvoDTO.getId());
