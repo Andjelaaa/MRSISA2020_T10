@@ -91,7 +91,6 @@ Vue.component('zahtevipo', {
 				<th>Pacijent</th>
 				<th>Datum i vreme</th>
 				<th>Lekar</th>
-				<th>Status</th>
 				<th>Sala</th>
 				
 			
@@ -102,7 +101,6 @@ Vue.component('zahtevipo', {
 			   		<td>{{op.pacijent.ime}} {{op.pacijent.prezime}}</td>
 			   		<td>{{op.datumVreme | formatDate}}</td>
 					<td>{{op.lekar[0].ime}} {{op.lekar[0].prezime}}</td>
-					<td>{{op.status}} </td>
 			   		<td><button v-on:click="nadjiSaluZaOP(op)" class="btn btn-outline-success my-2 my-sm-0">Nadji salu</button></td>
 			   </tr>
 			   

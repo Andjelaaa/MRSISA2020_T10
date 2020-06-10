@@ -47,9 +47,10 @@ Vue.component('sifrarnik2', {
 		  </div>
 		</nav>
 		</br>
-		<p class="leva">Sifrarnik sijagnoza </p>
-		<p class="desna">Unesite novu dijagnozu</p>
+
+		
 		<div class="float-left">
+		<h1>Sifrarnik sijagnoza </h1>
 		<table class="table table-hover table-light" >
 		   <tr>		   		
 		   		<th>Naziv</th>
@@ -90,6 +91,7 @@ Vue.component('sifrarnik2', {
 		   </table>
 		   </div>
 		   <div class="float-right" style="width:45%">
+		   <h1>Unesite novu dijagnozu</h1>
 		   <table class="table table-hover table-light ">
 
 		   <tr>		   		

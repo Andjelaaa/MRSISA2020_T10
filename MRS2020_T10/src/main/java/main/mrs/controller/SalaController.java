@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -220,6 +222,8 @@ public class SalaController {
 	@GetMapping(value = "/slobodnesale/{idPregleda}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getSlobodne(@PathVariable int idPregleda) {
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Pregled pregled = PregledService.findById(idPregleda);
 		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
@@ -253,7 +257,8 @@ public class SalaController {
 				}
 		}
 		List<Sala> slobodne = new ArrayList<Sala>();
-		List<Sala> sveSale = SalaService.findAll();
+		AdminKlinike ak = (AdminKlinike) adminKlinikeService.findByEmail(trenutniKorisnik.getName());
+		List<Sala> sveSale = SalaService.findAllByIdKlinike(ak.getKlinika().getId());
 		for (Sala sala : sveSale) {
 			if(!ZauzeteSale.contains(sala)) {
 				System.out.println(sala.getNaziv());
@@ -391,6 +396,7 @@ public class SalaController {
 	@GetMapping(value = "/slobodnesaleop/{idOperacije}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<List<SalaDTO>> getSlobodneOP(@PathVariable Integer idOperacije) {
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
 		sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Operacija operacija = OperacijaService.findOne(idOperacije);
 		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
@@ -422,7 +428,8 @@ public class SalaController {
 				}
 		}
 		List<Sala> slobodne = new ArrayList<Sala>();
-		List<Sala> sveSale = SalaService.findAll();
+		AdminKlinike ak = (AdminKlinike) adminKlinikeService.findByEmail(trenutniKorisnik.getName());
+		List<Sala> sveSale = SalaService.findAllByIdKlinike(ak.getKlinika().getId());
 		for (Sala sala : sveSale) {
 			if(!ZauzeteSale.contains(sala)) {
 				System.out.println(sala.getNaziv());

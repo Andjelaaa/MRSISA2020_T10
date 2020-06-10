@@ -439,7 +439,7 @@ public class LekarContoller {
 		    	lekari.remove(l);
 		    }
 		}
-	
+	    
 		List<LekarDTO> lekariDTO = new ArrayList<>();
 		
 		for (Lekar s : lekari) {

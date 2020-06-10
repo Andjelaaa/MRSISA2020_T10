@@ -1,15 +1,18 @@
 Vue.component('potvrdareg', {
-	
+	data:function(){
+	      return{
+			potvrda:'',
+			
+		  }
+	},
 	template: `
-	<div>
-	
-		<table  class="table  table-light ">
+	     <div>
+	    
+		<table class="table">
 			<tr>
-			<td>Uspesno ste aktivirali Vas profil. Mozete se ulogovati.</td>
-			<td><button v-on:click="logovanje()" class="btn btn-light">Uloguj se</button></td>
+			<td ><b>Uspesno ste aktivirali Vas profil. Mozete se ulogovati.</b></td>
+			<td ><button v-on:click="logovanje()" class="btn btn-light">Uloguj se</button></td>
 			</tr>
-			
-			
 		</table>
 		</div>
 	`, 
@@ -25,9 +28,9 @@ Vue.component('potvrdareg', {
 	
 	mounted () {
 		axios
-		.get('api/verification/potvrdiRegistraciju/'+this.$route.params.token,)
+		.get('api/verification/potvrdiRegistraciju/'+this.$route.params.token)
 		.then(res => {
-			alert("Dobrodosao u klub");
+			potvrda = res.data;
 		})
 		
 	},

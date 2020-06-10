@@ -28,9 +28,11 @@ insert into sala (naziv, broj, klinika_id) values ('Sala A', '1', 1);
 insert into sala (naziv, broj, klinika_id) values ('Sala B', '2', 2);
 
 insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
-values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 2, 0, '15:00', '07:00', 1, true);
+values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1, true);
 insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
-values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 1, 7, '21:00', '13:00', 2, true);
+values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 2, 7, '21:00', '13:00', 2, true);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
+values ('Ulicicadasdasd7', 'Srbija', 'lekar3@gmail.com', 'Novi Sad', 'Jovan', '06220514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Jovic', 1, 1, 7, '21:00', '13:00', 2, true);
 
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (180,80,'1965-05-25 01:29:00', 'm', 2.5,'AB');
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (170,70,'1998-05-25 01:29:00', 'z', 0.5,'B');
@@ -73,14 +75,14 @@ insert into izvestaj (opis, dijagnoza_id, recept_id) values ('dsadasd', 2, 3);
 insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Paci     okej', 1, 4);
 insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Paokej', 2, 5);
 insert into izvestaj (opis, dijagnoza_id, recept_id) values ('Pacijen he hej je okej', null, null);
-insert into izvestaj (opis,dijagnoza_id, recept_id) values ('Pacijent okej',null, null); ---poludecyy
+insert into izvestaj (opis,dijagnoza_id, recept_id) values ('Pacijent okej',null, null); 
 
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-06-07 19:00:00', 5, 1, 30, null, 2, 1, 1, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 10:29:00', 5, 3, 30, 2, 1, 1, 2, 1, 1, 2);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version) values
-('2020-06-09 19:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 1,1);
+('2020-06-10 19:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 1,1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values
 ('2020-05-23 16:29:00', 5, 4, 30, 3, 1, 1, 2, 1, 1, 1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id) values

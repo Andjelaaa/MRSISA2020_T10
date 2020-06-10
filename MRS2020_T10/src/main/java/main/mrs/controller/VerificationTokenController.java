@@ -2,11 +2,13 @@ package main.mrs.controller;
 
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +35,6 @@ import main.mrs.verification_handler.OnAccessLinkEvent;
 @RequestMapping(value="api/verification")
 public class VerificationTokenController {
 
-//	@GetMapping("/odbijen-pristup")
-//	public String nijeAktiviranLinkGreska() {
-//		return "odbijen pristup";
-//	}
 	
 	@Autowired
 	private PacijentService pacijentService;
@@ -103,27 +101,21 @@ public class VerificationTokenController {
 	
 	@GetMapping("/potvrdiRegistraciju/{token}")
 	public String confirmRegistration(@PathVariable String token,HttpServletRequest request) {
-
-		//Locale locale = request.getLocale();
-		//System.out.println("odjedsadsassdsdsdasddsd");
-		
+      
 		VerificationToken verificationToken = verificationService.findByToken(token);
-//		if(verificationToken == null) {
-//			//String message = messages.getMessage("auth.message.invalidToken", null, locale);
-//			return "redirect:access-denied";
-//		}
+		if(verificationToken == null)
+		{
+			return "redirec: access denied";
+		}
 		Pacijent pacijent = verificationToken.getPacijent();
 		Calendar calendar = Calendar.getInstance();
-//		if((verificationToken.getDatumUnistavanja().getTime()-calendar.getTime().getTime())<=0) {
-//			//String message = messages.getMessage("auth.message.expired", null, locale);
-//			//model.addAttribute("message", message);
-//			return "redirect:access-denied";
-//		}
+		if((verificationToken.getDatumUnistavanja().getTime()-calendar.getTime().getTime())<=0) {
+			return "redirec: access denied";
+		}
 		
 		pacijent.setAktivan(true);
-		System.out.println("odje");
 		pacijentService.save(pacijent);
-		System.out.println("odje1232132312312");
+
 		return null;
 	}
 	
