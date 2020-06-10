@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.mrs.model.Operacija;
 import main.mrs.repository.OperacijaRepository;
 
 @Service
+@Transactional
 public class OperacijaService {
 	@Autowired
 	private OperacijaRepository OperacijaRepository;
@@ -26,7 +28,7 @@ public class OperacijaService {
 	public Page<Operacija> findAll(Pageable page) {
 		return OperacijaRepository.findAll(page);
 	}
-
+	@Transactional(readOnly = false)
 	public Operacija save(Operacija Operacija) {
 		return OperacijaRepository.save(Operacija);
 	}

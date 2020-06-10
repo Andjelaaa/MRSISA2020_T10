@@ -41,7 +41,6 @@ import main.mrs.service.SalaService;
 
 @RestController
 @RequestMapping(value="api/operacije")
-@Transactional
 public class OperacijaController {
 
 	private SimpleDateFormat sdf;
@@ -131,7 +130,6 @@ public class OperacijaController {
 	}
 	@GetMapping(value = "/zahtevi/{idAdmina}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
-	@Transactional
 	public ResponseEntity<List<OperacijaDTO>> getZahtevi(@PathVariable Integer idAdmina) {
 		AdminKlinike ak = AdminKlinikeService.findOne(idAdmina);
 		List<Operacija> operacije = OperacijaService.findAllZahteviKlinike(ak.getKlinika().getId());
@@ -149,7 +147,6 @@ public class OperacijaController {
 	@SuppressWarnings("deprecation")
 	@PostMapping(value = "/rezervisi/{operacijaId}/{salaId}/{prviSlobodan}")
 	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'LEKAR')")
-	@Transactional
 	public ResponseEntity<OperacijaDTO> rezervisiSaluZaOperaciju(@PathVariable Integer operacijaId, @PathVariable Integer salaId, 
 			@PathVariable String prviSlobodan, @RequestBody PomocnaKlasa7 pomkl7){
 		

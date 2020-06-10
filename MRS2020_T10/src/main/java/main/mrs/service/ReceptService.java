@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.mrs.model.Recept;
 import main.mrs.repository.ReceptRepository;
 
 @Service
+@Transactional
 public class ReceptService {
 	@Autowired
 	private ReceptRepository ReceptRepository;
@@ -27,6 +29,7 @@ public class ReceptService {
 		return ReceptRepository.findAll(page);
 	}
 
+	@Transactional(readOnly = false)
 	public Recept save(Recept Recept) {
 		return ReceptRepository.save(Recept);
 	}
@@ -35,9 +38,6 @@ public class ReceptService {
 		ReceptRepository.deleteById(id);
 	}
 
-//	public Recept findByNaziv(String naziv) {
-//		
-//	}
 
 
 }

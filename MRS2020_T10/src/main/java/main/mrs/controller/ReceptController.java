@@ -41,7 +41,6 @@ import main.mrs.service.ReceptService;
 
 @RestController
 @RequestMapping(value="api/recept")
-@Transactional(readOnly= true)
 public class ReceptController {
 	@Autowired
 	private ReceptService ReceptService;
@@ -85,7 +84,6 @@ public class ReceptController {
 	}
 	@PutMapping(value = "/izmeni/{email}", consumes = "application/json")
 	@PreAuthorize("hasRole('MED_SESTRA')")
-	@Transactional(readOnly= false)
 	public ResponseEntity<String> overiRecept(@RequestBody ReceptDTO ReceptDTO, @PathVariable String email) {
 		
 		Recept recept = ReceptService.findOne(ReceptDTO.getId());
