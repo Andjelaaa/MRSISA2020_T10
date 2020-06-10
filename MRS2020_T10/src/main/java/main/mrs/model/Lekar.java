@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +45,10 @@ public class Lekar extends Korisnik implements UserDetails {
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
    @JoinColumn(name="lekar_id", nullable=true)
    public Set<Odsustvo> odsustvo;
-   
+   @Column(name="izmenaRezervisanja", unique=false, nullable=true)
+   private int izmenaRezervisanja;
+   @Version
+   private Long version;
   // @OneToMany(mappedBy="lekar",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
  //  public Set<Pregled> pregled;
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
@@ -191,6 +195,22 @@ public boolean isCredentialsNonExpired() {
 public boolean isEnabled() {
 	// TODO Auto-generated method stub
 	return true;
+}
+
+public int getIzmenaRezervisanja() {
+	return izmenaRezervisanja;
+}
+
+public void setIzmenaRezervisanja(int izmenaRezervisanja) {
+	this.izmenaRezervisanja = izmenaRezervisanja;
+}
+
+public Long getVersion() {
+	return version;
+}
+
+public void setVersion(Long version) {
+	this.version = version;
 }
 
 }

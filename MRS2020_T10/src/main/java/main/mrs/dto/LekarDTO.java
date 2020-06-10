@@ -25,7 +25,9 @@ public class LekarDTO extends KorisnikDTO {
    public TipPregledaDTO tipPregleda;
   
    public KlinikaDTO klinika;
-    public Set<OdsustvoDTO> odsustvo;
+   public Set<OdsustvoDTO> odsustvo;
+   private int izmenaRezervisanja;
+   private Long version;
    
    public LekarDTO() {}
    
@@ -148,6 +150,22 @@ public TipPregledaDTO getTipPregleda() {
 
 public void setTipPregleda(TipPregledaDTO tipPregleda) {
 	this.tipPregleda = tipPregleda;
+}
+
+public Long getVersion() {
+	return version;
+}
+
+public void setVersion(Long version) {
+	this.version = version;
+}
+
+public int getIzmenaRezervisanja() {
+	return izmenaRezervisanja;
+}
+
+public void setIzmenaRezervisanja(int izmenaRezervisanja) {
+	this.izmenaRezervisanja = izmenaRezervisanja;
 }
 
 

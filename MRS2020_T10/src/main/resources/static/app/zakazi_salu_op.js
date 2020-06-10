@@ -148,6 +148,12 @@ Vue.component('zakazisaluop', {
 			
 		},
 		nadjiZaDatum: function(){
+			console.log(this.noviDatum +"STA JE OVO")
+			if(this.noviDatum == null){
+				return;
+			}
+			else
+			{
 			axios
 	      	.get('api/sala/all',{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
@@ -174,7 +180,7 @@ Vue.component('zakazisaluop', {
 	      		}
 	      	})
 	        .catch(function (error) { console.log('Greska22') });		
-			
+		   }
 		},
 		pretraga: function(){
 			this.pretragaSale = [];

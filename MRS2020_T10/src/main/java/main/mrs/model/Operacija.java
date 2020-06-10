@@ -39,17 +39,6 @@ public class Operacija {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	@JoinColumn(name="pacijent_id", nullable=true)
 	public Pacijent pacijent;
-	@Column(name="brojLekara", unique=false, nullable=true)
-    private int brojLekara;
-	@Version
-	private Long version;
-	
-	public Long getVersion() {
-		return version;
-	}
-	public void setVersion(Long version) {
-		this.version = version;
-	}
 	
 	public Pacijent getPacijent() {
 		return pacijent;
@@ -115,11 +104,6 @@ public Set<Lekar> getLekar() {
 public void setLekar(Set<Lekar> lekar) {
 	this.lekar = lekar;
 }
-public int getBrojLekara() {
-	return brojLekara;
-}
-public void setBrojLekara(int brojLekara) {
-	this.brojLekara = brojLekara;
-}
+
 
 }

@@ -149,7 +149,7 @@ public class LekarContoller {
 		Lekar.setTipPregleda(tp);
 		Lekar.setAutoriteti(autoritetService.findByName("ROLE_LEKAR"));
 		Lekar.setPromenioLozinku(false);
-		
+		Lekar.setIzmenaRezervisanja(1);
 		AdminKlinike ak = adminKlinikeService.findOne(IdAdmina);
 		Lekar.setKlinika(ak.getKlinika());
 		

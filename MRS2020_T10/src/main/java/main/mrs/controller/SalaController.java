@@ -462,6 +462,10 @@ public class SalaController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+				
+		// ne sme rezervisati za proslost
+		if(datum.before(new Date()))
+			return new ResponseEntity<>(new ZauzecaSlobodniDTO(), HttpStatus.BAD_REQUEST);
 		
 		List<ZauzeceDTO> zauzecaDTO = new ArrayList<ZauzeceDTO>();
 		final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs

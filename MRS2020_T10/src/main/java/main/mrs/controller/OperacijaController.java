@@ -94,7 +94,6 @@ public class OperacijaController {
 		Operacija.setTrajanje(OperacijaDTO.getTrajanje());
 		Operacija.setStatus(Status.zahtev_lekar);	
 		Operacija.setSala(null);
-		Operacija.setBrojLekara(1);
 		Lekar l = LekarService.findByEmail((new ArrayList<LekarDTO>(OperacijaDTO.getLekar())).get(0).getEmail());
 		// provera da li je u radnom vremenu
 		SimpleDateFormat sdform = new SimpleDateFormat("HH:mm");
@@ -159,10 +158,12 @@ public class OperacijaController {
 		}
 		Operacija operacija = OperacijaService.findOne(operacijaId);
 		Sala s = SalaService.findOne(salaId);
+			
+		s.setIzmena(s.getIzmena()+1);
 		
 		operacija.setSala(s);
 		operacija.setStatus(Status.odobreno);
-		
+
 		datum.setHours(datum.getHours()+2);
 		operacija.setDatumVreme(datum);
 		Set<Lekar> lekari = new HashSet<>();
@@ -176,11 +177,14 @@ public class OperacijaController {
 		
 		for(LekarDTO ld : pomkl7.lekariDTO) {
 			Lekar lekar = LekarService.findByEmail(ld.getEmail());
+			lekar.setIzmenaRezervisanja(lekar.getIzmenaRezervisanja()+1);
+			lekar = LekarService.save(lekar);
 			lekari.add(lekar);
 		}
 		operacija.setLekar(lekari);
-		operacija.setBrojLekara(lekari.size());
+		
 		try {
+			s = SalaService.save(s);
 			operacija = OperacijaService.save(operacija);
 			EmailService.posaljiPacijentuOdobrenaOperacija(operacija);
 			EmailService.posaljiLekaruOdobrenaOperacija(operacija);

@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.repository.LekarRepository;
 
 @Service
+@Transactional
 public class LekarService {
 	@Autowired
 	private LekarRepository LekarRepository;
@@ -28,7 +30,7 @@ public class LekarService {
 	public Page<Lekar> findAll(Pageable page) {
 		return LekarRepository.findAll(page);
 	}
-
+	@Transactional(readOnly = false)
 	public Lekar save(Lekar Lekar) {
 		return LekarRepository.save(Lekar);
 	}

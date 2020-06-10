@@ -27,12 +27,12 @@ insert into dijagnoza (naziv, sifra) values ('Opis druge dijagnoze', 'D2');
 insert into sala (naziv, broj, klinika_id, izmena, version) values ('Sala A', '1', 1,  1, 1);
 insert into sala (naziv, broj, klinika_id, izmena, version) values ('Sala B', '2', 2, 1, 1);
 
-insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
-values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1, true);
-insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
-values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 2, 7, '21:00', '13:00', 2, true);
-insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku) 
-values ('Ulicicadasdasd7', 'Srbija', 'lekar3@gmail.com', 'Novi Sad', 'Jovan', '06220514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Jovic', 1, 1, 7, '21:00', '13:00', 2, true);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku,version, izmena_rezervisanja) 
+values ('Ulica 123', 'Srbija', 'lekar1@gmail.com', 'Novi Sad', 'Nenad', '065154923', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nenadovic', 0, 1, 0, '15:00', '07:00', 1, true,1,1);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku,version, izmena_rezervisanja) 
+values ('Ulicica 567', 'Srbija', 'lekar2@gmail.com', 'Novi Sad', 'Nikola', '060514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Nikolic', 1, 2, 7, '21:00', '13:00', 2, true,1,1);
+insert into lekar (adresa, drzava, email, grad, ime, kontakt, lozinka, prezime, broj_ocena, klinika_id, prosecna_ocena, rv_kraj, rv_pocetak, tip_pregleda_id, promenio_lozinku,version, izmena_rezervisanja) 
+values ('Ulicicadasdasd7', 'Srbija', 'lekar3@gmail.com', 'Novi Sad', 'Jovan', '06220514848', '$2a$10$uf1G0CsocgVi9Uc8oYsQsuq9BBHxFZ5Vbirl4o8D87FnYirUnl5C2', 'Jovic', 1, 1, 7, '21:00', '13:00', 2, true,1,1);
 
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (180,80,'1965-05-25 01:29:00', 'm', 2.5,'AB');
 insert into zkarton(visina, tezina, datum_rodjenja, pol, dioptrija, krvna_grupa) values (170,70,'1998-05-25 01:29:00', 'z', 0.5,'B');
@@ -153,12 +153,12 @@ insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id,
 values('2020-06-22 12:00:00', 'nema opisa', '2020-06-15 11:00:00', 0, 'Odmor' , 2, null, null,1);
 
 
-insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-5 12:00:00',1, 1, 30, 1, null, null, 1,1,1);
-insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-21 13:23:00',1, 3, 43, 1, null, null, 1,1,1);
-insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-22 12:00:00',1, 3, 30, 1, null, null, 2,1,1);
+insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 
+values('2020-06-5 12:00:00', 1, 30, 1, null, null, 1,1);
+insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 
+values('2020-06-21 13:23:00', 3, 43, 1, null, null, 1,1);
+insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id) 
+values('2020-06-22 12:00:00', 3, 30, 1, null, null, 2,1);
 
 insert into operacija_lekar(operacija_id, lekar_id) values(1,1);
 insert into operacija_lekar(operacija_id, lekar_id) values(2,1);
