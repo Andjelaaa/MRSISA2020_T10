@@ -26,14 +26,15 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.SearchIzvestaj;
+import main.mrs.model.KlinickiCentar;
 import main.mrs.model.Klinika;
-import main.mrs.model.Lek;
 import main.mrs.model.Lekar;
 import main.mrs.model.Odsustvo;
 import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.Pregled;
 import main.mrs.model.SlobodnoVreme;
 import main.mrs.model.TipPregleda;
+import main.mrs.service.KlinickiCentarService;
 import main.mrs.service.KlinikaService;
 import main.mrs.service.LekarService;
 import main.mrs.service.OdsustvoService;
@@ -52,6 +53,9 @@ public class KlinikaController {
 	private LekarService LekarService;
 	@Autowired
 	private OdsustvoService OdsustvoService;
+	
+	@Autowired
+	private KlinickiCentarService KlinickiCentarService;
 	@Autowired
 	private PregledService PregledService;
 	
@@ -341,7 +345,6 @@ public class KlinikaController {
 		klinika.setProsecnaOcena(0.0);
 		klinika.setBrojOcena(0);
 		
-
 		try {
 			List<Klinika> klinike = KlinikaService.findAll();
 			for(Klinika k :klinike) {
@@ -349,7 +352,12 @@ public class KlinikaController {
 					return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.BAD_REQUEST);
 				}
 			}
+			
+			
+			KlinickiCentar klinickiCentar = KlinickiCentarService.findOne(1);
+			klinickiCentar.addKlinika(klinika);
 			klinika = KlinikaService.save(klinika);
+			klinickiCentar = KlinickiCentarService.save(klinickiCentar);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new KlinikaDTO(klinika), HttpStatus.BAD_REQUEST);
 		}
