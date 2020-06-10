@@ -98,4 +98,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	@Query(value = "SELECT * FROM LEKAR WHERE KLINIKA_ID = ?1", nativeQuery = true)
 	List<Lekar> findAllByIdKlinike(Integer id);
+	
+	@Query(value = "SELECT * FROM LEKAR WHERE ID = ?1", nativeQuery = true)
+	Lekar findById(int id);
 }

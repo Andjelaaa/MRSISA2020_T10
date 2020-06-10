@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa7;
+import main.mrs.model.Pregled;
 import main.mrs.model.Sala;
 import main.mrs.model.Status;
 import main.mrs.service.AdminKlinikeService;
@@ -80,6 +83,39 @@ public class OperacijaController {
 		return new ResponseEntity<>(operacijeDTO, HttpStatus.OK);
 		
 	
+	}
+	@GetMapping(value="/zakazane")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<OperacijaDTO>> dobaviZakazaneOperacije(){
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		List<Operacija> zakazaneOp = OperacijaService.getScheduled(p.getId());
+		// convert u dto
+		List<OperacijaDTO> operacijeDTO = new ArrayList<>();
+		for (Operacija s : zakazaneOp) {
+			OperacijaDTO op = new OperacijaDTO(s);
+			
+			operacijeDTO.add(op);
+		}
+
+		return new ResponseEntity<>(operacijeDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/istorijaOperacija")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<OperacijaDTO>> dobaviIstorijuOperacija(){
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		List<Operacija> zakazaneOp = OperacijaService.getRealized(p.getId());
+		// convert u dto
+		List<OperacijaDTO> operacijeDTO = new ArrayList<>();
+		for (Operacija s : zakazaneOp) {
+			OperacijaDTO op = new OperacijaDTO(s);
+			
+			operacijeDTO.add(op);
+		}
+
+		return new ResponseEntity<>(operacijeDTO, HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = "application/json;charset=UTF-8", value="/lekarzahtev")

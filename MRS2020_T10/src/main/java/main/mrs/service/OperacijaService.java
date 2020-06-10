@@ -60,6 +60,16 @@ public class OperacijaService {
 		return OperacijaRepository.findAllBySalaId(id);
 	}
 
+	public List<Operacija> getScheduled(Integer id) {
+		// TODO Auto-generated method stub
+		return OperacijaRepository.getScheduled(id);
+	}
+
+	public List<Operacija> getRealized(Integer id) {
+		// TODO Auto-generated method stub
+		return OperacijaRepository.getRealized(id);
+	}
+
 
 
 

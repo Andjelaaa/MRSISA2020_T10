@@ -1,7 +1,8 @@
 Vue.component('pacijent', {
 	data: function(){
 		return{
-			pacijentId: 1
+			pacijent: {},
+			uloga: ''
 		}
 	},
 	template: `
@@ -24,15 +25,11 @@ Vue.component('pacijent', {
 		        <a class="nav-link" href="#/">Zdravstveni karton</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Profil</a>
-		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/">Odjavi se</a>
+		        <a class="nav-link" href="#/profilpacijent">Profil: {{pacijent.ime}} {{pacijent.prezime}}</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
 		  </div>
 		</nav>
@@ -41,9 +38,29 @@ Vue.component('pacijent', {
 	</div>
 	`, 
 	methods: {
-		
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		}
 	},
 	mounted(){
 		
-	},
-});
+		this.token = localStorage.getItem("token");
+		axios
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+	    .then(response => { this.pacijent = response.data;
+		    axios
+			.put('/auth/dobaviulogu', this.pacijent, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_PACIJENT") {
+		    		router.push('/');
+		    	}
+		    })
+		    .catch(function (error) { console.log(error);});
+		    
+	    })
+	    .catch(function (error) { router.push('/'); });	 
+	}
+
+	});

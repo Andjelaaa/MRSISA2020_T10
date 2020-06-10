@@ -46,7 +46,7 @@ public class TipPregledaController {
 	private LekarService lekarService;
 
 	@GetMapping(value = "/all")
-	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINIKE', 'ROLE_PACIJENT')")
 	public ResponseEntity<List<TipPregledaDTO>> getAllTipPregledas() {
 
 		List<TipPregleda> TipPregledas = TipPregledaService.findAll();

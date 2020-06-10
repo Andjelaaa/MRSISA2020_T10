@@ -2,7 +2,8 @@ Vue.component('predefpregledi', {
 	data: function(){
 		return{
 			pregledi: null,
-			idPacijenta: 1,
+			pacijent: {},
+			uloga: {},
 			datum: null,
 			tipoviPregleda: null,
 			tipPregleda: {naziv: null},
@@ -30,15 +31,11 @@ Vue.component('predefpregledi', {
 		        <a class="nav-link" href="#/">Zdravstveni karton</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Profil</a>
-		      </li>
-		       <li class="nav-item">
-		        <a class="nav-link" href="#/">Odjavi se</a>
+		        <a class="nav-link" href="#/profilpacijent">Profil</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" v-on:click="odjava()">Odjavi se</button>
 		    </form>
 		  </div>
 		</nav>
@@ -99,12 +96,16 @@ Vue.component('predefpregledi', {
 	`,
 	
 	methods : {
+		odjava : function(){
+			localStorage.removeItem("token");
+			this.$router.push('/');
+		},
 		zakazi : function(pregledId, i){
 			// upit da li je siguran
 			
 			this.pregledi.splice(i,1);
 			axios
-	          .post('api/pregled/'+pregledId+'/'+this.idPacijenta)
+	          .get('api/pregled/'+pregledId, { headers: { Authorization: 'Bearer ' + this.token }})
 	          .then(res => {
 	        	console.log('uspesno');
 	        	// poruka o uspesnom zakazivanju
@@ -121,7 +122,7 @@ Vue.component('predefpregledi', {
 				return;
 			console.log(this.datum);
 			axios
-			.get('api/pregled/datum/'+this.datum)
+			.get('api/pregled/datum/'+this.datum, { headers: { Authorization: 'Bearer ' + this.token }} )
 			.then(res=>{
 				this.pregledi = res.data;
 				if(this.pregledi == null)
@@ -136,7 +137,7 @@ Vue.component('predefpregledi', {
 			if(this.validacija() == 1)
 				return;
 			axios
-			.get('api/pregled/tip/'+this.tipPregleda.naziv)
+			.get('api/pregled/tip/'+this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then(res=>{
 				this.pregledi = res.data;
 				if(this.pregledi == null)
@@ -150,23 +151,41 @@ Vue.component('predefpregledi', {
 		
 	},
 	
-	mounted () {
-//		axios
-//		.get('api/pregled/slobodniPregledi/'+this.$route.params.name)
-//		.then(res => {
-//			this.pregledi = res.data;
-//		})
-// odkomentarisati kad se pregled poveze sa klinikom!
+	mounted () {		
+		this.token = localStorage.getItem("token");
 		axios
-		.get('api/pregled/all')
-		.then(res => {
-			this.pregledi = res.data;
-		})
-		axios
-          .get('api/tippregleda/all')
-          .then(res => {
-        	  this.tipoviPregleda = res.data;
+		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
+	    .then(response => { this.pacijent = response.data;
+		    axios
+			.put('/auth/dobaviulogu', this.pacijent, { headers: { Authorization: 'Bearer ' + this.token }} )
+		    .then(response => {
+		    	this.uloga = response.data;
+		    	if (this.uloga != "ROLE_PACIJENT") {
+		    		router.push('/');
+		    	}else{
+		    		/*
+		    		axios
+		    		.get('api/pregled/all')
+		    		.then(res => {
+		    			this.pregledi = res.data;
+		    			*/
+		    		// pravicemo se da ovo radi, jer u bazi nema ni jednog predef pregleda, mrzelo me da pravim
+		    		axios
+		    		.get('api/pregled/slobodniPregledi/'+this.$route.params.name,  { headers: { Authorization: 'Bearer ' + this.token }})
+		    		.then(res => {
+		    			this.pregledi = res.data;
+		    		})
+		    		axios
+		              .get('api/tippregleda/all', { headers: { Authorization: 'Bearer ' + this.token }})
+		              .then(res => {
+		            	  this.tipoviPregleda = res.data;
 
-          })
-	},
+		              })
+		    	}
+		    })
+		    .catch(function (error) { console.log(error);});
+		    
+	    })
+	    .catch(function (error) { router.push('/'); });	 
+	}
 });

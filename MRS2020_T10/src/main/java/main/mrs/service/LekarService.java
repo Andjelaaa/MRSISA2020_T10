@@ -68,4 +68,9 @@ public class LekarService {
 	public List<Lekar> findAllByIdKlinike(Integer id) {
 		return LekarRepository.findAllByIdKlinike(id);
 	}
+
+	public Lekar findById(int lekarId) {
+		// TODO Auto-generated method stub
+		return LekarRepository.findById(lekarId);
+	}
 }

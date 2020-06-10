@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.mrs.dto.LekarDTO;
 import main.mrs.dto.PacijentDTO;
 import main.mrs.dto.SearchPacijent;
+import main.mrs.model.AdminKC;
+import main.mrs.model.AdminKlinike;
 import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.MedSestra;
@@ -123,6 +128,33 @@ public class PacijentController {
 		PacijentDTO PacijentsDTO = new PacijentDTO(Pacijents);
 		
 		return new ResponseEntity<>(PacijentsDTO, HttpStatus.OK);
+	}
+	
+	@PutMapping(consumes = "application/json", value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<PacijentDTO> updatePacijent(@RequestBody PacijentDTO pDTO, @PathVariable Integer id) {
+
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = pacijentService.findByEmail(trenutniKorisnik.getName());
+
+		if (p == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		p.setIme(pDTO.getIme());
+		p.setPrezime(pDTO.getPrezime());
+		p.setEmail(pDTO.getEmail());
+		p.setAdresa(pDTO.getAdresa());
+		p.setGrad(pDTO.getGrad());
+		p.setDrzava(pDTO.getDrzava());
+		p.setKontakt(pDTO.getKontakt());
+		try {
+			p = pacijentService.save(p);
+			return new ResponseEntity<>(new PacijentDTO(), HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@GetMapping(value = "promenaLozinke/{id}/{novaLozinka}")

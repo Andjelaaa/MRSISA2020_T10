@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,6 +97,7 @@ public class PregledController {
 			PregledDTO pregled = new PregledDTO(s);
 			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
 			pregled.setPopust(s.getPopust());
+			//pregled.getSala().setBroj(s.getSala().getBroj());
 			PregledsDTO.add(pregled);
 
 		}
@@ -104,13 +107,13 @@ public class PregledController {
 
 	@PostMapping(value = "/ocene")
 	public ResponseEntity<Ocene> dobaviOcene(@RequestBody PregledDTO data) {
-		System.out.println("Dosao sam ovde da dobavim ocene");
 		Ocene ocene = new Ocene(); // podesi ocene na 0, ako je 0 onda nije ni ocenjeno
 
 		// dobavimo stare ocene ako postoje
 		// kad namestimmo da se setuje i klinika za lekara odkomentarisatiii
-		// int klinikaId = data.getLekar().getKlinika().getId();
-		int klinikaId = 1;
+		Lekar lekar = LekarService.findById(data.getLekar().getId());
+		//int klinikaId = data.getLekar().getKlinika().getId();
+		int klinikaId = lekar.getKlinika().getId();
 		int pacijentId = data.getPacijent().getId();
 		int lekarId = data.getLekar().getId();
 		OcenaLekar ocenaLekara = OcenaLekarService.findOcenu(lekarId, pacijentId);
@@ -127,6 +130,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/slobodniPregledi/{klinikaId}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> dobaviSlobodnePreglede(@PathVariable int klinikaId) {
 
 		List<Pregled> Pregleds = PregledService.getUnscheduled(klinikaId);
@@ -137,16 +141,19 @@ public class PregledController {
 			PregledDTO pregled = new PregledDTO(s);
 			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
 			pregled.setPopust(s.getPopust());
+			pregled.getSala().setBroj(s.getSala().getBroj());
 			PregledsDTO.add(pregled);
 		}
 
 		return new ResponseEntity<>(PregledsDTO, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/zakazaniPregledi/{pacijentId}")
-	public ResponseEntity<List<PregledDTO>> dobaviZakazanePreglede(@PathVariable int pacijentId) {
-
-		List<Pregled> Pregleds = PregledService.getScheduled(pacijentId);
+	@GetMapping(value = "/zakazaniPregledi")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<PregledDTO>> dobaviZakazanePreglede() {
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		List<Pregled> Pregleds = PregledService.getScheduled(p.getId());
 
 		// convert Pregleds to DTOs
 		List<PregledDTO> PregledsDTO = new ArrayList<>();
@@ -184,7 +191,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/istorijaPregleda/{pacijentId}")
-	@PreAuthorize("hasAnyRole('LEKAR','MED_SESTRA' )")
+	@PreAuthorize("hasAnyRole('LEKAR','MED_SESTRA','ROLE_PACIJENT' )")
 	public ResponseEntity<List<PregledDTO>> dobaviIstorijuPregleda(@PathVariable int pacijentId) {
 
 		List<Pregled> Pregleds = PregledService.dobaviIstoriju(pacijentId);
@@ -261,10 +268,12 @@ public class PregledController {
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/{pregledId}/{pacijentId}")
-	public ResponseEntity<PregledDTO> zakaziPregled(@PathVariable long pregledId, @PathVariable int pacijentId) {
+	@GetMapping(value = "/{pregledId}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<PregledDTO> zakaziPregled(@PathVariable long pregledId) {
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent pacijent = PacijentService.findByEmail(trenutniKorisnik.getName());
 		Pregled p = PregledService.findById(pregledId);
-		Pacijent pacijent = PacijentService.findById(pacijentId);
 		p.setPacijent(pacijent);
 		// pacijent.addPregled(p);
 
@@ -299,6 +308,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/tip/{tipPregleda}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> zaTipPregleda(@PathVariable String tipPregleda) {
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
 		List<Pregled> result = PregledService.findByTipPregleda(tp.getId());
@@ -313,6 +323,7 @@ public class PregledController {
 	}
 
 	@GetMapping(value = "/datum/{datum}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> posleDatuma(@PathVariable String datum) {
 		Date date1 = null;
 		try {
@@ -480,6 +491,7 @@ public class PregledController {
 	}
 
 	@PostMapping(consumes = "application/json;charset=UTF-8", value = "/pacijentzahtev")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<PregledDTO> saveZahtevPacijent(@RequestBody ZahtevPregled zahtev) {
 		System.out.println("E cao saljem zahtev za dan " + zahtev.datum);
 		Pregled Pregled = new Pregled();

@@ -180,6 +180,7 @@ public class LekarContoller {
 		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
 	}
 	@PostMapping(value ="/slobodniLekari/search")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PomocnaKlasa5>> pretragaSlobodnihLkeara(@RequestBody PomocnaKlasa6 data)
 	{
 		

@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +22,11 @@ import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
 import main.mrs.model.OcenaKlinika;
 import main.mrs.model.OcenaLekar;
+import main.mrs.model.Pacijent;
 import main.mrs.service.KlinikaService;
+import main.mrs.service.LekarService;
 import main.mrs.service.OcenaKlinikaService;
+import main.mrs.service.PacijentService;
 
 @RestController
 @RequestMapping(value="api/ocenaklinika")
@@ -31,6 +37,13 @@ public class OcenaKlinikaController {
 	
 	@Autowired
 	private KlinikaService KlinikaService;
+	
+	@Autowired
+	private LekarService LekarService;
+	
+	@Autowired
+	private PacijentService PacijentService;
+
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<OcenaKlinikaDTO>> getAllOcenaKlinika() {
@@ -45,12 +58,16 @@ public class OcenaKlinikaController {
 		return new ResponseEntity<>(OcenaKlinikasDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value="/oceni/{klinikaId}/{pacijentId}/{ocena}")
-	public ResponseEntity<OcenaKlinikaDTO> oceniKliniku(@PathVariable int klinikaId, @PathVariable int pacijentId, @PathVariable int ocena) {
+	@GetMapping(value="/oceni/{lekarId}/{ocena}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<OcenaKlinikaDTO> oceniKliniku(@PathVariable int lekarId, @PathVariable int ocena) {
 		// dobavi staru ocenu
-		System.out.println("Ovde cu da ocenjujem kliniku");
-		OcenaKlinika staraOcena = OcenaKlinikaService.findOcenu(klinikaId, pacijentId);
-		Klinika klinika = KlinikaService.findOne(klinikaId);
+		//System.out.println("Ovde cu da ocenjujem kliniku");
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		Lekar lekar = LekarService.findById(lekarId);
+		OcenaKlinika staraOcena = OcenaKlinikaService.findOcenu(lekar.getKlinika().getId(), p.getId());
+		Klinika klinika = KlinikaService.findOne(lekar.getKlinika().getId());
 		// izracunaj novu prosecnu ocenu klinike
 				
 		double prosecnaOcena = 0.0;
@@ -76,8 +93,8 @@ public class OcenaKlinikaController {
 			klinika.setBrojOcena(klinika.getBrojOcena()+1);
 			// dodaj u tabelu novo ocenjivanje
 			OcenaKlinika novaOcena = new OcenaKlinika();
-			novaOcena.setKlinikaId(klinikaId);
-			novaOcena.setPacijentId(pacijentId);
+			novaOcena.setKlinikaId(lekar.getKlinika().getId());
+			novaOcena.setPacijentId(p.getId());
 			novaOcena.setOcena(ocena);
 			try {
 				novaOcena = OcenaKlinikaService.save(novaOcena);

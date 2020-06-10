@@ -60,7 +60,7 @@ public class KlinikaController {
 	private PregledService PregledService;
 	
 	@GetMapping(value = "/all")
-	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
+	@PreAuthorize("hasAnyRole('ADMIN_KLINICKOG_CENTRA', 'ROLE_PACIJENT')")
 	public ResponseEntity<List<KlinikaDTO>> getAllKlinike() {
 
 		List<Klinika> Klinike = KlinikaService.findAll();
@@ -75,6 +75,7 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value = "/detalji/{klinikaId}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<KlinikaDTO> detaljiKlinike(@PathVariable int klinikaId) {
 
 		Klinika Klinika = KlinikaService.findOneById(klinikaId);
@@ -83,6 +84,7 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value = "/slobodnitermini/lekari/{datum}/{tipPregleda}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PomocnaKlasa5>> LekariSlobodniTermini(@PathVariable String datum, @PathVariable String tipPregleda) {
 		System.out.println("TRAZIM TERMINE SLOBODNE");
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
@@ -294,6 +296,7 @@ public class KlinikaController {
 	}
 
 	@PostMapping(value = "/proveriTermin/{vreme}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<KlinikaDTO> proveriTermin(@PathVariable String vreme, @RequestBody PomocnaKlasa5 lekarTermini)
 	{
 		Date izabranoVremePocetak = null;

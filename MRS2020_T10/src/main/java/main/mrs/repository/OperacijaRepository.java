@@ -90,7 +90,7 @@ public interface OperacijaRepository  extends JpaRepository<Operacija, Long>{
 	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3 AND KLINIKA_ID=?1", nativeQuery = true)
 	List<Operacija> findAllZahteviKlinike(Integer integer);
 	
-	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3 OR STATUS = 1", nativeQuery = true)
+	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS = 3 OR STATUS = 0", nativeQuery = true)
 	List<Operacija> findAllZahtevi();
 
 	@Query(value = "SELECT * FROM OPERACIJA WHERE STATUS != 4 AND STATUS != 2 AND ID = ?1", nativeQuery = true)
@@ -98,6 +98,12 @@ public interface OperacijaRepository  extends JpaRepository<Operacija, Long>{
 
 	@Query(value = "SELECT * FROM OPERACIJA WHERE SALA_ID = ?1", nativeQuery = true)
 	List<Operacija> findAllBySalaId(Integer id);
+
+	@Query(value = "SELECT * FROM OPERACIJA WHERE PACIJENT_ID = ?1 AND (STATUS = 0 OR STATUS = 1)" , nativeQuery = true)
+	List<Operacija> getScheduled(Integer id);
+
+	@Query(value = "SELECT * FROM OPERACIJA WHERE PACIJENT_ID = ?1 AND STATUS = 4" , nativeQuery = true)
+	List<Operacija> getRealized(Integer id);
 
 
 

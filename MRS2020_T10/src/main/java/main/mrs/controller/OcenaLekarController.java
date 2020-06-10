@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.LekDTO;
 import main.mrs.dto.OcenaLekarDTO;
 import main.mrs.model.Lekar;
 import main.mrs.model.OcenaLekar;
+import main.mrs.model.Pacijent;
 import main.mrs.service.LekarService;
 import main.mrs.service.OcenaLekarService;
+import main.mrs.service.PacijentService;
 
 @RestController
 @RequestMapping(value="api/ocenalekar")
@@ -31,6 +35,9 @@ public class OcenaLekarController {
 	@Autowired
 	private LekarService LekarService;
 
+	@Autowired
+	private PacijentService PacijentService;
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<OcenaLekarDTO>> getAllOcenaLekar() {
 
@@ -44,11 +51,13 @@ public class OcenaLekarController {
 		return new ResponseEntity<>(OcenaLekarsDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value="/oceni/{lekarId}/{pacijentId}/{ocena}")
-	public ResponseEntity<OcenaLekarDTO> oceniLekara(@PathVariable int lekarId, @PathVariable int pacijentId, @PathVariable int ocena) {
-		
+	@GetMapping(value="/oceni/{lekarId}/{ocena}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<OcenaLekarDTO> oceniLekara(@PathVariable int lekarId, @PathVariable int ocena) {
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
 		// dobavi staru ocenu
-		OcenaLekar staraOcena = OcenaLekarService.findOcenu(lekarId, pacijentId);
+		OcenaLekar staraOcena = OcenaLekarService.findOcenu(lekarId, p.getId());
 		Lekar lekar = LekarService.findOne(lekarId);
 		
 		// izracunaj novu prosecnu ocenu lekara
@@ -77,17 +86,17 @@ public class OcenaLekarController {
 			// dodaj u tabelu novo ocenjivanje
 			OcenaLekar novaOcena = new OcenaLekar();
 			novaOcena.setLekarId(lekarId);
-			novaOcena.setPacijentId(pacijentId);
+			novaOcena.setPacijentId(p.getId());
 			novaOcena.setOcena(ocena);
 			try {
 				novaOcena = OcenaLekarService.save(novaOcena);
 			}
 			catch(Exception e)
 			{
-				return  new ResponseEntity<>(new OcenaLekarDTO(staraOcena), HttpStatus.BAD_REQUEST);
+				return  new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 			}
-			
-			return new ResponseEntity<>(new OcenaLekarDTO(staraOcena), HttpStatus.CREATED);
+			return new ResponseEntity<>(new OcenaLekarDTO(novaOcena), HttpStatus.CREATED);
+			//return new ResponseEntity<>(new OcenaLekarDTO(staraOcena), HttpStatus.CREATED);
 		}
 		
 		
