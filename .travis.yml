@@ -5,17 +5,20 @@ jdk: oraclejdk8
 
 services:
  - postgresql
+
  
+before_install:
+  - chmod +x MRS2020_T10/mvnw
+  
 addons:
   sonarcloud:
-    organization: "isamrstim10"
-    token:
-      secure: "**************************" # encrypted value of your token
+    organization: isamrstim10
+    token: aa28177b1bff136d562806ce41abb1da1d578413
+
 script:
  - cd MRS2020_T10
- - mvn clean install
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-
+ -  mvn clean install
+ -  mvn sonar:sonar -Dsonar.projectKey=KljucTim10 -Dsonar.organization=isamrstim10 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=aa28177b1bff136d562806ce41abb1da1d578413
 
 dist: trusty
 
