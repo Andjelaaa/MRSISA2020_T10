@@ -3,6 +3,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Version;
+
 import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
 import main.mrs.model.Pacijent;
@@ -20,8 +23,9 @@ public class OperacijaDTO {
    public SalaDTO sala;
    public Set<LekarDTO> lekar;
    public PacijentDTO pacijent;
-	  
-	public OperacijaDTO() {
+   private int brojLekara;
+   private Long version;
+   public OperacijaDTO() {
 			
 		}
    public OperacijaDTO(Operacija s) {
@@ -34,8 +38,6 @@ public class OperacijaDTO {
 		if(s.getPacijent() != null)
 			this.pacijent = new PacijentDTO(s.getPacijent());
 		this.status = StatusDTO.valueOf(s.getStatus().toString());
-		
-		  
 	}
 	
 	public OperacijaDTO(Date datumVreme2, Integer id2, Set<Lekar> lekar2, Sala sala2, Status status2,
@@ -164,6 +166,18 @@ public class OperacijaDTO {
 	
 	public void setLekar(Set<LekarDTO> lekar) {
 		this.lekar = lekar;
+	}
+	public int getBrojLekara() {
+		return brojLekara;
+	}
+	public void setBrojLekara(int brojLekara) {
+		this.brojLekara = brojLekara;
+	}
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 	}

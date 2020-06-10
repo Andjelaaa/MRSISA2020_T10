@@ -153,12 +153,12 @@ insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id,
 values('2020-06-5 12:00:00', 'nema opisa', '2020-06-02 11:00:00', 0, 'Odmor' , 2, null, null,1);
 
 
-insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-5 12:00:00', 1, 30, 1, null, null, 1,1,1);
-insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-21 13:23:00', 3, 43, 1, null, null, 1,1,1);
-insert into operacija (datum_vreme,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
-values('2020-06-22 12:00:00', 3, 30, 1, null, null, 2,1,1);
+insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
+values('2020-06-5 12:00:00',1, 1, 30, 1, null, null, 1,1,1);
+insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
+values('2020-06-21 13:23:00',1, 3, 43, 1, null, null, 1,1,1);
+insert into operacija (datum_vreme,broj_lekara,status, trajanje, sala_id, stavka_cenovnika_id, zkarton_id, klinika_id, pacijent_id,version) 
+values('2020-06-22 12:00:00',1, 3, 30, 1, null, null, 2,1,1);
 
 insert into operacija_lekar(operacija_id, lekar_id) values(1,1);
 insert into operacija_lekar(operacija_id, lekar_id) values(2,1);
