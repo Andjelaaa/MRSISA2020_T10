@@ -1,7 +1,7 @@
 Vue.component('lekari-klinike', {
 	data: function(){
 		return{
-			admin: {},
+			pacijent: {},
 			uloga: '',
 			sviLekari: null,
 			pretraga: {ime:'', prezime:''},
@@ -116,7 +116,12 @@ Vue.component('lekari-klinike', {
 			localStorage.removeItem("token");
 			this.$router.push('/');
 		},
-
+		
+		brzoZakazivanje: function(klinikaId)
+		{
+			this.$router.push('/predefinisanipregledi/'+ this.$route.params.name)
+		},
+		
 		pretrazi: function(){
 			axios
 	       	.post('api/lekar/search/klinika/'+this.$route.params.name, this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
@@ -130,12 +135,12 @@ Vue.component('lekari-klinike', {
 		this.token = localStorage.getItem("token");
 		axios
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )
-        .then(response => { this.admin = response.data; 
+        .then(response => { this.pacijent = response.data; 
 	        axios
-			.put('/auth/dobaviulogu', this.admin, { headers: { Authorization: 'Bearer ' + this.token }} )
+			.put('/auth/dobaviulogu', this.pacijent, { headers: { Authorization: 'Bearer ' + this.token }} )
 		    .then(response => {
 		    	this.uloga = response.data;
-		    	if (this.uloga != "ROLE_ADMIN_KLINIKE") {
+		    	if (this.uloga != "ROLE_PACIJENT") {
 		    		this.$router.push('/');
 		    	}else{
 		    		

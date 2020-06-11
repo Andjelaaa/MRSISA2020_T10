@@ -101,4 +101,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 	
 	@Query(value = "SELECT * FROM LEKAR WHERE ID = ?1", nativeQuery = true)
 	Lekar findById(int id);
+
+	@Query(value = "SELECT * FROM LEKAR WHERE upper(IME) like ?1 and upper(prezime) like ?2 and klinika_id = ?3", nativeQuery = true)
+	List<Lekar> findByImeAndPrezimeAndKlinika(String upperCase, String upperCase2, Integer idKlinike);
 }

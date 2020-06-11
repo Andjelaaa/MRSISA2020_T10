@@ -179,6 +179,39 @@ public class LekarContoller {
 
 		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/lekariKlinike/{klinikaId}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<LekarDTO>> getLekariKlinike(@PathVariable Integer klinikaId) {
+
+		List<Lekar> Lekars = LekarService.findAllByIdKlinike(klinikaId);
+
+		// convert Lekars to DTOs
+		List<LekarDTO> LekarsDTO = new ArrayList<>();
+		for (Lekar s : Lekars) {
+			LekarsDTO.add(new LekarDTO(s));
+		}
+		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/search/klinika/{idKlinike}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<LekarDTO>> getSearchLekariKlinike(@RequestBody SearchLekar sl, @PathVariable Integer idKlinike) {
+		//System.out.println(sl.getIme()+sl.getPrezime());
+		//AdminKlinike ak = adminKlinikeService.findOne(idAdmina);
+		List<Lekar> Lekars = LekarService.findByImeAndPrezimeAndKlinika(sl.getIme().toUpperCase(), sl.getPrezime().toUpperCase(), idKlinike);
+
+		// convert Lekars to DTOs
+		List<LekarDTO> LekarsDTO = new ArrayList<>();
+		for (Lekar s : Lekars) {
+			
+			LekarsDTO.add(new LekarDTO(s));
+		}
+		// selekcija za ocenu
+
+		return new ResponseEntity<>(LekarsDTO, HttpStatus.OK);
+	}
+	
 	@PostMapping(value ="/slobodniLekari/search")
 	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<PomocnaKlasa5>> pretragaSlobodnihLkeara(@RequestBody PomocnaKlasa6 data)

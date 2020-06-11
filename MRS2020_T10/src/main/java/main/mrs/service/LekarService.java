@@ -73,4 +73,9 @@ public class LekarService {
 		// TODO Auto-generated method stub
 		return LekarRepository.findById(lekarId);
 	}
+
+	public List<Lekar> findByImeAndPrezimeAndKlinika(String upperCase, String upperCase2, Integer idKlinike) {
+		// TODO Auto-generated method stub
+		return LekarRepository.findByImeAndPrezimeAndKlinika(upperCase, upperCase2, idKlinike);
+	}
 }
