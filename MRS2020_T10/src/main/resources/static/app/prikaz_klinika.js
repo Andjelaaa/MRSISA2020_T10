@@ -4,6 +4,8 @@ Vue.component('klinike-prikaz', {
 			klinike: [],
 			pacijent: {},
 			uloga: {},
+			pretraga: false,
+			cena: 0.0,
 			tipPregleda: {naziv: null},
 			datum: null,
 			tipoviPregleda: null,
@@ -31,7 +33,7 @@ Vue.component('klinike-prikaz', {
 		        <a class="nav-link" href="#/pacijentpregledi">Pregledi/Operacije</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Zdravstveni karton</a>
+		        <a class="nav-link" href="#/zdravstveniKarton">Zdravstveni karton</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/profilpacijenta">Profil: {{pacijent.ime}} {{pacijent.prezime}}</a>
@@ -52,6 +54,7 @@ Vue.component('klinike-prikaz', {
 			<th>Adersa</th>
 			<th @click="sort('prosecnaOcena')" class="class1">Prosecna ocena</th>
 			<th>Kontakt</th>
+			<th v-show='pretraga'>Cena</th>
 			<th></th>
 			</tr>
 			
@@ -60,6 +63,7 @@ Vue.component('klinike-prikaz', {
 				<td>{{k.adresa}}</td>
 				<td>{{k.prosecnaOcena}}</td>
 				<td>{{k.kontaktKlinike}}</td>
+				<td v-show='pretraga'>{{dobaviCenu()}}</td>
 				<td><button v-on:click = "detalji(k.id)" class="btn btn-light" >Detalji</button></td>
 			</tr>
 		</table>
@@ -92,7 +96,19 @@ Vue.component('klinike-prikaz', {
 	`, 
 	
 	methods : {
-		
+		dobaviCenu()
+		{
+			// za klinikaId i this.tipPregleda.naziv nadji cenu
+			if(!this.pretraga)
+				return 0.0;
+			axios
+	       	.get('api/stavkacenovnika/cena/' + this.tipPregleda.naziv,  { headers: { Authorization: 'Bearer ' + this.token }} )
+	       	.then(response => (this.cena = response.data))
+	       	.catch((res)=>{
+	        	  console.log('neuspesno');
+	       	});
+			return this.cena;
+		},
 		validacija: function(){
 			this.greskaDatum = '';
 			this.greskaTipPregleda = '';
@@ -120,9 +136,9 @@ Vue.component('klinike-prikaz', {
 			this.greskaDatum = '';
 			this.greskaTipPregleda = '';
 			// da se desi pretraga po datumu i tipu pregleda
-			
+			this.pretraga = true;
 			axios
-	       	.post('api/klinika/slobodnitermini/'+ this.datum + '/' + this.tipPregleda.naziv)
+	       	.get('api/klinika/slobodnitermini/'+ this.datum + '/' + this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
 	       	.then(response => (this.klinike = response.data))
 	       	.catch((res)=>{
 	        	  console.log('neuspesno');
@@ -130,13 +146,16 @@ Vue.component('klinike-prikaz', {
 		},
 		
 		detalji: function(klinikaId){
-			if(this.datum && this.greskaTipPregleda.naziv){
-				// onda detalje za zakazivanje
+			if(this.pretraga){
+				// odabrani su kriterijumi pretrage
+				//console.log(klinikaId);
+				this.$router.push('/detaljiKlinike/'+klinikaId+'/'+this.datum+'/'+this.tipPregleda.naziv);
 			}
 			else{
 				// samo detalji za kliniku
-				console.log(klinikaId);
-				this.$router.push('/detaljiKlinike/'+klinikaId+'/'+this.datum+'/'+this.tipPregleda.naziv);
+				// nisu odabrani kriterijumi pretrage
+				this.$router.push('/lekariKlinike/'+klinikaId);
+				
 			}
 		},
 		sort:function(s) {

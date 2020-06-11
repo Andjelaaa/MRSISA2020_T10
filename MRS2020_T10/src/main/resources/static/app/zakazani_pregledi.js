@@ -35,7 +35,7 @@ Vue.component('zakazani-pregledi', {
 		        <a class="nav-link" href="#/pacijentpregledi">Pregledi/Operacije</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Zdravstveni karton</a>
+		        <a class="nav-link" href="#/zdravstveniKarton">Zdravstveni karton</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="#/profilpacijent">Profil: {{pacijent.ime}} {{pacijent.prezime}}</a>

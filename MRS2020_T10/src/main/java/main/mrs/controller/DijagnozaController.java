@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.DijagnozaDTO;
-import main.mrs.dto.LekDTO;
+import main.mrs.dto.PregledDTO;
 import main.mrs.model.Dijagnoza;
-import main.mrs.model.Lek;
-import main.mrs.model.PomocnaKlasa2;
+import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa3;
+import main.mrs.model.PomocnaKlasa9;
+import main.mrs.model.Pregled;
 import main.mrs.service.DijagnozaService;
+import main.mrs.service.PacijentService;
+import main.mrs.service.PregledService;
 
 @RestController
 @RequestMapping(value="api/dijagnoze")
@@ -27,6 +32,12 @@ public class DijagnozaController {
 
 	@Autowired
 	private DijagnozaService DijagnozaService;
+	
+	@Autowired
+	private PacijentService PacijentService;
+	
+	@Autowired
+	private PregledService PregledService;
 	
 
 	@GetMapping(value = "/all")
@@ -41,6 +52,27 @@ public class DijagnozaController {
 		}
         
 		return new ResponseEntity<>(DijagnozeeDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/pacijent")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<PomocnaKlasa9>> getDijagnozePacijenta() {
+		List<PomocnaKlasa9> result = new ArrayList<PomocnaKlasa9>();
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		// dobavim zavrsene preglede
+		// pregled->izvestaj->dijagnoza
+		
+		List<Pregled> pregledi = PregledService.findZavrsenePacijent(p.getId());
+		for (Pregled s : pregledi) {
+	
+			if(s.getIzvestaj().getDijagnoza() == null)
+				continue;
+			PomocnaKlasa9 pk = new PomocnaKlasa9(s.getDatumVreme(), s.getIzvestaj().getDijagnoza().getNaziv(), s.getLekar().getIme() + " " + s.getLekar().getPrezime());
+			result.add(pk);
+		}
+        
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = "application/json")

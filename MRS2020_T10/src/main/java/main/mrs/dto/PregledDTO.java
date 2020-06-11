@@ -1,6 +1,7 @@
 package main.mrs.dto;
 import java.util.*;
 
+import main.mrs.model.Dijagnoza;
 import main.mrs.model.Izvestaj;
 import main.mrs.model.Pacijent;
 import main.mrs.model.Pregled;
@@ -35,6 +36,8 @@ public class PregledDTO {
 			this.pacijent = new PacijentDTO(s.getPacijent());
 		this.status = StatusDTO.valueOf(s.getStatus().toString());
 		this.popust = s.getPopust();
+		if(s.getIzvestaj() != null)
+			this.izvestaj = new IzvestajDTO(s.getIzvestaj());
 		this.lek = new HashSet<LekDTO>();
    }
 

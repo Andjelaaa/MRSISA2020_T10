@@ -39,6 +39,8 @@ const ProfilLekar = {template: '<profillekar></profillekar>'}
 const ProfilAdmin = {template: '<profiladmin></profiladmin>'}
 const DodajSAdmin = {template: '<dodajsa></dodajsa>'}
 const ProfilPacijent = {template: '<profilpacijent></profilpacijent>'}
+const ZdravstveniKarton = {template: '<zdravstveni-karton></zdravstveni-karton>'}
+const LekariKlinike = {template: '<lekari-klinike></lekari-klinike>'}
 
 
 const router = new VueRouter({
@@ -85,12 +87,20 @@ const router = new VueRouter({
 		{ path: '/profiladmin', component: ProfilAdmin},
 		{ path: '/dodajsa', component: DodajSAdmin},
 		{ path: '/profilpacijent', component: ProfilPacijent},
+		{ path: '/zdravstveniKarton', component: ZdravstveniKarton},
+		{ path: '/lekariKlinike/:name', component: LekariKlinike},
 	    ]
 });
 
 Vue.filter('formatDate', function(value) {
 	  if (value) {
 	    return moment(String(value)).format('DD/MM/YYYY HH:mm')
+	  }
+});
+
+Vue.filter('formatOnlyDate', function(value) {
+	  if (value) {
+	    return moment(String(value)).format('DD/MM/YYYY')
 	  }
 });
 

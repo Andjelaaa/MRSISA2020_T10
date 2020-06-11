@@ -61,6 +61,10 @@ Vue.component('profilpacijent', {
 			   		<td>{{pacijent.email}}</td>	  
 			   	</tr>
 			   	<tr>
+			   		<td>LBO</td>
+			   		<td>{{pacijent.lbo}}</td>
+			   	</tr>
+			   	<tr>
 			   		<td>Adresa</td>
 			   		<td>{{pacijent.adresa}}</td>
 			   	</tr>
@@ -119,7 +123,7 @@ Vue.component('profilpacijent', {
 									</tr>
 									<tr>
 										<td>Email:</td>
-										<td><input  class="form-control" type="text" v-model = "selected.email"/></td>
+										<td>{{selected.email}}</td>
 									</tr>
 									<tr>
 										<td>Adresa:</td>

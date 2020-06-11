@@ -49,6 +49,18 @@ public class StavkaCenovnikaController {
 	}
 	
 	
+	@GetMapping(value = "/cena/{tipPregleda}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<Double> cenaPregleda(@PathVariable String tipPregleda) {
+
+		//Klinika Klinika = KlinikaService.findOneById(klinikaId);
+		System.out.println("Ne brini naci cemo cenu");
+		
+		
+		TipPregleda tip = TipPregledaService.findByNaziv(tipPregleda);
+		return new ResponseEntity<>(tip.getStavka().getCena(), HttpStatus.OK);
+	}
+	
 	@PostMapping(consumes = "application/json", value = "/{nazivTipaPregleda}")
 	@PreAuthorize("hasRole('ADMIN_KLINIKE')")
 	public ResponseEntity<StavkaCenovnikaDTO> saveStavkaCenovnika(@RequestBody StavkaCenovnikaDTO StavkaCenovnikaDTO, @PathVariable String nazivTipaPregleda) {

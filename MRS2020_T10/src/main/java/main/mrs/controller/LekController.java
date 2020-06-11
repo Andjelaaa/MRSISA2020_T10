@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.mrs.dto.AdminKCDTO;
 import main.mrs.dto.LekDTO;
-import main.mrs.model.AdminKC;
 import main.mrs.model.Lek;
 import main.mrs.model.Pacijent;
 import main.mrs.model.PomocnaKlasa2;
-import main.mrs.service.AdminKCService;
+import main.mrs.model.PomocnaKlasa9;
+import main.mrs.model.Pregled;
 import main.mrs.service.LekService;
+import main.mrs.service.PacijentService;
+import main.mrs.service.PregledService;
 
 @RestController
 @RequestMapping(value="api/lekovi")
@@ -31,6 +32,11 @@ public class LekController {
 	@Autowired
 	private LekService LekService;
 	
+	@Autowired
+	private PacijentService PacijentService;
+	
+	@Autowired
+	private PregledService PregledService;
 	
 
 	@GetMapping(value = "/all")
@@ -47,6 +53,29 @@ public class LekController {
 		return new ResponseEntity<>(LeksDTO, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/pacijent")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<PomocnaKlasa9>> getDijagnozePacijenta() {
+		List<PomocnaKlasa9> result = new ArrayList<PomocnaKlasa9>();
+		Authentication trenutniKorisnik = SecurityContextHolder.getContext().getAuthentication();
+		Pacijent p = PacijentService.findByEmail(trenutniKorisnik.getName());
+		// dobavim zavrsene preglede
+		// pregled->izvestaj->recept->setLekova
+		
+		List<Pregled> pregledi = PregledService.findZavrsenePacijent(p.getId());
+		for (Pregled s : pregledi) {
+	
+			if(s.getIzvestaj().getRecept() == null)
+				continue;
+			for(Lek l: s.getIzvestaj().getRecept().getLek())
+			{
+				PomocnaKlasa9 pk = new PomocnaKlasa9(s.getDatumVreme(), l.getNaziv(), s.getLekar().getIme() + " " + s.getLekar().getPrezime());
+				result.add(pk);
+			}
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
 	@PostMapping(consumes = "application/json")
 	@PreAuthorize("hasRole('ADMIN_KLINICKOG_CENTRA')")
 	public ResponseEntity<LekDTO> saveLekove(@RequestBody LekDTO LekDTO) {

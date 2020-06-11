@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.KlinikaDTO;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.SearchIzvestaj;
+import main.mrs.model.Cenovnik;
 import main.mrs.model.KlinickiCentar;
 import main.mrs.model.Klinika;
 import main.mrs.model.Lekar;
@@ -33,6 +34,7 @@ import main.mrs.model.Odsustvo;
 import main.mrs.model.PomocnaKlasa5;
 import main.mrs.model.Pregled;
 import main.mrs.model.SlobodnoVreme;
+import main.mrs.model.StavkaCenovnika;
 import main.mrs.model.TipPregleda;
 import main.mrs.service.KlinickiCentarService;
 import main.mrs.service.KlinikaService;
@@ -82,6 +84,8 @@ public class KlinikaController {
 		// convert Klinike to DTOs
 		return new ResponseEntity<>(new KlinikaDTO(Klinika), HttpStatus.OK);
 	}
+	
+	
 	
 	@GetMapping(value = "/slobodnitermini/lekari/{datum}/{tipPregleda}")
 	@PreAuthorize("hasRole('ROLE_PACIJENT')")
@@ -197,7 +201,8 @@ public class KlinikaController {
 		//return new ResponseEntity<>(LekarDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/slobodnitermini/{datum}/{tipPregleda}")
+	@GetMapping(value = "/slobodnitermini/{datum}/{tipPregleda}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
 	public ResponseEntity<List<KlinikaDTO>> klinikeSlobodniTermini(@PathVariable String datum, @PathVariable String tipPregleda) {
 		System.out.println("TRAZIM TERMINE SLOBODNE");
 		TipPregleda tp = TipPregledaService.findByNaziv(tipPregleda);
@@ -345,6 +350,10 @@ public class KlinikaController {
 		klinika.setOpis(KlinikaDTO.getOpis());
 		klinika.setEmailKlinike(KlinikaDTO.getEmailKlinike());
 		klinika.setKontaktKlinike(KlinikaDTO.getKontaktKlinike());
+		// dodacu za ceovnik samo id
+		//Cenovnik cenovnik = new Cenovnik();
+		//cenovnik.setId(KlinikaDTO.getCenovnik().getId());
+		//klinika.setCenovnik(cenovnik);
 		klinika.setProsecnaOcena(0.0);
 		klinika.setBrojOcena(0);
 		

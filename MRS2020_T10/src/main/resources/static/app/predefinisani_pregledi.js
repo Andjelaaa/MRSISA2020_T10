@@ -28,10 +28,10 @@ Vue.component('predefpregledi', {
 		        <a class="nav-link" href="#/pacijentpregledi">Pregledi/Operacije</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/">Zdravstveni karton</a>
+		        <a class="nav-link" href="#/zdravstveniKarton">Zdravstveni karton</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#/profilpacijent">Profil</a>
+		        <a class="nav-link" href="#/profilpacijent">Profil: {{this.pacijent.ime}} {{this.pacijent.prezime}}</a>
 		      </li>
 		    </ul>
 		    <form class="form-inline my-2 my-lg-0">

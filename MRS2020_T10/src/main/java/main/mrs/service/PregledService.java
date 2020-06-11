@@ -115,6 +115,11 @@ public class PregledService {
 		return  PregledRepository.findAllByType(id);
 	}
 
+	public List<Pregled> findZavrsenePacijent(Integer id) {
+		// TODO Auto-generated method stub
+		return PregledRepository.findZavrsenePacijent(id);
+	}
+
 
 
 }

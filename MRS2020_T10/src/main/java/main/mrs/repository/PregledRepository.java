@@ -141,6 +141,9 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 
 	  @Query(value = "SELECT * FROM PREGLED WHERE TIP_PREGLEDA_ID = ?1", nativeQuery = true)
 	  List<Pregled> findAllByType(Integer id);
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID = ?1 AND STATUS = 4", nativeQuery = true)
+	  List<Pregled> findZavrsenePacijent(Integer id);
 }
 
 
