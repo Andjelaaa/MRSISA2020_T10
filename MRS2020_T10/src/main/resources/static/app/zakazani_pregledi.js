@@ -1,10 +1,10 @@
 Vue.component('zakazani-pregledi', {
 	data: function(){
 		return{
-			pregledi: null,
-			operacije: null,
-			istorijaPregleda: null,
-			istorijaOperacija: null,
+			pregledi: [],
+			operacije: [],
+			istorijaPregleda: [],
+			istorijaOperacija: [],
 			idPacijenta: 1,
 			pacijent: {},
 			uloga: '',
@@ -14,7 +14,15 @@ Vue.component('zakazani-pregledi', {
 			isHidden: false,
 			isHiddenIstorija: false,
 			isHiddenOperacija: false,
-			isHiddenIstorijaOperacija: false
+			isHiddenIstorijaOperacija: false,
+			currentSortPregled:'datumVreme',
+			  currentSortDirPregled:'asc',
+			currentSortIstorijaPregled:'datumVreme',
+			  currentSortDirIstorijaPregled:'asc',
+			currentSortOperacija:'datumVreme',
+			  currentSortDirOperacija:'asc',
+			currentSortIstorijaOperacija:'datumVreme',
+			  currentSortDirIstorijaOperacija:'asc'
 		}
 	},
 
@@ -53,21 +61,23 @@ Vue.component('zakazani-pregledi', {
 		<div v-show='isHidden'>
 		<table class="table table-hover table-light ">
 			<tr>
-			<th>Datum i vreme</th>
-			<th>Trajanje</th>
-			<th>Tip pregleda</th>
+			<th @click="sortPregled('datumVreme')" class="class1">Datum i vreme</th>
+			<th @click="sortPregled('trajanje')" class="class1">Trajanje</th>
+			<th @click="sortPregled('tipPregleda.naziv')" class="class1">Tip pregleda</th>
 			<th>Lekar</th>
 			<th>Sala</th>
 			<th>Status</th>
+			<th></th>
 			</tr>
 			
-			<tr v-for="(p, index) in pregledi">
+			<tr v-for="(p, index) in sortedPregledi">
 				<td>{{p.datumVreme | formatDate}}</td>
 				<td>{{p.trajanje}}</td>
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
-				<td>broj sale</td>
-				<!--<td>{{p.sala.broj}}</td>-->
+				
+				<td v-if="p.sala != null">{{p.sala.broj}}</td>
+				<td v-if="p.sala == null">/</td>
 				<td>{{p.status}}</td>
 				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
 						<modal v-if="showModal" @close="showModal = false">
@@ -88,32 +98,21 @@ Vue.component('zakazani-pregledi', {
 		<div v-show='isHiddenOperacija'>
 		<table class="table table-hover table-light ">
 			<tr>
-			<th>Datum i vreme</th>
-			<th>Trajanje</th>
+			<th @click="sortOperacija('datumVreme')" class="class1">Datum i vreme</th>
+			<th @click="sortOperacija('trajanje')" class="class1">Trajanje</th>
 			<th>Lekari</th>
 			<th>Sala</th>
 			<th>Status</th>
-			<th></th>
 			</tr>
 			
-			<tr v-for="(o, index) in operacije">
+			<tr v-for="(o, index) in sortedOperacija">
 				<td>{{o.datumVreme | formatDate}}</td>
 				<td>{{o.trajanje}}</td>
 				<td>{{o.lekar[0].ime}} {{o.lekar[0].prezime}}</td>
-				<!--<td v-for="l in o.lekar>{{l.ime}} {{l.prezime}} </td>-->
-					<td>broj sale</td>
-				<!--<td>{{o.sala.broj}}</td>-->
+				
+				<td v-if="o.sala != null">{{o.sala.broj}}</td>
+				<td v-if="o.sala == null">/</td>
 				<td>{{o.status}}</td>
-				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" >Otkazi</button>
-						<modal v-if="showModal" @close="showModal = false">
-        
-        					<h3 slot="header">Potvrdi otkazivanje</h3>
-        					<p slot="body">Da li ste sigurni?</p>
-        					<div slot="footer">
-        						<button @click="showModal=false" style="margin:5px;" class="btn btn-success" v-on:click="otkaziOperaciju(o.id, index)"> Potvrdi </button>       						
-								<button style="margin:5px;" class="btn btn-secondary" @click="showModal=false"> Odustani </button>								
-							</div>
-						</modal></td>
 			</tr>
 		</table>
 		</div>
@@ -122,21 +121,21 @@ Vue.component('zakazani-pregledi', {
 		<div v-show='isHiddenIstorija'>
 		<table class="table table-hover table-light ">
 			<tr>
-			<th>Datum i vreme</th>
-			<th>Trajanje</th>
+			<th @click="sortIstorijaPregled('datumVreme')" class="class1">Datum i vreme</th>
+			<th @click="sortIstorijaPregled('trajanje')" class="class1">Trajanje</th>
 			<th>Tip pregleda</th>
 			<th>Lekar</th>
-			<th>Sala</th>
+			<th @click="sortPregled('sala.broj')" class="class1">Sala</th>
 			<th></th>
 			</tr>
 			
-			<tr v-for="(p, index) in istorijaPregleda">
+			<tr v-for="(p, index) in sortedIstorijaPregledi">
 				<td>{{p.datumVreme | formatDate}}</td>
 				<td>{{p.trajanje}}</td>
 				<td>{{p.tipPregleda.naziv}}</td>
 				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
-					<td>broj sale</td>
-				<!--<td>{{p.sala.broj}}</td>-->
+				<td v-if="p.sala != null">{{p.sala.broj}}</td>
+				<td v-if="p.sala == null">/</td>
 
 				<td><button class="btn btn-light" id="show-modal" @click="showModal = true" v-on:click="select(p)">Oceni</button>
 						<modal v-if="showModal" @close="showModal = false">
@@ -169,19 +168,20 @@ Vue.component('zakazani-pregledi', {
 		<div v-show='isHiddenIstorijaOperacija'>
 		<table class="table table-hover table-light ">
 			<tr>
-			<th>Datum i vreme</th>
-			<th>Trajanje</th>
+			<th @click="sortIstorijaOperacija('datumVreme')" class="class1">Datum i vreme</th>
+			<th @click="sortIstorijaOperacija('trajanje')" class="class1">Trajanje</th>
 			<th>Lekari</th>
-			<th>Sala</th>
+			<th @click="sortIstorijaOperacija('sala.broj')" class="class1">Sala</th>
 			<th></th>
 			</tr>
 			
-			<tr v-for="(o, index) in istorijaOperacija">
+			<tr v-for="(o, index) in sortedIstorijaOperacija">
 				<td>{{o.datumVreme | formatDate}}</td>
 				<td>{{o.trajanje}}</td>
 				<td v-for="l in o.lekar> {{l.ime}} {{l.prezime}} </td>
 				<td>broj sale</td>
-				<!--<td>{{o.sala.broj}}</td>-->
+				<td v-if="o.sala.broj != null">{{o.sala.broj}}</td>
+				<td v-if="o.sala.broj == null">/</td>
 				<td></td>
 			</tr>
 		</table>
@@ -269,8 +269,77 @@ Vue.component('zakazani-pregledi', {
 		odjava : function(){
 			localStorage.removeItem("token");
 			this.$router.push('/');
-		}
+		},
+		sortPregled: function(s) {
+		    //if s == current sort, reverse
+		    if(s === this.currentSortPregled) {
+		      this.currentSortDirPregled = this.currentSortDirPregled==='asc'?'desc':'asc';
+		    }
+		    this.currentSortPregled = s;
+		  },
+		  sortIstorijaPregled: function(s) {
+			    //if s == current sort, reverse
+			    if(s === this.currentSortIstorijaPregled) {
+			      this.currentSortDirIstorijaPregled = this.currentSortDirIstorijaPregled==='asc'?'desc':'asc';
+			    }
+			    this.currentSortIstorijaPregled = s;
+		},
+		sortOperacija: function(s) {
+		    //if s == current sort, reverse
+		    if(s === this.currentSortOperacija) {
+		      this.currentSortDirOperacija = this.currentSortDirOperacija==='asc'?'desc':'asc';
+		    }
+		    this.currentSortOperacija = s;
+		  },
+		  
+		  sortIstorijaOperacija: function(s) {
+			    //if s == current sort, reverse
+			    if(s === this.currentSortIstorijaOperacija) {
+			      this.currentSortDirIstorijaOperacija = this.currentSortDirIstorijaOperacija==='asc'?'desc':'asc';
+			    }
+			    this.currentSortIstorijaOperacija = s;
+			  },
 	},
+	
+	computed:{
+		  sortedPregledi:function() {
+		    return this.pregledi.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDirPregled === 'desc') modifier = -1;
+		      if(a[this.currentSortPregled] < b[this.currentSortPregled]) return -1 * modifier;
+		      if(a[this.currentSortPregled] > b[this.currentSortPregled]) return 1 * modifier;
+		      return 0;
+		    });
+		  },
+		  
+		  sortedIstorijaPregledi:function() {
+			    return this.istorijaPregleda.sort((a,b) => {
+			      let modifier = 1;
+			      if(this.currentSortDirIstorijaPregled === 'desc') modifier = -1;
+			      if(a[this.currentSortIstorijaPregled] < b[this.currentSortIstorijaPregled]) return -1 * modifier;
+			      if(a[this.currentSortIstorijaPregled] > b[this.currentSortIstorijaPregled]) return 1 * modifier;
+			      return 0;
+			    });
+			  },
+		sortedOperacija:function() {
+			return this.operacije.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDirOperacija === 'desc') modifier = -1;
+		      if(a[this.currentSortOperacija] < b[this.currentSortOperacija]) return -1 * modifier;
+		      if(a[this.currentSortOperacija] > b[this.currentSortOperacija]) return 1 * modifier;
+		      return 0;
+		    });
+		  },
+		  sortedIstorijaOperacija:function() {
+				return this.istorijaOperacija.sort((a,b) => {
+			      let modifier = 1;
+			      if(this.currentSortDirIstorijaOperacija === 'desc') modifier = -1;
+			      if(a[this.currentSortIstorijaOperacija] < b[this.currentSortIstorijaOperacija]) return -1 * modifier;
+			      if(a[this.currentSortIstorijaOperacija] > b[this.currentSortIstorijaOperacija]) return 1 * modifier;
+			      return 0;
+			    });
+			  },
+		},
 	
 	mounted () {	
 		this.token = localStorage.getItem("token");

@@ -5,9 +5,11 @@ Vue.component('predefpregledi', {
 			pacijent: {},
 			uloga: {},
 			datum: null,
+			greska:"",
 			tipoviPregleda: null,
 			tipPregleda: {naziv: null},
-			showModal: false
+			showModal: false,
+			nemaRezultata: ""
 		}
 	},
 	
@@ -44,7 +46,7 @@ Vue.component('predefpregledi', {
 			<tr>
 				<td>Pretrazi preglede od: </td>
 				<td><input class="form-control" id="datum" type="date" v-model="datum"></td>
-				<td><button  v-on:click = "pretragaDatum()" class="btn btn-light">Pretrazi</button></td>
+				<td>{{this.greska}}</td>
 			</tr>
 			
 			<tr>
@@ -54,10 +56,11 @@ Vue.component('predefpregledi', {
 						<option v-for="t in tipoviPregleda" :value="t.naziv">{{t.naziv}}</option>
 					</select>
 				</td>
-				<td><button v-on:click = "pretragaTip()" class="btn btn-light">Pretrazi</button></td>
+				<td><button v-on:click = "pretrazi()" class="btn btn-light">Pretrazi</button></td>
 			</tr>
 		</table>
 		<br>
+		<h4>{{this.nemaRezultata}}</h4>
 		<table  class="table table-hover table-light ">
 			<tr>
 			<th>Datum i vreme</th>
@@ -117,37 +120,28 @@ Vue.component('predefpregledi', {
 		validacija : function(){
 			return 0;
 		},
-		pretragaDatum : function(){
-			if(this.validacija() == 1)
-				return;
-			console.log(this.datum);
-			axios
-			.get('api/pregled/datum/'+this.datum, { headers: { Authorization: 'Bearer ' + this.token }} )
-			.then(res=>{
-				this.pregledi = res.data;
-				if(this.pregledi == null)
-					console.log('nema rezultat');
-			}).catch((res)=>{
-				// nema rezultata ili nesto drugo da je u pitanju
-				console.log('nema rezultat');
-			})
-		},
 		
-		pretragaTip: function(){
-			if(this.validacija() == 1)
-				return;
-			axios
-			.get('api/pregled/tip/'+this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
-			.then(res=>{
-				this.pregledi = res.data;
-				if(this.pregledi == null)
-					console.log('nema rezultat');
-			}).catch((res)=>{
-				// nema rezultata ili nesto drugo da je u pitanju
-				console.log('neuspesno');
-			})
-		},
-		
+		 pretrazi: function(){
+			 if(!this.datum || !this.tipPregleda.naziv){
+					this.greska = 'Datum i tip pregleda su obavezni!';
+					return 1;
+			}
+			 this.nemaRezultata = "";
+			 this.greska = "";
+				axios
+		       	.get('api/pregled/search/'+ this.datum + '/' + this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
+		       	.then(res => {this.pregledi = res.data;
+		       		if(this.pregledi[0] == null){
+		       			this.nemaRezultata = "Nema rezultata pretrage";
+		       			console.log('nema rezultat');
+		       		}
+		       		
+		       	}).catch((res)=>{
+					// nema rezultata ili nesto drugo da je u pitanju
+					console.log('neuspesno');
+				})
+
+			},
 		
 	},
 	

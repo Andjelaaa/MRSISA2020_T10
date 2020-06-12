@@ -2,7 +2,11 @@ Vue.component('pacijent', {
 	data: function(){
 		return{
 			pacijent: {},
-			uloga: ''
+			uloga: '',
+			pregledi: [],
+			operacije: [],
+			isHidden: false,
+			isHiddenOperacija: false
 		}
 	},
 	template: `
@@ -34,6 +38,57 @@ Vue.component('pacijent', {
 		  </div>
 		</nav>
 		</br>
+		
+		<h2> Zakazani pregledi <button  class="btn btn-light" @click='isHidden = !isHidden'>+/-</button> </h2>
+		
+		<div v-show='isHidden'>
+		<table class="table table-hover table-light ">
+			<tr>
+			<th>Datum i vreme</th>
+			<th>Trajanje</th>
+			<th>Tip pregleda</th>
+			<th>Lekar</th>
+			<th>Sala</th>
+			<th>Status</th>
+			</tr>
+			
+			<tr v-for="(p, index) in pregledi">
+				<td>{{p.datumVreme | formatDate}}</td>
+				<td>{{p.trajanje}}</td>
+				<td>{{p.tipPregleda.naziv}}</td>
+				<td>{{p.lekar.ime}} {{p.lekar.prezime}}</td>
+				
+				<td v-if="p.sala != null">{{p.sala.broj}}</td>
+				<td v-if="p.sala == null">/</td>
+				<td>{{p.status}}</td>
+				
+			</tr>
+		</table>
+		</div>
+		
+		<h2> Zakazane operacije <button  class="btn btn-light" @click='isHiddenOperacija = !isHiddenOperacija'>+/-</button> </h2>
+		
+		<div v-show='isHiddenOperacija'>
+		<table class="table table-hover table-light ">
+			<tr>
+			<th>Datum i vreme</th>
+			<th>Trajanje</th>
+			<th>Lekari</th>
+			<th>Sala</th>
+			<th>Status</th>
+			</tr>
+			
+			<tr v-for="(o, index) in operacije">
+				<td>{{o.datumVreme | formatDate}}</td>
+				<td>{{o.trajanje}}</td>
+				<td>{{o.lekar[0].ime}} {{o.lekar[0].prezime}}</td>
+				
+				<td v-if="o.sala != null">{{o.sala.broj}}</td>
+				<td v-if="o.sala == null">/</td>
+				<td>{{o.status}}</td>
+			</tr>
+		</table>
+		</div>
 	
 	</div>
 	`, 
@@ -55,6 +110,18 @@ Vue.component('pacijent', {
 		    	this.uloga = response.data;
 		    	if (this.uloga != "ROLE_PACIJENT") {
 		    		router.push('/');
+		    	}
+		    	else{
+		    		axios
+		    		.get('api/pregled/zakazaniPregledi', { headers: { Authorization: 'Bearer ' + this.token }})
+		    		.then(res => {
+		    			this.pregledi = res.data;
+		    		}),
+		    		axios
+		    		.get('api/operacije/zakazane', { headers: { Authorization: 'Bearer ' + this.token }})
+		    		.then(res => {
+		    			this.operacije = res.data;
+		    		})
 		    	}
 		    })
 		    .catch(function (error) { console.log(error);});

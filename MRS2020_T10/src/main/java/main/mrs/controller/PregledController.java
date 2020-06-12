@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.mrs.dto.PregledDTO;
+import main.mrs.dto.SalaDTO;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Dijagnoza;
 import main.mrs.model.Izvestaj;
@@ -161,6 +161,13 @@ public class PregledController {
 			PregledDTO pregled = new PregledDTO(s);
 			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
 			pregled.setPopust(s.getPopust());
+			// dodala setovanje sale
+			if(s.getSala()!=null)
+			{
+				SalaDTO sala = new SalaDTO(s.getSala());
+				pregled.setSala(sala);
+			}
+			
 			PregledsDTO.add(pregled);
 		}
 
@@ -221,6 +228,13 @@ public class PregledController {
 			        }
 
 			        pregled.setIzvestaj(izvestaj);
+			        // dodala setovanjae sale
+			        if(s.getSala()!= null)
+			        {
+			        	SalaDTO sala = new SalaDTO(s.getSala());
+						pregled.setSala(sala);
+			        }
+			        
 			        PregledsDTO.add(pregled);
 			        
 		        }
@@ -342,6 +356,37 @@ public class PregledController {
 			pregled.setPopust(s.getPopust());
 			preglediDTO.add(pregled);
 		}
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/search/{datum}/{tipPregledaNaziv}")
+	@PreAuthorize("hasRole('ROLE_PACIJENT')")
+	public ResponseEntity<List<PregledDTO>> pretragaDatumTip(@PathVariable String datum, @PathVariable String tipPregledaNaziv) {
+		TipPregleda tip = TipPregledaService.findByNaziv(tipPregledaNaziv);
+		Date date1 = null;
+		try {
+			System.out.println(datum);
+			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(datum);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
+		System.out.println(date1);
+		List<Pregled> result = PregledService.findAfterDateType(date1, tip.getId());
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : result) {
+			PregledDTO pregled = new PregledDTO(s);
+			pregled.getTipPregleda().getStavka().setCena(s.getTipPregleda().getStavka().getCena());
+			pregled.setPopust(s.getPopust());
+			if(s.getSala()!=null)
+			{
+				SalaDTO sala = new SalaDTO(s.getSala());
+				pregled.setSala(sala);
+			}
+			preglediDTO.add(pregled);
+		}
+		if(preglediDTO.isEmpty())
+			return null;
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
 

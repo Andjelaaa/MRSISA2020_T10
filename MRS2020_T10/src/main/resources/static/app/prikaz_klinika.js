@@ -50,8 +50,8 @@ Vue.component('klinike-prikaz', {
 		<div class="float-left">
 		<table class="table table-hover table-light">
 			<tr>
-			<th>Naziv klinike</th>
-			<th>Adersa</th>
+			<th @click="sort('naziv')" class="class1">Naziv klinike</th>
+			<th @click="sort('adresa')" class="class1">Adersa</th>
 			<th @click="sort('prosecnaOcena')" class="class1">Prosecna ocena</th>
 			<th>Kontakt</th>
 			<th v-show='pretraga'>Cena</th>

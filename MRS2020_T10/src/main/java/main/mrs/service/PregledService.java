@@ -120,6 +120,11 @@ public class PregledService {
 		return PregledRepository.findZavrsenePacijent(id);
 	}
 
+	public List<Pregled> findAfterDateType(Date date1, Integer id) {
+		// TODO Auto-generated method stub
+		return PregledRepository.findAfterDateType(date1, id);
+	}
+
 
 
 }

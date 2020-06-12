@@ -144,6 +144,10 @@ public interface PregledRepository extends JpaRepository<Pregled, Long>{
 
 	  @Query(value = "SELECT * FROM PREGLED WHERE PACIJENT_ID = ?1 AND STATUS = 4", nativeQuery = true)
 	  List<Pregled> findZavrsenePacijent(Integer id);
+
+
+	  @Query(value = "SELECT * FROM PREGLED WHERE  PACIJENT_ID IS null AND DATUM_VREME >= ?1 AND TIP_PREGLEDA_ID = ?2 ORDER BY DATUM_VREME ASC", nativeQuery = true)
+	  List<Pregled> findAfterDateType(Date date1, Integer id);
 }
 
 

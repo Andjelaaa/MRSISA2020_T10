@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import main.mrs.dto.LekarDTO;
 import main.mrs.dto.OperacijaDTO;
 import main.mrs.dto.PregledDTO;
+import main.mrs.dto.SalaDTO;
 import main.mrs.model.AdminKlinike;
 import main.mrs.model.Lekar;
 import main.mrs.model.Operacija;
@@ -94,6 +95,11 @@ public class OperacijaController {
 		List<OperacijaDTO> operacijeDTO = new ArrayList<>();
 		for (Operacija s : zakazaneOp) {
 			OperacijaDTO op = new OperacijaDTO(s);
+			if(s.getSala()!=null)
+			{
+				SalaDTO sala = new SalaDTO(s.getSala());
+				op.setSala(sala);
+			}
 			
 			operacijeDTO.add(op);
 		}
@@ -111,6 +117,11 @@ public class OperacijaController {
 		List<OperacijaDTO> operacijeDTO = new ArrayList<>();
 		for (Operacija s : zakazaneOp) {
 			OperacijaDTO op = new OperacijaDTO(s);
+			if(s.getSala()!=null)
+			{
+				SalaDTO sala = new SalaDTO(s.getSala());
+				op.setSala(sala);
+			}
 			
 			operacijeDTO.add(op);
 		}

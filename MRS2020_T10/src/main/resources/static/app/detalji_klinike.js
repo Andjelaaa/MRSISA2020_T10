@@ -208,7 +208,7 @@ Vue.component('klinika-detalji', {
 		       	})
 			}
 		},
-		sort:function(s) {
+		sort: function(s) {
 		    //if s == current sort, reverse
 		    if(s === this.currentSort) {
 		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';

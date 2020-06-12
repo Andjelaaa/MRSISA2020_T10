@@ -3,11 +3,13 @@ Vue.component('lekari-klinike', {
 		return{
 			pacijent: {},
 			uloga: '',
-			sviLekari: null,
+			sviLekari: [],
 			pretraga: {ime:'', prezime:''},
 			klinika: {naziv: '', adresa: '', prosecnaOcena: 0, kontaktKlinike: '000/000'},
 			tipPregleda: {},
 			tipoviPregleda: null,
+			currentSort:'prosecnaOcena',
+			  currentSortDir:'asc'
 			
 		}
 	}, 
@@ -84,20 +86,20 @@ Vue.component('lekari-klinike', {
 			
 			<table class="table table-hover table-light">
 			  <tr>		   		
-		   		<th>Ime i prezime</th>
+		   		<th @click="sort('ime')" class="class1">Ime i prezime</th>
 		   		<th>Email adresa</th>
 		   		<th>Kontakt</th>
 		   		<th @click="sort('prosecnaOcena')" class="class1">Prosecna ocena</th>
 		   		<th></th>
 		   </tr>
-		  <tbody>
-		   <tr v-for="s in sviLekari">
+		  
+		   <tr v-for="s in sortedLekari">
 		   		<td>{{s.ime}} {{s.prezime}}</td>
 		   		<td>{{s.email}}</td>
 		   		<td>{{s.kontakt}}</td>
 		   		<td>{{s.prosecnaOcena}}</td>		   		
 			</tr>
-		   </tbody>
+		   
 		</table>
 		<br>
 		<h3>Pretraga</h3>
@@ -121,7 +123,13 @@ Vue.component('lekari-klinike', {
 		{
 			this.$router.push('/predefinisanipregledi/'+ this.$route.params.name)
 		},
-		
+		sort: function(s) {
+		    //if s == current sort, reverse
+		    if(s === this.currentSort) {
+		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+		    }
+		    this.currentSort = s;
+		  },
 		pretrazi: function(){
 			axios
 	       	.post('api/lekar/search/klinika/'+this.$route.params.name, this.pretraga, { headers: { Authorization: 'Bearer ' + this.token }})
@@ -131,6 +139,18 @@ Vue.component('lekari-klinike', {
 	
 		
 	},
+	computed:{
+		  sortedLekari:function() {
+		    return this.sviLekari.sort((a,b) => {
+		      let modifier = 1;
+		      if(this.currentSortDir === 'desc') modifier = -1;
+		      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+		      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+		      return 0;
+		    });
+		  }
+		},
+		
 	mounted(){
 		this.token = localStorage.getItem("token");
 		axios
