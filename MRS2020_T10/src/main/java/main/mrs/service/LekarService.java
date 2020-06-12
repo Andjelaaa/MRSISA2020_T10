@@ -2,6 +2,8 @@ package main.mrs.service;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +41,10 @@ public class LekarService {
 		LekarRepository.deleteById(id);
 	}
 
+	public Lekar findByEmailLock(String email, LockModeType pessimisticWrite) {
+		return LekarRepository.findByEmailLock(email, pessimisticWrite);
+	}
+	
 	public Lekar findByEmail(String email) {
 		return LekarRepository.findByEmail(email);
 	}

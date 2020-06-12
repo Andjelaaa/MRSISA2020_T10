@@ -59,7 +59,19 @@ public class Pregled {
     @JoinColumn(name="pacijent_id", nullable=true)
     public Pacijent pacijent;
     
-    public Integer getId() {
+    @Version
+   // @Column(name="version", unique = false, nullable = true)
+    private int version;
+    
+    public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	public Integer getId() {
     	return id;
     }
 

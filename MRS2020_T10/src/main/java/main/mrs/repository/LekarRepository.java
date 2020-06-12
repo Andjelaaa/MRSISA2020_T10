@@ -3,12 +3,17 @@ package main.mrs.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 
 import main.mrs.model.Lekar;
 
@@ -48,7 +53,8 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 	 
 	  <S extends Lekar> Page<S> findAll(Example<S> arg0, Pageable arg1);
 
-	 
+	  @Lock(LockModeType.PESSIMISTIC_WRITE)
+	  @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	  <S extends Lekar> Optional<S> findOne(Example<S> arg0);
 
 	 
@@ -83,8 +89,10 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	 
 	  <S extends Lekar> S saveAndFlush(S arg0);
-
-	@Query(value = "SELECT * FROM LEKAR WHERE EMAIL = ?1", nativeQuery = true)
+	  
+	
+	  @Lock(LockModeType.PESSIMISTIC_WRITE)
+	  @Query(value = "SELECT l FROM Lekar AS l WHERE l.email = ?1")
 	Lekar findByEmail(String email);
 
 	@Query(value = "SELECT * FROM LEKAR WHERE (upper(IME) like %?%1 and upper(prezime) like %?%2)", nativeQuery = true)
@@ -104,4 +112,8 @@ public interface LekarRepository extends JpaRepository<Lekar, Long>{
 
 	@Query(value = "SELECT * FROM LEKAR WHERE upper(IME) like ?1 and upper(prezime) like ?2 and klinika_id = ?3", nativeQuery = true)
 	List<Lekar> findByImeAndPrezimeAndKlinika(String upperCase, String upperCase2, Integer idKlinike);
+
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query(value = "SELECT l FROM Lekar AS l WHERE l.email = ?1")
+	Lekar findByEmailLock(String email, LockModeType pessimisticWrite);
 }

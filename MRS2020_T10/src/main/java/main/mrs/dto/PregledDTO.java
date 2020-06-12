@@ -21,7 +21,17 @@ public class PregledDTO {
    public Set<DijagnozaDTO> dijagnoza;
    public PacijentDTO pacijent;
    
-   public PregledDTO() {}
+   private int version;
+   
+   public int getVersion() {
+	return version;
+}
+
+public void setVersion(int version) {
+	this.version = version;
+}
+
+public PregledDTO() {}
    
    // dopuniti konverziju
    public PregledDTO(Pregled s) { 

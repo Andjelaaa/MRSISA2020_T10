@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -543,11 +545,13 @@ public class PregledController {
 		// Pregled.setDatumVreme(PregledDTO.getDatumVreme());
 		String datumVreme = zahtev.datum + " " + zahtev.vreme;
 		// 2020-05-21 hh:mm
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-mm HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 		try {
 			System.out.println("Sad cu da parsiram datum");
+			System.out.println(datumVreme);
 			Pregled.setDatumVreme((Date) (sdf.parse(datumVreme)));
+			System.out.println(Pregled.getDatumVreme());
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			System.out.println("E nije uspelo parsiranje");
@@ -563,6 +567,7 @@ public class PregledController {
 		Pregled.setTipPregleda(tp);
 		Pregled.setSala(null);
 		Lekar l = LekarService.findByEmail(zahtev.lekarEmail);
+		//Lekar l = LekarService.findByEmailLock(zahtev.lekarEmail, LockModeType.PESSIMISTIC_WRITE);
 		Pregled.setLekar(l);
 
 		try {

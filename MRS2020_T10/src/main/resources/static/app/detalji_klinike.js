@@ -1,6 +1,7 @@
 Vue.component('klinika-detalji', {
 	data: function(){
 		return{
+			
 			pretraga: {ime: '', prezime: '', ocena: 0, lekariTermini: []},
 			klinika: {naziv: '', adresa: '', prosecnaOcena: 0, kontaktKlinike: '000/000'},
 			pacijent: {},

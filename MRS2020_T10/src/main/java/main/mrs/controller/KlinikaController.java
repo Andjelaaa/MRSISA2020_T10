@@ -189,6 +189,14 @@ public class KlinikaController {
 				}
 		      
 			}
+			// videti da li sad od rvPocetak do rvKraj ima dovoljno vremena za jos neki termin i to dodati
+			long imaVremena = 0;
+			if(lekarTermini.slobodnoVreme.size() > 1)
+			{
+				SlobodnoVreme slobodanTermin = new SlobodnoVreme(rvPocetak, rvKraj);
+				lekarTermini.slobodnoVreme.add(slobodanTermin);
+			}
+			
 			
 			
 			if(slobodan || pregledi.isEmpty())
@@ -211,6 +219,10 @@ public class KlinikaController {
 		try {
 			System.out.println(datum);
 			date1=new SimpleDateFormat("yyyy-MM-dd").parse(datum);
+			/*if(date1.before(new Date()))
+			{
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			}*/
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			return null;
@@ -289,6 +301,7 @@ public class KlinikaController {
 				}
 		      
 			}
+			
 			System.out.println("Slobodno vreme: od " + rvPocetak + " do " + rvKraj);
 			
 			if(slobodan || pregledi.isEmpty())

@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.mrs.model.Pregled;
 import main.mrs.repository.PregledRepository;
 
 @Service
+@Transactional
 public class PregledService {
 	@Autowired
 	private PregledRepository PregledRepository;
@@ -27,7 +29,7 @@ public class PregledService {
 	public Page<Pregled> findAll(Pageable page) {
 		return PregledRepository.findAll(page);
 	}
-
+	@Transactional(readOnly = false)
 	public Pregled save(Pregled Pregled) {
 		return PregledRepository.save(Pregled);
 	}

@@ -1,6 +1,11 @@
 Vue.component('klinike-prikaz', {
 	data: function(){
 		return{
+			currentDate:'',
+			n: null,
+			y: 0,
+			m: 0,
+			d: 0,
 			klinike: [],
 			pacijent: {},
 			uloga: {},
@@ -72,7 +77,7 @@ Vue.component('klinike-prikaz', {
 		<table class="table table-hover table-light">
 			<tr>
 				<td>Pretrazi preglede od: </td>
-				<td><input class="form-control"  id="datum" type="date" v-model="datum"></td>
+				<td><input class="form-control"  name="datum" id="datum" type="date" v-model="datum" ></td>
 				<td>{{this.greskaDatum}}</td>
 			</tr>
 			
@@ -133,6 +138,7 @@ Vue.component('klinike-prikaz', {
 				console.log('cao');
 				return;
 			}
+			
 			this.greskaDatum = '';
 			this.greskaTipPregleda = '';
 			// da se desi pretraga po datumu i tipu pregleda
@@ -141,6 +147,7 @@ Vue.component('klinike-prikaz', {
 	       	.get('api/klinika/slobodnitermini/'+ this.datum + '/' + this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
 	       	.then(response => (this.klinike = response.data))
 	       	.catch((res)=>{
+	       			this.greskaDatum = 'Proverite datum';
 	        	  console.log('neuspesno');
 	       	})
 		},
@@ -200,6 +207,8 @@ Vue.component('klinike-prikaz', {
 			    	}
 			    	else
 			    	{
+			    		//this.currentDate = new Date().toLocaleDateString();
+			 
 			    		axios
 			    		.get('api/klinika/all',  { headers: { Authorization: 'Bearer ' + this.token }} )
 			    		.then(res => {
