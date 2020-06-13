@@ -207,6 +207,9 @@ insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id,
 values('2020-07-20 12:00:00', 'Zelim da putujem', '2020-07-12 11:00:00', 0, 'Odsustvo' , null, 1, 1,1);
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
+values('2020-07-20 12:00:00', 'nema opisa', '2020-07-12 11:00:00', 0, 'Odmor' , 1, null, 1,1);
+
+insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
 values('2020-07-22 12:00:00', 'nema opisa', '2020-07-15 11:00:00', 0, 'Odmor' , 2, null, 1,1);
 
 

@@ -16,7 +16,9 @@ Vue.component('zakazisaluop', {
 			odabraniLekari:[],
 			showModal: false,
 			token:'',
-			uloga:''
+			uloga:'',
+			salePomoc:[]
+
 		}
 	}, 
 	
@@ -148,22 +150,23 @@ Vue.component('zakazisaluop', {
 			
 		},
 		nadjiZaDatum: function(){
-			console.log(this.noviDatum +"STA JE OVO")
+		
 			if(this.noviDatum == null){
 				return;
 			}
 			else
 			{
 			axios
-	      	.get('api/sala/all',{ headers: { Authorization: 'Bearer ' + this.token }})
+	      	.get('api/sala/all/'+this.admin.id,{ headers: { Authorization: 'Bearer ' + this.token }})
 	      	.then(response => {
-	      		this.sale = response.data;
-	      		this.pretragaSale = response.data;
+				this.sale = [];
+				this.pretragaSale = [];
+				this.salePomoc = response.data;
 	      		this.zauzeca = [];
 	      		this.prviSlobodni = [];
 	      		this.pretragaZauzeca = [];
 	      		this.pretragaPrviSlobodni = [];
-	      		for(var s of this.sale){
+	      		for(let s of this.salePomoc){
 	      			console.log(s.id);
 	      			axios
 			      	.get('api/sala/prvislobodanop/'+this.noviDatum+'/'+s.id+'/'+this.$route.params.id,{ headers: { Authorization: 'Bearer ' + this.token }})
@@ -173,14 +176,22 @@ Vue.component('zakazisaluop', {
 			      		this.prviSlobodni.push(this.retVal.prviSlobodan);
 			      		this.pretragaZauzeca.push(this.retVal.zauzeca);
 			      		this.pretragaPrviSlobodni.push(this.retVal.prviSlobodan);
-			      		
+						this.pretragaSale.push(s);
 			      	})
-			        .catch(function (error) { console.log('Greska11') });	
+					.catch(function (error) { 
+						console.log('Greska11');
+						
+					 });	
 	      			
-	      		}
+				  }
+				
+				
 	      	})
 	        .catch(function (error) { console.log('Greska22') });		
 		   }
+		   for(let s of this.pretragaSale){
+				  console.log(s.id + "ssss");
+				}
 		},
 		pretraga: function(){
 			this.pretragaSale = [];
@@ -212,7 +223,7 @@ Vue.component('zakazisaluop', {
 		
 	},
 	
-	created(){
+	mounted(){
 		this.token = localStorage.getItem("token");
 		axios
 		.get('/auth/dobaviUlogovanog', { headers: { Authorization: 'Bearer ' + this.token }} )

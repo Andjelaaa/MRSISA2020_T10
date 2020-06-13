@@ -456,6 +456,7 @@ public class SalaController {
 		List<Pregled> Pregleds = PregledService.findAll();
 		List<Operacija> operacije = OperacijaService.findAll();
 		Date datum = null;
+		System.out.println(datumStr +" DDDDDDDDDDDDDDDDDDDDDDDD");
 		try {
 			datum = sdf.parse(datumStr);
 		} catch (ParseException e) {

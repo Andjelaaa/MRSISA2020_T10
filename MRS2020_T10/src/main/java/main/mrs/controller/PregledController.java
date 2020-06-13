@@ -281,8 +281,9 @@ public class PregledController {
 
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled s : pregledi) {
-			if (s.getStatus() == Status.odobreno)
-				preglediDTO.add(new PregledDTO(s));
+			if (s.getStatus() == Status.odobreno || s.getStatus() == Status.zavrseno )
+				if(s.getPacijent()!= null)
+					preglediDTO.add(new PregledDTO(s));
 		}
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}

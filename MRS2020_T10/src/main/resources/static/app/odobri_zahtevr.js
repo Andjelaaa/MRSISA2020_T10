@@ -122,6 +122,8 @@ Vue.component('odobri_zaht', {
 				alert("Poslat email");
 			}).catch((response)=>{
 				this.greska = 'Email nije poslat';
+				this.odbij(ind, zahtev);
+				alert("Email vec zauzet");
 			}
 				
 			);
