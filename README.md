@@ -1,9 +1,9 @@
 # MRSISA2020_T10
 
 ### Članovi tima
-    *[Nedić Teodora sw41/2017] (https://github.com/teodoranedic)
-    *[Glišić Tamara sw38/2017] (https://github.com/tamaraglisic)
-    *[Trajković Anđela sw76/2017] (https://github.com/Andjelaaa)
+    *[Nedić Teodora sw41/2017](https://github.com/teodoranedic)
+    *[Glišić Tamara sw38/2017](https://github.com/tamaraglisic)
+    *[Trajković Anđela sw76/2017](https://github.com/Andjelaaa)
 
 ### Korišćene tehnologije
   1.Spring Boot
@@ -14,8 +14,8 @@
 ### Korišćeni alati
   1. TravisCI
   2. SonarCloud
-  3. Heroku [link] (https://app-klinikatim10.herokuapp.com/)
-  Napomena: Zbog ugnježdene strukture projekta (projekat nije bio u root-u repozitorijuma) na predlog asistentkinje smo napravile novi repozitorijum sa odgovarajućom strukturom samo u svrhe deployment-a  [link ka repozitorijumu] (https://github.com/Andjelaaa/MRS_ISA_T10)
+  3. Heroku [link](https://app-klinikatim10.herokuapp.com/)
+  Napomena: Zbog ugnježdene strukture projekta (projekat nije bio u root-u repozitorijuma) na predlog asistentkinje smo napravile novi repozitorijum sa odgovarajućom strukturom samo u svrhe deployment-a  [link ka repozitorijumu](https://github.com/Andjelaaa/MRS_ISA_T10)
   
   
 ### Pokretanje projekta
