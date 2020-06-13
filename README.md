@@ -1,9 +1,9 @@
 # MRSISA2020_T10
 
 ### Članovi tima
-    * [Nedić Teodora sw41/2017] (https://github.com/teodoranedic)
-    * [Glišić Tamara sw38/2017] (https://github.com/tamaraglisic)
-    * [Trajković Anđela sw76/2017] (https://github.com/Andjelaaa)
+    *[Nedić Teodora sw41/2017] (https://github.com/teodoranedic)
+    *[Glišić Tamara sw38/2017] (https://github.com/tamaraglisic)
+    *[Trajković Anđela sw76/2017] (https://github.com/Andjelaaa)
 
 ### Korišćene tehnologije
   1.Spring Boot
