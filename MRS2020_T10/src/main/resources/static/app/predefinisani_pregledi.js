@@ -10,6 +10,7 @@ Vue.component('predefpregledi', {
 			tipPregleda: {naziv: null},
 			showModal: false,
 			nemaRezultata: ""
+
 		}
 	},
 	
