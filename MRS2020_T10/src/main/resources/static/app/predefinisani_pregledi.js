@@ -157,13 +157,7 @@ Vue.component('predefpregledi', {
 		    	if (this.uloga != "ROLE_PACIJENT") {
 		    		router.push('/');
 		    	}else{
-		    		/*
-		    		axios
-		    		.get('api/pregled/all')
-		    		.then(res => {
-		    			this.pregledi = res.data;
-		    			*/
-		    		// pravicemo se da ovo radi, jer u bazi nema ni jednog predef pregleda, mrzelo me da pravim
+		    		
 		    		axios
 		    		.get('api/pregled/slobodniPregledi/'+this.$route.params.name,  { headers: { Authorization: 'Bearer ' + this.token }})
 		    		.then(res => {

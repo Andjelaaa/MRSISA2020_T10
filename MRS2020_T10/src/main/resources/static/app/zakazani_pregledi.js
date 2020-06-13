@@ -8,6 +8,7 @@ Vue.component('zakazani-pregledi', {
 			idPacijenta: 1,
 			pacijent: {},
 			uloga: '',
+			lekarId: 0,
 			ocene: {ocenaLekar: 0, ocenaKlinika: 0},
 			oceneBackup: {ocenaLekar: 0, ocenaKlinika: 0},
 			showModal: false,
@@ -225,6 +226,7 @@ Vue.component('zakazani-pregledi', {
 		select: function(p)
 		{
 			// odmah podesi backup
+			this.lekarId = p.lekar.id;
 			axios
 			.post('api/pregled/ocene', p, { headers: { Authorization: 'Bearer ' + this.token }})
 			.then(res=>{
@@ -242,7 +244,7 @@ Vue.component('zakazani-pregledi', {
 			if(this.ocene.ocenaKlinika != this.oceneBackup.ocenaKlinika)
 			{
 				axios
-				.get('api/ocenaklinika/oceni/'+ p.lekar.id  + '/' + this.ocene.ocenaKlinika, { headers: { Authorization: 'Bearer ' + this.token }})
+				.get('api/ocenaklinika/oceni/'+ this.lekarId  + '/' + this.ocene.ocenaKlinika, { headers: { Authorization: 'Bearer ' + this.token }})
 				.then(res=>{
 					
 				})
@@ -251,7 +253,7 @@ Vue.component('zakazani-pregledi', {
 			{
 				
 				axios
-				.get('api/ocenalekar/oceni/'+ p.lekar.id +'/'+this.ocene.ocenaLekar,  { headers: { Authorization: 'Bearer ' + this.token }})
+				.get('api/ocenalekar/oceni/'+ this.lekarId +'/'+this.ocene.ocenaLekar,  { headers: { Authorization: 'Bearer ' + this.token }})
 				.then(res=>{
 					
 				})
