@@ -1,7 +1,7 @@
 # MRSISA2020_T10
 
 ### Članovi tima
-    1.  [Glišić Tamara sw38/2017](https://github.com/tamaraglisic)
+    1.  [Glišić Tamara](https://github.com/tamaraglisic) sw38/2017
     2.  [Nedić Teodora sw41/2017](https://github.com/teodoranedic)
     3.  [Trajković Anđela sw76/2017](https://github.com/Andjelaaa)
 
