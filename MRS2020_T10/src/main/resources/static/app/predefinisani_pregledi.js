@@ -129,7 +129,7 @@ Vue.component('predefpregledi', {
 			 this.nemaRezultata = "";
 			 this.greska = "";
 				axios
-		       	.get('api/pregled/search/'+ this.datum + '/' + this.tipPregleda.naziv, { headers: { Authorization: 'Bearer ' + this.token }})
+		       	.get('api/pregled/search/'+ this.datum + '/' + this.tipPregleda.naziv +'/' + this.$route.params.name, { headers: { Authorization: 'Bearer ' + this.token }})
 		       	.then(res => {this.pregledi = res.data;
 		       		if(this.pregledi[0] == null){
 		       			this.nemaRezultata = "Nema rezultata pretrage";

@@ -88,6 +88,7 @@ public class OcenaLekarController {
 			novaOcena.setLekarId(lekarId);
 			novaOcena.setPacijentId(p.getId());
 			novaOcena.setOcena(ocena);
+			System.out.println(novaOcena +" nova ocena nova godina 11111111111111111111111111111111111111111111");
 			try {
 				novaOcena = OcenaLekarService.save(novaOcena);
 			}
