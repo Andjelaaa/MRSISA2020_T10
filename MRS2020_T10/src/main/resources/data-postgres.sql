@@ -132,6 +132,11 @@ insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id
 values ('2020-06-03 08:00:00', 5, 4, 30, 3, 1, 3, 1, 1, 3, 1,1);
 insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version)
 values ('2020-06-06 10:00:00', 5, 4, 30, 5, 1, 1, 1, 1, 1, 1,1); 
+insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version)
+values ('2020-07-10 17:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 2,1);
+
+insert into pregled(datum_vreme, popust, status, trajanje, izvestaj_id, lekar_id, pacijent_id, sala_id, tip_pregleda_id, zkarton_id, klinika_id, version)
+values ('2020-07-11 17:00:00', 5, 1, 30, null, 2, 1, 2, 1, 1, 2,1);
 
 --zahtevi pregleda
 
@@ -185,7 +190,7 @@ insert into adminkc_autoriteti (adminkc_id, autoriteti_id) values (1, 4);
 --odsustva
 
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
-values('2020-06-15 12:00:00', 'Zbog privatnih problema', '2020-06-12 11:00:00', 1, 'Odsustvo' , 1, null, 1,1);
+values('2020-06-16 12:00:00', 'Zbog privatnih problema', '2020-06-15 11:00:00', 1, 'Odsustvo' , 1, null, 1,1);
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
 values('2020-06-25 12:00:00', 'nema opisa', '2020-06-21 11:00:00', 1, 'Odmor' , 1, null, 1,1);
 
@@ -198,6 +203,8 @@ insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id,
 values('2020-06-25 12:00:00', 'nema opisa', '2020-06-21 11:00:00', 1, 'Odmor' , 2, null, 2,1);
 insert into odsustvo (kraj, opis, pocetak, status, tip, lekar_id, med_sestra_id, admin_klinike_id,version)
 values('2020-06-17 12:00:00', 'Zbog privatnih problema', '2020-06-11 11:00:00', 1, 'Odsustvo' , 2, null, 2,1);
+
+
 
 
 --zahtevi za odsustva
